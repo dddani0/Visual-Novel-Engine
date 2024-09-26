@@ -1,12 +1,12 @@
-﻿using Raylib_cs;
-
-namespace HelloWorld;
+﻿using System.Text.Json;
+using Raylib_cs;
 
 class Program
 {
     public static void Main()
     {
-        Raylib.InitWindow(800, 480, "Hello World");
+        // JsonDocument windowInitials = ;
+        Raylib.InitWindow(800, 480, "Visual Novel Engine");
 
         while (!Raylib.WindowShouldClose())
         {

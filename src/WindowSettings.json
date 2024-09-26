@@ -1,0 +1,12 @@
+{
+    "loaderWindowTitle": "Visual Novel Game Engine",
+    "editorWindowTitle": "Visual Novel Game Engine",
+    "loaderWindowResoltuion": [
+        500,
+        500
+    ],
+    "editorWindowResoluion": [
+        1680,
+        900
+    ]
+}
