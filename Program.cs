@@ -1,23 +1,22 @@
 ﻿using System.Text.Json;
+using EngineComponents;
 using Raylib_cs;
 
 class Program
 {
     public static void Main()
     {
-        // JsonDocument windowInitials = ;
-        Raylib.InitWindow(800, 480, "Visual Novel Engine");
+
+        Raylib.InitWindow(1680, 900, "Visual Novel Engine");
+        var testTextBox = TextBox.createNewTextBox(20, 1, 1, "lorem ipsum salameet? Lorem kibasz");
 
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.White);
-
-            Raylib.DrawText("Hello, world!", 12, 12, 20, Color.Black);
-
+            Raylib.ClearBackground(Color.Beige);
+            testTextBox.WriteToScreen();
             Raylib.EndDrawing();
         }
-
         Raylib.CloseWindow();
     }
 }
