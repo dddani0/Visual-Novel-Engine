@@ -10,7 +10,7 @@ class Program
         int[] boxSize = [50, 225];
         int[] defaultTextboxPosition = [560, 700];
         Raylib.InitWindow(1680, 900, "Visual Novel Engine");
-        var testTextBox = TextBox.createNewTextBox(10, defaultTextboxPosition[0], defaultTextboxPosition[1], boxSize[0], boxSize[1], ["Aint that a bitch?"]);
+        var testTextBox = TextBox.CreateNewTextBox(10, defaultTextboxPosition[0], defaultTextboxPosition[1], boxSize[0], boxSize[1], ["Aint that a bitch?"]);
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();

@@ -13,74 +13,74 @@ namespace EngineComponents
         readonly int[] textMargin = [5, 5];
         private TextBox(List<String> data, double cps, int xpos, int ypos, int xSize, int ySize)
         {
-            content = data;
-            cpsTextSpeed = cps;
-            secondTimer = new Timer(1 / (float)cpsTextSpeed);
-            currentIdx = 0;
-            maxIdx = content[0].Length;
-            maxTextDataindex = content.Count;
-            output = "";
-            isEnabled = true;
-            position = [xpos, ypos];
-            scale = [xSize, ySize];
-            box = new Rectangle(position[0], position[1], scale[0], scale[1]);
-            textBatchDone = false;
+            Content = data;
+            CPSTextSpeed = cps;
+            SecondTimer = new Timer(1 / (float)CPSTextSpeed);
+            CurrentIdx = 0;
+            MaxIdx = Content[0].Length;
+            MaxTextDataindex = Content.Count;
+            Output = "";
+            IsEnabled = true;
+            Position = [xpos, ypos];
+            Scale = [xSize, ySize];
+            Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
+            TextBatchDone = false;
         }
         internal void ToggleNextTextBatch()
         {
-            currentIdx = 0;
-            maxIdx = content[currentTextDataIndex].Length;
-            textBatchDone = false;
-            secondTimer.ResetTimer();
+            CurrentIdx = 0;
+            MaxIdx = Content[CurrentTextDataIndex].Length;
+            TextBatchDone = false;
+            SecondTimer.ResetTimer();
         }
         internal void WriteToScreen()
         {
-            if (isEnabled is false) return;
-            Raylib.DrawRectangle((int)box.Position.X, (int)box.Position.Y, (int)box.Width, (int)box.Height, Color.Black);
-            Raylib.DrawText(sanatizedOutput, position[0] + textMargin[0], position[1] + textMargin[1], 20, Color.White);
-            if (isFinished is true) return;
+            if (IsEnabled is false) return;
+            Raylib.DrawRectangle((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, Color.Black);
+            Raylib.DrawText(SanatizedOutput, Position[0] + textMargin[0], Position[1] + textMargin[1], 20, Color.White);
+            if (IsFinished is true) return;
             if (Raylib.IsMouseButtonPressed(MouseButton.Left))
             {
-                textBatchDone = true;
-                output = content[currentTextDataIndex];
-                currentIdx = maxIdx;
-                secondTimer.ResetTimer();
+                TextBatchDone = true;
+                Output = Content[CurrentTextDataIndex];
+                CurrentIdx = MaxIdx;
+                SecondTimer.ResetTimer();
             }
-            if (secondTimer.OnCooldown() is true)
+            if (SecondTimer.OnCooldown() is true)
             {
-                secondTimer.DecreaseTimer();
+                SecondTimer.DecreaseTimer();
                 return;
             }
-            output += content[currentTextDataIndex][currentIdx];
-            incrementIndex();
-            secondTimer.ResetTimer();
+            Output += Content[CurrentTextDataIndex][CurrentIdx];
+            IncrementIndex();
+            SecondTimer.ResetTimer();
 
         }
-        internal bool isFinished => currentIdx == maxIdx;
-        internal void ToggleData() => isEnabled = !isEnabled;
-        internal Timer secondTimer { get; private set; }
-        internal List<String> content { get; private set; }
-        private string output { get; set; }
-        private string sanatizedOutput => output.Replace("\n", "").Replace("\t", "");
-        private double cpsTextSpeed { get; }
-        private int currentIdx { get; set; }
-        private int maxIdx { get; set; }
-        private int currentTextDataIndex { get; set; }
-        private int maxTextDataindex { get; set; }
-        private int incrementTextDataIndex() => currentTextDataIndex++;
-        private int incrementIndex() => currentIdx++;
+        internal bool IsFinished => CurrentIdx == MaxIdx;
+        internal void ToggleData() => IsEnabled = !IsEnabled;
+        internal Timer SecondTimer { get; private set; }
+        internal List<String> Content { get; private set; }
+        private string Output { get; set; }
+        private string SanatizedOutput => Output.Replace("\n", "").Replace("\t", "");
+        private double CPSTextSpeed { get; }
+        private int CurrentIdx { get; set; }
+        private int MaxIdx { get; set; }
+        private int CurrentTextDataIndex { get; set; }
+        private int MaxTextDataindex { get; set; }
+        private int IncrementTextDataIndex() => CurrentTextDataIndex++;
+        private int IncrementIndex() => CurrentIdx++;
 
-        private int[] position { get; set; }
-        private bool isEnabled { get; set; }
-        private bool wordWrap { get; set; }
-        private bool textBatchDone { get; set; }
-        internal int xPosition => position[0];
-        internal int yPosition => position[1];
-        internal int xScale => position[0];
-        internal int yScale => position[1];
-        internal Rectangle box { get; set; }
-        private int[] scale { get; set; }
-        public static TextBox createNewTextBox(
+        private int[] Position { get; set; }
+        private bool IsEnabled { get; set; }
+        private bool WordWrap { get; set; }
+        private bool TextBatchDone { get; set; }
+        internal int XPosition => Position[0];
+        internal int YPosition => Position[1];
+        internal int XScale => Position[0];
+        internal int YScale => Position[1];
+        internal Rectangle Box { get; set; }
+        private int[] Scale { get; set; }
+        public static TextBox CreateNewTextBox(
             double characterPerSecond,
             int xPos,
             int yPos,
