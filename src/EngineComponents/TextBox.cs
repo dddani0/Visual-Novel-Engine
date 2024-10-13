@@ -28,7 +28,7 @@ namespace EngineComponents
             CurrentFont = theFont;
             CharacterWidth = (CurrentFont.BaseSize + CurrentFont.GlyphPadding) / 2;
             CharacterHeigth = CurrentFont.BaseSize + CurrentFont.GlyphPadding;
-            MaximumCharacterCount = (int)((Box.Width - textMargin[0]) / CharacterWidth) / 2 ; //1/8-ad része írható karakterekkel
+            MaximumCharacterCount = (int)(Box.Width - (((Box.Width - 2 * textMargin[0])) / 8)) / CharacterWidth; //1/8-ad része írható karakterekkel
             MaximumRowCount = (int)(Box.Height - textMargin[1] / CharacterHeigth);
             Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
             CurrentLoadedData = Content[TextCollectionIndex];
