@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Json;
 using EngineComponents;
 using Raylib_cs;
 
@@ -21,9 +22,8 @@ class Program
         var testTextBox = TextBox.CreateNewTextBox(10,
             defaultFont,
             defaultTextboxPosition[0], defaultTextboxPosition[1],
-            textBoxSize[0], textBoxSize[1],
-            ["12345678901234567890r4dddddddddddddddddddwrfwe1234",
-            "DDDD"]);
+            textBoxSize[0], textBoxSize[1], true,
+            ["Reprehenderit excepteur aliqua Lorem cupidatat nulla. Anim consequat tempor qui ipsum labore laborum mollit aliquip proident."]);
 
 
         while (!Raylib.WindowShouldClose())

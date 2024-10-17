@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Security.Cryptography;
 using Raylib_cs;
 
 namespace EngineComponents
@@ -11,13 +12,16 @@ namespace EngineComponents
         /// <param name="data">text data, which is to be written out.</param>
         /// <param name="cps">characters per second</param>
         readonly int[] textMargin = [10, 10];
-        private TextBox(List<String> data, double cps, Font theFont, int xpos, int ypos, int xSize, int ySize)
+        private TextBox(List<String> data, double cps, Font theFont, int xpos, int ypos, int xSize, int ySize, bool wordWrapEnabled)
         {
             Content = data;
             CPSTextSpeed = cps;
+            //  
+            WordWrap = wordWrapEnabled;
+            //
             SecondTimer = new Timer(1 / (float)CPSTextSpeed);
+            //
             TextIndex = 0;
-            TextCount = Content[0].Length;
             TextCollectionCount = Content.Count;
             Output = String.Empty;
             IsEnabled = true;
@@ -28,10 +32,11 @@ namespace EngineComponents
             CurrentFont = theFont;
             CharacterWidth = (CurrentFont.BaseSize + CurrentFont.GlyphPadding) / 2;
             CharacterHeigth = CurrentFont.BaseSize + CurrentFont.GlyphPadding;
-            MaximumCharacterCount = (int)(Box.Width - (((Box.Width - 2 * textMargin[0])) / 8)) / CharacterWidth; //1/8-ad része írható karakterekkel
-            MaximumRowCount = (int)(Box.Height - textMargin[1] / CharacterHeigth);
+            MaximumCharacterCount = (int)(Box.Width - 2 * textMargin[0] - CharacterWidth) / CharacterWidth;
+            MaximumRowCount = (int)((Box.Height - textMargin[1]) / CharacterHeigth);
             Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
             CurrentLoadedData = Content[TextCollectionIndex];
+            TextCount = CurrentLoadedData.Length;
         }
         private string FitLoadedStringToTextBox(string data)
         {
@@ -43,49 +48,54 @@ namespace EngineComponents
             //
             int usedRows = 1;
             //
+            //
             while (IsFinished is false)
             {
-                nextString = splittingText.Remove(0, (MaximumCharacterCount - 1) * usedRows);
-                splittingText = splittingText.Insert((MaximumCharacterCount - 1) * usedRows, "\n\n");
-                if (nextString.Length <= MaximumCharacterCount || usedRows >= MaximumRowCount)
+                int nextSplitIndex = (MaximumCharacterCount - 1) * usedRows;
+                nextString = splittingText.Remove(0, nextSplitIndex); //
+                //
+                if (WordWrap) splittingText = WrapLine(splittingText, usedRows);
+                else splittingText = splittingText.Insert(nextSplitIndex, "\n\n");
+                if (nextString.Length <= MaximumCharacterCount || usedRows >= MaximumRowCount) IsFinished = true;
+                else usedRows++;
+                //
+                if (usedRows == MaximumRowCount)
                 {
+                    string endString = nextString;
+                    if (endString.Length > MaximumCharacterCount)
+                    {
+                        if (WordWrap)
+                        {
+                            endString = WrapLine(endString, 1);
+                            int removeIdx = endString.IndexOf('\n');
+                            endString = endString[..(removeIdx)];
+                        }
+                        else endString = endString[..(MaximumCharacterCount - 1)];
+                        //
+                        nextString = nextString.Replace(endString, String.Empty);
+                    }
+                    splittingText = splittingText.Replace(nextString, String.Empty);
+                    Content.Insert(TextCollectionIndex + 1, nextString);
                     IsFinished = true;
-                }
-                else
-                {
-                    usedRows++;
                 }
             }
             return splittingText;
-            //bool isLineFittable = false;
-            //string splittingText = CurrentLoadedData;
-            //string nextString = splittingText;
-            //string followingString = string.Empty;
-            //while (isLineFittable is false)
-            //{
-
-            //need to consider word wrap
-            // if (StringWidthToCoordinates(nextString) > LineDeadZone)
-            // {
-            //     int charIndex = 0;
-            //     int rowCount = 1;
-            //     bool foundIdx = false;
-            //     string splittingTextTemporary = String.Empty;
-            //     int splitIdx = 0;
-            //     if (rowCount == RowDeadZone)
-            //     {
-            //         isLineFittable = true;
-            //         goto endLoop;
-            //     }
-            //     nextString = splittingText.Remove(0, charIndex++);
-            //     splittingText = splittingText.Insert(charIndex, splittingTextTemporary + "\n");
-            // }
-            // else isLineFittable = true;
-            // endLoop:;
-            //}
-            //return splittingText;
         }
-
+        string WrapLine(string wrappingLine, int rowNumber)
+        {
+            int newLineIndex = (MaximumCharacterCount - 1) * rowNumber;
+            for (int i = newLineIndex; i > 0; i--)
+            {
+                if (Char.IsWhiteSpace(wrappingLine[i]))
+                {
+                    wrappingLine = wrappingLine.Remove(i, 1);
+                    wrappingLine = wrappingLine.Insert(i, "\n\n");
+                    break;
+                }
+                if (i == 0 || wrappingLine[i] == '\n') return wrappingLine;
+            }
+            return wrappingLine;
+        }
 
         private void ToggleNextTextBatch()
         {
@@ -166,6 +176,7 @@ namespace EngineComponents
             int yPos,
             int xSize,
             int ySize,
+            bool wordWrap,
             List<String> textBoxContent)
             =>
             new(
@@ -175,6 +186,6 @@ namespace EngineComponents
                 xPos,
                 yPos,
                 xSize,
-                ySize);
+                ySize, wordWrap);
     }
 }
