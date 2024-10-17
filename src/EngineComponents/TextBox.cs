@@ -75,7 +75,7 @@ namespace EngineComponents
                         nextString = nextString.Replace(endString, String.Empty);
                     }
                     splittingText = splittingText.Replace(nextString, String.Empty);
-                    Content.Insert(TextCollectionIndex + 1, nextString);
+                    Content.Insert(TextCollectionIndex + 1, nextString.Trim());
                     IsFinished = true;
                 }
             }
@@ -99,42 +99,46 @@ namespace EngineComponents
 
         private void ToggleNextTextBatch()
         {
+            TextCollectionIndex++;
+            //
+            Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
+            CurrentLoadedData = Content[TextCollectionIndex];
+            //
             TextIndex = 0;
-            TextCount = Content[TextCollectionIndex].Length;
+            TextCount = CurrentLoadedData.Length;
+            //
             TextBatchDone = false;
+            //
             SecondTimer.ResetTimer();
+            //
+            Output = String.Empty;
         }
         internal void WriteToScreen()
         {
             if (IsEnabled is false) return;
             Raylib.DrawRectangle((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, Color.Black);
             Raylib.DrawRectangleLines((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, Color.Black);
-            Raylib.DrawRectangle(Position[0] + textMargin[0] + CharacterWidth, Position[1] + textMargin[1], CharacterWidth, CurrentFont.BaseSize, Color.Red);
-
-            Raylib.DrawTextEx(
-                CurrentFont,
-                SanatizedOutput,
-                new Vector2(Position[0] + textMargin[0], Position[1] + textMargin[1]),
+            Raylib.DrawTextEx(CurrentFont, SanatizedOutput, new Vector2(Position[0] + textMargin[0], Position[1] + textMargin[1]),
                 CurrentFont.BaseSize,
                 CurrentFont.GlyphPadding,
                 Color.White);
+            if (TextCollectionIndex < TextCollectionCount && IsFinished && Raylib.IsMouseButtonPressed(MouseButton.Right))
+                ToggleNextTextBatch();
             if (IsFinished is true) return;
             if (Raylib.IsMouseButtonPressed(MouseButton.Left))
             {
                 TextBatchDone = true;
-                Output = Content[TextCollectionIndex];
+                Output = CurrentLoadedData;
                 TextIndex = TextCount;
-                SecondTimer.ResetTimer();
             }
             if (SecondTimer.OnCooldown() is true)
             {
                 SecondTimer.DecreaseTimer();
                 return;
             }
-            Output += Content[TextCollectionIndex][TextIndex];
+            Output += CurrentLoadedData[TextIndex];
             IncrementIndex();
             SecondTimer.ResetTimer();
-
         }
         private int StringWidthToCoordinates(string text) => Raylib.GetScreenWidth() / 2 - XScale / 2 + textMargin[0] + (text.Length * CharacterWidth);
         internal bool IsFinished => TextIndex == TextCount;
