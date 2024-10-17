@@ -23,19 +23,60 @@ namespace EngineComponents
             //
             TextIndex = 0;
             TextCollectionCount = Content.Count;
+            //
             Output = String.Empty;
+            //
             IsEnabled = true;
+            TextBatchDone = false;
+            //
             Position = [xpos, ypos];
             Scale = [xSize, ySize];
             Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
-            TextBatchDone = false;
+            //
             CurrentFont = theFont;
+            //
             CharacterWidth = (CurrentFont.BaseSize + CurrentFont.GlyphPadding) / 2;
             CharacterHeigth = CurrentFont.BaseSize + CurrentFont.GlyphPadding;
             MaximumCharacterCount = (int)(Box.Width - 2 * textMargin[0] - CharacterWidth) / CharacterWidth;
             MaximumRowCount = (int)((Box.Height - textMargin[1]) / CharacterHeigth);
+            //
             Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
             CurrentLoadedData = Content[TextCollectionIndex];
+            //
+            TextCount = CurrentLoadedData.Length;
+        }
+        private TextBox(List<String> data, string title, double cps, Font theFont, int xpos, int ypos, int xSize, int ySize, bool wordWrapEnabled)
+        {
+            Content = data;
+            CPSTextSpeed = cps;
+            TextBoxTitle = title;
+            //  
+            WordWrap = wordWrapEnabled;
+            //
+            SecondTimer = new Timer(1 / (float)CPSTextSpeed);
+            //
+            TextIndex = 0;
+            TextCollectionCount = Content.Count;
+            //
+            Output = String.Empty;
+            //
+            IsEnabled = true;
+            TextBatchDone = false;
+            //
+            Position = [xpos, ypos];
+            Scale = [xSize, ySize];
+            Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
+            //
+            CurrentFont = theFont;
+            //
+            CharacterWidth = (CurrentFont.BaseSize + CurrentFont.GlyphPadding) / 2;
+            CharacterHeigth = CurrentFont.BaseSize + CurrentFont.GlyphPadding;
+            MaximumCharacterCount = (int)(Box.Width - 2 * textMargin[0] - CharacterWidth) / CharacterWidth;
+            MaximumRowCount = (int)((Box.Height - textMargin[1]) / CharacterHeigth);
+            //
+            Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
+            CurrentLoadedData = Content[TextCollectionIndex];
+            //
             TextCount = CurrentLoadedData.Length;
         }
         private string FitLoadedStringToTextBox(string data)
@@ -47,7 +88,6 @@ namespace EngineComponents
             string nextString = String.Empty;
             //
             int usedRows = 1;
-            //
             //
             while (IsFinished is false)
             {
@@ -84,7 +124,7 @@ namespace EngineComponents
         string WrapLine(string wrappingLine, int rowNumber)
         {
             int newLineIndex = (MaximumCharacterCount - 1) * rowNumber;
-            for (int i = newLineIndex; i > 0; i--)
+            for (int i = newLineIndex; i >= 0; i--)
             {
                 if (Char.IsWhiteSpace(wrappingLine[i]))
                 {
@@ -92,14 +132,15 @@ namespace EngineComponents
                     wrappingLine = wrappingLine.Insert(i, "\n\n");
                     break;
                 }
-                if (i == 0 || wrappingLine[i] == '\n') return wrappingLine;
+                if (i == 0 || wrappingLine[i] == '\n')
+                    wrappingLine = wrappingLine.Insert(newLineIndex, "\n\n");
             }
             return wrappingLine;
         }
 
         private void ToggleNextTextBatch()
         {
-            TextCollectionIndex++;
+            IncrementTextDataIndex();
             //
             Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
             CurrentLoadedData = Content[TextCollectionIndex];
@@ -117,6 +158,11 @@ namespace EngineComponents
         {
             if (IsEnabled is false) return;
             Raylib.DrawRectangle((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, Color.Black);
+            if (string.IsNullOrEmpty(TextBoxTitle) is false)
+            {
+                Raylib.DrawRectangle(XPosition, YPosition - CharacterHeigth, TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0], CharacterHeigth, Color.Black);
+                Raylib.DrawTextEx(CurrentFont, TextBoxTitle, new Vector2(XPosition + textMargin[0], YPosition - CharacterHeigth), CurrentFont.BaseSize, CurrentFont.GlyphPadding, Color.White);
+            }
             Raylib.DrawRectangleLines((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, Color.Black);
             Raylib.DrawTextEx(CurrentFont, SanatizedOutput, new Vector2(Position[0] + textMargin[0], Position[1] + textMargin[1]),
                 CurrentFont.BaseSize,
@@ -140,17 +186,15 @@ namespace EngineComponents
             IncrementIndex();
             SecondTimer.ResetTimer();
         }
-        private int StringWidthToCoordinates(string text) => Raylib.GetScreenWidth() / 2 - XScale / 2 + textMargin[0] + (text.Length * CharacterWidth);
         internal bool IsFinished => TextIndex == TextCount;
         internal void ToggleData() => IsEnabled = !IsEnabled;
         internal Timer SecondTimer { get; private set; }
         internal List<String> Content { get; private set; }
         private string CurrentLoadedData { get; set; }
         private string Output { get; set; }
-        private string SanatizedOutput => Output.Replace("\t", String.Empty); //new line is acceptable
+        private string SanatizedOutput => Output.Replace("\t", String.Empty);
+        private string TextBoxTitle { get; set; }
         private double CPSTextSpeed { get; }
-        private int LineHeight { get; set; } //When to 
-        private int StringWidth { get; }
         private int MaximumCharacterCount { get; }
         private int MaximumRowCount { get; }
         private int CharacterWidth { get; set; }
@@ -167,9 +211,8 @@ namespace EngineComponents
         private bool TextBatchDone { get; set; }
         internal int XPosition => Position[0];
         internal int YPosition => Position[1];
-        internal int XScale => Position[0];
-        internal int YScale => Position[1];
-        internal int CharacterCount => Output.Length;
+        internal int XScale => Scale[0];
+        internal int YScale => Scale[1];
         internal Rectangle Box { get; set; }
         internal Font CurrentFont { get; set; }
         private int[] Scale { get; set; }
@@ -185,6 +228,26 @@ namespace EngineComponents
             =>
             new(
                 textBoxContent,
+                characterPerSecond,
+                activeFont,
+                xPos,
+                yPos,
+                xSize,
+                ySize, wordWrap);
+        public static TextBox CreateNewTextBox(
+            double characterPerSecond,
+            Font activeFont,
+            int xPos,
+            int yPos,
+            int xSize,
+            int ySize,
+            bool wordWrap,
+            string textBoxTitle,
+            List<String> textBoxContent)
+            =>
+            new(
+                textBoxContent,
+                textBoxTitle,
                 characterPerSecond,
                 activeFont,
                 xPos,

@@ -22,8 +22,8 @@ class Program
         var testTextBox = TextBox.CreateNewTextBox(10,
             defaultFont,
             defaultTextboxPosition[0], defaultTextboxPosition[1],
-            textBoxSize[0], textBoxSize[1], true,
-            ["Reprehenderit excepteur aliqua Lorem cupidatat nulla. Anim consequat tempor qui ipsum labore laborum mollit aliquip proident."]);
+            textBoxSize[0], textBoxSize[1], true,"Dani",
+            ["Reprehenderitdwgkjbwnefew."]);
 
 
         while (!Raylib.WindowShouldClose())
