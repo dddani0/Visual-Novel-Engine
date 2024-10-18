@@ -140,6 +140,7 @@ namespace EngineComponents
 
         private void ToggleNextTextBatch()
         {
+            if (IncrementIndex() >= TextCollectionCount) return;
             IncrementTextDataIndex();
             //
             Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
@@ -182,6 +183,7 @@ namespace EngineComponents
                 SecondTimer.DecreaseTimer();
                 return;
             }
+            if (TextIndex >= TextCount) return;
             Output += CurrentLoadedData[TextIndex];
             IncrementIndex();
             SecondTimer.ResetTimer();
