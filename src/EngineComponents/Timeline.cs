@@ -3,9 +3,14 @@ namespace EngineComponents
     class Timeline
     {
         /// <summary>
-        /// Timeline contains the list of actions (Sprite change, textbox placement, etc.), which plays out during a scene.
+        /// Timeline holds the list of user assigned actions (e.g. Sprite change, textbox placement, etc.), which plays out during a scene.
         /// </summary>
-        int ActionIndex { get; set; }
-        int MaximumActionCount { get; set; }
+        int StepIndex { get; set; }
+        int StepCount { get; set; }
+
+        public void NextStep()
+        {
+            StepIndex++;
+        }
     }
 }
