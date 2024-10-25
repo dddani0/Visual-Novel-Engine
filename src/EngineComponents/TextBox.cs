@@ -51,6 +51,8 @@ namespace EngineComponents
             CurrentLoadedData = Content[TextCollectionIndex];
             //
             TextCount = CurrentLoadedData.Length;
+            //
+            Raylib.SetTextLineSpacing(CharacterHeigth);
         }
         private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, int xpos, int ypos, int xSize, int ySize, bool wordWrapEnabled)
         {
@@ -75,6 +77,9 @@ namespace EngineComponents
             Scale = [xSize, ySize];
             Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
             //
+            TextBoxBackground = textBoxBackground;
+            TextBoxBorder = textBoxBorder;
+            //
             CurrentFont = theFont;
             //
             CharacterWidth = (CurrentFont.BaseSize + CurrentFont.GlyphPadding) / 2;
@@ -86,6 +91,8 @@ namespace EngineComponents
             CurrentLoadedData = Content[TextCollectionIndex];
             //
             TextCount = CurrentLoadedData.Length;
+            //
+            Raylib.SetTextLineSpacing(CharacterHeigth);
         }
         //members
         internal bool IsFinished => TextIndex == TextCount;
@@ -146,7 +153,7 @@ namespace EngineComponents
                 nextString = splittingText.Remove(0, nextSplitIndex); //
                 //
                 if (WordWrap) splittingText = WrapLine(splittingText, usedRows);
-                else splittingText = splittingText.Insert(nextSplitIndex, "\n\n");
+                else splittingText = splittingText.Insert(nextSplitIndex, "\n");
                 if (nextString.Length <= MaximumCharacterCount || usedRows >= MaximumRowCount) IsFinished = true;
                 else usedRows++;
                 //
@@ -188,11 +195,11 @@ namespace EngineComponents
                 if (Char.IsWhiteSpace(wrappingLine[i]))
                 {
                     wrappingLine = wrappingLine.Remove(i, 1);
-                    wrappingLine = wrappingLine.Insert(i, "\n\n");
+                    wrappingLine = wrappingLine.Insert(i, "\n");
                     break;
                 }
                 if (i == 0 || wrappingLine[i] == '\n')
-                    wrappingLine = wrappingLine.Insert(newLineIndex, "\n\n");
+                    wrappingLine = wrappingLine.Insert(newLineIndex, "\n");
             }
             return wrappingLine;
         }
