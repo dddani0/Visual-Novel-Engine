@@ -53,6 +53,8 @@ namespace EngineComponents
             TextCount = CurrentLoadedData.Length;
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
+            //
+            ToggleEnability(); //Disables by default
         }
         private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, int xpos, int ypos, int xSize, int ySize, bool wordWrapEnabled)
         {
@@ -93,6 +95,8 @@ namespace EngineComponents
             TextCount = CurrentLoadedData.Length;
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
+            //
+            ToggleEnability(); //Disables by default
         }
         //members
         internal bool IsFinished => TextIndex == TextCount;
@@ -118,6 +122,7 @@ namespace EngineComponents
         private int IncrementIndex() => TextIndex++;
         private int[] Position { get; set; }
         private bool IsEnabled { get; set; }
+        internal bool IsDisabled() => IsEnabled is false;
         private bool WordWrap { get; set; }
         private bool TextBatchDone { get; set; }
         private bool IsBlinking { get; set; }

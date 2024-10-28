@@ -7,10 +7,14 @@ namespace EngineComponents
         /// </summary>
         int StepIndex { get; set; }
         int StepCount { get; set; }
+        List<IEvent> ActionList { get; set; }
 
-        public void NextStep()
+        public void ExecuteAction() => ActionList.ElementAt(StepIndex).PerformEvent();
+        public void NextStep() => StepIndex++;
+        public void StartTimeline()
         {
-            StepIndex++;
+            StepIndex = 0;
+            StepCount = ActionList.Count;
         }
     }
 }

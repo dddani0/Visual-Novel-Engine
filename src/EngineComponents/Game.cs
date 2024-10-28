@@ -72,6 +72,9 @@ namespace EngineComponents
                     Raylib.DrawTexture(ActiveScene.imageTexture, 0, 0, Color.White);
                     break;
             }
+            //
+            //when to execute next step?
+            //ActiveScene.Timeline.
         }
         public void PlayGame()
         {
