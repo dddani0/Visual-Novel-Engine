@@ -1,13 +1,18 @@
+using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Raylib_cs;
 
 namespace EngineComponents
 {
     class GameSettings
     {
-        internal string Title { get; set; }
-        internal int WindowWidth { get; set; }
-        internal int WindowHeigth { get; set; }
+        [JsonPropertyName("Title")]
+        public string Title { get; set; }
+        [JsonPropertyName("WindowWidth")]
+        public int WindowWidth { get; set; }
+        [JsonPropertyName("WindowHeight")]
+        public int WindowHeigth { get; set; }
     }
 
     class Game
@@ -17,7 +22,9 @@ namespace EngineComponents
         /// The Game is a singleton!
         /// The major difference between the editor and the Game, is that the latter updates everyframe.
         /// </summary>
-
+        const string relativeGameSettingsPath = "../../../src/GameSettings.json";
+        const string relativeScenePath = "../../../src/Scene.json";
+        const string projectFolder = "";
         public GameSettings gameSettings { get; private set; }
         public List<Scene> Scenes { get; set; }
         public Scene ActiveScene { get; private set; }
@@ -25,27 +32,46 @@ namespace EngineComponents
         public Game()
         {
             SetupGameSettings();
-            SetupActiveScene();
         }
 
         public void SetupGameSettings()
         {
-            string rawFile = File.ReadAllText("../../../src/GameSettings.json"); //doesnt work
-            gameSettings = JsonSerializer.Deserialize<GameSettings>(rawFile)!;
+            //Read GameSettings
+            string rawFile = File.ReadAllText(relativeGameSettingsPath);
+            var rawSettings = JsonSerializer.Deserialize<GameSettings>(rawFile);
+            gameSettings = rawSettings;
             //
             Raylib.SetWindowTitle(gameSettings.Title);
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
-        }
-
-        public void SetupActiveScene()
-        {
-            //Raylib.ClearBackground(ActiveScene.)
+            //for example
+            var getImage = Raylib.LoadImage("../../../src/test.png");
+            ActiveScene = new("DemoScene")
+            {
+                Background = Scene.BackgroundOption.Image,
+                imageTexture = Raylib.LoadTextureFromImage(getImage)
+            };
+            Raylib.UnloadImage(getImage);
         }
 
         public void UpdateScene()
         {
-
+            switch (ActiveScene.Background)
+            {
+                default:
+                case Scene.BackgroundOption.SolidColor:
+                    Raylib.ClearBackground(ActiveScene.solidColor);
+                    break;
+                case Scene.BackgroundOption.GradientHorizontal:
+                    Raylib.DrawRectangleGradientH(0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), ActiveScene.gradientColor[0], ActiveScene.gradientColor[1]);
+                    break;
+                case Scene.BackgroundOption.GradientVertical:
+                    Raylib.DrawRectangleGradientV(0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), ActiveScene.gradientColor[0], ActiveScene.gradientColor[1]);
+                    break;
+                case Scene.BackgroundOption.Image:
+                    Raylib.DrawTexture(ActiveScene.imageTexture, 0, 0, Color.White);
+                    break;
+            }
         }
         public void PlayGame()
         {

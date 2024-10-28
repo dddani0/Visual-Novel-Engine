@@ -1,3 +1,5 @@
+using Raylib_cs;
+
 namespace EngineComponents
 {
     class Scene
@@ -5,28 +7,23 @@ namespace EngineComponents
         /// <summary>
         /// A level, which a player can create, modify and add depth to it.
         /// </summary>
-        enum BackgroundOption
+        internal long Id { get; }
+        internal enum BackgroundOption
         {
             SolidColor,
-            Gradient,
-            Image,
-            Gif
+            GradientVertical, GradientHorizontal,
+            Image
         }
-
-        string Name { get; set; }
-        Timeline Timeline { get; set; }
-        BackgroundOption Background { get; set; }
-        Game ConcurrentGame { get; }
+        internal string Name { get; set; }
+        internal Timeline Timeline { get; set; }
+        internal BackgroundOption Background { get; set; } = BackgroundOption.SolidColor;
+        internal Color solidColor = Color.Gray;
+        internal Texture2D imageTexture;
+        internal Color[] gradientColor;
+        internal Game ConcurrentGame { get; }
         public Scene(string name)
         {
             Name = name;
-            ConcurrentGame = null;
-        }
-
-        public Scene(string name, Game activeGame)
-        {
-            Name = name;
-            ConcurrentGame = activeGame;
         }
 
         internal void LoadScene()
