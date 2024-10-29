@@ -4,10 +4,7 @@ namespace EngineComponents
 {
     public class Timer
     {
-        public Timer(float timerValue)
-        {
-            this.timerValue = timerValue;
-        }
+        public Timer(float timerValue) => this.timerValue = timerValue;
 
         private float timerValue { get; }
 
@@ -17,9 +14,6 @@ namespace EngineComponents
 
         public void DecreaseTimer() => currentTimerValue -= (float)Raylib.GetFrameTime();
 
-        public void ResetTimer()
-        {
-            currentTimerValue = timerValue;
-        }
+        public void ResetTimer() => currentTimerValue = timerValue;
     }
 }

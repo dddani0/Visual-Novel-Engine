@@ -1,5 +1,8 @@
 namespace EngineComponents.Actions
 {
+    /// <summary>
+    /// Initializes a new textbox.
+    /// </summary>
     class TextBoxCreateAction : IEvent
     {
         readonly TextBox TextBox;
@@ -7,7 +10,13 @@ namespace EngineComponents.Actions
         {
             TextBox = textbox;
         }
-
-        public void PerformEvent() => TextBox.ToggleEnability();
+        public void PerformEvent()
+        {
+            if (TextBox.IsDisabled())
+            {
+                TextBox.ToggleEnability();
+            }
+            TextBox.WriteToScreen();
+        }
     }
 }

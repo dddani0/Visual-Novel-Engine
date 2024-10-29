@@ -1,11 +1,12 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using EngineComponents.Actions;
 using Raylib_cs;
 
 namespace EngineComponents
 {
-    class GameSettings
+    internal class GameSettings
     {
         [JsonPropertyName("Title")]
         public string Title { get; set; }
@@ -15,7 +16,7 @@ namespace EngineComponents
         public int WindowHeigth { get; set; }
     }
 
-    class Game
+    public class Game
     {
         /// <summary>
         /// The Game is a Gamemanager which changes the changes and loads the correct configuration and data into the template game.
@@ -25,33 +26,59 @@ namespace EngineComponents
         const string relativeGameSettingsPath = "../../../src/GameSettings.json";
         const string relativeScenePath = "../../../src/Scene.json";
         const string projectFolder = "";
-        public GameSettings gameSettings { get; private set; }
+        internal GameSettings gameSettings { get; private set; }
         public List<Scene> Scenes { get; set; }
         public Scene ActiveScene { get; private set; }
+        public int sceneIndex;
+        private int sceneCount;
 
         public Game()
         {
             SetupGameSettings();
         }
 
+        /// <summary>
+        /// Fetches all the correspondant json files, and loads them in the game.
+        /// </summary>
         public void SetupGameSettings()
         {
-            //Read GameSettings
+            //Fetch game settings.
             string rawFile = File.ReadAllText(relativeGameSettingsPath);
             var rawSettings = JsonSerializer.Deserialize<GameSettings>(rawFile);
             gameSettings = rawSettings;
+            //Fetch scene settings
+            //...
             //
             Raylib.SetWindowTitle(gameSettings.Title);
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
             //for example
             var getImage = Raylib.LoadImage("../../../src/test.png");
-            ActiveScene = new("DemoScene")
+            ActiveScene = new("DemoScene", this)
             {
                 Background = Scene.BackgroundOption.Image,
                 imageTexture = Raylib.LoadTextureFromImage(getImage)
             };
             Raylib.UnloadImage(getImage);
+            //Raylib.UnloadTexture(ActiveScene.imageTexture);
+            ActiveScene.AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(ActiveScene.Timeline,
+                40,
+                new Font() { BaseSize = 32, GlyphPadding = 5 },
+                0,
+                0,
+                250,
+                500,
+                false,
+                ["Elég"])), new TextBoxCreateAction(
+                TextBox.CreateNewTextBox(ActiveScene.Timeline,
+                    40,
+                    new Font() { BaseSize = 32, GlyphPadding = 5 },
+                    0,
+                    0,
+                    500,
+                    500,
+                    false,
+                    ["BBBAJA"]))]);
         }
 
         public void UpdateScene()
@@ -73,12 +100,11 @@ namespace EngineComponents
                     break;
             }
             //
-            //when to execute next step?
-            //ActiveScene.Timeline.
+            ActiveScene.Timeline.ExecuteAction();
         }
-        public void PlayGame()
-        {
-
-        }
+        //Inputs
+        public static bool IsLeftMouseButtonPressed() => Raylib.IsMouseButtonPressed(MouseButton.Left);
+        public static bool IsRightMouseButtonPressed() => Raylib.IsMouseButtonPressed(MouseButton.Right);
+        public static bool IsEscapeButtonPressed() => Raylib.IsKeyPressed(KeyboardKey.Escape);
     }
 }

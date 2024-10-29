@@ -14,7 +14,7 @@ namespace EngineComponents
         //ctors
         private TextBox(
             List<String> data, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, int xpos,
-            int ypos, int xSize, int ySize, bool wordWrapEnabled)
+            int ypos, int xSize, int ySize, bool wordWrapEnabled, Timeline timeline)
         {
             Content = data;
             CPSTextSpeed = cps;
@@ -54,9 +54,11 @@ namespace EngineComponents
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
             //
+            ActiveTimeline = timeline;
+            //
             ToggleEnability(); //Disables by default
         }
-        private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, int xpos, int ypos, int xSize, int ySize, bool wordWrapEnabled)
+        private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, int xpos, int ypos, int xSize, int ySize, bool wordWrapEnabled, Timeline timeline)
         {
             Content = data;
             CPSTextSpeed = cps;
@@ -95,6 +97,8 @@ namespace EngineComponents
             TextCount = CurrentLoadedData.Length;
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
+            //
+            ActiveTimeline = timeline;
             //
             ToggleEnability(); //Disables by default
         }
@@ -135,6 +139,7 @@ namespace EngineComponents
         internal Font CurrentFont { get; set; }
         internal Color TextBoxBackground { get; set; }
         internal Color TextBoxBorder { get; set; }
+        internal readonly Timeline ActiveTimeline;
         private int[] Scale { get; set; }
 
         /// <summary>
@@ -156,7 +161,7 @@ namespace EngineComponents
             {
                 int nextSplitIndex = (MaximumCharacterCount - 1) * usedRows;
                 nextString = splittingText.Remove(0, nextSplitIndex); //
-                //
+                                                                      //
                 if (WordWrap) splittingText = WrapLine(splittingText, usedRows);
                 else splittingText = splittingText.Insert(nextSplitIndex, "\n");
                 if (nextString.Length <= MaximumCharacterCount || usedRows >= MaximumRowCount) IsFinished = true;
@@ -213,7 +218,12 @@ namespace EngineComponents
         /// </summary>
         private void ToggleNextTextBatch()
         {
-            if (TextCollectionIndex >= TextCollectionCount - 1) { ToggleEnability(); return; };
+            if (TextCollectionIndex >= TextCollectionCount - 1)
+            {
+                ActiveTimeline.NextStep();
+                ToggleEnability();
+                return;
+            };
             //
             IncrementTextDataIndex();
             //
@@ -291,9 +301,9 @@ namespace EngineComponents
             bool isTurnedOff() => IsEnabled is false;
             bool isDone() => TextCollectionIndex >= TextCollectionCount;
             bool headerExists() => string.IsNullOrEmpty(TextBoxTitle) is false;
-            bool isSkipBatch() => Raylib.IsMouseButtonPressed(MouseButton.Left);
+            bool isSkipBatch() => Game.IsLeftMouseButtonPressed();
             bool shouldProceedNextBatch() =>
-                TextCollectionIndex < TextCollectionCount && IsFinished is true && Raylib.IsMouseButtonPressed(MouseButton.Left);
+                TextCollectionIndex < TextCollectionCount && IsFinished is true && Game.IsLeftMouseButtonPressed();
 
         }
 
@@ -311,6 +321,7 @@ namespace EngineComponents
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
         public static TextBox CreateNewTextBox(
+            Timeline theTimeline,
             double characterPerSecond,
             Font activeFont,
             int xPos,
@@ -327,7 +338,9 @@ namespace EngineComponents
                 xPos,
                 yPos,
                 xSize,
-                ySize, wordWrap);
+                ySize,
+                wordWrap,
+                theTimeline);
         /// <summary>
         /// Create textbox for string data, without a header.
         /// Custom color for textbox background and border color.
@@ -344,6 +357,7 @@ namespace EngineComponents
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
         public static TextBox CreateNewTextBox(
+        Timeline theTimeline,
         double characterPerSecond,
         Font activeFont,
         Color textBoxcolor,
@@ -364,7 +378,9 @@ namespace EngineComponents
         xPos,
         yPos,
         xSize,
-        ySize, wordWrap);
+        ySize,
+        wordWrap,
+        theTimeline);
         /// <summary>
         /// Create textbox for string data with a header.
         /// Custom color for textbox background and border color.
@@ -380,6 +396,7 @@ namespace EngineComponents
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
         public static TextBox CreateNewTextBox(
+            Timeline theTimeline,
             double characterPerSecond,
             Font activeFont,
             int xPos,
@@ -400,7 +417,9 @@ namespace EngineComponents
                 xPos,
                 yPos,
                 xSize,
-                ySize, wordWrap);
+                ySize,
+                wordWrap,
+                theTimeline);
         /// <summary>
         /// Create textbox for string data with a header.
         /// Custom color for textbox background and border.
@@ -418,6 +437,7 @@ namespace EngineComponents
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
         public static TextBox CreateNewTextBox(
+            Timeline theTimeline,
             double characterPerSecond,
             Font activeFont,
             Color TextBoxcolor,
@@ -439,6 +459,8 @@ namespace EngineComponents
             xPos,
             yPos,
             xSize,
-            ySize, wordWrap);
+            ySize,
+            wordWrap,
+            theTimeline);
     }
 }

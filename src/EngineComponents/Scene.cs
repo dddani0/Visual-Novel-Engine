@@ -2,7 +2,7 @@ using Raylib_cs;
 
 namespace EngineComponents
 {
-    class Scene
+    public class Scene
     {
         /// <summary>
         /// A level, which a player can create, modify and add depth to it.
@@ -21,9 +21,22 @@ namespace EngineComponents
         internal Texture2D imageTexture;
         internal Color[] gradientColor;
         internal Game ConcurrentGame { get; }
-        public Scene(string name)
+        internal bool HasActiveTextbox { get; private set; } = false;
+        public Scene(string name, Game game)
         {
             Name = name;
+            ConcurrentGame = game;
+            Timeline = new();
+        }
+        internal void AddActionsToTimeline(List<IEvent> actions)
+        {
+            Timeline.ActionList.AddRange(actions);
+            Timeline.UpdateTimelineFields();
+        }
+        internal void AddActionsToTimeline(IEvent action)
+        {
+            Timeline.ActionList.Add(action);
+            Timeline.UpdateTimelineFields();
         }
 
         internal void LoadScene()
@@ -35,5 +48,6 @@ namespace EngineComponents
         {
 
         }
+        internal void ToggleTextBoxActivity() => HasActiveTextbox = !HasActiveTextbox;
     }
 }
