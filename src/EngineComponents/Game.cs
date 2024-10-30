@@ -61,19 +61,19 @@ namespace EngineComponents
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
             //Raylib.UnloadTexture(ActiveScene.imageTexture);
-            Scenes[0].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(Scenes[0].Timeline,
+            Scenes[0].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(this,
                 40,
                 new Font() { BaseSize = 32, GlyphPadding = 5 },
                 TextBox.PositionType.defaultPosition,
                 false,
                 ["Tetszik a menü?"])), new NativeLoadSceneAction(this, 1)]);
-            Scenes[1].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(Scenes[1].Timeline,
+            Scenes[1].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(this,
                 40,
                 new Font() { BaseSize = 32, GlyphPadding = 5 },
                 TextBox.PositionType.defaultPosition,
                 false,
                 ["Elégedett, vagy magaddal?", "sz"])), new TextBoxCreateAction(
-                TextBox.CreateNewTextBox(Scenes[1].Timeline,
+                TextBox.CreateNewTextBox(this,
                     40,
                     new Font() { BaseSize = 32, GlyphPadding = 5 },
                     TextBox.PositionType.defaultPosition,

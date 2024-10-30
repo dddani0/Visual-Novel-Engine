@@ -19,7 +19,7 @@ namespace EngineComponents
         readonly int[] textMargin = [10, 10];
         //ctors
         private TextBox(
-            List<String> data, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, bool wordWrapEnabled, Timeline timeline)
+            List<String> data, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, bool wordWrapEnabled, Game game)
         {
             Content = data;
             CPSTextSpeed = cps;
@@ -41,9 +41,9 @@ namespace EngineComponents
             Position = textBoxPosition switch
             {
                 PositionType.upperPosition => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
-                            Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
+                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
                 _ => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
-                            Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f)],
+                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f)],
             };
             Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
             Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
@@ -65,11 +65,11 @@ namespace EngineComponents
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
             //
-            ActiveTimeline = timeline;
+            ActiveGame = game;
             //
             ToggleEnability(); //Disables by default
         }
-        private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, bool wordWrapEnabled, Timeline timeline)
+        private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, bool wordWrapEnabled, Game game)
         {
             Content = data;
             CPSTextSpeed = cps;
@@ -91,9 +91,9 @@ namespace EngineComponents
             Position = textBoxPosition switch
             {
                 PositionType.upperPosition => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
-                            Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
+                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
                 _ => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
-                            Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f) - TextBoxPositionYOffset],
+                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f) - TextBoxPositionYOffset],
             };
             Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
             Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
@@ -115,7 +115,7 @@ namespace EngineComponents
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
             //
-            ActiveTimeline = timeline;
+            ActiveGame = game;
             //
             ToggleEnability(); //Disables by default
         }
@@ -157,7 +157,7 @@ namespace EngineComponents
         internal Font CurrentFont { get; set; }
         internal Color TextBoxBackground { get; set; }
         internal Color TextBoxBorder { get; set; }
-        internal readonly Timeline ActiveTimeline;
+        internal readonly Game ActiveGame;
         private int[] Scale { get; set; }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace EngineComponents
         {
             if (TextCollectionIndex >= TextCollectionCount - 1)
             {
-                ActiveTimeline.NextStep();
+                ActiveGame.ActiveScene.Timeline.NextStep();
                 ToggleEnability();
                 //reset textbox
                 return;
@@ -330,6 +330,7 @@ namespace EngineComponents
         /// Create textbox for string data, without a header.
         /// Default color (Black and white) for textbox background and border colors.
         /// </summary>
+        /// <param name="game">The game instance</param>
         /// <param name="characterPerSecond">Characters per second</param>
         /// <param name="activeFont">The font which the textbox will use</param>
         /// <param name="textBoxPosition">The position of the textbox</param>
@@ -337,7 +338,7 @@ namespace EngineComponents
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
         public static TextBox CreateNewTextBox(
-            Timeline theTimeline,
+            Game game,
             double characterPerSecond,
             Font activeFont,
             PositionType textBoxPosition,
@@ -350,11 +351,12 @@ namespace EngineComponents
                 activeFont, Color.Black, Color.White,
                 textBoxPosition,
                 wordWrap,
-                theTimeline);
+                game);
         /// <summary>
         /// Create textbox for string data, without a header.
         /// Custom color for textbox background and border color.
         /// </summary>
+        /// <param name="game">The game instance</param>
         /// <param name="characterPerSecond">Characters per second</param>
         /// <param name="activeFont">The font which the textbox will use</param>
         /// <param name="textBoxcolor">Background color of the textbox.</param>
@@ -364,7 +366,7 @@ namespace EngineComponents
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
         public static TextBox CreateNewTextBox(
-        Timeline theTimeline,
+        Game game,
         double characterPerSecond,
         Font activeFont,
         Color textBoxcolor,
@@ -381,11 +383,12 @@ namespace EngineComponents
         textBoxBorderColor,
         textBoxPosition,
         wordWrap,
-        theTimeline);
+        game);
         /// <summary>
         /// Create textbox for string data with a header.
         /// Custom color for textbox background and border color.
         /// </summary>
+        /// <param name="game">The game instance</param>
         /// <param name="characterPerSecond">Characters per second</param>
         /// <param name="activeFont">The font which the textbox will use</param>
         /// <param name="textBoxPosition">The position of the textbox</param>
@@ -394,7 +397,7 @@ namespace EngineComponents
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
         public static TextBox CreateNewTextBox(
-            Timeline theTimeline,
+            Game game,
             double characterPerSecond,
             Font activeFont,
             int xPos,
@@ -412,11 +415,12 @@ namespace EngineComponents
                 Color.White,
                 textBoxPosition,
                 wordWrap,
-                theTimeline);
+                game);
         /// <summary>
         /// Create textbox for string data with a header.
         /// Custom color for textbox background and border.
         /// </summary>
+        /// <param name="game">The game instance</param>
         /// <param name="characterPerSecond">Characters per second</param>
         /// <param name="activeFont">The font which the textbox will use</param>
         /// <param name="TextBoxcolor">Background color of the textbox.</param>
@@ -427,7 +431,7 @@ namespace EngineComponents
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
         public static TextBox CreateNewTextBox(
-            Timeline theTimeline,
+            Game game,
             double characterPerSecond,
             Font activeFont,
             Color TextBoxcolor,
@@ -446,6 +450,6 @@ namespace EngineComponents
             TextBoxcolor, TextBoxBorder,
             textBoxPosition,
             wordWrap,
-            theTimeline);
+            game);
     }
 }
