@@ -38,16 +38,6 @@ namespace EngineComponents
             Timeline.ActionList.Add(action);
             Timeline.UpdateTimelineFields();
         }
-
-        internal void LoadScene()
-        {
-            //Timeline.
-        }
-
-        internal void RestartScene()
-        {
-
-        }
         internal void ToggleTextBoxActivity() => HasActiveTextbox = !HasActiveTextbox;
     }
 }

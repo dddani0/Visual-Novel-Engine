@@ -8,7 +8,6 @@ namespace EngineComponents
         int StepIndex { get; set; }
         int StepCount { get; set; }
         internal List<IEvent> ActionList { get; set; }
-        internal bool InProgress { get; set; } = false;
 
         public Timeline()
         {
@@ -19,7 +18,6 @@ namespace EngineComponents
         {
             if (StepIndex == StepCount) return; //Load next scene
             ActionList.ElementAt(StepIndex).PerformEvent();
-            ToggleProgress();
         }
         public void NextStep()
         {
@@ -31,6 +29,5 @@ namespace EngineComponents
             StepCount = ActionList.Count;
         }
         public void UpdateTimelineFields() => StepCount = ActionList.Count;
-        public void ToggleProgress() => InProgress = !InProgress;
     }
 }

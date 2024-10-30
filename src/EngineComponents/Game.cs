@@ -40,47 +40,53 @@ namespace EngineComponents
         /// <summary>
         /// Fetches all the correspondant json files, and loads them in the game.
         /// </summary>
-        public void SetupGameSettings()
+        internal void SetupGameSettings()
         {
             //Fetch game settings.
             string rawFile = File.ReadAllText(relativeGameSettingsPath);
             var rawSettings = JsonSerializer.Deserialize<GameSettings>(rawFile);
             gameSettings = rawSettings;
             //Fetch scene settings
-            //...
+            var getImage = Raylib.LoadImage("../../../src/test.png");
+            Scenes = [new Scene("Menu", this){
+                Background = Scene.BackgroundOption.GradientVertical,
+                gradientColor = [Color.Purple, Color.Blue],
+            },new Scene("game", this){
+                Background = Scene.BackgroundOption.GradientHorizontal,
+                gradientColor = [Color.Red, Color.Brown]}];
+            //
+            ActiveScene = Scenes[0];
             //
             Raylib.SetWindowTitle(gameSettings.Title);
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
-            //for example
-            var getImage = Raylib.LoadImage("../../../src/test.png");
-            ActiveScene = new("DemoScene", this)
-            {
-                Background = Scene.BackgroundOption.Image,
-                imageTexture = Raylib.LoadTextureFromImage(getImage)
-            };
-            Raylib.UnloadImage(getImage);
             //Raylib.UnloadTexture(ActiveScene.imageTexture);
-            ActiveScene.AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(ActiveScene.Timeline,
+            Scenes[0].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(Scenes[0].Timeline,
                 40,
                 new Font() { BaseSize = 32, GlyphPadding = 5 },
-                0,
-                0,
-                250,
-                500,
+                TextBox.PositionType.defaultPosition,
                 false,
-                ["Elég"])), new TextBoxCreateAction(
-                TextBox.CreateNewTextBox(ActiveScene.Timeline,
+                ["Tetszik a menü?"])), new NativeLoadSceneAction(this, 1)]);
+            Scenes[1].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(Scenes[1].Timeline,
+                40,
+                new Font() { BaseSize = 32, GlyphPadding = 5 },
+                TextBox.PositionType.defaultPosition,
+                false,
+                ["Elégedett, vagy magaddal?", "sz"])), new TextBoxCreateAction(
+                TextBox.CreateNewTextBox(Scenes[1].Timeline,
                     40,
                     new Font() { BaseSize = 32, GlyphPadding = 5 },
-                    0,
-                    0,
-                    500,
-                    500,
+                    TextBox.PositionType.defaultPosition,
                     false,
-                    ["BBBAJA"]))]);
+                    ["Aha...","persze"])), new NativeLoadSceneAction(this, 0)]);
         }
 
+        internal void LoadScene(int sceneIdx)
+        {
+            sceneIndex = sceneIdx;
+            ActiveScene = Scenes[sceneIndex];
+            ActiveScene.Timeline.StartTimeline();
+        }
         public void UpdateScene()
         {
             switch (ActiveScene.Background)

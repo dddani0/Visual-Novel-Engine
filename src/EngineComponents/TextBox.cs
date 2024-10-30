@@ -9,12 +9,17 @@ namespace EngineComponents
         /// <summary>
         /// Store, Write, Edit and Delete text according to need.
         /// </summary>
+        /// 
 
+        public enum PositionType
+        {
+            defaultPosition,
+            upperPosition
+        }
         readonly int[] textMargin = [10, 10];
         //ctors
         private TextBox(
-            List<String> data, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, int xpos,
-            int ypos, int xSize, int ySize, bool wordWrapEnabled, Timeline timeline)
+            List<String> data, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, bool wordWrapEnabled, Timeline timeline)
         {
             Content = data;
             CPSTextSpeed = cps;
@@ -33,8 +38,14 @@ namespace EngineComponents
             IsEnabled = true;
             TextBatchDone = false;
             //
-            Position = [xpos, ypos];
-            Scale = [xSize, ySize];
+            Position = textBoxPosition switch
+            {
+                PositionType.upperPosition => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
+                            Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
+                _ => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
+                            Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f)],
+            };
+            Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
             Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
             //
             TextBoxBackground = textBoxBackground;
@@ -58,7 +69,7 @@ namespace EngineComponents
             //
             ToggleEnability(); //Disables by default
         }
-        private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, int xpos, int ypos, int xSize, int ySize, bool wordWrapEnabled, Timeline timeline)
+        private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, bool wordWrapEnabled, Timeline timeline)
         {
             Content = data;
             CPSTextSpeed = cps;
@@ -77,8 +88,14 @@ namespace EngineComponents
             IsEnabled = true;
             TextBatchDone = false;
             //
-            Position = [xpos, ypos];
-            Scale = [xSize, ySize];
+            Position = textBoxPosition switch
+            {
+                PositionType.upperPosition => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
+                            Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
+                _ => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
+                            Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f) - TextBoxPositionYOffset],
+            };
+            Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
             Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
             //
             TextBoxBackground = textBoxBackground;
@@ -114,6 +131,7 @@ namespace EngineComponents
         private string HeaderSanatization => TextBoxTitle.Replace("\t", String.Empty).Replace("\n", String.Empty);
         private string TextBoxTitle { get; set; }
         private double CPSTextSpeed { get; }
+        private const int TextBoxPositionYOffset = 5;
         private int MaximumCharacterCount { get; }
         private int MaximumRowCount { get; }
         private int CharacterWidth { get; set; }
@@ -222,6 +240,7 @@ namespace EngineComponents
             {
                 ActiveTimeline.NextStep();
                 ToggleEnability();
+                //reset textbox
                 return;
             };
             //
@@ -313,10 +332,7 @@ namespace EngineComponents
         /// </summary>
         /// <param name="characterPerSecond">Characters per second</param>
         /// <param name="activeFont">The font which the textbox will use</param>
-        /// <param name="xPos">X position of the textbox</param>
-        /// <param name="yPos">Y position of the textbox</param>
-        /// <param name="xSize">Textbox width</param>
-        /// <param name="ySize">Textbox height</param>
+        /// <param name="textBoxPosition">The position of the textbox</param>
         /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
@@ -324,10 +340,7 @@ namespace EngineComponents
             Timeline theTimeline,
             double characterPerSecond,
             Font activeFont,
-            int xPos,
-            int yPos,
-            int xSize,
-            int ySize,
+            PositionType textBoxPosition,
             bool wordWrap,
             List<String> textBoxContent)
             =>
@@ -335,10 +348,7 @@ namespace EngineComponents
                 textBoxContent,
                 characterPerSecond,
                 activeFont, Color.Black, Color.White,
-                xPos,
-                yPos,
-                xSize,
-                ySize,
+                textBoxPosition,
                 wordWrap,
                 theTimeline);
         /// <summary>
@@ -349,10 +359,7 @@ namespace EngineComponents
         /// <param name="activeFont">The font which the textbox will use</param>
         /// <param name="textBoxcolor">Background color of the textbox.</param>
         /// <param name="TextBoxBorder">Border color of the textbox.</param>
-        /// <param name="xPos">X position of the textbox</param>
-        /// <param name="yPos">Y position of the textbox</param>
-        /// <param name="xSize">Textbox width</param>
-        /// <param name="ySize">Textbox height</param>
+        /// <param name="textBoxPosition">The position of the textbox</param>
         /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
         /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
@@ -362,10 +369,7 @@ namespace EngineComponents
         Font activeFont,
         Color textBoxcolor,
         Color textBoxBorderColor,
-        int xPos,
-        int yPos,
-        int xSize,
-        int ySize,
+            PositionType textBoxPosition,
         bool wordWrap,
         List<String> textBoxContent)
         =>
@@ -375,10 +379,7 @@ namespace EngineComponents
         activeFont,
         textBoxcolor,
         textBoxBorderColor,
-        xPos,
-        yPos,
-        xSize,
-        ySize,
+        textBoxPosition,
         wordWrap,
         theTimeline);
         /// <summary>
@@ -387,10 +388,7 @@ namespace EngineComponents
         /// </summary>
         /// <param name="characterPerSecond">Characters per second</param>
         /// <param name="activeFont">The font which the textbox will use</param>
-        /// <param name="xPos">X position of the textbox</param>
-        /// <param name="yPos">Y position of the textbox</param>
-        /// <param name="xSize">Textbox width</param>
-        /// <param name="ySize">Textbox height</param>
+        /// <param name="textBoxPosition">The position of the textbox</param>
         /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
         /// <param name="textBoxTitle">The header of the textbox.</param>
         /// <param name="textBoxContent">text data</param>
@@ -400,9 +398,7 @@ namespace EngineComponents
             double characterPerSecond,
             Font activeFont,
             int xPos,
-            int yPos,
-            int xSize,
-            int ySize,
+            PositionType textBoxPosition,
             bool wordWrap,
             string textBoxTitle,
             List<String> textBoxContent)
@@ -414,10 +410,7 @@ namespace EngineComponents
                 activeFont,
                 Color.Black,
                 Color.White,
-                xPos,
-                yPos,
-                xSize,
-                ySize,
+                textBoxPosition,
                 wordWrap,
                 theTimeline);
         /// <summary>
@@ -428,10 +421,7 @@ namespace EngineComponents
         /// <param name="activeFont">The font which the textbox will use</param>
         /// <param name="TextBoxcolor">Background color of the textbox.</param>
         /// <param name="TextBoxBorder">Border color of the textbox.</param>
-        /// <param name="xPos">X position of the textbox</param>
-        /// <param name="yPos">Y position of the textbox</param>
-        /// <param name="xSize">Textbox width</param>
-        /// <param name="ySize">Textbox height</param>
+        /// <param name="textBoxPosition">The position of the textbox</param>
         /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
         /// <param name="textBoxTitle">The header of the textbox.</param>
         /// <param name="textBoxContent">text data</param>
@@ -443,9 +433,7 @@ namespace EngineComponents
             Color TextBoxcolor,
             Color TextBoxBorder,
             int xPos,
-            int yPos,
-            int xSize,
-            int ySize,
+            PositionType textBoxPosition,
             bool wordWrap,
             string textBoxTitle,
             List<String> textBoxContent)
@@ -456,10 +444,7 @@ namespace EngineComponents
             characterPerSecond,
             activeFont,
             TextBoxcolor, TextBoxBorder,
-            xPos,
-            yPos,
-            xSize,
-            ySize,
+            textBoxPosition,
             wordWrap,
             theTimeline);
     }
