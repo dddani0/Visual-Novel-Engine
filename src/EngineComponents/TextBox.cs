@@ -33,7 +33,6 @@ namespace EngineComponents
             TextCollectionCount = Content.Count;
             //
             Output = String.Empty;
-            //
             IsBlinking = true;
             IsEnabled = true;
             TextBatchDone = false;
@@ -117,8 +116,28 @@ namespace EngineComponents
             //
             ActiveGame = game;
             //
-            ToggleEnability(); //Disables by default
+            ToggleEnability(); //Disabled by default
         }
+
+        private void ResetTextBox()
+        {
+            //reset collection index
+            TextCollectionIndex = 0;
+            //update the current loaded data
+            CurrentLoadedData = Content[TextCollectionIndex];
+            //reset text index
+            TextIndex = 0;
+            //update the text count
+            TextCount = CurrentLoadedData.Length;
+            //nullify the output
+            Output = String.Empty;
+            //Reseting second timer and blinking cursor timer
+            SecondTimer.ResetTimer();
+            BlinkingCursorTimer.ResetTimer();
+            // disable textbatch
+            TextBatchDone = false;
+        }
+
         //members
         internal bool IsFinished => TextIndex == TextCount;
         internal void ToggleEnability() => IsEnabled = !IsEnabled;
@@ -215,7 +234,7 @@ namespace EngineComponents
         /// <param name="wrappingLine">The line which'll proceed to be wrapped.</param>
         /// <param name="rowNumber">The number of row, that line is in.</param>
         /// <returns></returns>
-        string WrapLine(string wrappingLine, int rowNumber)
+        private string WrapLine(string wrappingLine, int rowNumber)
         {
             int newLineIndex = (MaximumCharacterCount - 1) * rowNumber;
             for (int i = newLineIndex; i >= 0; i--)
@@ -236,17 +255,17 @@ namespace EngineComponents
         /// </summary>
         private void ToggleNextTextBatch()
         {
-            if (TextCollectionIndex >= TextCollectionCount - 1)
+            IncrementTextDataIndex();
+            //
+            if (TextCollectionIndex >= TextCollectionCount)
             {
                 ActiveGame.ActiveScene.Timeline.NextStep();
                 ToggleEnability();
-                //reset textbox
+                ResetTextBox();
                 return;
             };
-            //
-            IncrementTextDataIndex();
-            //
-            Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
+            //Only wrap if its not already wrapped
+            if (Content[TextCollectionIndex].Contains('\n') is false) Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
             CurrentLoadedData = Content[TextCollectionIndex];
             //
             TextIndex = 0;

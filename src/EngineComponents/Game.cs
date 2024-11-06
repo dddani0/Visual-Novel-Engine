@@ -10,8 +10,10 @@ namespace EngineComponents
     {
         [JsonPropertyName("Title")]
         public string Title { get; set; }
+        //
         [JsonPropertyName("WindowWidth")]
         public int WindowWidth { get; set; }
+        //
         [JsonPropertyName("WindowHeight")]
         public int WindowHeigth { get; set; }
     }
@@ -32,10 +34,7 @@ namespace EngineComponents
         public int sceneIndex;
         private int sceneCount;
 
-        public Game()
-        {
-            SetupGameSettings();
-        }
+        public Game() => SetupGameSettings();
 
         /// <summary>
         /// Fetches all the correspondant json files, and loads them in the game.
@@ -47,6 +46,8 @@ namespace EngineComponents
             var rawSettings = JsonSerializer.Deserialize<GameSettings>(rawFile);
             gameSettings = rawSettings;
             //Fetch scene settings
+
+            //
             var getImage = Raylib.LoadImage("../../../src/test.png");
             Scenes = [new Scene("Menu", this){
                 Background = Scene.BackgroundOption.GradientVertical,
@@ -66,19 +67,19 @@ namespace EngineComponents
                 new Font() { BaseSize = 32, GlyphPadding = 5 },
                 TextBox.PositionType.defaultPosition,
                 false,
-                ["Tetszik a menü?"])), new NativeLoadSceneAction(this, 1)]);
+                ["Menü dialógus: első szegmens","Menü dialógus: második szegmens"])), new NativeLoadSceneAction(this, 1)]);
             Scenes[1].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(this,
                 40,
                 new Font() { BaseSize = 32, GlyphPadding = 5 },
                 TextBox.PositionType.defaultPosition,
                 false,
-                ["Elégedett, vagy magaddal?", "sz"])), new TextBoxCreateAction(
+                ["Ingame dialógus: első szemgens", "Ingame dialógus: második szegmens, még mindig ugyanaz az opció"])), new TextBoxCreateAction(
                 TextBox.CreateNewTextBox(this,
                     40,
                     new Font() { BaseSize = 32, GlyphPadding = 5 },
                     TextBox.PositionType.defaultPosition,
                     false,
-                    ["Aha...","persze"])), new NativeLoadSceneAction(this, 0)]);
+                    ["Ingame dialógus: harmadik szemgens", "Ingame dialógus: negyedik szegmens"])), new NativeLoadSceneAction(this, 0)]);
         }
 
         internal void LoadScene(int sceneIdx)
