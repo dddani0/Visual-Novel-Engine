@@ -50,36 +50,16 @@ namespace EngineComponents
             //
             var getImage = Raylib.LoadImage("../../../src/test.png");
             Scenes = [new Scene("Menu", this){
-                Background = Scene.BackgroundOption.Image,
-                imageTexture = Raylib.LoadTextureFromImage(getImage)
-            },new Scene("game", this){
-                Background = Scene.BackgroundOption.GradientHorizontal,
-                gradientColor = [Color.Red, Color.Brown]}];
+                Background = Scene.BackgroundOption.SolidColor,
+                solidColor = Color.DarkPurple
+            }];
             //
             ActiveScene = Scenes[0];
             //
             Raylib.SetWindowTitle(gameSettings.Title);
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
-            //Raylib.UnloadTexture(ActiveScene.imageTexture);
-            Scenes[0].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(this,
-                40,
-                new Font() { BaseSize = 32, GlyphPadding = 5 },
-                TextBox.PositionType.defaultPosition,
-                false,
-                ["Menü dialógus: első szegmens","Menü dialógus: második szegmens"])), new NativeLoadSceneAction(this, 1)]);
-            Scenes[1].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(this,
-                40,
-                new Font() { BaseSize = 32, GlyphPadding = 5 },
-                TextBox.PositionType.defaultPosition,
-                false,
-                ["Ingame dialógus: első szemgens", "Ingame dialógus: második szegmens, még mindig ugyanaz az opció"])), new TextBoxCreateAction(
-                TextBox.CreateNewTextBox(this,
-                    40,
-                    new Font() { BaseSize = 32, GlyphPadding = 5 },
-                    TextBox.PositionType.defaultPosition,
-                    false,
-                    ["Ingame dialógus: harmadik szemgens", "Ingame dialógus: negyedik szegmens"])), new NativeLoadSceneAction(this, 0)]);
+            ActiveScene.AddActionsToTimeline(new AddSpriteAction(new Sprite("../../../src/test.png"), this));
         }
 
         internal void LoadScene(int sceneIdx)
