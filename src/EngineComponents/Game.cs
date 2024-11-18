@@ -50,8 +50,8 @@ namespace EngineComponents
             //
             var getImage = Raylib.LoadImage("../../../src/test.png");
             Scenes = [new Scene("Menu", this){
-                Background = Scene.BackgroundOption.GradientVertical,
-                gradientColor = [Color.Purple, Color.Blue],
+                Background = Scene.BackgroundOption.Image,
+                imageTexture = Raylib.LoadTextureFromImage(getImage)
             },new Scene("game", this){
                 Background = Scene.BackgroundOption.GradientHorizontal,
                 gradientColor = [Color.Red, Color.Brown]}];
@@ -103,7 +103,11 @@ namespace EngineComponents
                     Raylib.DrawRectangleGradientV(0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), ActiveScene.gradientColor[0], ActiveScene.gradientColor[1]);
                     break;
                 case Scene.BackgroundOption.Image:
-                    Raylib.DrawTexture(ActiveScene.imageTexture, 0, 0, Color.White);
+                    Raylib.ClearBackground(Color.Black);
+                    Raylib.DrawTexture(ActiveScene.imageTexture,
+                    Raylib.GetScreenWidth() / 2 - ActiveScene.imageTexture.Width / 2,
+                    Raylib.GetScreenHeight() / 2 - ActiveScene.imageTexture.Height / 2,
+                    Color.White);
                     break;
             }
             //
