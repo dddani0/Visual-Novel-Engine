@@ -59,7 +59,7 @@ namespace EngineComponents
             Raylib.SetWindowTitle(gameSettings.Title);
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
-            ActiveScene.AddActionsToTimeline(new AddSpriteAction(new Sprite("../../../src/test.png"), this));
+            ActiveScene.AddActionsToTimeline([new AddSpriteAction(new Sprite("../../../src/test.png"), this), new AddSpriteAction(new Sprite("../../../src/test.png"), this)]);
         }
 
         internal void LoadScene(int sceneIdx)
@@ -91,6 +91,7 @@ namespace EngineComponents
                     break;
             }
             //
+            ActiveScene.Timeline.RenderSprites();
             ActiveScene.Timeline.ExecuteAction();
         }
         //Inputs

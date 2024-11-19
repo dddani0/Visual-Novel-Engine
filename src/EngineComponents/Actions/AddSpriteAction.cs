@@ -14,9 +14,9 @@ namespace EngineComponents.Actions
         }
         public void PerformEvent()
         {
-            Game.ActiveScene.Timeline.RenderList.Add(sprite);
-            sprite.Enabled = true;
-            Game.ActiveScene.Timeline.NextStep();
+            sprite.Enabled = true; //Enable sprite
+            Game.ActiveScene.Timeline.RenderList.Add(sprite); //Add sprite to rendering list
+            Game.ActiveScene.Timeline.NextStep(); //Move to next step
         }
     }
 }

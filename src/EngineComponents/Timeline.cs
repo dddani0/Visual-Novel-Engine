@@ -5,16 +5,16 @@ namespace EngineComponents
         /// <summary>
         /// Timeline holds the list of user assigned actions (e.g. Sprite change, textbox placement, etc.), which plays out during a scene.
         /// </summary>
+
         int StepIndex { get; set; }
         int StepCount { get; set; }
         internal List<IEvent> ActionList { get; set; }
         internal List<Sprite> RenderList { get; set; }
-
         public Timeline()
         {
             ActionList = [];
+            RenderList = [];
         }
-
 
         /// <summary>
         /// Executes the action in the timeline.
@@ -22,8 +22,19 @@ namespace EngineComponents
         public void ExecuteAction()
         {
             if (StepIndex == StepCount) return; //Load next scene
-            RenderAlignedObjectsFromList(); //render the graphics.
             ActionList.ElementAt(StepIndex).PerformEvent();
+        }
+
+        /// <summary>
+        /// Renders the active sprites in the timeline.
+        /// </summary>
+        public void RenderSprites()
+        {
+            AlignActiveSpritesAccordingToScreen();
+            foreach (var sprite in RenderList)
+            {
+                sprite.Render();
+            }
         }
 
         /// <summary>
@@ -48,20 +59,15 @@ namespace EngineComponents
         public void UpdateTimelineFields() => StepCount = ActionList.Count;
 
         /// <summary>
-        /// Renders the objects in the list.
+        /// Aligns the active sprites according to the screen.
         /// </summary>
-        private void RenderAlignedObjectsFromList()
+        internal void AlignActiveSpritesAccordingToScreen()
         {
-            int numberOfEnabledObjects = RenderList.Count(x => x.Enabled);
-            int count = 0;
-            foreach (var obj in RenderList)
+            int spriteCount = RenderList.Count();
+            for (int i = 0; i < RenderList.Count; i++)
             {
-                if (count == numberOfEnabledObjects) break;
-                if (obj.Enabled)
-                {
-                    obj.AlignItems(RenderList, count);
-                    count++;
-                }
+                Sprite currentSprite = RenderList[i];
+                currentSprite.AlignItems(spriteCount, i);
             }
         }
     }
