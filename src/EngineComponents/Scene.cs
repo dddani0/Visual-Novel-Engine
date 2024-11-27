@@ -28,16 +28,23 @@ namespace EngineComponents
             ConcurrentGame = game;
             Timeline = new();
         }
+        /// <summary>
+        /// Adds a list of actions to the timeline.
+        /// </summary>
+        /// <param name="actions">List of actions</param>
         internal void AddActionsToTimeline(List<IEvent> actions)
         {
             Timeline.ActionList.AddRange(actions);
             Timeline.UpdateTimelineFields();
         }
+        /// <summary>
+        /// Adds an action to the timeline.
+        /// </summary>
+        /// <param name="action">List of action</param>
         internal void AddActionsToTimeline(IEvent action)
         {
             Timeline.ActionList.Add(action);
             Timeline.UpdateTimelineFields();
         }
-        internal void ToggleTextBoxActivity() => HasActiveTextbox = !HasActiveTextbox;
     }
 }

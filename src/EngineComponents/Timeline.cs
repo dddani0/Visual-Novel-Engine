@@ -4,16 +4,18 @@ namespace EngineComponents
     {
         /// <summary>
         /// Timeline holds the list of user assigned actions (e.g. Sprite change, textbox placement, etc.), which plays out during a scene.
+        /// Timeline also holds the list of sprites that are currently active in the scene.
+        /// Timeline aligns the sprites according to the screen.
         /// </summary>
 
         int StepIndex { get; set; }
         int StepCount { get; set; }
         internal List<IEvent> ActionList { get; set; }
-        internal List<Sprite> RenderList { get; set; }
+        internal List<Sprite> SpriteRenderList { get; set; }
         public Timeline()
         {
             ActionList = [];
-            RenderList = [];
+            SpriteRenderList = [];
         }
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace EngineComponents
         public void RenderSprites()
         {
             AlignActiveSpritesAccordingToScreen();
-            foreach (var sprite in RenderList)
+            foreach (var sprite in SpriteRenderList)
             {
                 sprite.Render();
             }
@@ -63,10 +65,10 @@ namespace EngineComponents
         /// </summary>
         internal void AlignActiveSpritesAccordingToScreen()
         {
-            int spriteCount = RenderList.Count();
-            for (int i = 0; i < RenderList.Count; i++)
+            int spriteCount = SpriteRenderList.Count;
+            for (int i = 0; i < spriteCount; i++)
             {
-                Sprite currentSprite = RenderList[i];
+                Sprite currentSprite = SpriteRenderList[i];
                 currentSprite.AlignItems(spriteCount, i);
             }
         }

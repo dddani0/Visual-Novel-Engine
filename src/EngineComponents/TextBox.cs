@@ -42,7 +42,7 @@ namespace EngineComponents
                 PositionType.upperPosition => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
                                     Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
                 _ => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
-                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f)],
+                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f) - TextBoxPositionYOffset],
             };
             Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
             Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
@@ -287,10 +287,10 @@ namespace EngineComponents
             if (headerExists())
             {
                 //header textbox frame
-                Raylib.DrawRectangle(XPosition, YPosition - CharacterHeigth - textMargin[1], TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0], CharacterHeigth, TextBoxBackground);
-                Raylib.DrawRectangleLines((int)Box.Position.X, YPosition - CharacterHeigth, TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0], CharacterHeigth, TextBoxBorder);
+                Raylib.DrawRectangle(XPosition, YPosition - CharacterHeigth - textMargin[1], TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0] + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBackground);
+                Raylib.DrawRectangleLines((int)Box.Position.X, YPosition - CharacterHeigth - textMargin[1], TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0] + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBorder);
                 //Headertext
-                Raylib.DrawTextEx(CurrentFont, HeaderSanatization, new Vector2(XPosition + textMargin[0], YPosition - CharacterHeigth - textMargin[1]), CurrentFont.BaseSize, CurrentFont.GlyphPadding, Color.Black);
+                Raylib.DrawTextEx(CurrentFont, HeaderSanatization, new Vector2(XPosition + textMargin[0], YPosition - CharacterHeigth - textMargin[1]), CurrentFont.BaseSize, CurrentFont.GlyphPadding, Color.White);
             }
             //Textbox and Border
             Raylib.DrawRectangle((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, TextBoxBackground);
@@ -419,7 +419,6 @@ namespace EngineComponents
             Game game,
             double characterPerSecond,
             Font activeFont,
-            int xPos,
             PositionType textBoxPosition,
             bool wordWrap,
             string textBoxTitle,
@@ -455,7 +454,6 @@ namespace EngineComponents
             Font activeFont,
             Color TextBoxcolor,
             Color TextBoxBorder,
-            int xPos,
             PositionType textBoxPosition,
             bool wordWrap,
             string textBoxTitle,

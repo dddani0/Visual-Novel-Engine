@@ -11,7 +11,7 @@ namespace EngineComponents.Actions
         }
         public void PerformEvent()
         {
-            Game.ActiveScene.Timeline.RenderList.Remove(sprite);
+            Game.ActiveScene.Timeline.SpriteRenderList.Remove(sprite);
             sprite.Enabled = false;
             Game.ActiveScene.Timeline.NextStep();
         }

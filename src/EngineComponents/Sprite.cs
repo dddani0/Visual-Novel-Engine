@@ -13,6 +13,10 @@ namespace EngineComponents
         internal bool Enabled { get; set; } = false;
         internal int X { get; set; }
         internal int Y { get; set; }
+        /// <summary>
+        /// Creates a sprite.
+        /// </summary>
+        /// <param name="path">Path to the sprite image.</param>
         public Sprite(string path)
         {
             Name = path;
@@ -32,11 +36,13 @@ namespace EngineComponents
         /// Aligns the sprites according to the screen.
         /// </summary>
         /// <param name="numberOfActiveSprite">The sprites added to the rendering list.</param>
-        /// <param name="numbering">Number of divident</param>
-        public void AlignItems(int numberOfActiveSprite, int numbering)
+        /// <param name="spriteIndex">Number of divident</param>
+        public void AlignItems(int numberOfActiveSprite, int spriteIndex)
         {
             //Aligns the sprites according to the screen.
-            X = (Raylib.GetScreenWidth() / ((numberOfActiveSprite + 1) * (numbering + 1))) - ImageTexture.Width / 2;
+            //Show x sprites, but divide with x + 1.
+            var spriteShowcaseNumber = Raylib.GetScreenWidth() / (numberOfActiveSprite + 2);
+            X = spriteShowcaseNumber  * (spriteIndex + 1);
         }
 
         /// <summary>
@@ -45,10 +51,8 @@ namespace EngineComponents
         public void Render()
         {
             if (Enabled is false) return;
-            //
             Raylib.DrawTexture(ImageTexture, X, Y, Color);
         }
-
         bool IPermanentRenderingObject.Enabled() => Enabled;
     }
 }

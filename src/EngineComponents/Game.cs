@@ -48,10 +48,10 @@ namespace EngineComponents
             //Fetch scene settings
 
             //
-            var getImage = Raylib.LoadImage("../../../src/test.png");
+            var getImage = Raylib.LoadImage("../../../src/backdrop.png");
             Scenes = [new Scene("Menu", this){
-                Background = Scene.BackgroundOption.SolidColor,
-                solidColor = Color.DarkPurple
+                Background = Scene.BackgroundOption.Image,
+                imageTexture = Raylib.LoadTextureFromImage(getImage)
             }];
             //
             ActiveScene = Scenes[0];
@@ -59,7 +59,11 @@ namespace EngineComponents
             Raylib.SetWindowTitle(gameSettings.Title);
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
-            ActiveScene.AddActionsToTimeline([new AddSpriteAction(new Sprite("../../../src/test.png"), this), new AddSpriteAction(new Sprite("../../../src/test.png"), this)]);
+            ActiveScene.AddActionsToTimeline([
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["I enter the hospital, and someone steps in front of me."])),
+                new AddSpriteAction(new Sprite("../../../src/drhouse.png"), this),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["I recognize the person"])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Skibid sigma lofasz!"]))]);
         }
 
         internal void LoadScene(int sceneIdx)
@@ -84,6 +88,10 @@ namespace EngineComponents
                     break;
                 case Scene.BackgroundOption.Image:
                     Raylib.ClearBackground(Color.Black);
+                    // Set the image to the screen size
+                    ActiveScene.imageTexture.Width = Raylib.GetScreenWidth();
+                    ActiveScene.imageTexture.Height = Raylib.GetScreenHeight();
+                    //
                     Raylib.DrawTexture(ActiveScene.imageTexture,
                     Raylib.GetScreenWidth() / 2 - ActiveScene.imageTexture.Width / 2,
                     Raylib.GetScreenHeight() / 2 - ActiveScene.imageTexture.Height / 2,
