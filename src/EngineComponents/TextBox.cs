@@ -45,7 +45,7 @@ namespace EngineComponents
                                     Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f) - TextBoxPositionYOffset],
             };
             Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
-            Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
+            Box = new Rectangle(XPosition, YPosition, XScale, YScale);
             //
             TextBoxBackground = textBoxBackground;
             TextBoxBorder = textBoxBorder;
@@ -95,7 +95,7 @@ namespace EngineComponents
                                     Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f) - TextBoxPositionYOffset],
             };
             Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
-            Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
+            Box = new Rectangle(XPosition, YPosition, XScale, YScale);
             //
             TextBoxBackground = textBoxBackground;
             TextBoxBorder = textBoxBorder;
@@ -296,7 +296,7 @@ namespace EngineComponents
             Raylib.DrawRectangle((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, TextBoxBackground);
             Raylib.DrawRectangleLines((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, TextBoxBorder);
             //draw current string data to screen.
-            Raylib.DrawTextEx(CurrentFont, SanatizedOutput, new Vector2(Position[0] + textMargin[0], Position[1] + textMargin[1]),
+            Raylib.DrawTextEx(CurrentFont, SanatizedOutput, new Vector2(XPosition + textMargin[0], YPosition + textMargin[1]),
                 CurrentFont.BaseSize,
                 CurrentFont.GlyphPadding,
                 Color.White);
