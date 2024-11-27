@@ -41,7 +41,7 @@ namespace EngineComponents
         /// Adds an action to the timeline.
         /// </summary>
         /// <param name="action">List of action</param>
-        internal void AddActionsToTimeline(IEvent action)
+        internal void AddActionToTimeline(IEvent action)
         {
             Timeline.ActionList.Add(action);
             Timeline.UpdateTimelineFields();

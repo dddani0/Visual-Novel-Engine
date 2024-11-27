@@ -10,7 +10,6 @@ namespace EngineComponents
         /// Store, Write, Edit and Delete text according to need.
         /// </summary>
         /// 
-
         public enum PositionType
         {
             defaultPosition,

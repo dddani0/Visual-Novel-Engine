@@ -52,6 +52,9 @@ namespace EngineComponents
             Scenes = [new Scene("Menu", this){
                 Background = Scene.BackgroundOption.Image,
                 imageTexture = Raylib.LoadTextureFromImage(getImage)
+            },new Scene("MasikScene",this) {
+                Background = Scene.BackgroundOption.GradientHorizontal,
+                gradientColor = [Color.Purple, Color.Blue]
             }];
             //
             ActiveScene = Scenes[0];
@@ -61,12 +64,22 @@ namespace EngineComponents
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
             Sprite drhousesprite = new Sprite("../../../src/drhouse.png");
             ActiveScene.AddActionsToTimeline([
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["I enter the hospital, and someone steps in front of me."])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["Ez egy üres szöveges doboz. Itt használatban van a wordwrap, ami nem vágja le a szavakat a közepénél."])),
                 new AddSpriteAction(drhousesprite, this),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["I recognize the person"])),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Lehet textboxnak adni egy fulet, amivel jelezhetjuk, hogy egy karakter beszel."])),
-                new TintSpriteAction(drhousesprite, Color.Red, this),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Piros lettem."]))]);
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true,"Narrátor", ["Sprite megjelenítés is működik."])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true,"Narrátor", ["Lehetek narrátor néven feltüntetve."])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, false, "Dr. House",["Ki kapcsoltam a wordwrap-et, ami esetében belevág a szó közepébe."])),
+                new TintSpriteAction(drhousesprite, Color.SkyBlue, this),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Kék lettem."])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Sprite eltüntetés is létezik."])),
+                new RemoveSpriteAction(drhousesprite, this),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Eltünt karakter",["Valahogy így"])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 50, new Font(){ BaseSize = 32, GlyphPadding = 5},Color.Yellow,Color.DarkBlue,TextBox.PositionType.defaultPosition, true, "",["Textboxnál nem csak a füle változtatható; van sebességváltoztatás. Színváltoztatás is lehetséges."])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, ["Betöltök egy másik scenet."])),
+                new NativeLoadSceneAction(this,Scenes[1])]);
+            Scenes[1].AddActionToTimeline(new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font() { BaseSize = 32, GlyphPadding = 5 }, Color.DarkBrown, Color.Orange, TextBox.PositionType.defaultPosition, true, ["Betöltöttem a másik scenet."])));
+            Scenes[1].AddActionToTimeline(new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font() { BaseSize = 32, GlyphPadding = 5 }, Color.DarkBrown, Color.Orange, TextBox.PositionType.defaultPosition, true, ["Visszatöltöm a korábbi jelenetet, ami hatására úja indul az egész."])));
+            Scenes[1].AddActionToTimeline(new NativeLoadSceneAction(this, Scenes[0]));
         }
 
         internal void LoadScene(int sceneIdx)
