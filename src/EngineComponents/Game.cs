@@ -59,11 +59,14 @@ namespace EngineComponents
             Raylib.SetWindowTitle(gameSettings.Title);
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
+            Sprite drhousesprite = new Sprite("../../../src/drhouse.png");
             ActiveScene.AddActionsToTimeline([
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["I enter the hospital, and someone steps in front of me."])),
-                new AddSpriteAction(new Sprite("../../../src/drhouse.png"), this),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["I recognize the person"])),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Skibid sigma lofasz!"]))]);
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["I enter the hospital, and someone steps in front of me."])),
+                new AddSpriteAction(drhousesprite, this),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["I recognize the person"])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Lehet textboxnak adni egy fulet, amivel jelezhetjuk, hogy egy karakter beszel."])),
+                new TintSpriteAction(drhousesprite, Color.Red, this),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Piros lettem."]))]);
         }
 
         internal void LoadScene(int sceneIdx)
