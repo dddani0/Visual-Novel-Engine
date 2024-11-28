@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Visual-Novel-Engine")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e2354e7efdd84f808d9ba1bf6c8a4d3389a86c50")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac4d118c389b8781b694c91b6a374496085fc712")]
 [assembly: System.Reflection.AssemblyProductAttribute("Visual-Novel-Engine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Visual-Novel-Engine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

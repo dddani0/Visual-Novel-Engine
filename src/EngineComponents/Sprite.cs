@@ -37,12 +37,22 @@ namespace EngineComponents
         /// </summary>
         /// <param name="numberOfActiveSprite">The sprites added to the rendering list.</param>
         /// <param name="spriteIndex">Number of divident</param>
+
+        /// <summary>
+        /// Changes the texture of the sprite.
+        /// </summary>
+        /// <param name="newTexture">The new texture of the sprite.</param>
+        public void ChangeTexture(Texture2D newTexture)
+        {
+            Raylib.UnloadTexture(ImageTexture);
+            ImageTexture = newTexture;
+        }
         public void AlignItems(int numberOfActiveSprite, int spriteIndex)
         {
             //Aligns the sprites according to the screen.
             //Show x sprites, but divide with x + 1.
             var spriteShowcaseNumber = Raylib.GetScreenWidth() / (numberOfActiveSprite + 2);
-            X = spriteShowcaseNumber  * (spriteIndex + 1);
+            X = spriteShowcaseNumber * (spriteIndex + 1);
         }
 
         /// <summary>

@@ -63,14 +63,16 @@ namespace EngineComponents
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
             Sprite drhousesprite = new Sprite("../../../src/drhouse.png");
+            Sprite replacementSprite = new Sprite("../../../src/empty.png");
             ActiveScene.AddActionsToTimeline([
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["Ez egy üres szöveges doboz. Itt használatban van a wordwrap, ami nem vágja le a szavakat a közepénél."])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 35, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["Ez egy üres szöveges doboz. Itt használatban van a wordwrap, ami nem vágja le a szavakat a közepénél."])),
                 new AddSpriteAction(drhousesprite, this),
                 new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true,"Narrátor", ["Sprite megjelenítés is működik."])),
                 new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true,"Narrátor", ["Lehetek narrátor néven feltüntetve."])),
                 new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, false, "Dr. House",["Ki kapcsoltam a wordwrap-et, ami esetében belevág a szó közepébe."])),
                 new TintSpriteAction(drhousesprite, Color.SkyBlue, this),
                 new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Kék lettem."])),
+                new ChangeSpriteAction(drhousesprite, "../../../src/test.png", this),
                 new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Sprite eltüntetés is létezik."])),
                 new RemoveSpriteAction(drhousesprite, this),
                 new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Eltünt karakter",["Valahogy így"])),

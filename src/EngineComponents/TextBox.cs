@@ -189,15 +189,14 @@ namespace EngineComponents
             //
             bool IsFinished = false;
             string splittingText = data;
-            string nextString = String.Empty;
             //
             int usedRows = 1;
             //
             while (IsFinished is false)
             {
                 int nextSplitIndex = (MaximumCharacterCount - 1) * usedRows;
-                nextString = splittingText.Remove(0, nextSplitIndex); //
-                                                                      //
+                string nextString = splittingText.Remove(0, nextSplitIndex);
+                //
                 if (WordWrap) splittingText = WrapLine(splittingText, usedRows);
                 else splittingText = splittingText.Insert(nextSplitIndex, "\n");
                 if (nextString.Length <= MaximumCharacterCount || usedRows >= MaximumRowCount) IsFinished = true;
