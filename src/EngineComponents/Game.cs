@@ -48,38 +48,40 @@ namespace EngineComponents
             //Fetch scene settings
 
             //
-            var getImage = Raylib.LoadImage("../../../src/test.png");
+            var getImage = Raylib.LoadImage("../../../src/backdrop.png");
             Scenes = [new Scene("Menu", this){
-                Background = Scene.BackgroundOption.GradientVertical,
-                gradientColor = [Color.Purple, Color.Blue],
-            },new Scene("game", this){
+                Background = Scene.BackgroundOption.Image,
+                imageTexture = Raylib.LoadTextureFromImage(getImage)
+            },new Scene("MasikScene",this) {
                 Background = Scene.BackgroundOption.GradientHorizontal,
-                gradientColor = [Color.Red, Color.Brown]}];
+                gradientColor = [Color.Purple, Color.Blue]
+            }];
             //
             ActiveScene = Scenes[0];
             //
             Raylib.SetWindowTitle(gameSettings.Title);
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
-            //Raylib.UnloadTexture(ActiveScene.imageTexture);
-            Scenes[0].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(this,
-                40,
-                new Font() { BaseSize = 32, GlyphPadding = 5 },
-                TextBox.PositionType.defaultPosition,
-                false,
-                ["Menü dialógus: első szegmens","Menü dialógus: második szegmens"])), new NativeLoadSceneAction(this, 1)]);
-            Scenes[1].AddActionsToTimeline([new TextBoxCreateAction(TextBox.CreateNewTextBox(this,
-                40,
-                new Font() { BaseSize = 32, GlyphPadding = 5 },
-                TextBox.PositionType.defaultPosition,
-                false,
-                ["Ingame dialógus: első szemgens", "Ingame dialógus: második szegmens, még mindig ugyanaz az opció"])), new TextBoxCreateAction(
-                TextBox.CreateNewTextBox(this,
-                    40,
-                    new Font() { BaseSize = 32, GlyphPadding = 5 },
-                    TextBox.PositionType.defaultPosition,
-                    false,
-                    ["Ingame dialógus: harmadik szemgens", "Ingame dialógus: negyedik szegmens"])), new NativeLoadSceneAction(this, 0)]);
+            Sprite drhousesprite = new Sprite("../../../src/drhouse.png");
+            Sprite replacementSprite = new Sprite("../../../src/empty.png");
+            ActiveScene.AddActionsToTimeline([
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 35, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["Ez egy üres szöveges doboz. Itt használatban van a wordwrap, ami nem vágja le a szavakat a közepénél."])),
+                new AddSpriteAction(drhousesprite, this),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true,"Narrátor", ["Sprite megjelenítés is működik."])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true,"Narrátor", ["Lehetek narrátor néven feltüntetve."])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, false, "Dr. House",["Ki kapcsoltam a wordwrap-et, ami esetében belevág a szó közepébe."])),
+                new TintSpriteAction(drhousesprite, Color.SkyBlue, this),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Kék lettem."])),
+                new ChangeSpriteAction(drhousesprite, "../../../src/test.png", this),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Sprite eltüntetés is létezik."])),
+                new RemoveSpriteAction(drhousesprite, this),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Eltünt karakter",["Valahogy így"])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 50, new Font(){ BaseSize = 32, GlyphPadding = 5},Color.Yellow,Color.DarkBlue,TextBox.PositionType.defaultPosition, true, "",["Textboxnál nem csak a füle változtatható; van sebességváltoztatás. Színváltoztatás is lehetséges."])),
+                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, ["Betöltök egy másik scenet."])),
+                new NativeLoadSceneAction(this,Scenes[1])]);
+            Scenes[1].AddActionToTimeline(new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font() { BaseSize = 32, GlyphPadding = 5 }, Color.DarkBrown, Color.Orange, TextBox.PositionType.defaultPosition, true, ["Betöltöttem a másik scenet."])));
+            Scenes[1].AddActionToTimeline(new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font() { BaseSize = 32, GlyphPadding = 5 }, Color.DarkBrown, Color.Orange, TextBox.PositionType.defaultPosition, true, ["Visszatöltöm a korábbi jelenetet, ami hatására úja indul az egész."])));
+            Scenes[1].AddActionToTimeline(new NativeLoadSceneAction(this, Scenes[0]));
         }
 
         internal void LoadScene(int sceneIdx)
@@ -103,10 +105,19 @@ namespace EngineComponents
                     Raylib.DrawRectangleGradientV(0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), ActiveScene.gradientColor[0], ActiveScene.gradientColor[1]);
                     break;
                 case Scene.BackgroundOption.Image:
-                    Raylib.DrawTexture(ActiveScene.imageTexture, 0, 0, Color.White);
+                    Raylib.ClearBackground(Color.Black);
+                    // Set the image to the screen size
+                    ActiveScene.imageTexture.Width = Raylib.GetScreenWidth();
+                    ActiveScene.imageTexture.Height = Raylib.GetScreenHeight();
+                    //
+                    Raylib.DrawTexture(ActiveScene.imageTexture,
+                    Raylib.GetScreenWidth() / 2 - ActiveScene.imageTexture.Width / 2,
+                    Raylib.GetScreenHeight() / 2 - ActiveScene.imageTexture.Height / 2,
+                    Color.White);
                     break;
             }
             //
+            ActiveScene.Timeline.RenderSprites();
             ActiveScene.Timeline.ExecuteAction();
         }
         //Inputs

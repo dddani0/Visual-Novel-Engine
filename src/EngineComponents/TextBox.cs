@@ -10,7 +10,6 @@ namespace EngineComponents
         /// Store, Write, Edit and Delete text according to need.
         /// </summary>
         /// 
-
         public enum PositionType
         {
             defaultPosition,
@@ -42,10 +41,10 @@ namespace EngineComponents
                 PositionType.upperPosition => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
                                     Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
                 _ => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
-                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f)],
+                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f) - TextBoxPositionYOffset],
             };
             Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
-            Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
+            Box = new Rectangle(XPosition, YPosition, XScale, YScale);
             //
             TextBoxBackground = textBoxBackground;
             TextBoxBorder = textBoxBorder;
@@ -95,7 +94,7 @@ namespace EngineComponents
                                     Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f) - TextBoxPositionYOffset],
             };
             Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
-            Box = new Rectangle(Position[0], Position[1], Scale[0], Scale[1]);
+            Box = new Rectangle(XPosition, YPosition, XScale, YScale);
             //
             TextBoxBackground = textBoxBackground;
             TextBoxBorder = textBoxBorder;
@@ -190,15 +189,14 @@ namespace EngineComponents
             //
             bool IsFinished = false;
             string splittingText = data;
-            string nextString = String.Empty;
             //
             int usedRows = 1;
             //
             while (IsFinished is false)
             {
                 int nextSplitIndex = (MaximumCharacterCount - 1) * usedRows;
-                nextString = splittingText.Remove(0, nextSplitIndex); //
-                                                                      //
+                string nextString = splittingText.Remove(0, nextSplitIndex);
+                //
                 if (WordWrap) splittingText = WrapLine(splittingText, usedRows);
                 else splittingText = splittingText.Insert(nextSplitIndex, "\n");
                 if (nextString.Length <= MaximumCharacterCount || usedRows >= MaximumRowCount) IsFinished = true;
@@ -287,16 +285,16 @@ namespace EngineComponents
             if (headerExists())
             {
                 //header textbox frame
-                Raylib.DrawRectangle(XPosition, YPosition - CharacterHeigth - textMargin[1], TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0], CharacterHeigth, TextBoxBackground);
-                Raylib.DrawRectangleLines((int)Box.Position.X, YPosition - CharacterHeigth, TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0], CharacterHeigth, TextBoxBorder);
+                Raylib.DrawRectangle(XPosition, YPosition - CharacterHeigth - textMargin[1], TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0] + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBackground);
+                Raylib.DrawRectangleLines((int)Box.Position.X, YPosition - CharacterHeigth - textMargin[1], TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0] + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBorder);
                 //Headertext
-                Raylib.DrawTextEx(CurrentFont, HeaderSanatization, new Vector2(XPosition + textMargin[0], YPosition - CharacterHeigth - textMargin[1]), CurrentFont.BaseSize, CurrentFont.GlyphPadding, Color.Black);
+                Raylib.DrawTextEx(CurrentFont, HeaderSanatization, new Vector2(XPosition + textMargin[0], YPosition - CharacterHeigth - textMargin[1]), CurrentFont.BaseSize, CurrentFont.GlyphPadding, Color.White);
             }
             //Textbox and Border
             Raylib.DrawRectangle((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, TextBoxBackground);
             Raylib.DrawRectangleLines((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, TextBoxBorder);
             //draw current string data to screen.
-            Raylib.DrawTextEx(CurrentFont, SanatizedOutput, new Vector2(Position[0] + textMargin[0], Position[1] + textMargin[1]),
+            Raylib.DrawTextEx(CurrentFont, SanatizedOutput, new Vector2(XPosition + textMargin[0], YPosition + textMargin[1]),
                 CurrentFont.BaseSize,
                 CurrentFont.GlyphPadding,
                 Color.White);
@@ -419,7 +417,6 @@ namespace EngineComponents
             Game game,
             double characterPerSecond,
             Font activeFont,
-            int xPos,
             PositionType textBoxPosition,
             bool wordWrap,
             string textBoxTitle,
@@ -455,7 +452,6 @@ namespace EngineComponents
             Font activeFont,
             Color TextBoxcolor,
             Color TextBoxBorder,
-            int xPos,
             PositionType textBoxPosition,
             bool wordWrap,
             string textBoxTitle,
