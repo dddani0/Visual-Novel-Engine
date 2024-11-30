@@ -6,16 +6,44 @@ using Raylib_cs;
 
 namespace EngineComponents
 {
-    internal class GameSettings
+    /// <summary>
+    /// The GameImport class is a helper class to import the game settings from a json file.
+    /// </summary>
+    internal class GameImport
     {
         [JsonPropertyName("Title")]
-        public string Title { get; set; }
+        public required string Title { get; set; }
         //
         [JsonPropertyName("WindowWidth")]
         public int WindowWidth { get; set; }
         //
         [JsonPropertyName("WindowHeight")]
         public int WindowHeigth { get; set; }
+    }
+
+    /// <summary>
+    /// The SceneImport class is a helper class to import the scene settings from a json file.
+    /// </summary>
+    internal class SceneImport
+    {
+        [JsonPropertyName("Name")]
+        public required string Name { get; set; }
+        [JsonPropertyName("Id")]
+        public required long Id { get; set; } //remove setter!
+        //
+        [JsonPropertyName("Background")]
+        public Scene.BackgroundOption Background { get; set; }
+        //
+        [JsonPropertyName("SolidColor")]
+        public Color? SolidColor { get; set; }
+        //
+        [JsonPropertyName("GradientColor")]
+        public Color[]? GradientColor { get; set; }
+        //
+        [JsonPropertyName("ImageTexture")]
+        public string? ImageTexture { get; set; }
+        [JsonPropertyName("Timeline")]
+        public required List<IEvent> Timeline { get; set; }
     }
 
     public class Game
@@ -28,7 +56,7 @@ namespace EngineComponents
         const string relativeGameSettingsPath = "../../../src/GameSettings.json";
         const string relativeScenePath = "../../../src/Scene.json";
         const string projectFolder = "";
-        internal GameSettings gameSettings { get; private set; }
+        internal GameImport gameSettings { get; private set; }
         public List<Scene> Scenes { get; set; }
         public Scene ActiveScene { get; private set; }
         public int sceneIndex;
@@ -43,7 +71,7 @@ namespace EngineComponents
         {
             //Fetch game settings.
             string rawFile = File.ReadAllText(relativeGameSettingsPath);
-            var rawSettings = JsonSerializer.Deserialize<GameSettings>(rawFile);
+            var rawSettings = JsonSerializer.Deserialize<GameImport>(rawFile);
             gameSettings = rawSettings;
             //Fetch scene settings
 
@@ -62,8 +90,8 @@ namespace EngineComponents
             Raylib.SetWindowTitle(gameSettings.Title);
             //
             Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
-            Sprite drhousesprite = new Sprite("../../../src/drhouse.png");
-            Sprite replacementSprite = new Sprite("../../../src/empty.png");
+            Sprite drhousesprite = new("../../../src/drhouse.png");
+            Sprite replacementSprite = new("../../../src/empty.png");
             ActiveScene.AddActionsToTimeline([
                 new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 35, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["Ez egy üres szöveges doboz. Itt használatban van a wordwrap, ami nem vágja le a szavakat a közepénél."])),
                 new AddSpriteAction(drhousesprite, this),
