@@ -32,18 +32,18 @@ namespace EngineComponents
         public required long Id { get; set; } //remove setter!
         //
         [JsonPropertyName("Background")]
-        public Scene.BackgroundOption Background { get; set; }
+        public required string Background { get; set; }
         //
-        [JsonPropertyName("SolidColor")]
-        public Color? SolidColor { get; set; }
+        [JsonPropertyName("Color")]
+        public int[]? SolidColor { get; set; }
         //
         [JsonPropertyName("GradientColor")]
-        public Color[]? GradientColor { get; set; }
+        public int[]? GradientColor { get; set; }
         //
         [JsonPropertyName("ImageTexture")]
         public string? ImageTexture { get; set; }
         [JsonPropertyName("Timeline")]
-        public required List<IEvent> Timeline { get; set; }
+        public Timeline? Timeline { get; set; }
     }
 
     public class Game
@@ -53,16 +53,19 @@ namespace EngineComponents
         /// The Game is a singleton!
         /// The major difference between the editor and the Game, is that the latter updates everyframe.
         /// </summary>
-        const string relativeGameSettingsPath = "../../../src/GameSettings.json";
-        const string relativeScenePath = "../../../src/Scene.json";
-        const string projectFolder = "";
+        const string currentFolderPath = "../../../src/";
+        const string relativeGameSettingsPath = currentFolderPath + "GameSettings.json";
+        const string relativeScenePath = currentFolderPath + "Scenes.json";
         internal GameImport gameSettings { get; private set; }
         public List<Scene> Scenes { get; set; }
         public Scene ActiveScene { get; private set; }
         public int sceneIndex;
         private int sceneCount;
 
-        public Game() => SetupGameSettings();
+        public Game()
+        {
+            SetupGameSettings();
+        }
 
         /// <summary>
         /// Fetches all the correspondant json files, and loads them in the game.
@@ -70,11 +73,9 @@ namespace EngineComponents
         internal void SetupGameSettings()
         {
             //Fetch game settings.
-            string rawFile = File.ReadAllText(relativeGameSettingsPath);
-            var rawSettings = JsonSerializer.Deserialize<GameImport>(rawFile);
-            gameSettings = rawSettings;
+            SetupGameWindow();
             //Fetch scene settings
-
+            SetupScenes();
             //
             var getImage = Raylib.LoadImage("../../../src/backdrop.png");
             Scenes = [new Scene("Menu", this){
@@ -84,6 +85,8 @@ namespace EngineComponents
                 Background = Scene.BackgroundOption.GradientHorizontal,
                 gradientColor = [Color.Purple, Color.Blue]
             }];
+            uint c = 0x000000FF;
+
             //
             ActiveScene = Scenes[0];
             //
@@ -112,12 +115,66 @@ namespace EngineComponents
             Scenes[1].AddActionToTimeline(new NativeLoadSceneAction(this, Scenes[0]));
         }
 
+        /// <summary>
+        /// Fetches the game settings from the json file.
+        /// </summary>
+        private void SetupGameWindow()
+        {
+            string rawFile = File.ReadAllText(relativeGameSettingsPath);
+            var rawSettings = JsonSerializer.Deserialize<GameImport>(rawFile);
+            if (rawSettings != null) gameSettings = rawSettings;
+            else throw new InvalidOperationException("Failed to load game settings, because the file is null.");
+        }
+
+        /// <summary>
+        /// Fetches the scene settings from the json file.
+        /// </summary>
+        private void SetupScenes()
+        {
+            // Initialize the list of scenes.
+            Scenes = [];
+            //
+            string rawFile = File.ReadAllText(relativeScenePath);
+            var rawScenes = JsonSerializer.Deserialize<List<SceneImport>>(rawFile);
+            if (rawScenes != null)
+            {
+                foreach (var scene in rawScenes)
+                {
+                    Color importColor = new(
+                                                r: scene.SolidColor[0],
+                                                g: scene.SolidColor[1],
+                                                b: scene.SolidColor[2],
+                                                a: scene.SolidColor[3]
+                                                );
+                    Scenes.Add(new Scene(scene.Name, this)
+                    {
+                        Background = Enum.Parse<Scene.BackgroundOption>(scene.Background),
+                        solidColor = importColor,
+                        gradientColor = [],
+                        imageTexture = Raylib.LoadTexture(scene.ImageTexture),
+                        Timeline = scene.Timeline
+                    });
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the file is null.");
+            }
+        }
+
+        /// <summary>
+        /// Loads the scene.
+        /// </summary>
+        /// <param name="sceneIdx"></param>
         internal void LoadScene(int sceneIdx)
         {
             sceneIndex = sceneIdx;
             ActiveScene = Scenes[sceneIndex];
             ActiveScene.Timeline.StartTimeline();
         }
+        /// <summary>
+        /// Updates the scene.
+        /// </summary>
         public void UpdateScene()
         {
             switch (ActiveScene.Background)
@@ -148,9 +205,20 @@ namespace EngineComponents
             ActiveScene.Timeline.RenderSprites();
             ActiveScene.Timeline.ExecuteAction();
         }
-        //Inputs
+        /// <summary>
+        /// Checks if the left mouse button is pressed.
+        /// </summary>
+        /// <returns></returns>
         public static bool IsLeftMouseButtonPressed() => Raylib.IsMouseButtonPressed(MouseButton.Left);
+        /// <summary>
+        /// Checks if the right mouse button is pressed.
+        /// </summary>
+        /// <returns></returns>
         public static bool IsRightMouseButtonPressed() => Raylib.IsMouseButtonPressed(MouseButton.Right);
+        /// <summary>
+        /// Checks if the escape button is pressed.
+        /// </summary>
+        /// <returns></returns>
         public static bool IsEscapeButtonPressed() => Raylib.IsKeyPressed(KeyboardKey.Escape);
     }
 }

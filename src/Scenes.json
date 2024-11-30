@@ -1,23 +1,23 @@
 [
     {
-        "Name": "Scene 1",
+        "Name": "Scene1",
         "Id": 1,
         "Background": "SolidColor",
-        "Color": "Red",
+        "Color": [
+            210,
+            210,
+            210,
+            1
+        ],
         "GradientColor": [],
         "imageTexture": "",
-        "timeline": {
-            "stepCount": 3,
+        "Timeline": {
+            "stepCount": 0,
             "actionList": [
                 {}
             ],
             "spriteList": [
-                {
-                    "name": "Sprite 1",
-                    "imageTexture": "Sprite1.png",
-                    "Color": "white",
-                    "enabled": "false"
-                }
+                {}
             ]
         }
     }
