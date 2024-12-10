@@ -18,6 +18,12 @@ namespace EngineComponents
             SpriteRenderList = [];
         }
 
+        public Timeline(IEvent[] events)
+        {
+            ActionList = [.. events];
+            SpriteRenderList = [];
+        }
+
         /// <summary>
         /// Executes the action in the timeline.
         /// </summary>

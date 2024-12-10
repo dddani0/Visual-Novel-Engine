@@ -8,21 +8,21 @@ namespace EngineComponents
 {
     /// <summary>
     /// The GameImport class is a helper class to import the game settings from a json file.
+    /// Intended to be used by the Game class.
     /// </summary>
     internal class GameImport
     {
         [JsonPropertyName("Title")]
         public required string Title { get; set; }
-        //
         [JsonPropertyName("WindowWidth")]
         public int WindowWidth { get; set; }
-        //
         [JsonPropertyName("WindowHeight")]
         public int WindowHeigth { get; set; }
     }
 
     /// <summary>
     /// The SceneImport class is a helper class to import the scene settings from a json file.
+    /// Intended to be used by the Game class.
     /// </summary>
     internal class SceneImport
     {
@@ -30,20 +30,42 @@ namespace EngineComponents
         public required string Name { get; set; }
         [JsonPropertyName("Id")]
         public required long Id { get; set; } //remove setter!
-        //
         [JsonPropertyName("Background")]
         public required string Background { get; set; }
-        //
         [JsonPropertyName("Color")]
         public int[]? SolidColor { get; set; }
-        //
         [JsonPropertyName("GradientColor")]
         public int[]? GradientColor { get; set; }
-        //
         [JsonPropertyName("ImageTexture")]
         public string? ImageTexture { get; set; }
-        [JsonPropertyName("Timeline")]
-        public Timeline? Timeline { get; set; }
+        [JsonPropertyName("ActionType")]
+        public ActionImport[]? actions { get; set; }
+    }
+    /// <summary>
+    /// The ActionImport class is a helper class to import the list of actions from a json file.
+    /// </summary>
+    internal class ActionImport
+    {
+        [JsonPropertyName("Type")]
+        public string Type { get; set; }
+        [JsonPropertyName("SpritePath")]
+        public string? SpritePath { get; set; }
+        [JsonPropertyName("CharactersPerSecond")]
+        public double? CharactersPerSecond { get; set; }
+        [JsonPropertyName("Font")] //Need font importer
+        public string Font { get; set; }
+        [JsonPropertyName("TextBoxColor")]
+        public int[]? TextBoxColor { get; set; }
+        [JsonPropertyName("TextBoxBorder")]
+        public int[]? TextBoxBorder { get; set; }
+        [JsonPropertyName("PositionType")]
+        public int? PositionType { get; set; }
+        [JsonPropertyName("WordWrap")]
+        public bool? WordWrap { get; set; }
+        [JsonPropertyName("TextBoxTitle")]
+        public string? TextBoxTitle { get; set; }
+        [JsonPropertyName("TextBoxContent")]
+        public string[]? TextBoxContent { get; set; }
     }
 
     public class Game
@@ -76,43 +98,6 @@ namespace EngineComponents
             SetupGameWindow();
             //Fetch scene settings
             SetupScenes();
-            //
-            var getImage = Raylib.LoadImage("../../../src/backdrop.png");
-            Scenes = [new Scene("Menu", this){
-                Background = Scene.BackgroundOption.Image,
-                imageTexture = Raylib.LoadTextureFromImage(getImage)
-            },new Scene("MasikScene",this) {
-                Background = Scene.BackgroundOption.GradientHorizontal,
-                gradientColor = [Color.Purple, Color.Blue]
-            }];
-            uint c = 0x000000FF;
-
-            //
-            ActiveScene = Scenes[0];
-            //
-            Raylib.SetWindowTitle(gameSettings.Title);
-            //
-            Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
-            Sprite drhousesprite = new("../../../src/drhouse.png");
-            Sprite replacementSprite = new("../../../src/empty.png");
-            ActiveScene.AddActionsToTimeline([
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 35, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true, ["Ez egy üres szöveges doboz. Itt használatban van a wordwrap, ami nem vágja le a szavakat a közepénél."])),
-                new AddSpriteAction(drhousesprite, this),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true,"Narrátor", ["Sprite megjelenítés is működik."])),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5}, TextBox.PositionType.defaultPosition, true,"Narrátor", ["Lehetek narrátor néven feltüntetve."])),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, false, "Dr. House",["Ki kapcsoltam a wordwrap-et, ami esetében belevág a szó közepébe."])),
-                new TintSpriteAction(drhousesprite, Color.SkyBlue, this),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Kék lettem."])),
-                new ChangeSpriteAction(drhousesprite, "../../../src/test.png", this),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Dr. House",["Sprite eltüntetés is létezik."])),
-                new RemoveSpriteAction(drhousesprite, this),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, "Eltünt karakter",["Valahogy így"])),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 50, new Font(){ BaseSize = 32, GlyphPadding = 5},Color.Yellow,Color.DarkBlue,TextBox.PositionType.defaultPosition, true, "",["Textboxnál nem csak a füle változtatható; van sebességváltoztatás. Színváltoztatás is lehetséges."])),
-                new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font(){ BaseSize = 32, GlyphPadding = 5},TextBox.PositionType.defaultPosition, true, ["Betöltök egy másik scenet."])),
-                new NativeLoadSceneAction(this,Scenes[1])]);
-            Scenes[1].AddActionToTimeline(new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font() { BaseSize = 32, GlyphPadding = 5 }, Color.DarkBrown, Color.Orange, TextBox.PositionType.defaultPosition, true, ["Betöltöttem a másik scenet."])));
-            Scenes[1].AddActionToTimeline(new TextBoxCreateAction(TextBox.CreateNewTextBox(this, 15, new Font() { BaseSize = 32, GlyphPadding = 5 }, Color.DarkBrown, Color.Orange, TextBox.PositionType.defaultPosition, true, ["Visszatöltöm a korábbi jelenetet, ami hatására úja indul az egész."])));
-            Scenes[1].AddActionToTimeline(new NativeLoadSceneAction(this, Scenes[0]));
         }
 
         /// <summary>
@@ -122,8 +107,17 @@ namespace EngineComponents
         {
             string rawFile = File.ReadAllText(relativeGameSettingsPath);
             var rawSettings = JsonSerializer.Deserialize<GameImport>(rawFile);
-            if (rawSettings != null) gameSettings = rawSettings;
-            else throw new InvalidOperationException("Failed to load game settings, because the file is null.");
+            if (rawSettings != null)
+            {
+                gameSettings = rawSettings;
+            }
+            else
+            {
+                throw new InvalidOperationException("Failed to load game settings, because the file is null.");
+            }
+            // Set the window title and size.
+            Raylib.SetWindowTitle(gameSettings.Title);
+            Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
         }
 
         /// <summary>
@@ -138,28 +132,92 @@ namespace EngineComponents
             var rawScenes = JsonSerializer.Deserialize<List<SceneImport>>(rawFile);
             if (rawScenes != null)
             {
+                //Need to parse the actions from the scenes.json file. But how?
                 foreach (var scene in rawScenes)
                 {
-                    Color importColor = new(
-                                                r: scene.SolidColor[0],
-                                                g: scene.SolidColor[1],
-                                                b: scene.SolidColor[2],
-                                                a: scene.SolidColor[3]
-                                                );
+                    Timeline timeline = new();
+                    for (int i = 0; i < scene.actions.Count(); i++)
+                    {
+                        switch (scene.actions[i].Type)
+                        {
+                            case "AddSpriteAction":
+                                // Add the sprite to the timeline.
+                                timeline.ActionList.Add(
+                                    new AddSpriteAction(new Sprite(scene.actions[i].SpritePath), this));
+                                break;
+                            case "TextBoxCreateAction":
+                                // Add the textbox to the timeline.
+                                timeline.ActionList.Add(
+                                    (IEvent)TextBox.CreateNewTextBox(
+                                        this,
+                                        scene.actions[i].CharactersPerSecond.Value,
+                                        new Font() { BaseSize = 32, GlyphPadding = 5 },
+                                        new Color(
+                                            scene.actions[i].TextBoxColor[0],
+                                            scene.actions[i].TextBoxColor[1],
+                                            scene.actions[i].TextBoxColor[2],
+                                            scene.actions[i].TextBoxColor[3]
+                                        ),
+                                        new Color(
+                                            scene.actions[i].TextBoxBorder[0],
+                                            scene.actions[i].TextBoxBorder[1],
+                                            scene.actions[i].TextBoxBorder[2],
+                                            scene.actions[i].TextBoxBorder[3]
+                                        ),
+                                        (TextBox.PositionType)scene.actions[i].PositionType.Value,
+                                        scene.actions[i].WordWrap.Value,
+                                        scene.actions[i].TextBoxTitle,
+                                        scene.actions[i].TextBoxContent.ToList()));
+                                break;
+                            default:
+                                throw new InvalidOperationException("Failed to load scene settings, because the action type is not recognized.");
+                        }
+                    }
                     Scenes.Add(new Scene(scene.Name, this)
                     {
                         Background = Enum.Parse<Scene.BackgroundOption>(scene.Background),
-                        solidColor = importColor,
-                        gradientColor = [],
+                        solidColor = scene.SolidColor.Length == 0 ? new() : new(
+                                                                        r: scene.SolidColor[0],
+                                                                        g: scene.SolidColor[1],
+                                                                        b: scene.SolidColor[2],
+                                                                        a: scene.SolidColor[3]
+                                                                        ),
+                        gradientColor = scene.GradientColor.Length == 0 ? [] : [new(
+                                                                        r: scene.GradientColor[0],
+                                                                        g: scene.GradientColor[1],
+                                                                        b: scene.GradientColor[2],
+                                                                        a: scene.GradientColor[3]
+                                                                        ),
+                                                                        new(
+                                                                        r: scene.GradientColor[4],
+                                                                        g: scene.GradientColor[5],
+                                                                        b: scene.GradientColor[6],
+                                                                        a: scene.GradientColor[7]
+                                                                        ),
+                                                                        new(
+                                                                        r: scene.GradientColor[8],
+                                                                        g: scene.GradientColor[9],
+                                                                        b: scene.GradientColor[10],
+                                                                        a: scene.GradientColor[11]
+                                                                        ),
+                                                                        new(
+                                                                        r: scene.GradientColor[12],
+                                                                        g: scene.GradientColor[13],
+                                                                        b: scene.GradientColor[14],
+                                                                        a: scene.GradientColor[15]
+                                                                        )],
                         imageTexture = Raylib.LoadTexture(scene.ImageTexture),
-                        Timeline = scene.Timeline
+                        Timeline = timeline
                     });
                 }
             }
             else
             {
+                // If the file is null, throw an exception.
+                // A file with empty project will always generate a file. This exception will never be thrown in normal use.
                 throw new InvalidOperationException("Failed to load scene settings, because the file is null.");
             }
+            ActiveScene = Scenes[0];
         }
 
         /// <summary>
