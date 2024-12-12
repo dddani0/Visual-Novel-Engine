@@ -6,22 +6,24 @@ namespace EngineComponents.Actions
     class NativeLoadSceneAction : IEvent
     {
         readonly Game Game;
-        readonly Scene nextScene;
-        int SceneIndex = -1;
-        public NativeLoadSceneAction(Game game, int sceneIndex)
+        readonly long sceneID;
+        public NativeLoadSceneAction(Game game, long sceneId)
         {
             Game = game;
-            SceneIndex = sceneIndex;
-        }
-        public NativeLoadSceneAction(Game game, Scene scene)
-        {
-            Game = game;
-            nextScene = scene;
+            sceneID = sceneId;
         }
         public void PerformEvent()
         {
-            if (SceneIndex == -1) SceneIndex = Game.Scenes.IndexOf(nextScene);
-            Game.LoadScene(SceneIndex);
+            if (!Game.Scenes.Any(scene => scene.Id == sceneID))
+            {
+                throw new Exception($"Scene with {sceneID} ID not found.");
+            }
+            else
+            {
+                var nextScene = Game.Scenes.First(scene => scene.Id == sceneID);
+                Game.LoadScene(nextScene);
+                return;
+            }
         }
     }
 }

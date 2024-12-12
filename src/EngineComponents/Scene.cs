@@ -7,7 +7,7 @@ namespace EngineComponents
         /// <summary>
         /// A level, which a player can create, modify and add depth to it.
         /// </summary>
-        internal long Id { get; }
+        internal long Id { get; set; }
         internal enum BackgroundOption
         {
             SolidColor,

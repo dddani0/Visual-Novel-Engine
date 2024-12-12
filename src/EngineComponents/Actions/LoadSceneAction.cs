@@ -6,25 +6,27 @@ namespace EngineComponents.Actions
     class LoadSceneAction : IEvent
     {
         readonly Game Game;
-        readonly Scene nextScene;
         private bool triggered = false;
-        int SceneIndex = -1;
-        public LoadSceneAction(Game game, int sceneIndex)
+        readonly long sceneID;
+        public LoadSceneAction(Game game, long sceneId)
         {
             Game = game;
-            SceneIndex = sceneIndex;
-        }
-        public LoadSceneAction(Game game, Scene scene)
-        {
-            Game = game;
-            nextScene = scene;
+            sceneID = sceneId;
         }
         public void TriggerEvent() => triggered = true;
         public void PerformEvent()
         {
             if (triggered is false) return;
-            if (SceneIndex == -1) SceneIndex = Game.Scenes.IndexOf(nextScene);
-            Game.LoadScene(SceneIndex);
+            if (!Game.Scenes.Any(scene => scene.Id == sceneID))
+            {
+                throw new Exception($"Scene with {sceneID} ID not found.");
+            }
+            else
+            {
+                var nextScene = Game.Scenes.First(scene => scene.Id == sceneID);
+                Game.LoadScene(nextScene);
+                return;
+            }
         }
     }
 }
