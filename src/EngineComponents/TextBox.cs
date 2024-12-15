@@ -333,7 +333,6 @@ namespace EngineComponents
             IncrementIndex();
             SecondTimer.ResetTimer();
             return;
-            //Local functions for readability
             bool isTurnedOff() => IsEnabled is false;
             bool isDone() => TextCollectionIndex >= TextCollectionCount;
             bool headerExists() => string.IsNullOrEmpty(TextBoxTitle) is false;

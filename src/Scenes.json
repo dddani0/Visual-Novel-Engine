@@ -4,14 +4,14 @@
         "Id": 1,
         "Background": "GradientVertical",
         "GradientColor": [
+            15,
+            34,
+            64,
             255,
+            54,
             255,
-            255,
-            1,
-            200,
-            200,
-            200,
-            1
+            123,
+            0
         ],
         "ImageTexture": "",
         "ActionList": [
@@ -20,20 +20,20 @@
                 "CharactersPerSecond": 10,
                 "Font": "Arial",
                 "TextBoxColor": [
-                    255,
-                    255,
-                    255,
-                    255
+                    26,
+                    229,
+                    222,
+                    0
                 ],
                 "TextBoxBorder": [
-                    0,
-                    0,
-                    0,
+                    229,
+                    26,
+                    33,
                     255
                 ],
                 "PositionType": 0,
                 "WordWrap": true,
-                "TextboxTitle": "Dr. House",
+                "TextBoxTitle": "Dr. House",
                 "TextBoxContent": [
                     "Hello, I am Dr. House",
                     "ez egy masik szoveg!"
@@ -48,16 +48,12 @@
     {
         "Name": "Scene2",
         "Id": 2,
-        "Background": "GradientHorizontal",
-        "GradientColor": [
-            255,
-            255,
-            255,
+        "Background": "SolidColor",
+        "Color": [
+            134,
+            111,
             1,
-            200,
-            200,
-            200,
-            1
+            255
         ],
         "ImageTexture": "",
         "ActionList": []
