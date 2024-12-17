@@ -10,12 +10,17 @@ namespace EngineComponents
     /// <summary>
     /// A class to store variables
     /// </summary>
-    public class Variable(string name, string value, VariableType type)
+    public class Variable
     {
-        public string Name { get; set; } = name;
-        public string Value { get; set; } = value;
-        Boolean
-        public VariableType Type { get; set; } = type;
+        public string Name { get; set; }
+        public string Value { get; set; }
+        VariableType Type { get; set; }
+        public Variable(string name, string value, VariableType type)
+        {
+            Name = name;
+            Value = value;
+            Type = type;
+        }
         /// <summary>
         /// Set the value of the string variable
         /// </summary>
