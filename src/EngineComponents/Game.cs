@@ -228,6 +228,51 @@ namespace EngineComponents
                                                 scene.ActionList[i].VariableValue,
                                                 (VariableType)scene.ActionList[i].VariableType.Value)));
                                     break;
+                                case "IncrementVariableAction":
+                                    // Add the increment variable action to the timeline.
+                                    timeline.ActionList.Add(
+                                        new IncrementVariableAction(
+                                            this,
+                                            scene.ActionList[i].VariableName,
+                                            int.Parse(scene.ActionList[i].VariableValue)));
+                                    break;
+                                case "DecrementVariableAction":
+                                    // Add the decrement variable action to the timeline.
+                                    timeline.ActionList.Add(
+                                        new DecrementVariableAction(
+                                            this,
+                                            scene.ActionList[i].VariableName,
+                                            int.Parse(scene.ActionList[i].VariableValue)));
+                                    break;
+                                case "SetVariableTrueAction":
+                                    // Add the set variable true action to the timeline.
+                                    timeline.ActionList.Add(
+                                        new SetVariableTrueAction(
+                                            this,
+                                            scene.ActionList[i].VariableName));
+                                    break;
+                                case "SetVariableFalseAction":
+                                    // Add the set variable false action to the timeline.
+                                    timeline.ActionList.Add(
+                                        new SetVariableFalseAction(
+                                            this,
+                                            scene.ActionList[i].VariableName));
+                                    break;
+                                case "SetBoolVariableAction":
+                                    // Add the set variable action to the timeline.
+                                    timeline.ActionList.Add(
+                                        new SetBoolVariableAction(
+                                            this,
+                                            scene.ActionList[i].VariableName,
+                                            bool.Parse(scene.ActionList[i].VariableValue)));
+                                    break;
+                                case "ToggleVariableAction":
+                                    // Add the toggle variable action to the timeline.
+                                    timeline.ActionList.Add(
+                                        new ToggleVariableAction(
+                                            this,
+                                            scene.ActionList[i].VariableName));
+                                    break;
                                 default:
                                     throw new InvalidOperationException("Failed to load scene settings, because the action type is not recognized.");
                             }

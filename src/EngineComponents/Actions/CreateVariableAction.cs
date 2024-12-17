@@ -12,7 +12,8 @@ namespace EngineComponents
 
         public void PerformEvent()
         {
-            if (Game.Variables.First(s => s.Name.Equals(Variable.Name)) != null)
+            var variable = Game.Variables.First(s => s.Name.Equals(Variable.Name));
+            if (variable != null)
             {
                 throw new System.Exception("Variable with the declaired name already exists.");
             }

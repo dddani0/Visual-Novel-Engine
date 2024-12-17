@@ -33,6 +33,16 @@
                 "VariableName": "myVar",
                 "VariableValue": "10",
                 "VariableType": 1
+            },
+            {
+                "Type": "IncrementVariableAction",
+                "VariableName": "myVar",
+                "VariableValue": "5"
+            },
+            {
+                "Type": "DecrementVariableAction",
+                "VariableName": "myVarNull",
+                "VariableValue": "5"
             }
         ]
     },

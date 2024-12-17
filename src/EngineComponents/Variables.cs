@@ -14,7 +14,7 @@ namespace EngineComponents
     {
         public string Name { get; set; }
         public string Value { get; set; }
-        VariableType Type { get; set; }
+        public VariableType Type { get; set; }
         public Variable(string name, string value, VariableType type)
         {
             Name = name;

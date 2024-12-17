@@ -27,6 +27,3 @@ namespace EngineComponents.Actions
         }
     }
 }
-{
-
-}

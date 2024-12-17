@@ -5,23 +5,25 @@ namespace EngineComponents.Actions
     /// </summary>
     public class IncrementVariableAction : IEvent
     {
-        readonly Variable variable;
+        Variable Variable;
+        string VariableName { get; }
         public int IncrementValue { get; set; }
         Game Game { get; set; }
         public IncrementVariableAction(Game game, string variableName, int incrementValue)
         {
             IncrementValue = incrementValue;
             Game = game;
-            variable = Game.Variables.First(s => s.Name.Equals(variableName)) ?? throw new System.Exception("Variable not found!");
+            VariableName = variableName;
         }
 
         public void PerformEvent()
         {
-            if (variable.Type == VariableType.Int)
+            Variable = Game.Variables.First(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
+            if (Variable.Type == VariableType.Int)
             {
-                var value = int.Parse(variable.Value);
+                var value = int.Parse(Variable.Value);
                 value += IncrementValue;
-                variable.SetValue(value);
+                Variable.SetValue(value);
                 Game.ActiveScene.Timeline.NextStep();
             }
             else
