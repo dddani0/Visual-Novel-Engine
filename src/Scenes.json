@@ -19,18 +19,7 @@
                 "Type": "TextBoxCreateAction",
                 "CharactersPerSecond": 10,
                 "Font": "Arial",
-                "TextBoxColor": [
-                    26,
-                    229,
-                    222,
-                    0
-                ],
-                "TextBoxBorder": [
-                    229,
-                    26,
-                    33,
-                    255
-                ],
+                "TextBoxColor": [],
                 "PositionType": 0,
                 "WordWrap": true,
                 "TextBoxTitle": "Dr. House",
@@ -40,8 +29,10 @@
                 ]
             },
             {
-                "Type": "NativeLoadSceneAction",
-                "SceneID": 2
+                "Type": "CreateVariableAction",
+                "VariableName": "myVar",
+                "VariableValue": "10",
+                "VariableType": 1
             }
         ]
     },

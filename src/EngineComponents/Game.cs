@@ -19,7 +19,6 @@ namespace EngineComponents
         [JsonPropertyName("WindowHeight")]
         public int WindowHeigth { get; set; }
     }
-
     /// <summary>
     /// The SceneImport class is a helper class to import the scene settings from a json file.
     /// Intended to be used by the Game class.
@@ -70,6 +69,12 @@ namespace EngineComponents
         public int[]? TintColor { get; set; }
         [JsonPropertyName("SceneID")]
         public long? SceneID { get; set; }
+        [JsonPropertyName("VariableName")]
+        public string? VariableName { get; set; }
+        [JsonPropertyName("VariableValue")]
+        public string? VariableValue { get; set; }
+        [JsonPropertyName("VariableType")]
+        public int? VariableType { get; set; }
     }
 
     public class Game
@@ -84,6 +89,7 @@ namespace EngineComponents
         const string relativeScenePath = currentFolderPath + "Scenes.json";
         internal GameImport gameSettings { get; private set; }
         public List<Scene> Scenes { get; set; }
+        public List<Variable> Variables { get; set; }
         public Scene ActiveScene { get; private set; }
 
         public Game()
@@ -123,13 +129,15 @@ namespace EngineComponents
         }
 
         /// <summary>
-        /// Fetches the scene settings from the json file.
+        /// Fetches the scene configuration from the json file.
         /// </summary>
         private void SetupScenes()
         {
             // Initialize the list of scenes.
             Scenes = [];
-            //
+            // Initialize the list of variables.
+            Variables = [];
+            // Fetch the scene settings.
             string rawFile = File.ReadAllText(relativeScenePath);
             var rawScenes = JsonSerializer.Deserialize<List<SceneImport>>(rawFile);
             if (rawScenes != null)
@@ -152,14 +160,14 @@ namespace EngineComponents
                                     timeline.ActionList.Add(new TextBoxCreateAction(TextBox.CreateNewTextBox(
                                             this,
                                             scene.ActionList[i].CharactersPerSecond.Value,
-                                            new Font() { BaseSize = 32, GlyphPadding = 5 },
-                                            new Color()
+                                            new Font() { BaseSize = 30, GlyphPadding = 5 },
+                                            scene.ActionList[i].TextBoxColor == null || scene.ActionList[i].TextBoxColor.Length < 4 ? new Color() { R = 0, G = 0, B = 0, A = 255 } : new Color()
                                             {
                                                 R = (byte)scene.ActionList[i].TextBoxColor[0],
                                                 G = (byte)scene.ActionList[i].TextBoxColor[1],
                                                 B = (byte)scene.ActionList[i].TextBoxColor[2],
                                                 A = (byte)scene.ActionList[i].TextBoxColor[3]
-                                            }, new Color()
+                                            }, scene.ActionList[i].TextBoxBorder == null || scene.ActionList[i].TextBoxBorder.Length < 4 ? new Color() { R = 0, G = 0, B = 0, A = 255 } : new Color()
                                             {
                                                 R = (byte)scene.ActionList[i].TextBoxBorder[0],
                                                 G = (byte)scene.ActionList[i].TextBoxBorder[1],
@@ -209,6 +217,16 @@ namespace EngineComponents
                                         new NativeLoadSceneAction(
                                             this,
                                             scene.ActionList[i].SceneID.Value));
+                                    break;
+                                case "CreateVariableAction":
+                                    // Add the create variable action to the timeline.
+                                    timeline.ActionList.Add(
+                                        new CreateVariableAction(
+                                            this,
+                                            new Variable(
+                                                scene.ActionList[i].VariableName,
+                                                scene.ActionList[i].VariableValue,
+                                                (VariableType)scene.ActionList[i].VariableType.Value)));
                                     break;
                                 default:
                                     throw new InvalidOperationException("Failed to load scene settings, because the action type is not recognized.");
@@ -271,21 +289,25 @@ namespace EngineComponents
             switch (ActiveScene.Background)
             {
                 default:
+                    // If the background is not set, clear the screen with black.
                     Raylib.ClearBackground(Color.Black);
                     break;
                 case Scene.BackgroundOption.SolidColor:
+                    // If the background is set to solid color, clear the screen with the color.
                     Raylib.ClearBackground(ActiveScene.solidColor);
                     break;
                 case Scene.BackgroundOption.GradientHorizontal:
+                    // If the background is set to gradient horizontal, draw the gradient and clear the screen with black.
                     Raylib.DrawRectangleGradientH(0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), ActiveScene.gradientColor[0], ActiveScene.gradientColor[1]);
                     Raylib.ClearBackground(Color.Black);
                     break;
                 case Scene.BackgroundOption.GradientVertical:
+                    // If the background is set to gradient vertical, draw the gradient and clear the screen with black.
                     Raylib.DrawRectangleGradientV(0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), ActiveScene.gradientColor[0], ActiveScene.gradientColor[1]);
                     Raylib.ClearBackground(Color.Black);
                     break;
                 case Scene.BackgroundOption.Image:
-                    // Set the image to the screen size
+                    // If the background is set to image, draw the image and clear the screen with black.
                     ActiveScene.imageTexture.Width = Raylib.GetScreenWidth();
                     ActiveScene.imageTexture.Height = Raylib.GetScreenHeight();
                     //
