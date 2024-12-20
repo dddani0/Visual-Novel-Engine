@@ -5,18 +5,19 @@ namespace EngineComponents.Actions
     /// </summary>
     public class SetBoolVariableAction : IEvent
     {
-        readonly Variable variable;
+        readonly string VariableName;
         Game Game { get; set; }
         bool Value { get; set; }
         public SetBoolVariableAction(Game game, string variableName, bool value)
         {
             Game = game;
-            variable = Game.Variables.First(s => s.Name.Equals(variableName)) ?? throw new System.Exception("Variable not found!");
             Value = value;
+            VariableName = variableName;
         }
 
         public void PerformEvent()
         {
+            var variable = Game.ActiveScene.Timeline.VariableList.First(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (variable.Type == VariableType.Bool)
             {
                 variable.SetValue(Value);

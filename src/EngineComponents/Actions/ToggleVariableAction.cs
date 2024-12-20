@@ -5,16 +5,17 @@ namespace EngineComponents.Actions
     /// </summary>
     public class ToggleVariableAction : IEvent
     {
-        readonly Variable variable;
+        readonly string VariableName;
         Game Game { get; set; }
         public ToggleVariableAction(Game game, string variableName)
         {
             Game = game;
-            variable = Game.Variables.First(s => s.Name.Equals(variableName)) ?? throw new System.Exception("Variable not found!");
+            VariableName = variableName;
         }
 
         public void PerformEvent()
         {
+            var variable = Game.ActiveScene.Timeline.VariableList.First(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (variable.Type == VariableType.Bool)
             {
                 variable.SetValue(!Boolean.Parse(variable.Value));

@@ -5,16 +5,17 @@ namespace EngineComponents.Actions
     /// </summary>
     public class SetVariableFalseAction : IEvent
     {
-        readonly Variable variable;
+        readonly string VariableName;
         Game Game { get; set; }
         public SetVariableFalseAction(Game game, string variableName)
         {
             Game = game;
-            variable = Game.Variables.First(s => s.Name.Equals(variableName)) ?? throw new System.Exception("Variable not found!");
+            VariableName = variableName;
         }
 
         public void PerformEvent()
         {
+            var variable = Game.ActiveScene.Timeline.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (variable.Type == VariableType.Bool)
             {
                 variable.SetValue(false);
@@ -22,7 +23,7 @@ namespace EngineComponents.Actions
             }
             else
             {
-                throw new System.Exception("Variable is not a boolean");
+                throw new Exception("Variable is not a boolean");
             }
         }
     }

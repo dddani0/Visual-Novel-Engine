@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -89,7 +91,6 @@ namespace EngineComponents
         const string relativeScenePath = currentFolderPath + "Scenes.json";
         internal GameImport gameSettings { get; private set; }
         public List<Scene> Scenes { get; set; }
-        public List<Variable> Variables { get; set; }
         public Scene ActiveScene { get; private set; }
 
         public Game()
@@ -135,8 +136,6 @@ namespace EngineComponents
         {
             // Initialize the list of scenes.
             Scenes = [];
-            // Initialize the list of variables.
-            Variables = [];
             // Fetch the scene settings.
             string rawFile = File.ReadAllText(relativeScenePath);
             var rawScenes = JsonSerializer.Deserialize<List<SceneImport>>(rawFile);
@@ -157,66 +156,90 @@ namespace EngineComponents
                             {
                                 case "TextBoxCreateAction":
                                     // Add the textbox to the timeline.
+                                    if (scene.ActionList[i].CharactersPerSecond.HasValue is false)
+                                    {
+                                        throw new InvalidOperationException("Failed to load scene settings, because the characters per second is null.");
+                                    }
+                                    var charactersPerSecond = scene.ActionList[i].CharactersPerSecond.Value;
+                                    var font = new Font() { BaseSize = 30, GlyphPadding = 5 };
+                                    var textboxcolor = scene.ActionList[i].TextBoxColor == null || scene.ActionList[i].TextBoxColor.Length < 4 ?
+                                    new Color() { R = 0, G = 0, B = 0, A = 255 } :
+                                    new Color()
+                                    {
+                                        R = (byte)scene.ActionList[i].TextBoxColor[0],
+                                        G = (byte)scene.ActionList[i].TextBoxColor[1],
+                                        B = (byte)scene.ActionList[i].TextBoxColor[2],
+                                        A = (byte)scene.ActionList[i].TextBoxColor[3]
+                                    };
+                                    var textboxborder = scene.ActionList[i].TextBoxBorder == null || scene.ActionList[i].TextBoxBorder.Length < 4 ?
+                                    new Color() { R = 0, G = 0, B = 0, A = 255 } :
+                                    new Color()
+                                    {
+                                        R = (byte)scene.ActionList[i].TextBoxBorder[0],
+                                        G = (byte)scene.ActionList[i].TextBoxBorder[1],
+                                        B = (byte)scene.ActionList[i].TextBoxBorder[2],
+                                        A = (byte)scene.ActionList[i].TextBoxBorder[3]
+                                    };
+                                    var positionType = (TextBox.PositionType)scene.ActionList[i].PositionType.Value;
+                                    var wordWrap = scene.ActionList[i].WordWrap.Value;
+                                    var textBoxTitle = scene.ActionList[i].TextBoxTitle;
+                                    var textBoxContent = scene.ActionList[i].TextBoxContent;
+                                    //
                                     timeline.ActionList.Add(new TextBoxCreateAction(TextBox.CreateNewTextBox(
                                             this,
-                                            scene.ActionList[i].CharactersPerSecond.Value,
-                                            new Font() { BaseSize = 30, GlyphPadding = 5 },
-                                            scene.ActionList[i].TextBoxColor == null || scene.ActionList[i].TextBoxColor.Length < 4 ? new Color() { R = 0, G = 0, B = 0, A = 255 } : new Color()
-                                            {
-                                                R = (byte)scene.ActionList[i].TextBoxColor[0],
-                                                G = (byte)scene.ActionList[i].TextBoxColor[1],
-                                                B = (byte)scene.ActionList[i].TextBoxColor[2],
-                                                A = (byte)scene.ActionList[i].TextBoxColor[3]
-                                            }, scene.ActionList[i].TextBoxBorder == null || scene.ActionList[i].TextBoxBorder.Length < 4 ? new Color() { R = 0, G = 0, B = 0, A = 255 } : new Color()
-                                            {
-                                                R = (byte)scene.ActionList[i].TextBoxBorder[0],
-                                                G = (byte)scene.ActionList[i].TextBoxBorder[1],
-                                                B = (byte)scene.ActionList[i].TextBoxBorder[2],
-                                                A = (byte)scene.ActionList[i].TextBoxBorder[3]
-                                            },
-                                            (TextBox.PositionType)scene.ActionList[i].PositionType.Value,
-                                            scene.ActionList[i].WordWrap.Value,
-                                            scene.ActionList[i].TextBoxTitle,
-                                            [.. scene.ActionList[i].TextBoxContent])));
+                                            charactersPerSecond,
+                                            font,
+                                            textboxcolor,
+                                            textboxborder,
+                                            positionType,
+                                            wordWrap,
+                                            textBoxTitle,
+                                            [.. textBoxContent])));
                                     break;
                                 case "AddSpriteAction":
                                     // Add the sprite to the timeline.
-                                    timeline.ActionList.Add(
-                                        new AddSpriteAction(new Sprite(currentFolderPath + scene.ActionList[i].SpritePath), this));
+                                    if (scene.ActionList[i].SpritePath == null)
+                                    {
+                                        throw new InvalidOperationException("Failed to load scene settings, because the sprite path is null.");
+                                    }
+                                    var spritePath = currentFolderPath + scene.ActionList[i].SpritePath;
+                                    var sprite = new Sprite(spritePath);
+                                    timeline.ActionList.Add(new AddSpriteAction(sprite, this));
                                     break;
                                 case "TintSpriteAction":
                                     // Add the tint action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new TintSpriteAction(
-                                            new Sprite(scene.ActionList[i].SpritePath),
-                                            new Color(
-                                                scene.ActionList[i].TintColor[0],
-                                                scene.ActionList[i].TintColor[1],
-                                                scene.ActionList[i].TintColor[2],
-                                                scene.ActionList[i].TintColor[3]
-                                            ),
-                                            this));
+                                    var tintSprite = new Sprite(scene.ActionList[i].SpritePath);
+                                    var tintColor = new Color()
+                                    {
+                                        R = (byte)scene.ActionList[i].TintColor[0],
+                                        G = (byte)scene.ActionList[i].TintColor[1],
+                                        B = (byte)scene.ActionList[i].TintColor[2],
+                                        A = (byte)scene.ActionList[i].TintColor[3]
+                                    };
+                                    timeline.ActionList.Add(new TintSpriteAction(tintSprite, tintColor, this));
                                     break;
                                 case "RemoveSpriteAction":
                                     // Add the remove action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new RemoveSpriteAction(
-                                            new Sprite(currentFolderPath + scene.ActionList[i].SpritePath),
-                                            this));
+                                    var removeSprite = new Sprite(currentFolderPath + scene.ActionList[i].SpritePath);
+                                    timeline.ActionList.Add(new RemoveSpriteAction(removeSprite, this));
                                     break;
                                 case "LoadSceneAction":
                                     // Add the load scene action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new LoadSceneAction(
-                                            this,
-                                            scene.ActionList[i].SceneID.Value));
+                                    if (scene.ActionList[i].SceneID.HasValue is false)
+                                    {
+                                        throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
+                                    }
+                                    var sceneId = scene.ActionList[i].SceneID.Value;
+                                    timeline.ActionList.Add(new LoadSceneAction(this, sceneId));
                                     break;
                                 case "NativeLoadSceneAction":
                                     // Add the native load scene action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new NativeLoadSceneAction(
-                                            this,
-                                            scene.ActionList[i].SceneID.Value));
+                                    if (scene.ActionList[i].SceneID.HasValue is false)
+                                    {
+                                        throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
+                                    }
+                                    var nativeSceneId = scene.ActionList[i].SceneID.Value;
+                                    timeline.ActionList.Add(new NativeLoadSceneAction(this, nativeSceneId));
                                     break;
                                 case "CreateVariableAction":
                                     // Add the create variable action to the timeline.
