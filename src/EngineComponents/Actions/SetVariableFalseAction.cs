@@ -15,7 +15,7 @@ namespace EngineComponents.Actions
 
         public void PerformEvent()
         {
-            var variable = Game.ActiveScene.Timeline.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
+            var variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (variable.Type == VariableType.Bool)
             {
                 variable.SetValue(false);

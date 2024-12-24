@@ -76,17 +76,56 @@ namespace EngineComponents
         public int? VariableType { get; set; }
     }
     /// <summary>
+    /// The VariableImport class is a helper class to import the list of saved variables from a json file.
+    /// </summary>
+    internal class VariableImport
+    {
+        [JsonPropertyName("Name")]
+        public required string Name { get; set; }
+        [JsonPropertyName("Value")]
+        public required string Value { get; set; }
+        [JsonPropertyName("Type")]
+        public required int Type { get; set; }
+    }
+
+    /// <summary>
     /// The Game is a Gamemanager which changes the changes and loads the correct configuration and data into the template game.
     /// The Game is a singleton!
     /// The major difference between the editor and the Game, is that the latter updates everyframe.
     /// </summary>
     public class Game
     {
-        const string currentFolderPath = "../../../src/";
+        /// <summary>
+        /// The current folder path.
+        /// </summary>
+        const string currentFolderPath = "../../../src/Data/";
+        /// <summary>
+        /// The Game settings path.
+        /// </summary>
         const string relativeGameSettingsPath = currentFolderPath + "GameSettings.json";
+        /// <summary>
+        /// The Scene path.
+        /// </summary>
         const string relativeScenePath = currentFolderPath + "Scenes.json";
-        internal GameImport gameSettings { get; private set; }
+        /// <summary>
+        /// The Variable path.
+        /// </summary>
+        const string relativeVariablePath = currentFolderPath + "Variables.json";
+        /// <summary>
+        /// Temporary Game settings.
+        /// </summary>
+        internal GameImport GameSettings { get; private set; }
+        /// <summary>
+        /// List of scenes.
+        /// </summary>
         public List<Scene> Scenes { get; set; }
+        /// <summary>
+        /// List of variables.
+        /// </summary>
+        public List<Variable> VariableList { get; set; }
+        /// <summary>
+        /// The active scene.
+        /// </summary>
         public Scene ActiveScene { get; private set; }
 
         public Game()
@@ -101,7 +140,9 @@ namespace EngineComponents
         {
             //Fetch game settings.
             SetupGameWindow();
-            //Fetch scene settings
+            //Fetch variables
+            SetupVariables();
+            //Fetch scenes
             SetupScenes();
         }
 
@@ -112,16 +153,49 @@ namespace EngineComponents
         {
             string rawFile = File.ReadAllText(relativeGameSettingsPath);
             var rawSettings = JsonSerializer.Deserialize<GameImport>(rawFile);
-            if (rawSettings != null) gameSettings = rawSettings;
+            if (rawSettings != null) GameSettings = rawSettings;
             else
             {
                 throw new InvalidOperationException("Failed to load game settings, because the file is null.");
             }
             // Set the window title and size.
-            Raylib.SetWindowTitle(gameSettings.Title);
-            Raylib.SetWindowSize(gameSettings.WindowWidth, gameSettings.WindowHeigth);
+            Raylib.SetWindowTitle(GameSettings.Title);
+            Raylib.SetWindowSize(GameSettings.WindowWidth, GameSettings.WindowHeigth);
         }
-
+        /// <summary>
+        /// Fetches the saved variables from the json file.
+        /// </summary>
+        private void SetupVariables()
+        {
+            // Initialize the list of variables.
+            VariableList = [];
+            //
+            string rawFile = File.ReadAllText(relativeVariablePath);
+            var rawVariables = JsonSerializer.Deserialize<List<VariableImport>>(rawFile);
+            if (rawVariables != null)
+            {
+                foreach (var variable in rawVariables)
+                {
+                    switch (variable.Type)
+                    {
+                        case 1:
+                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.String));
+                            break;
+                        case 2:
+                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.Int));
+                            break;
+                        case 3:
+                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.Float));
+                            break;
+                        case 4:
+                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.Bool));
+                            break;
+                        default:
+                            throw new InvalidOperationException("Failed to load variable settings, because the variable type is not recognized.");
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Fetches the scene configuration from the json file.
         /// </summary>

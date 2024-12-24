@@ -12,19 +12,16 @@ namespace EngineComponents
         int StepCount { get; set; }
         internal List<IEvent> ActionList { get; set; }
         internal List<Sprite> SpriteRenderList { get; set; }
-        public List<Variable> VariableList { get; set; }
         public Timeline()
         {
             ActionList = [];
             SpriteRenderList = [];
-            VariableList = [];
         }
 
         public Timeline(IEvent[] events)
         {
             ActionList = [.. events];
             SpriteRenderList = [];
-            VariableList = [];
         }
 
         /// <summary>
