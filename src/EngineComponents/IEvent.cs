@@ -1,10 +1,13 @@
-/// <summary>
-/// Interface for events.
-/// </summary>
-public interface IEvent
+namespace EngineComponents
 {
     /// <summary>
-    /// Performs the event.
+    /// Interface for events.
     /// </summary>
-    abstract void PerformEvent();
+    public interface IEvent
+    {
+        /// <summary>
+        /// Performs the event.
+        /// </summary>
+        abstract void PerformEvent();
+    }
 }

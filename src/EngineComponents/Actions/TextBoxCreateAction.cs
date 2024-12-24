@@ -3,7 +3,7 @@ namespace EngineComponents.Actions
     /// <summary>
     /// Initializes a new textbox.
     /// </summary>
-    class TextBoxCreateAction : IEvent
+    class TextBoxCreateAction : IEvent, IButtonEvent
     {
         readonly TextBox TextBox;
         public TextBoxCreateAction(TextBox textbox)
