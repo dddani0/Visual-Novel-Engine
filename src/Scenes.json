@@ -18,26 +18,8 @@
             {
                 "Type": "CreateVariableAction",
                 "VariableName": "myVar",
-                "VariableValue": "10",
+                "VariableValue": "valtozo ertek",
                 "VariableType": 1
-            },
-            {
-                "Type": "IncrementVariableAction",
-                "VariableName": "myVar",
-                "VariableValue": "5"
-            },
-            {
-                "Type": "TextBoxCreateAction",
-                "CharactersPerSecond": 10,
-                "Font": "Arial",
-                "TextBoxColor": [],
-                "PositionType": 0,
-                "WordWrap": true,
-                "TextBoxTitle": "Dr. House",
-                "TextBoxContent": [
-                    "Hello, I am Dr. House",
-                    "ez egy masik szoveg!"
-                ]
             }
         ]
     },

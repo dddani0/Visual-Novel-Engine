@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using EngineComponents.Actions;
@@ -78,14 +75,13 @@ namespace EngineComponents
         [JsonPropertyName("VariableType")]
         public int? VariableType { get; set; }
     }
-
+    /// <summary>
+    /// The Game is a Gamemanager which changes the changes and loads the correct configuration and data into the template game.
+    /// The Game is a singleton!
+    /// The major difference between the editor and the Game, is that the latter updates everyframe.
+    /// </summary>
     public class Game
     {
-        /// <summary>
-        /// The Game is a Gamemanager which changes the changes and loads the correct configuration and data into the template game.
-        /// The Game is a singleton!
-        /// The major difference between the editor and the Game, is that the latter updates everyframe.
-        /// </summary>
         const string currentFolderPath = "../../../src/";
         const string relativeGameSettingsPath = currentFolderPath + "GameSettings.json";
         const string relativeScenePath = currentFolderPath + "Scenes.json";
@@ -116,10 +112,7 @@ namespace EngineComponents
         {
             string rawFile = File.ReadAllText(relativeGameSettingsPath);
             var rawSettings = JsonSerializer.Deserialize<GameImport>(rawFile);
-            if (rawSettings != null)
-            {
-                gameSettings = rawSettings;
-            }
+            if (rawSettings != null) gameSettings = rawSettings;
             else
             {
                 throw new InvalidOperationException("Failed to load game settings, because the file is null.");
@@ -141,7 +134,6 @@ namespace EngineComponents
             var rawScenes = JsonSerializer.Deserialize<List<SceneImport>>(rawFile);
             if (rawScenes != null)
             {
-                //Need to parse the actions from the scenes.json file. But how?
                 foreach (var scene in rawScenes)
                 {
                     Timeline timeline = new();

@@ -1,15 +1,13 @@
 using System.Numerics;
-using System.Security.Cryptography;
 using Raylib_cs;
 
 namespace EngineComponents
 {
+    /// <summary>
+    /// Store, Write, Edit and Delete text according to need.
+    /// </summary>
     public class TextBox
     {
-        /// <summary>
-        /// Store, Write, Edit and Delete text according to need.
-        /// </summary>
-        /// 
         public enum PositionType
         {
             defaultPosition,
@@ -62,7 +60,7 @@ namespace EngineComponents
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
             //
-            ActiveGame = game;
+            Game = game;
             //
             ToggleEnability(); //Disables by default
         }
@@ -113,7 +111,7 @@ namespace EngineComponents
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
             //
-            ActiveGame = game;
+            Game = game;
             //
             ToggleEnability(); //Disabled by default
         }
@@ -155,7 +153,7 @@ namespace EngineComponents
         internal Font CurrentFont { get; set; }
         internal Color TextBoxBackground { get; set; }
         internal Color TextBoxBorder { get; set; }
-        internal readonly Game ActiveGame;
+        internal readonly Game Game;
         private int[] Scale { get; set; }
 
         /// <summary>
@@ -212,7 +210,7 @@ namespace EngineComponents
         /// <returns></returns>
         string ReferenceVariables(string data)
         {
-            var variables = ActiveGame.ActiveScene.Timeline.VariableList;
+            var variables = Game.ActiveScene.Timeline.VariableList;
             if (variables.Count == 0) return data;
             foreach (var variable in variables)
             {
@@ -274,7 +272,7 @@ namespace EngineComponents
             //
             if (TextCollectionIndex >= TextCollectionCount)
             {
-                ActiveGame.ActiveScene.Timeline.NextStep();
+                Game.ActiveScene.Timeline.NextStep();
                 ToggleEnability();
                 ResetTextBox();
                 return;

@@ -12,12 +12,12 @@ namespace EngineComponents
 
         public void PerformEvent()
         {
-            var variable = Game.Variables.FirstOrDefault(s => s.Name.Equals(Variable.Name));
+            var variable = Game.ActiveScene.Timeline.VariableList.FirstOrDefault(s => s.Name.Equals(Variable.Name));
             if (variable != null)
             {
                 throw new System.Exception("Variable with the declaired name already exists.");
             }
-            Game.Variables.Add(Variable);
+            Game.ActiveScene.Timeline.VariableList.Add(Variable);
             Game.ActiveScene.Timeline.NextStep();
         }
     }
