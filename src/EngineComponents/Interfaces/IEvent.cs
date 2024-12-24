@@ -1,4 +1,4 @@
-namespace EngineComponents
+namespace EngineComponents.Interfaces
 {
     /// <summary>
     /// Interface for events.

@@ -1,7 +1,0 @@
-namespace EngineComponents
-{
-    class Window
-    {
-
-    }
-}

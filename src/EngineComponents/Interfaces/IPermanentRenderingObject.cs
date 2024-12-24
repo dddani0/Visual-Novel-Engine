@@ -1,4 +1,4 @@
-namespace EngineComponents
+namespace EngineComponents.Interfaces
 {
     /// <summary>
     /// Interface for objects that are rendered permanently on the screen.
