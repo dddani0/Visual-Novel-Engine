@@ -1,22 +1,19 @@
 using System.Numerics;
-using System.Security.Cryptography;
 using Raylib_cs;
 
 namespace EngineComponents
 {
+    /// <summary>
+    /// Store, Write, Edit and Delete text according to need.
+    /// </summary>
     public class TextBox
     {
-        /// <summary>
-        /// Store, Write, Edit and Delete text according to need.
-        /// </summary>
-        /// 
         public enum PositionType
         {
             defaultPosition,
             upperPosition
         }
         readonly int[] textMargin = [10, 10];
-        //ctors
         private TextBox(
             List<String> data, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, bool wordWrapEnabled, Game game)
         {
@@ -63,7 +60,7 @@ namespace EngineComponents
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
             //
-            ActiveGame = game;
+            Game = game;
             //
             ToggleEnability(); //Disables by default
         }
@@ -105,7 +102,8 @@ namespace EngineComponents
             CharacterHeigth = CurrentFont.BaseSize + CurrentFont.GlyphPadding;
             MaximumCharacterCount = (int)(Box.Width - 2 * textMargin[0] - CharacterWidth) / CharacterWidth;
             MaximumRowCount = (int)((Box.Height - textMargin[1]) / CharacterHeigth);
-            //
+            //Reference variables and fit the string to the textbox
+            Content[TextCollectionIndex] = ReferenceVariables(Content[TextCollectionIndex]);
             Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
             CurrentLoadedData = Content[TextCollectionIndex];
             //
@@ -113,31 +111,11 @@ namespace EngineComponents
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
             //
-            ActiveGame = game;
+            Game = game;
             //
             ToggleEnability(); //Disabled by default
         }
 
-        private void ResetTextBox()
-        {
-            //reset collection index
-            TextCollectionIndex = 0;
-            //update the current loaded data
-            CurrentLoadedData = Content[TextCollectionIndex];
-            //reset text index
-            TextIndex = 0;
-            //update the text count
-            TextCount = CurrentLoadedData.Length;
-            //nullify the output
-            Output = String.Empty;
-            //Reseting second timer and blinking cursor timer
-            SecondTimer.ResetTimer();
-            BlinkingCursorTimer.ResetTimer();
-            // disable textbatch
-            TextBatchDone = false;
-        }
-
-        //members
         internal bool IsFinished => TextIndex == TextCount;
         internal void ToggleEnability() => IsEnabled = !IsEnabled;
         internal Timer SecondTimer { get; private set; }
@@ -175,7 +153,7 @@ namespace EngineComponents
         internal Font CurrentFont { get; set; }
         internal Color TextBoxBackground { get; set; }
         internal Color TextBoxBorder { get; set; }
-        internal readonly Game ActiveGame;
+        internal readonly Game Game;
         private int[] Scale { get; set; }
 
         /// <summary>
@@ -225,6 +203,21 @@ namespace EngineComponents
             }
             return splittingText;
         }
+        /// <summary>
+        /// Reference variables in the string data.
+        /// </summary>
+        /// <param name="data">Concurrent line</param>
+        /// <returns></returns>
+        string ReferenceVariables(string data)
+        {
+            var variables = Game.ActiveScene.Timeline.VariableList;
+            if (variables.Count == 0) return data;
+            foreach (var variable in variables)
+            {
+                if (data.Contains($"[{variable.Name}]")) data = data.Replace($"[{variable.Name}]", variable.Value);
+            }
+            return data;
+        }
 
         /// <summary>
         /// Wraps a singular instance of textoverflow.
@@ -249,6 +242,28 @@ namespace EngineComponents
             return wrappingLine;
         }
         /// <summary>
+        /// Reset the textbox to its initial state.
+        /// </summary>
+        private void ResetTextBox()
+        {
+            //reset collection index
+            TextCollectionIndex = 0;
+            //update the current loaded data
+            CurrentLoadedData = Content[TextCollectionIndex];
+            //reset text index
+            TextIndex = 0;
+            //update the text count
+            TextCount = CurrentLoadedData.Length;
+            //nullify the output
+            Output = String.Empty;
+            //Reseting second timer and blinking cursor timer
+            SecondTimer.ResetTimer();
+            BlinkingCursorTimer.ResetTimer();
+            // disable textbatch
+            TextBatchDone = false;
+        }
+
+        /// <summary>
         /// Cycle to the next unprocessed content data, and process it.
         /// </summary>
         private void ToggleNextTextBatch()
@@ -257,11 +272,13 @@ namespace EngineComponents
             //
             if (TextCollectionIndex >= TextCollectionCount)
             {
-                ActiveGame.ActiveScene.Timeline.NextStep();
+                Game.ActiveScene.Timeline.NextStep();
                 ToggleEnability();
                 ResetTextBox();
                 return;
             };
+            //Reference variables and fit the string to the textbox
+            if (Content[TextCollectionIndex].Contains("$[") is false) Content[TextCollectionIndex] = ReferenceVariables(Content[TextCollectionIndex]);
             //Only wrap if its not already wrapped
             if (Content[TextCollectionIndex].Contains('\n') is false) Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
             CurrentLoadedData = Content[TextCollectionIndex];
@@ -333,7 +350,6 @@ namespace EngineComponents
             IncrementIndex();
             SecondTimer.ResetTimer();
             return;
-            //Local functions for readability
             bool isTurnedOff() => IsEnabled is false;
             bool isDone() => TextCollectionIndex >= TextCollectionCount;
             bool headerExists() => string.IsNullOrEmpty(TextBoxTitle) is false;
@@ -342,7 +358,6 @@ namespace EngineComponents
                 TextCollectionIndex < TextCollectionCount && IsFinished is true && Game.IsLeftMouseButtonPressed();
 
         }
-
         /// <summary>
         /// Create textbox for string data, without a header.
         /// Default color (Black and white) for textbox background and border colors.

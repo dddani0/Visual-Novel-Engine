@@ -44,7 +44,7 @@ namespace EngineComponents
         /// <param name="newTexture">The new texture of the sprite.</param>
         public void ChangeTexture(Texture2D newTexture)
         {
-            Raylib.UnloadTexture(ImageTexture);
+            //Raylib.UnloadTexture(ImageTexture);
             ImageTexture = newTexture;
         }
         public void AlignItems(int numberOfActiveSprite, int spriteIndex)

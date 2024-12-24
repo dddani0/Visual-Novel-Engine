@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GithubRepository\\Visual-Novel-Engine\\Visual-Novel-Engine.csproj": {}
+    "d:\\GithubRepository\\Visual-Novel-Engine\\Visual-Novel-Engine.csproj": {}
   },
   "projects": {
-    "D:\\GithubRepository\\Visual-Novel-Engine\\Visual-Novel-Engine.csproj": {
+    "d:\\GithubRepository\\Visual-Novel-Engine\\Visual-Novel-Engine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GithubRepository\\Visual-Novel-Engine\\Visual-Novel-Engine.csproj",
+        "projectUniqueName": "d:\\GithubRepository\\Visual-Novel-Engine\\Visual-Novel-Engine.csproj",
         "projectName": "Visual-Novel-Engine",
-        "projectPath": "D:\\GithubRepository\\Visual-Novel-Engine\\Visual-Novel-Engine.csproj",
+        "projectPath": "d:\\GithubRepository\\Visual-Novel-Engine\\Visual-Novel-Engine.csproj",
         "packagesPath": "C:\\Users\\Danie\\.nuget\\packages\\",
-        "outputPath": "D:\\GithubRepository\\Visual-Novel-Engine\\obj\\",
+        "outputPath": "d:\\GithubRepository\\Visual-Novel-Engine\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Danie\\AppData\\Roaming\\NuGet\\NuGet.Config",

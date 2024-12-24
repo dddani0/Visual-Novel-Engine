@@ -21,6 +21,7 @@ namespace EngineComponents.Actions
         {
             sprite.Enabled = true; //Enable sprite
             Game.ActiveScene.Timeline.SpriteRenderList.Add(sprite); //Add sprite to rendering list
+            Game.ActiveScene.Timeline.SpriteRenderList.First(theSprite => theSprite.Equals(sprite)).ChangeTexture(sprite.ImageTexture);
             Game.ActiveScene.Timeline.NextStep(); //Move to next step
         }
     }

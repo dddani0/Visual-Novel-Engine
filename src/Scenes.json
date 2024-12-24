@@ -1,0 +1,39 @@
+[
+    {
+        "Name": "Scene1",
+        "Id": 1,
+        "Background": "GradientVertical",
+        "GradientColor": [
+            15,
+            34,
+            64,
+            255,
+            54,
+            255,
+            123,
+            0
+        ],
+        "ImageTexture": "",
+        "ActionList": [
+            {
+                "Type": "CreateVariableAction",
+                "VariableName": "myVar",
+                "VariableValue": "valtozo ertek",
+                "VariableType": 1
+            }
+        ]
+    },
+    {
+        "Name": "Scene2",
+        "Id": 2,
+        "Background": "SolidColor",
+        "Color": [
+            134,
+            111,
+            1,
+            255
+        ],
+        "ImageTexture": "",
+        "ActionList": []
+    }
+]
