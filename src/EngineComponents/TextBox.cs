@@ -210,7 +210,7 @@ namespace EngineComponents
         /// <returns></returns>
         string ReferenceVariables(string data)
         {
-            var variables = Game.ActiveScene.Timeline.VariableList;
+            var variables = Game.VariableList;
             if (variables.Count == 0) return data;
             foreach (var variable in variables)
             {
