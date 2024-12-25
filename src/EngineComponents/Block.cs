@@ -3,7 +3,8 @@ using EngineComponents.Interfaces;
 namespace EngineComponents
 {
     /// <summary>
-    /// Represents a block within the menu component.
+    /// Represents a block.
+    /// The block is dependent on a parent menu object.
     /// </summary>
     class Block : IPermanentRenderingObject
     {

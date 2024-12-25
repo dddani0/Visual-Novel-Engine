@@ -6,7 +6,7 @@ namespace EngineComponents.Actions
     /// <summary>
     /// Tints a sprite with a color.
     /// </summary>
-    class TintSpriteAction : IEvent
+    class TintSpriteAction : IEvent, IButtonEvent
     {
         readonly Game Game;
         readonly Sprite sprite;

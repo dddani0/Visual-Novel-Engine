@@ -419,10 +419,131 @@ namespace EngineComponents
                                     break;
                                 case "CreateMenuAction":
                                     // Add the create menu action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new CreateMenuAction(
-                                            this, null, null)
+                                    var menuXPosition = scene.ActionList[i].MenuXPosition.Value;
+                                    var menuYPosition = scene.ActionList[i].MenuYPosition.Value;
+                                    var menuWidth = scene.ActionList[i].MenuWidth.Value;
+                                    var menuHeight = scene.ActionList[i].MenuHeight.Value;
+                                    var menuFullScreen = scene.ActionList[i].MenuFullScreen == "True";
+                                    var windowColor = new Color()
+                                    {
+                                        R = (byte)scene.ActionList[i].MenuColor[0],
+                                        G = (byte)scene.ActionList[i].MenuColor[1],
+                                        B = (byte)scene.ActionList[i].MenuColor[2],
+                                        A = (byte)scene.ActionList[i].MenuColor[3]
+                                    };
+                                    var windowBorderColor = new Color()
+                                    {
+                                        R = (byte)scene.ActionList[i].MenuBorderColor[0],
+                                        G = (byte)scene.ActionList[i].MenuBorderColor[1],
+                                        B = (byte)scene.ActionList[i].MenuBorderColor[2],
+                                        A = (byte)scene.ActionList[i].MenuBorderColor[3]
+                                    };
+                                    var menu = new Menu(
+                                        this,
+                                        menuXPosition,
+                                        menuYPosition,
+                                        menuWidth,
+                                        menuHeight,
+                                        menuFullScreen,
+                                        [],
+                                        windowColor,
+                                        windowBorderColor);
+                                    foreach (BlockImport? block in scene.ActionList[i].MenuBlockList)
+                                    {
+                                        //Futher implementation needed.
+                                        IButtonEvent newEvent = block.Button.Event.Type switch
+                                        {
+                                            "TextBoxCreateAction" => new TextBoxCreateAction(
+                                                TextBox.CreateNewTextBox(
+                                                    this,
+                                                    block.Button.Event.CharactersPerSecond.Value,
+                                                    new Font() { BaseSize = 30, GlyphPadding = 5 },
+                                                    new Color() { R = 0, G = 0, B = 0, A = 255 },
+                                                    new Color() { R = 0, G = 0, B = 0, A = 255 },
+                                                    (TextBox.PositionType)block.Button.Event.PositionType.Value,
+                                                    block.Button.Event.WordWrap.Value,
+                                                    block.Button.Event.TextBoxTitle,
+                                                    [.. block.Button.Event.TextBoxContent])),
+                                            "AddSpriteAction" => new AddSpriteAction(
+                                                new Sprite(block.Button.Event.SpritePath),
+                                                this),
+                                            "TintSpriteAction" => new TintSpriteAction(
+                                                new Sprite(block.Button.Event.SpritePath),
+                                                new Color()
+                                                {
+                                                    R = (byte)block.Button.Event.TintColor[0],
+                                                    G = (byte)block.Button.Event.TintColor[1],
+                                                    B = (byte)block.Button.Event.TintColor[2],
+                                                    A = (byte)block.Button.Event.TintColor[3]
+                                                },
+                                                this),
+                                            "RemoveSpriteAction" => new RemoveSpriteAction(
+                                                new Sprite(block.Button.Event.SpritePath),
+                                                this),
+                                            "NativeLoadSceneAction" => new NativeLoadSceneAction(
+                                                this,
+                                                block.Button.Event.SceneID.Value),
+                                            "CreateVariableAction" => new CreateVariableAction(
+                                                this,
+                                                new Variable(
+                                                    block.Button.Event.VariableName,
+                                                    block.Button.Event.VariableValue,
+                                                    (VariableType)block.Button.Event.VariableType.Value)),
+                                            "IncrementVariableAction" => new IncrementVariableAction(
+                                                this,
+                                                block.Button.Event.VariableName,
+                                                int.Parse(block.Button.Event.VariableValue)),
+                                            "DecrementVariableAction" => new DecrementVariableAction(
+                                                this,
+                                                block.Button.Event.VariableName,
+                                                int.Parse(block.Button.Event.VariableValue)),
+                                            "SetVariableTrueAction" => new SetVariableTrueAction(
+                                                this,
+                                                block.Button.Event.VariableName),
+                                            "SetVariableFalseAction" => new SetVariableFalseAction(
+                                                this,
+                                                block.Button.Event.VariableName),
+                                            null => throw new InvalidOperationException("Failed to load scene settings, because the event type is not recognized."),
+                                            _ => throw new NotImplementedException()
+                                        };
+                                        var newBlock = new Block(
+                                            block.BlockXPosition,
+                                            block.BlockYPosition,
+                                            new Button(
+                                                this,
+                                                menu,
+                                                block.Button.ButtonXPosition,
+                                                block.Button.ButtonYPosition,
+                                                block.Button.ButtonWidth,
+                                                block.Button.ButtonHeight,
+                                                block.Button.ButtonText,
+                                                new Color()
+                                                {
+                                                    R = (byte)block.Button.ButtonColor[0],
+                                                    G = (byte)block.Button.ButtonColor[1],
+                                                    B = (byte)block.Button.ButtonColor[2],
+                                                    A = (byte)block.Button.ButtonColor[3]
+                                                },
+                                                new Color()
+                                                {
+                                                    R = (byte)block.Button.ButtonBorderColor[0],
+                                                    G = (byte)block.Button.ButtonBorderColor[1],
+                                                    B = (byte)block.Button.ButtonBorderColor[2],
+                                                    A = (byte)block.Button.ButtonBorderColor[3]
+                                                },
+                                                new Color()
+                                                {
+                                                    R = (byte)block.Button.ButtonHoverColor[0],
+                                                    G = (byte)block.Button.ButtonHoverColor[1],
+                                                    B = (byte)block.Button.ButtonHoverColor[2],
+                                                    A = (byte)block.Button.ButtonHoverColor[3]
+                                                },
+                                                newEvent
+                                            )
                                         );
+                                        menu.BlockList.Add(newBlock);
+                                    }
+                                    timeline.ActionList.Add(new CreateMenuAction(this, menu, [.. menu.BlockList]));
                                     break;
                                 default:
                                     throw new InvalidOperationException("Failed to load scene settings, because the action type is not recognized.");

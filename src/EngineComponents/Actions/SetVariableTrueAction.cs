@@ -5,7 +5,7 @@ namespace EngineComponents.Actions
     /// <summary>
     /// Sets the already declaired boolean variable to true.
     /// </summary>
-    public class SetVariableTrueAction : IEvent
+    public class SetVariableTrueAction : IEvent, IButtonEvent
     {
         readonly string VariableName;
         Game Game { get; set; }

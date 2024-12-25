@@ -5,7 +5,7 @@ namespace EngineComponents.Actions
     /// <summary>
     /// Loads a new scene natively (without trigger).
     /// </summary>
-    class NativeLoadSceneAction : IEvent
+    class NativeLoadSceneAction : IEvent, IButtonEvent
     {
         readonly Game Game;
         readonly long sceneID;

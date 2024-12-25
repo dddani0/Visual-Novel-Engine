@@ -2,7 +2,7 @@ using EngineComponents.Interfaces;
 
 namespace EngineComponents.Actions
 {
-    class RemoveSpriteAction : IEvent
+    class RemoveSpriteAction : IEvent, IButtonEvent
     {
         readonly Game Game;
         readonly Sprite sprite;

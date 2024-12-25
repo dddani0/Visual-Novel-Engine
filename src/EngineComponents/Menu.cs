@@ -4,7 +4,8 @@ using Raylib_cs;
 namespace EngineComponents
 {
     /// <summary>
-    /// Represents a menu.
+    /// Represents a menu, which is a collection of blocks.
+    /// A Block is a component with coordinates.
     /// </summary>
     class Menu : IPermanentRenderingObject
     {

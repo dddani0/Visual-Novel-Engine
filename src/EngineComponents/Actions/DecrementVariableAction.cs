@@ -5,7 +5,7 @@ namespace EngineComponents.Actions
     /// <summary>
     /// Decrements the already declaired integer variable with a value.
     /// </summary>
-    public class DecrementVariableAction : IEvent
+    public class DecrementVariableAction : IEvent, IButtonEvent
     {
         Variable Variable;
         string VariableName { get; }

@@ -58,10 +58,8 @@
                                 150
                             ],
                             "Event": {
-                                "Type": "CreateVariableAction",
-                                "VariableName": "myVar",
-                                "VariableValue": "valtozo ertek",
-                                "VariableType": 1
+                                "Type": "NativeLoadSceneAction",
+                                "SceneId": 2
                             }
                         }
                     }

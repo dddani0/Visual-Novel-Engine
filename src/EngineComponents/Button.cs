@@ -4,7 +4,8 @@ using Raylib_cs;
 namespace EngineComponents
 {
     /// <summary>
-    /// Button component
+    /// Represent a Button.
+    /// Allows to perform an action when clicked.
     /// </summary>
     class Button : IPermanentRenderingObject
     {
@@ -59,7 +60,6 @@ namespace EngineComponents
             if (!isHover || !Game.IsLeftMouseButtonPressed()) return;
             isPressed = true;
             Event.PerformEvent();
-            Game.ActiveScene.Timeline.NextStep();
         }
         /// <summary>
         /// Renders the button on the screen.
