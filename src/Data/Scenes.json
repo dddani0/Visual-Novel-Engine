@@ -20,6 +20,64 @@
                 "VariableName": "myVar",
                 "VariableValue": "valtozo ertek",
                 "VariableType": 1
+            },
+            {
+                "Type": "CreateMenuAction",
+                "MenuXPosition": 0,
+                "MenuYPosition": 0,
+                "MenuWidth": 700,
+                "MenuHeight": 700,
+                "MenuFullScreen": "True",
+                "MenuBlockList": [
+                    {
+                        "BlockXPosition": 0,
+                        "BlockYPosition": 0,
+                        "Button": {
+                            "ButtonXPosition": 0,
+                            "ButtonYPosition": 0,
+                            "ButtonWidth": 100,
+                            "ButtonHeight": 50,
+                            "ButtonText": "Button1",
+                            "ButtonBorderWidth": 2,
+                            "ButtonColor": [
+                                255,
+                                0,
+                                0,
+                                255
+                            ],
+                            "ButtonBorderColor": [
+                                0,
+                                0,
+                                255,
+                                255
+                            ],
+                            "ButtonHoverColor": [
+                                255,
+                                0,
+                                0,
+                                150
+                            ],
+                            "Event": {
+                                "Type": "CreateVariableAction",
+                                "VariableName": "myVar",
+                                "VariableValue": "valtozo ertek",
+                                "VariableType": 1
+                            }
+                        }
+                    }
+                ],
+                "MenuColor": [
+                    0,
+                    0,
+                    255,
+                    255
+                ],
+                "MenuBorderColor": [
+                    255,
+                    0,
+                    0,
+                    255
+                ]
             }
         ]
     },

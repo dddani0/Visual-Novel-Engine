@@ -46,7 +46,7 @@ namespace EngineComponents
     internal class ActionImport
     {
         [JsonPropertyName("Type")]
-        public string Type { get; set; }
+        public required string Type { get; set; }
         [JsonPropertyName("SpritePath")]
         public string? SpritePath { get; set; }
         [JsonPropertyName("CharactersPerSecond")]
@@ -75,6 +75,22 @@ namespace EngineComponents
         public string? VariableValue { get; set; }
         [JsonPropertyName("VariableType")]
         public int? VariableType { get; set; }
+        [JsonPropertyName("MenuXPosition")]
+        public int? MenuXPosition { get; set; }
+        [JsonPropertyName("MenuYPosition")]
+        public int? MenuYPosition { get; set; }
+        [JsonPropertyName("MenuWidth")]
+        public int? MenuWidth { get; set; }
+        [JsonPropertyName("MenuHeight")]
+        public int? MenuHeight { get; set; }
+        [JsonPropertyName("MenuFullScreen")]
+        public string? MenuFullScreen { get; set; }
+        [JsonPropertyName("MenuBlockList")]
+        public BlockImport[]? MenuBlockList { get; set; }
+        [JsonPropertyName("MenuColor")]
+        public int[]? MenuColor { get; set; }
+        [JsonPropertyName("MenuBorderColor")]
+        public int[]? MenuBorderColor { get; set; }
     }
     /// <summary>
     /// The VariableImport class is a helper class to import the list of saved variables from a json file.
@@ -88,7 +104,43 @@ namespace EngineComponents
         [JsonPropertyName("Type")]
         public required int Type { get; set; }
     }
+    /// <summary>
+    /// The BlockImport class is a helper class to import the list of blocks from a json file.
+    /// </summary>
+    internal class BlockImport
+    {
+        [JsonPropertyName("BlockXPosition")]
+        public int BlockXPosition { get; set; }
+        [JsonPropertyName("BlockYPosition")]
+        public int BlockYPosition { get; set; }
+        [JsonPropertyName("Button")]
+        public ButtonComponentImport? Button { get; set; }
 
+    }
+    /// <summary>
+    /// The ButtonComponentImport class is a helper class to import the list of buttons from a json file.
+    /// </summary>
+    internal class ButtonComponentImport
+    {
+        [JsonPropertyName("ButtonXPosition")]
+        public required int ButtonXPosition { get; set; }
+        [JsonPropertyName("ButtonYPosition")]
+        public required int ButtonYPosition { get; set; }
+        [JsonPropertyName("ButtonWidth")]
+        public required int ButtonWidth { get; set; }
+        [JsonPropertyName("ButtonHeight")]
+        public required int ButtonHeight { get; set; }
+        [JsonPropertyName("ButtonText")]
+        public required string ButtonText { get; set; }
+        [JsonPropertyName("ButtonColor")]
+        public required int[] ButtonColor { get; set; }
+        [JsonPropertyName("ButtonBorderColor")]
+        public required int[] ButtonBorderColor { get; set; }
+        [JsonPropertyName("ButtonHoverColor")]
+        public required int[] ButtonHoverColor { get; set; }
+        [JsonPropertyName("Event")]
+        public required ActionImport Event { get; set; }
+    }
     /// <summary>
     /// The Game is a Gamemanager which changes the changes and loads the correct configuration and data into the template game.
     /// The Game is a singleton!
@@ -364,6 +416,13 @@ namespace EngineComponents
                                         new ToggleVariableAction(
                                             this,
                                             scene.ActionList[i].VariableName));
+                                    break;
+                                case "CreateMenuAction":
+                                    // Add the create menu action to the timeline.
+                                    timeline.ActionList.Add(
+                                        new CreateMenuAction(
+                                            this, null, null)
+                                        );
                                     break;
                                 default:
                                     throw new InvalidOperationException("Failed to load scene settings, because the action type is not recognized.");

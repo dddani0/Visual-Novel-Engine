@@ -20,13 +20,15 @@ namespace EngineComponents
         private Color HoverColor { get; }
         private Color BorderColor { get; }
         private IButtonEvent Event { get; }
+        private Menu ParentMenu { get; }
         Game Game { get; }
         /// <summary>
         /// Creates a button.
         /// </summary>
         /// <param name="game">Active Game</param>
-        /// <param name="xPos">Position on the X axis.</param>
-        /// <param name="yPos">Position on the Y axis</param>
+        /// <param name="parentMenu">Parent menu of the button</param>
+        /// <param name="xPos">Relative position on the X axis.</param>
+        /// <param name="yPos">Relative position on the Y axis</param>
         /// <param name="width">Width of the Button</param>
         /// <param name="height">Heigth of the Button</param>
         /// <param name="text">The text on the button</param>
@@ -34,10 +36,11 @@ namespace EngineComponents
         /// <param name="borderColor">The Border color of the Button</param>
         /// <param name="hoverColor">The color of the button in hovering state.</param>
         /// <param name="buttonEvent">The event which is attached to the button</param>
-        public Button(Game game, int xPos, int yPos, int width, int height, string text, Color color, Color borderColor, Color hoverColor, IButtonEvent buttonEvent)
+        public Button(Game game, Menu parentMenu, int xPos, int yPos, int width, int height, string text, Color color, Color borderColor, Color hoverColor, IButtonEvent buttonEvent)
         {
-            XPos = xPos;
-            YPos = yPos;
+            ParentMenu = parentMenu;
+            XPos = parentMenu.XPosition + xPos;
+            YPos = parentMenu.YPosition + yPos;
             Width = width;
             Height = height;
             Text = text;
@@ -56,7 +59,7 @@ namespace EngineComponents
             if (!isHover || !Game.IsLeftMouseButtonPressed()) return;
             isPressed = true;
             Event.PerformEvent();
-            Game.ActiveScene.Timeline.NextStep(); //necessary?
+            Game.ActiveScene.Timeline.NextStep();
         }
         /// <summary>
         /// Renders the button on the screen.

@@ -7,8 +7,14 @@ namespace EngineComponents
     /// </summary>
     class Block : IPermanentRenderingObject
     {
-        int XPosition { get; set; }
-        int YPosition { get; set; }
+        /// <summary>
+        /// The relative - to the parent - position on the X axis.
+        /// </summary>
+        internal int XPosition { get; set; }
+        /// <summary>
+        /// The relative - to the parent - position on the Y axis.
+        /// </summary>
+        internal int YPosition { get; set; }
         IPermanentRenderingObject Component { get; }
         /// <summary>
         /// Constructor for the block.
