@@ -2,16 +2,12 @@
     {
         "Name": "Scene1",
         "Id": 1,
-        "Background": "GradientVertical",
-        "GradientColor": [
-            15,
-            34,
-            64,
-            255,
-            54,
-            255,
-            123,
-            0
+        "Background": "SolidColor",
+        "Color": [
+            0,
+            0,
+            0,
+            255
         ],
         "ImageTexture": "",
         "ActionList": [
@@ -59,7 +55,7 @@
                             ],
                             "Event": {
                                 "Type": "NativeLoadSceneAction",
-                                "SceneId": 2
+                                "SceneID": 2
                             }
                         }
                     }

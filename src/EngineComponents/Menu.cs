@@ -27,11 +27,11 @@ namespace EngineComponents
             MenuColor = windowColor;
             MenuBorderColor = windowBorderColor;
             //
-            XPosition = isFullScreen ? Raylib.GetScreenWidth() / 2 : xPos; //placeholder
-            YPosition = isFullScreen ? Raylib.GetScreenHeight() / 2 : yPos;
-            //
             Width = isFullScreen ? Raylib.GetScreenWidth() : width;
             Height = isFullScreen ? Raylib.GetScreenHeight() : height;
+            //
+            XPosition = isFullScreen ? Raylib.GetScreenWidth() / 2 - Width / 2 : xPos; //placeholder
+            YPosition = isFullScreen ? Raylib.GetScreenHeight() / 2 - Height / 2 : yPos;
         }
 
         /// <summary>

@@ -67,6 +67,7 @@ namespace EngineComponents
         public void Render()
         {
             if (Enabled() is false) return;
+            PressButton();
             isHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPos, YPos, Width, Height));
             Raylib.DrawRectangle(XPos - Width / 2, YPos - Height / 2, Width, Height, isHover ? HoverColor : Color);
         }
