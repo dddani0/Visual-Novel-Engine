@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using EngineComponents.Actions;
+using EngineComponents.Interfaces;
 using Raylib_cs;
 
 namespace EngineComponents
@@ -251,16 +252,18 @@ namespace EngineComponents
                                     var textBoxTitle = scene.ActionList[i].TextBoxTitle;
                                     var textBoxContent = scene.ActionList[i].TextBoxContent;
                                     //
-                                    timeline.ActionList.Add(new TextBoxCreateAction(TextBox.CreateNewTextBox(
-                                            this,
-                                            charactersPerSecond,
-                                            font,
-                                            textboxcolor,
-                                            textboxborder,
-                                            positionType,
-                                            wordWrap,
-                                            textBoxTitle,
-                                            [.. textBoxContent])));
+                                    var textBox = TextBox.CreateNewTextBox(
+                                        this,
+                                        charactersPerSecond,
+                                        font,
+                                        textboxcolor,
+                                        textboxborder,
+                                        positionType,
+                                        wordWrap,
+                                        textBoxTitle,
+                                        [.. textBoxContent]);
+                                    //
+                                    timeline.ActionList.Add(new TextBoxCreateAction(textBox));
                                     break;
                                 case "AddSpriteAction":
                                     // Add the sprite to the timeline.

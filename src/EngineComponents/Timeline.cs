@@ -1,3 +1,5 @@
+using EngineComponents.Interfaces;
+
 namespace EngineComponents
 {
     public class Timeline

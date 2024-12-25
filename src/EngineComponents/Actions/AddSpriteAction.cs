@@ -5,7 +5,7 @@ namespace EngineComponents.Actions
     /// <summary>
     /// Adds a sprite to the scene.
     /// </summary>
-    class AddSpriteAction : IEvent, IButtonEvent
+    class AddSpriteAction : IEvent
     {
         readonly Game Game;
         readonly Sprite sprite;
