@@ -3,30 +3,53 @@ using Raylib_cs;
 
 namespace EngineComponents
 {
+    /// <summary>
+    /// A level, which a player can create, modify and add depth to it.
+    /// </summary>
     public class Scene
     {
         /// <summary>
-        /// A level, which a player can create, modify and add depth to it.
+        /// The unique identifier of the scene.
         /// </summary>
         internal long Id { get; set; }
+        /// <summary>
+        /// The background type of the scene.
+        /// </summary>
         internal enum BackgroundOption
         {
             SolidColor,
             GradientVertical, GradientHorizontal,
             Image
         }
+        /// <summary>
+        /// The name of the scene.
+        /// </summary>
         internal string Name { get; set; }
+        /// <summary>
+        /// The timeline of the scene.
+        /// </summary>
         internal Timeline Timeline { get; set; }
+        /// <summary>
+        /// The background of the scene.
+        /// </summary>
         internal BackgroundOption Background { get; set; } = BackgroundOption.SolidColor;
-        internal Color solidColor = Color.Gray;
+        /// <summary>
+        /// The color of the scene.
+        /// </summary>
+        internal Color solidColor;
+        /// <summary>
+        /// The image texture of the scene.
+        /// </summary>
         internal Texture2D imageTexture;
+        /// <summary>
+        /// The gradient color of the scene.
+        /// </summary>
         internal Color[] gradientColor;
-        internal Game ConcurrentGame { get; }
-        internal bool HasActiveTextbox { get; private set; } = false;
+        internal Game Game { get; }
         public Scene(string name, Game game)
         {
             Name = name;
-            ConcurrentGame = game;
+            Game = game;
             Timeline = new();
         }
         /// <summary>

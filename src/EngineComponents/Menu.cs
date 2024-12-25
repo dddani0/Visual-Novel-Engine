@@ -9,13 +9,37 @@ namespace EngineComponents
     /// </summary>
     class Menu : IPermanentRenderingObject
     {
+        /// <summary>
+        /// The absolute position on the X axis.
+        /// </summary>
         internal int XPosition { get; set; }
+        /// <summary>
+        /// The absolute position on the Y axis.
+        /// </summary>
         internal int YPosition { get; set; }
+        /// <summary>
+        /// The width of the menu.
+        /// </summary>
         private int Width { get; set; }
+        /// <summary>
+        /// The height of the menu.
+        /// </summary>
         private int Height { get; set; }
+        /// <summary>
+        /// Displays the menu in full screen.
+        /// </summary>
         internal bool IsFullScreen { get; set; }
+        /// <summary>
+        /// The list of blocks in the menu.
+        /// </summary>
         internal List<Block> BlockList { get; set; }
+        /// <summary>
+        /// The background color of the menu.
+        /// </summary>
         internal Color MenuColor { get; set; }
+        /// <summary>
+        /// The border color of the menu.
+        /// </summary>
         internal Color MenuBorderColor { get; set; }
         internal Game Game { get; set; }
 

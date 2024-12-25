@@ -8,11 +8,30 @@ namespace EngineComponents
     /// </summary>
     class Sprite : IPermanentRenderingObject
     {
+        /// <summary>
+        /// The name of the sprite.
+        /// </summary>
         internal string Name { get; set; }
+        /// <summary>
+        /// The texture of the sprite.
+        /// </summary>
         internal Texture2D ImageTexture { get; set; }
+        /// <summary>
+        /// The color of the sprite.
+        /// Default: white.
+        /// </summary>
         internal Color Color { get; set; }
+        /// <summary>
+        /// The state of the sprite.
+        /// </summary>
         internal bool Enabled { get; set; } = false;
+        /// <summary>
+        /// Position of the sprite on the X axis.
+        /// </summary>
         internal int X { get; set; }
+        /// <summary>
+        /// Position of the sprite on the Y axis.
+        /// </summary>
         internal int Y { get; set; }
         /// <summary>
         /// Creates a sprite.

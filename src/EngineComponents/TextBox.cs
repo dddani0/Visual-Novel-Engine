@@ -8,6 +8,9 @@ namespace EngineComponents
     /// </summary>
     public class TextBox
     {
+        /// <summary>
+        /// The position of the textbox.
+        /// </summary>
         public enum PositionType
         {
             defaultPosition,
@@ -115,43 +118,123 @@ namespace EngineComponents
             //
             ToggleEnability(); //Disabled by default
         }
-
+        /// <summary>
+        /// Check if the current batch of the textbox is finished.
+        /// </summary>
         internal bool IsFinished => TextIndex == TextCount;
         internal void ToggleEnability() => IsEnabled = !IsEnabled;
+        /// <summary>
+        /// A timer for the textbox.
+        /// </summary>
         internal Timer SecondTimer { get; private set; }
+        /// <summary>
+        /// A timer for the blinking cursor.
+        /// </summary>
         internal Timer BlinkingCursorTimer { get; private set; }
+        /// <summary>
+        /// The content of the textbox.
+        /// </summary>
         internal List<String> Content { get; private set; }
+        /// <summary>
+        /// The current loaded data of the textbox.
+        /// </summary>
         private string CurrentLoadedData { get; set; }
+        /// <summary>
+        /// The output of the textbox.
+        /// </summary>
         private string Output { get; set; }
+        /// <summary>
+        /// The output of the textbox without tabs.
+        /// </summary>
         private string SanatizedOutput => Output.Replace("\t", String.Empty);
+        /// <summary>
+        /// The header of the textbox.
+        /// </summary>
         private string HeaderSanatization => TextBoxTitle.Replace("\t", String.Empty).Replace("\n", String.Empty);
+        /// <summary>
+        /// The title of the textbox.
+        /// </summary>
         private string TextBoxTitle { get; set; }
+        /// <summary>
+        /// The speed of the textbox (Characters per second).
+        /// </summary>
         private double CPSTextSpeed { get; }
         private const int TextBoxPositionYOffset = 5;
+        /// <summary>
+        /// The maximum character count of the textbox.
+        /// </summary>
         private int MaximumCharacterCount { get; }
+        /// <summary>
+        /// The maximum number of rows enabled in a textbox.
+        /// </summary>
         private int MaximumRowCount { get; }
+        /// <summary>
+        /// The width of the character.
+        /// </summary>
         private int CharacterWidth { get; set; }
+        /// <summary>
+        /// The height of the character.
+        /// </summary>
         private int CharacterHeigth { get; set; }
+        /// <summary>
+        /// The current character index of the text.
+        /// </summary>
         private int TextIndex { get; set; }
+        /// <summary>
+        /// The current text count of the text.
+        /// </summary>
         private int TextCount { get; set; }
+        /// <summary>
+        /// The current index of the text collection.
+        /// </summary>
         private int TextCollectionIndex { get; set; }
+        /// <summary>
+        /// The count of the text collection.
+        /// </summary>
         private int TextCollectionCount { get; set; }
         private int IncrementTextDataIndex() => TextCollectionIndex++;
         private int IncrementIndex() => TextIndex++;
+        /// <summary>
+        /// The position of the textbox.
+        /// </summary>
         private int[] Position { get; set; }
+        /// <summary>
+        /// Check if the textbox is enabled.
+        /// </summary>
         private bool IsEnabled { get; set; }
         internal bool IsDisabled() => IsEnabled is false;
+        /// <summary>
+        /// Should the text wrap when initiating a new line?
+        /// </summary>
         private bool WordWrap { get; set; }
+        /// <summary>
+        /// Check if the current batch of the textbox is done.
+        /// </summary>
         private bool TextBatchDone { get; set; }
+        /// <summary>
+        /// Check if the textbox is blinking.
+        /// </summary>
         private bool IsBlinking { get; set; }
         private bool ToggleBlinking() => IsBlinking = !IsBlinking;
         internal int XPosition => Position[0];
         internal int YPosition => Position[1];
         internal int XScale => Scale[0];
         internal int YScale => Scale[1];
+        /// <summary>
+        /// The box which abstractly represents the textbox.
+        /// </summary>
         internal Rectangle Box { get; set; }
+        /// <summary>
+        /// The font of the textbox.
+        /// </summary>
         internal Font CurrentFont { get; set; }
+        /// <summary>
+        /// The background and border color of the textbox.
+        /// </summary>
         internal Color TextBoxBackground { get; set; }
+        /// <summary>
+        /// The border color of the textbox.
+        /// </summary>
         internal Color TextBoxBorder { get; set; }
         internal readonly Game Game;
         private int[] Scale { get; set; }

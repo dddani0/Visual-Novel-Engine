@@ -1,3 +1,4 @@
+using System.Numerics;
 using EngineComponents.Interfaces;
 using Raylib_cs;
 
@@ -9,17 +10,47 @@ namespace EngineComponents
     /// </summary>
     class Button : IPermanentRenderingObject
     {
-        internal int XPos { get; set; }
-        internal int YPos { get; set; }
+        /// <summary>
+        /// The absolute position on the X axis.
+        /// </summary>
+        internal int XPosition { get; set; }
+        /// <summary>
+        /// The absolute position on the Y axis.
+        /// </summary>
+        internal int YPosition { get; set; }
+        /// <summary>
+        /// The width of the button.
+        /// </summary>
         private int Width { get; set; }
+        /// <summary>
+        /// The height of the button.
+        /// </summary>
         private int Height { get; set; }
+        /// <summary>
+        /// The text on the button.
+        /// </summary>
         internal string Text { get; set; }
         internal bool isHover;
         internal bool isPressed;
+        /// <summary>
+        /// The border width of the button.
+        /// </summary>
         int BorderWidth { get; set; }
+        /// <summary>
+        /// The color of the button.
+        /// </summary>
         private Color Color { get; }
+        /// <summary>
+        /// The color of the button when hovered.
+        /// </summary>
         private Color HoverColor { get; }
+        /// <summary>
+        /// The border color of the button.
+        /// </summary>
         private Color BorderColor { get; }
+        /// <summary>
+        /// The event which is attached to the button.
+        /// </summary>
         private IButtonEvent Event { get; }
         private Menu ParentMenu { get; }
         Game Game { get; }
@@ -40,8 +71,8 @@ namespace EngineComponents
         public Button(Game game, Menu parentMenu, int xPos, int yPos, int width, int height, string text, Color color, Color borderColor, Color hoverColor, IButtonEvent buttonEvent)
         {
             ParentMenu = parentMenu;
-            XPos = parentMenu.XPosition + xPos;
-            YPos = parentMenu.YPosition + yPos;
+            XPosition = parentMenu.XPosition + xPos;
+            YPosition = parentMenu.YPosition + yPos;
             Width = width;
             Height = height;
             Text = text;
@@ -67,9 +98,11 @@ namespace EngineComponents
         public void Render()
         {
             if (Enabled() is false) return;
+            isHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height));
             PressButton();
-            isHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPos, YPos, Width, Height));
-            Raylib.DrawRectangle(XPos - Width / 2, YPos - Height / 2, Width, Height, isHover ? HoverColor : Color);
+            Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, isHover ? HoverColor : Color);
+            Raylib.DrawRectangleLinesEx(new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height), BorderWidth, BorderColor);
+            Raylib.DrawTextEx(new Font() { BaseSize = 30, GlyphPadding = 5 }, Text, new Vector2(XPosition, YPosition), 30, 5, Color.White);
         }
         /// <summary>
         /// Checks if the button is enabled.

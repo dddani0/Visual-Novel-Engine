@@ -452,7 +452,6 @@ namespace EngineComponents
                                         windowBorderColor);
                                     foreach (BlockImport? block in scene.ActionList[i].MenuBlockList)
                                     {
-                                        //Futher implementation needed.
                                         IButtonEvent newEvent = block.Button.Event.Type switch
                                         {
                                             "TextBoxCreateAction" => new TextBoxCreateAction(
