@@ -142,9 +142,11 @@ namespace EngineComponents
         public required ActionImport Event { get; set; }
     }
     /// <summary>
-    /// The Game is a Gamemanager which changes the changes and loads the correct configuration and data into the template game.
-    /// The Game is a singleton!
-    /// The major difference between the editor and the Game, is that the latter updates everyframe.
+    /// The Game is the main class of the game.
+    /// It contains the game settings, scenes, variables and the active scene.
+    /// It is responsible for fetching the game settings, variables and scenes from the json files.
+    /// It is also responsible for loading the scene and updating the scene.
+    /// It manages inputs from the user.
     /// </summary>
     public class Game
     {
