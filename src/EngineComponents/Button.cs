@@ -8,7 +8,7 @@ namespace EngineComponents
     /// Represent a Button.
     /// Allows to perform an action when clicked.
     /// </summary>
-    class Button : IPermanentRenderingObject
+    public class Button : IPermanentRenderingObject
     {
         /// <summary>
         /// The absolute position on the X axis.
@@ -21,17 +21,28 @@ namespace EngineComponents
         /// <summary>
         /// The width of the button.
         /// </summary>
-        private int Width { get; set; }
+        internal int Width { get; set; }
         /// <summary>
         /// The height of the button.
         /// </summary>
-        private int Height { get; set; }
+        internal int Height { get; set; }
         /// <summary>
         /// The text on the button.
         /// </summary>
         internal string Text { get; set; }
         internal bool isHover;
         internal bool isPressed;
+        private Menu menu;
+        private int buttonXPosition;
+        private int buttonYPosition;
+        private int buttonWidth;
+        private int buttonHeight;
+        private string buttonText;
+        private Color color1;
+        private Color color2;
+        private Color color3;
+        private IButtonEvent newEvent;
+
         /// <summary>
         /// The border width of the button.
         /// </summary>
@@ -81,6 +92,21 @@ namespace EngineComponents
             HoverColor = hoverColor;
             Event = buttonEvent;
             Game = game;
+        }
+
+        public Button(Game game, Menu menu, int buttonXPosition, int buttonYPosition, int buttonWidth, int buttonHeight, string buttonText, Color color1, Color color2, Color color3, IButtonEvent newEvent)
+        {
+            Game = game;
+            this.menu = menu;
+            this.buttonXPosition = buttonXPosition;
+            this.buttonYPosition = buttonYPosition;
+            this.buttonWidth = buttonWidth;
+            this.buttonHeight = buttonHeight;
+            this.buttonText = buttonText;
+            this.color1 = color1;
+            this.color2 = color2;
+            this.color3 = color3;
+            this.newEvent = newEvent;
         }
 
         /// <summary>

@@ -9,18 +9,57 @@ namespace EngineComponents
     /// </summary>
     class InputField : IPermanentRenderingObject
     {
+        /// <summary>
+        /// X position of the input field.
+        /// </summary>
         internal int XPosition { get; set; }
+        /// <summary>
+        /// Y position of the input field.
+        /// </summary>
         internal int YPosition { get; set; }
+        /// <summary>
+        /// Width of the input field.
+        /// </summary>
         internal int Width { get; set; }
+        /// <summary>
+        /// Height of the input field.
+        /// </summary>
         internal int Height { get; set; }
+        /// <summary>
+        /// Text of the input field.
+        /// </summary>
         internal string Text { get; set; }
+        /// <summary>
+        /// Placeholder of the input field.
+        /// </summary>
         internal string Placeholder { get; set; }
+        /// <summary>
+        /// Is the input field visible.
+        /// </summary>
         internal bool IsVisible { get; set; }
+        /// <summary>
+        /// Is the input field selected.
+        /// </summary>
         internal bool IsSelected { get; set; }
+        /// <summary>
+        /// The button component of the input field.
+        /// </summary>
         internal Button Button { get; set; }
+        /// <summary>
+        /// The border width of the input field.
+        /// </summary>
         private int BorderWidth { get; set; }
+        /// <summary>
+        /// The color of the input field.
+        /// </summary>
         private Color InputFieldColor { get; set; }
+        /// <summary>
+        /// The border color of the input field.
+        /// </summary>
         private Color InputFieldBorderColor { get; set; }
+        /// <summary>
+        /// The hover color of the input field.
+        /// </summary>
         private Color HoverColor { get; set; }
         public InputField(Game Game, Block block, int ButtonYOffset, int width, int height, string placeholder, string buttonText, IButtonEvent buttonEvent)
         {
@@ -33,6 +72,10 @@ namespace EngineComponents
             IsSelected = false;
             Button = new Button(Game, block, 0, 0 - ButtonYOffset, Width, Height, buttonText, InputFieldColor, InputFieldBorderColor, HoverColor, buttonEvent);
         }
+        /// <summary>
+        /// Returns if the input field is visible.
+        /// </summary>
+        /// <returns></returns>
         public bool Enabled() => IsVisible;
 
         /// <summary>
@@ -40,10 +83,9 @@ namespace EngineComponents
         /// </summary>
         private void UpdateInputField()
         {
-            if (Enabled() is false) return;
             if (Game.IsLeftMouseButtonPressed())
             {
-                if (Raylib.GetMouseX() >= XPosition && Raylib.GetMouseX() <= XPosition + Width && Raylib.GetMouseY() >= YPosition && Raylib.GetMouseY() <= YPosition + Height)
+                if (Game.GetMouseXPosition() >= XPosition && Game.GetMouseXPosition() <= XPosition + Width && Game.GetMouseYPosition() >= YPosition && Game.GetMouseYPosition() <= YPosition + Height)
                 {
                     IsSelected = true;
                 }
@@ -54,14 +96,14 @@ namespace EngineComponents
             }
             if (IsSelected)
             {
-                if (Raylib.IsKeyPressed(KeyboardKey.Backspace))
+                if (Game.IsKeyPressed(KeyboardKey.Backspace))
                 {
                     if (Text.Length > 0)
                     {
                         Text = Text.Remove(Text.Length - 1);
                     }
                 }
-                else if (Raylib.IsKeyPressed(KeyboardKey.Enter))
+                else if (Game.IsKeyPressed(KeyboardKey.Enter))
                 {
                     IsSelected = false;
                 }
