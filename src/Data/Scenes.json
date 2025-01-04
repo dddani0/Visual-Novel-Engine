@@ -29,16 +29,16 @@
                         "BlockXPosition": 0,
                         "BlockYPosition": 0,
                         "Button": {
-                            "ButtonXPosition": 0,
-                            "ButtonYPosition": 0,
-                            "ButtonWidth": 100,
-                            "ButtonHeight": 50,
+                            "ButtonXPosition": 400,
+                            "ButtonYPosition": 400,
+                            "ButtonWidth": 200,
+                            "ButtonHeight": 100,
                             "ButtonText": "Button1",
                             "ButtonBorderWidth": 2,
                             "ButtonColor": [
-                                255,
-                                0,
-                                0,
+                                155,
+                                155,
+                                115,
                                 255
                             ],
                             "ButtonBorderColor": [
@@ -48,10 +48,10 @@
                                 255
                             ],
                             "ButtonHoverColor": [
-                                255,
-                                0,
-                                0,
-                                150
+                                155,
+                                155,
+                                115,
+                                200
                             ],
                             "Event": {
                                 "Type": "NativeLoadSceneAction",

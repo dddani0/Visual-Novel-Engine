@@ -6,7 +6,7 @@ namespace EngineComponents
     /// Represents a block.
     /// The block is dependent on a parent menu object.
     /// </summary>
-    class Block : IPermanentRenderingObject
+    public class Block : IPermanentRenderingObject
     {
         /// <summary>
         /// The relative - to the parent - position on the X axis.
@@ -16,6 +16,10 @@ namespace EngineComponents
         /// The relative - to the parent - position on the Y axis.
         /// </summary>
         internal int YPosition { get; set; }
+        /// <summary>
+        /// The rendering component of the block.
+        /// The abstract component can be a Button, TextField, or Sprite.
+        /// </summary>
         IPermanentRenderingObject Component { get; }
         /// <summary>
         /// Constructor for the block.

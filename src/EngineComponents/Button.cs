@@ -52,7 +52,7 @@ namespace EngineComponents
         /// The event which is attached to the button.
         /// </summary>
         private IButtonEvent Event { get; }
-        private Menu ParentMenu { get; }
+        private Block ParentMenu { get; }
         Game Game { get; }
         /// <summary>
         /// Creates a button.
@@ -68,11 +68,11 @@ namespace EngineComponents
         /// <param name="borderColor">The Border color of the Button</param>
         /// <param name="hoverColor">The color of the button in hovering state.</param>
         /// <param name="buttonEvent">The event which is attached to the button</param>
-        public Button(Game game, Menu parentMenu, int xPos, int yPos, int width, int height, string text, Color color, Color borderColor, Color hoverColor, IButtonEvent buttonEvent)
+        public Button(Game game, Block block, int xPos, int yPos, int width, int height, string text, Color color, Color borderColor, Color hoverColor, IButtonEvent buttonEvent)
         {
-            ParentMenu = parentMenu;
-            XPosition = parentMenu.XPosition + xPos;
-            YPosition = parentMenu.YPosition + yPos;
+            ParentMenu = block;
+            XPosition = block.XPosition + xPos;
+            YPosition = block.YPosition + yPos;
             Width = width;
             Height = height;
             Text = text;

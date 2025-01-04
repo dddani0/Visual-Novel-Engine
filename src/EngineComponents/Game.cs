@@ -59,6 +59,10 @@ namespace EngineComponents
         public int[]? TextBoxBorder { get; set; }
         [JsonPropertyName("PositionType")]
         public int? PositionType { get; set; }
+        [JsonPropertyName("HorizontalTextMargin")]
+        public int? HorizontalTextMargin { get; set; }
+        [JsonPropertyName("VerticalTextMargin")]
+        public int? VerticalTextMargin { get; set; }
         [JsonPropertyName("WordWrap")]
         public bool? WordWrap { get; set; }
         [JsonPropertyName("TextBoxTitle")]
@@ -302,6 +306,8 @@ namespace EngineComponents
                                         A = (byte)scene.ActionList[i].TextBoxBorder[3]
                                     };
                                     var positionType = (TextBox.PositionType)scene.ActionList[i].PositionType.Value;
+                                    var horizontalTextMargin = scene.ActionList[i].HorizontalTextMargin.Value;
+                                    var verticalTextMargin = scene.ActionList[i].VerticalTextMargin.Value;
                                     var wordWrap = scene.ActionList[i].WordWrap.Value;
                                     var textBoxTitle = scene.ActionList[i].TextBoxTitle;
                                     var textBoxContent = scene.ActionList[i].TextBoxContent;
@@ -313,6 +319,8 @@ namespace EngineComponents
                                         textboxcolor,
                                         textboxborder,
                                         positionType,
+                                        horizontalTextMargin,
+                                        verticalTextMargin,
                                         wordWrap,
                                         textBoxTitle,
                                         [.. textBoxContent]);
@@ -452,97 +460,109 @@ namespace EngineComponents
                                         windowBorderColor);
                                     foreach (BlockImport? block in scene.ActionList[i].MenuBlockList)
                                     {
-                                        IButtonEvent newEvent = block.Button.Event.Type switch
+                                        // The block is a button component.
+                                        if (block.Button != null)
                                         {
-                                            "TextBoxCreateAction" => new TextBoxCreateAction(
-                                                TextBox.CreateNewTextBox(
+                                            IButtonEvent newEvent = block.Button.Event.Type switch
+                                            {
+                                                "TextBoxCreateAction" => new TextBoxCreateAction(
+                                                    TextBox.CreateNewTextBox(
+                                                        this,
+                                                        block.Button.Event.CharactersPerSecond.Value,
+                                                        new Font() { BaseSize = 30, GlyphPadding = 5 },
+                                                        new Color() { R = 0, G = 0, B = 0, A = 255 },
+                                                        new Color() { R = 0, G = 0, B = 0, A = 255 },
+                                                        (TextBox.PositionType)block.Button.Event.PositionType.Value,
+                                                        block.Button.Event.HorizontalTextMargin.Value,
+                                                        block.Button.Event.VerticalTextMargin.Value,
+                                                        block.Button.Event.WordWrap.Value,
+                                                        block.Button.Event.TextBoxTitle,
+                                                        [.. block.Button.Event.TextBoxContent])),
+                                                "AddSpriteAction" => new AddSpriteAction(
+                                                    new Sprite(block.Button.Event.SpritePath),
+                                                    this),
+                                                "TintSpriteAction" => new TintSpriteAction(
+                                                    new Sprite(block.Button.Event.SpritePath),
+                                                    new Color()
+                                                    {
+                                                        R = (byte)block.Button.Event.TintColor[0],
+                                                        G = (byte)block.Button.Event.TintColor[1],
+                                                        B = (byte)block.Button.Event.TintColor[2],
+                                                        A = (byte)block.Button.Event.TintColor[3]
+                                                    },
+                                                    this),
+                                                "RemoveSpriteAction" => new RemoveSpriteAction(
+                                                    new Sprite(block.Button.Event.SpritePath),
+                                                    this),
+                                                "NativeLoadSceneAction" => new NativeLoadSceneAction(
                                                     this,
-                                                    block.Button.Event.CharactersPerSecond.Value,
-                                                    new Font() { BaseSize = 30, GlyphPadding = 5 },
-                                                    new Color() { R = 0, G = 0, B = 0, A = 255 },
-                                                    new Color() { R = 0, G = 0, B = 0, A = 255 },
-                                                    (TextBox.PositionType)block.Button.Event.PositionType.Value,
-                                                    block.Button.Event.WordWrap.Value,
-                                                    block.Button.Event.TextBoxTitle,
-                                                    [.. block.Button.Event.TextBoxContent])),
-                                            "AddSpriteAction" => new AddSpriteAction(
-                                                new Sprite(block.Button.Event.SpritePath),
-                                                this),
-                                            "TintSpriteAction" => new TintSpriteAction(
-                                                new Sprite(block.Button.Event.SpritePath),
-                                                new Color()
-                                                {
-                                                    R = (byte)block.Button.Event.TintColor[0],
-                                                    G = (byte)block.Button.Event.TintColor[1],
-                                                    B = (byte)block.Button.Event.TintColor[2],
-                                                    A = (byte)block.Button.Event.TintColor[3]
-                                                },
-                                                this),
-                                            "RemoveSpriteAction" => new RemoveSpriteAction(
-                                                new Sprite(block.Button.Event.SpritePath),
-                                                this),
-                                            "NativeLoadSceneAction" => new NativeLoadSceneAction(
-                                                this,
-                                                block.Button.Event.SceneID.Value),
-                                            "CreateVariableAction" => new CreateVariableAction(
-                                                this,
-                                                new Variable(
+                                                    block.Button.Event.SceneID.Value),
+                                                "CreateVariableAction" => new CreateVariableAction(
+                                                    this,
+                                                    new Variable(
+                                                        block.Button.Event.VariableName,
+                                                        block.Button.Event.VariableValue,
+                                                        (VariableType)block.Button.Event.VariableType.Value)),
+                                                "IncrementVariableAction" => new IncrementVariableAction(
+                                                    this,
                                                     block.Button.Event.VariableName,
-                                                    block.Button.Event.VariableValue,
-                                                    (VariableType)block.Button.Event.VariableType.Value)),
-                                            "IncrementVariableAction" => new IncrementVariableAction(
-                                                this,
-                                                block.Button.Event.VariableName,
-                                                int.Parse(block.Button.Event.VariableValue)),
-                                            "DecrementVariableAction" => new DecrementVariableAction(
-                                                this,
-                                                block.Button.Event.VariableName,
-                                                int.Parse(block.Button.Event.VariableValue)),
-                                            "SetVariableTrueAction" => new SetVariableTrueAction(
-                                                this,
-                                                block.Button.Event.VariableName),
-                                            "SetVariableFalseAction" => new SetVariableFalseAction(
-                                                this,
-                                                block.Button.Event.VariableName),
-                                            null => throw new InvalidOperationException("Failed to load scene settings, because the event type is not recognized."),
-                                            _ => throw new NotImplementedException()
-                                        };
-                                        var newBlock = new Block(
-                                            block.BlockXPosition,
-                                            block.BlockYPosition,
-                                            new Button(
-                                                this,
-                                                menu,
-                                                block.Button.ButtonXPosition,
-                                                block.Button.ButtonYPosition,
-                                                block.Button.ButtonWidth,
-                                                block.Button.ButtonHeight,
-                                                block.Button.ButtonText,
-                                                new Color()
-                                                {
-                                                    R = (byte)block.Button.ButtonColor[0],
-                                                    G = (byte)block.Button.ButtonColor[1],
-                                                    B = (byte)block.Button.ButtonColor[2],
-                                                    A = (byte)block.Button.ButtonColor[3]
-                                                },
-                                                new Color()
-                                                {
-                                                    R = (byte)block.Button.ButtonBorderColor[0],
-                                                    G = (byte)block.Button.ButtonBorderColor[1],
-                                                    B = (byte)block.Button.ButtonBorderColor[2],
-                                                    A = (byte)block.Button.ButtonBorderColor[3]
-                                                },
-                                                new Color()
-                                                {
-                                                    R = (byte)block.Button.ButtonHoverColor[0],
-                                                    G = (byte)block.Button.ButtonHoverColor[1],
-                                                    B = (byte)block.Button.ButtonHoverColor[2],
-                                                    A = (byte)block.Button.ButtonHoverColor[3]
-                                                },
-                                                newEvent
-                                            )
-                                        );
-                                        menu.BlockList.Add(newBlock);
+                                                    int.Parse(block.Button.Event.VariableValue)),
+                                                "DecrementVariableAction" => new DecrementVariableAction(
+                                                    this,
+                                                    block.Button.Event.VariableName,
+                                                    int.Parse(block.Button.Event.VariableValue)),
+                                                "SetVariableTrueAction" => new SetVariableTrueAction(
+                                                    this,
+                                                    block.Button.Event.VariableName),
+                                                "SetVariableFalseAction" => new SetVariableFalseAction(
+                                                    this,
+                                                    block.Button.Event.VariableName),
+                                                null => throw new InvalidOperationException("Failed to load scene settings, because the event type is not recognized."),
+                                                _ => throw new NotImplementedException()
+                                            };
+                                            var newBlock = new Block(
+                                                block.BlockXPosition,
+                                                block.BlockYPosition,
+                                                new Button(
+                                                    this,
+                                                    menu,
+                                                    block.Button.ButtonXPosition,
+                                                    block.Button.ButtonYPosition,
+                                                    block.Button.ButtonWidth,
+                                                    block.Button.ButtonHeight,
+                                                    block.Button.ButtonText,
+                                                    new Color()
+                                                    {
+                                                        R = (byte)block.Button.ButtonColor[0],
+                                                        G = (byte)block.Button.ButtonColor[1],
+                                                        B = (byte)block.Button.ButtonColor[2],
+                                                        A = (byte)block.Button.ButtonColor[3]
+                                                    },
+                                                    new Color()
+                                                    {
+                                                        R = (byte)block.Button.ButtonBorderColor[0],
+                                                        G = (byte)block.Button.ButtonBorderColor[1],
+                                                        B = (byte)block.Button.ButtonBorderColor[2],
+                                                        A = (byte)block.Button.ButtonBorderColor[3]
+                                                    },
+                                                    new Color()
+                                                    {
+                                                        R = (byte)block.Button.ButtonHoverColor[0],
+                                                        G = (byte)block.Button.ButtonHoverColor[1],
+                                                        B = (byte)block.Button.ButtonHoverColor[2],
+                                                        A = (byte)block.Button.ButtonHoverColor[3]
+                                                    },
+                                                    newEvent
+                                                )
+                                            );
+                                            menu.BlockList.Add(newBlock);
+                                        }
+                                        // The block is not a button component.
+                                        //to be extended.
+                                        else
+                                        {
+
+                                        }
                                     }
                                     timeline.ActionList.Add(new CreateMenuAction(this, menu, [.. menu.BlockList]));
                                     break;
@@ -654,6 +674,6 @@ namespace EngineComponents
         /// Checks if the escape button is pressed.
         /// </summary>
         /// <returns></returns>
-        public static bool IsEscapeButtonPressed() => Raylib.IsKeyPressed(KeyboardKey.Escape);
+        public static bool IsEscapeButtonPressed() => Raylib.WindowShouldClose();
     }
 }
