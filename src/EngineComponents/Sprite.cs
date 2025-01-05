@@ -33,6 +33,7 @@ namespace EngineComponents
         /// Position of the sprite on the Y axis.
         /// </summary>
         internal int Y { get; set; }
+        internal Block Block { get; set; }
         /// <summary>
         /// Creates a sprite.
         /// </summary>
@@ -45,6 +46,15 @@ namespace EngineComponents
             Y = Raylib.GetScreenHeight() / 2 - ImageTexture.Width / 2;
             X = Raylib.GetScreenWidth() / 2 - ImageTexture.Height / 2;
             // default color
+            Color = Color.White;
+        }
+
+        public Sprite(string path, Block block, int x, int y)
+        {
+            Name = path;
+            ImageTexture = Raylib.LoadTexture(path);
+            X = block.XPosition + x;
+            Y = block.YPosition + y;
             Color = Color.White;
         }
         /// <summary>

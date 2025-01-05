@@ -22,12 +22,6 @@ namespace EngineComponents.Actions
             Menu = menu;
             Blocks = blocks;
         }
-        public CreateMenuAction(Game game, Menu menu)
-        {
-            Game = game;
-            Menu = menu;
-            Blocks = [.. Menu.BlockList];
-        }
         /// <summary>
         /// Performs the event.
         /// </summary>

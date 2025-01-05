@@ -20,7 +20,7 @@ namespace EngineComponents
         /// The rendering component of the block.
         /// The abstract component can be a Button, TextField, or Sprite.
         /// </summary>
-        IPermanentRenderingObject Component { get; }
+        IPermanentRenderingObject Component { get; set; }
         /// <summary>
         /// Constructor for the block.
         /// </summary>
@@ -33,6 +33,7 @@ namespace EngineComponents
             YPosition = y;
             Component = component;
         }
+        internal void SetComponent(IPermanentRenderingObject component) => Component = component;
         /// <summary>
         /// Renders the block.
         /// </summary>

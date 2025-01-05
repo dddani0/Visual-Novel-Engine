@@ -119,6 +119,14 @@ namespace EngineComponents
         public int BlockYPosition { get; set; }
         [JsonPropertyName("Button")]
         public ButtonComponentImport? Button { get; set; }
+        [JsonPropertyName("InputField")]
+        public InputFieldImport? InputField { get; set; }
+        [JsonPropertyName("DropBox")]
+        public DropBoxImport? DropBox { get; set; }
+        [JsonPropertyName("Slider")]
+        public SliderImport? Slider { get; set; }
+        [JsonPropertyName("Sprite")]
+        public SpriteImport? Sprite { get; set; }
 
     }
     /// <summary>
@@ -144,6 +152,102 @@ namespace EngineComponents
         public required int[] ButtonHoverColor { get; set; }
         [JsonPropertyName("Event")]
         public required ActionImport Event { get; set; }
+    }
+    /// <summary>
+    /// The TextBoxCreateAction class is a helper class to import the TextField component.
+    /// </summary>
+    internal class InputFieldImport
+    {
+        [JsonPropertyName("InputFieldXPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("InputFieldYPosition")]
+        public int YPosition { get; set; }
+        [JsonPropertyName("ButtonYOffset")]
+        public int ButtonYOffset { get; set; }
+        [JsonPropertyName("InputFieldWidth")]
+        public int Width { get; set; }
+        [JsonPropertyName("InputFieldHeight")]
+        public int Height { get; set; }
+        [JsonPropertyName("InputFieldText")] public string InputFieldPlaceholder { get; set; }
+        [JsonPropertyName("IsVisible")]
+        public string InputFieldIsVisible { get; set; }
+        [JsonPropertyName("IsSelected")]
+        public string InputFieldIsSelected { get; set; }
+        [JsonPropertyName("Button")]
+        public ButtonComponentImport InputFieldButton { get; set; }
+        [JsonPropertyName("BorderWidth")]
+        public int InputFieldBorderWidth { get; set; }
+        [JsonPropertyName("InputFieldColor")]
+        public int[] InputFieldColor { get; set; }
+        [JsonPropertyName("InputFieldBorderColor")]
+        public int[] InputFieldBorderColor { get; set; }
+        [JsonPropertyName("HoverColor")]
+        public int[] InputFieldHoverColor { get; set; }
+    }
+    /// <summary>
+    /// The DropBoxImport class is a helper class to import the DropBox component.
+    /// </summary>
+    internal class DropBoxImport
+    {
+        [JsonPropertyName("DropBoxXPosition")]
+        public int DropBoxXPosition { get; set; }
+        [JsonPropertyName("DropBoxYPosition")]
+        public int DropBoxYPosition { get; set; }
+        [JsonPropertyName("DropBoxWidth")]
+        public int DropBoxWidth { get; set; }
+        [JsonPropertyName("DropBoxHeight")]
+        public int DropBoxHeight { get; set; }
+        [JsonPropertyName("DropBoxText")]
+        public string DropBoxText { get; set; }
+        [JsonPropertyName("IsSelected")]
+        public string DropBoxIsSelected { get; set; }
+        [JsonPropertyName("IsVisible")]
+        public string DropBoxIsVisible { get; set; }
+        [JsonPropertyName("Options")]
+        public ButtonComponentImport[] DropBoxOptions { get; set; }
+        [JsonPropertyName("SelectedOption")]
+        public ButtonComponentImport DropBoxSelectedOption { get; set; }
+        [JsonPropertyName("DropBoxColor")]
+        public int[] DropBoxColor { get; set; }
+        [JsonPropertyName("DropBoxBorderColor")]
+        public int[] DropBoxBorderColor { get; set; }
+        [JsonPropertyName("DropBoxHoverColor")]
+        public int[] DropBoxHoverColor { get; set; }
+    }
+    /// <summary>
+    /// The SliderImport class is a helper class to import the Slider component.
+    /// </summary>
+    internal class SliderImport
+    {
+        [JsonPropertyName("SliderXPosition")]
+        public int SliderXPosition { get; set; }
+        [JsonPropertyName("SliderYPosition")]
+        public int SliderYPosition { get; set; }
+        [JsonPropertyName("SliderWidth")]
+        public int SliderWidth { get; set; }
+        [JsonPropertyName("SliderHeight")]
+        public int SliderHeight { get; set; }
+        [JsonPropertyName("SliderDragRadius")]
+        public int SliderDragRadius { get; set; }
+        [JsonPropertyName("IsVisible")]
+        public string SliderIsVisible { get; set; }
+        [JsonPropertyName("IsSelected")]
+        public string SliderIsSelected { get; set; }
+        [JsonPropertyName("UnitValue")]
+        public int UnitValue { get; set; }
+        [JsonPropertyName("SliderColor")]
+        public int[] SliderColor { get; set; }
+        [JsonPropertyName("SliderBorderColor")]
+        public int[] SliderBorderColor { get; set; }
+    }
+    internal class SpriteImport
+    {
+        [JsonPropertyName("SpritePath")]
+        public string SpritePath { get; set; }
+        [JsonPropertyName("X")]
+        public int SpriteXPosition { get; set; }
+        [JsonPropertyName("Y")]
+        public int SpriteYPosition { get; set; }
     }
     /// <summary>
     /// The Game is the main class of the game.
@@ -460,7 +564,7 @@ namespace EngineComponents
                                         windowBorderColor);
                                     foreach (BlockImport? block in scene.ActionList[i].MenuBlockList)
                                     {
-                                        // The block is a button component.
+                                        // The block has a button component.
                                         if (block.Button != null)
                                         {
                                             IButtonEvent newEvent = block.Button.Event.Type switch
@@ -523,9 +627,11 @@ namespace EngineComponents
                                             var newBlock = new Block(
                                                 block.BlockXPosition,
                                                 block.BlockYPosition,
-                                                new Button(
+                                                null
+                                            );
+                                            newBlock.SetComponent(new Button(
                                                     this,
-                                                    menu,
+                                                    newBlock,
                                                     block.Button.ButtonXPosition,
                                                     block.Button.ButtonYPosition,
                                                     block.Button.ButtonWidth,
@@ -553,16 +659,178 @@ namespace EngineComponents
                                                         A = (byte)block.Button.ButtonHoverColor[3]
                                                     },
                                                     newEvent
-                                                )
-                                            );
+                                                ));
                                             menu.BlockList.Add(newBlock);
                                         }
-                                        // The block is not a button component.
-                                        //to be extended.
+                                        // The block has a dropbox component.
+                                        else if (block.DropBox != null)
+                                        {
+                                            var newBlock = new Block(
+                                                block.BlockXPosition,
+                                                block.BlockYPosition,
+                                                null
+                                            );
+                                            newBlock.SetComponent(new DropBox(
+                                                newBlock,
+                                                block.DropBox.DropBoxXPosition,
+                                                block.DropBox.DropBoxYPosition,
+                                                block.DropBox.DropBoxWidth,
+                                                block.DropBox.DropBoxHeight,
+                                                block.DropBox.DropBoxText,
+                                                [],
+                                                new Color()
+                                                {
+                                                    R = (byte)block.DropBox.DropBoxColor[0],
+                                                    G = (byte)block.DropBox.DropBoxColor[1],
+                                                    B = (byte)block.DropBox.DropBoxColor[2],
+                                                    A = (byte)block.DropBox.DropBoxColor[3]
+                                                },
+                                                new Color()
+                                                {
+                                                    R = (byte)block.DropBox.DropBoxBorderColor[0],
+                                                    G = (byte)block.DropBox.DropBoxBorderColor[1],
+                                                    B = (byte)block.DropBox.DropBoxBorderColor[2],
+                                                    A = (byte)block.DropBox.DropBoxBorderColor[3]
+                                                },
+                                                new Color()
+                                                {
+                                                    R = (byte)block.DropBox.DropBoxHoverColor[0],
+                                                    G = (byte)block.DropBox.DropBoxHoverColor[1],
+                                                    B = (byte)block.DropBox.DropBoxHoverColor[2],
+                                                    A = (byte)block.DropBox.DropBoxHoverColor[3]
+                                                }
+                                            ));
+                                            menu.BlockList.Add(newBlock);
+                                        }
+                                        // The block has an InputField component.
+                                        else if (block.InputField != null)
+                                        {
+                                            var newBlock = new Block(
+                                                block.BlockXPosition,
+                                                block.BlockYPosition,
+                                                null
+                                            );
+                                            newBlock.SetComponent(new InputField(
+                                                this,
+                                                newBlock,
+                                                block.InputField.XPosition,
+                                                block.InputField.YPosition,
+                                                block.InputField.ButtonYOffset,
+                                                block.InputField.Width,
+                                                block.InputField.Height,
+                                                block.InputField.InputFieldPlaceholder,
+                                                new Button(
+                                                    this,
+                                                    newBlock,
+                                                    block.InputField.InputFieldButton.ButtonXPosition,
+                                                    block.InputField.InputFieldButton.ButtonYPosition,
+                                                    block.InputField.InputFieldButton.ButtonWidth,
+                                                    block.InputField.InputFieldButton.ButtonHeight,
+                                                    block.InputField.InputFieldButton.ButtonText,
+                                                    new Color()
+                                                    {
+                                                        R = (byte)block.InputField.InputFieldButton.ButtonColor[0],
+                                                        G = (byte)block.InputField.InputFieldButton.ButtonColor[1],
+                                                        B = (byte)block.InputField.InputFieldButton.ButtonColor[2],
+                                                        A = (byte)block.InputField.InputFieldButton.ButtonColor[3]
+                                                    },
+                                                    new Color()
+                                                    {
+                                                        R = (byte)block.InputField.InputFieldButton.ButtonBorderColor[0],
+                                                        G = (byte)block.InputField.InputFieldButton.ButtonBorderColor[1],
+                                                        B = (byte)block.InputField.InputFieldButton.ButtonBorderColor[2],
+                                                        A = (byte)block.InputField.InputFieldButton.ButtonBorderColor[3]
+                                                    },
+                                                    new Color()
+                                                    {
+                                                        R = (byte)block.InputField.InputFieldButton.ButtonHoverColor[0],
+                                                        G = (byte)block.InputField.InputFieldButton.ButtonHoverColor[1],
+                                                        B = (byte)block.InputField.InputFieldButton.ButtonHoverColor[2],
+                                                        A = (byte)block.InputField.InputFieldButton.ButtonHoverColor[3]
+                                                    },
+                                                    null
+                                                ),
+                                                block.InputField.InputFieldBorderWidth,
+                                                new Color()
+                                                {
+                                                    R = (byte)block.InputField.InputFieldColor[0],
+                                                    G = (byte)block.InputField.InputFieldColor[1],
+                                                    B = (byte)block.InputField.InputFieldColor[2],
+                                                    A = (byte)block.InputField.InputFieldColor[3]
+                                                },
+                                                new Color()
+                                                {
+                                                    R = (byte)block.InputField.InputFieldBorderColor[0],
+                                                    G = (byte)block.InputField.InputFieldBorderColor[1],
+                                                    B = (byte)block.InputField.InputFieldBorderColor[2],
+                                                    A = (byte)block.InputField.InputFieldBorderColor[3]
+                                                },
+                                                new Color()
+                                                {
+                                                    R = (byte)block.InputField.InputFieldHoverColor[0],
+                                                    G = (byte)block.InputField.InputFieldHoverColor[1],
+                                                    B = (byte)block.InputField.InputFieldHoverColor[2],
+                                                    A = (byte)block.InputField.InputFieldHoverColor[3]
+                                                }
+                                            ));
+                                            menu.BlockList.Add(newBlock);
+                                        }
+                                        // The block has a Slider component.
+                                        else if (block.Slider != null)
+                                        {
+                                            var newBlock = new Block(
+                                                block.BlockXPosition,
+                                                block.BlockYPosition,
+                                                null
+                                            );
+                                            newBlock.SetComponent(new Slider(
+                                                newBlock,
+                                                block.Slider.SliderXPosition,
+                                                block.Slider.SliderYPosition,
+                                                block.Slider.SliderWidth,
+                                                block.Slider.SliderHeight,
+                                                block.Slider.SliderDragRadius,
+                                                block.Slider.SliderIsVisible == "True",
+                                                block.Slider.SliderIsSelected == "True",
+                                                block.Slider.UnitValue,
+                                                new Color()
+                                                {
+                                                    R = (byte)block.Slider.SliderColor[0],
+                                                    G = (byte)block.Slider.SliderColor[1],
+                                                    B = (byte)block.Slider.SliderColor[2],
+                                                    A = (byte)block.Slider.SliderColor[3]
+                                                },
+                                                new Color()
+                                                {
+                                                    R = (byte)block.Slider.SliderBorderColor[0],
+                                                    G = (byte)block.Slider.SliderBorderColor[1],
+                                                    B = (byte)block.Slider.SliderBorderColor[2],
+                                                    A = (byte)block.Slider.SliderBorderColor[3]
+                                                }
+                                            ));
+                                            menu.BlockList.Add(newBlock);
+                                        }
+                                        // The block has a Sprite component.
+                                        else if (block.Sprite != null)
+                                        {
+                                            var newBlock = new Block(
+                                                block.BlockXPosition,
+                                                block.BlockYPosition,
+                                                null
+                                            );
+                                            newBlock.SetComponent(new Sprite(
+                                                block.Sprite.SpritePath,
+                                                newBlock,
+                                                block.Sprite.SpriteXPosition,
+                                                block.Sprite.SpriteYPosition
+                                            ));
+                                            menu.BlockList.Add(newBlock);
+                                        }
                                         else
                                         {
-
+                                            throw new InvalidOperationException("Failed to load scene settings, because the component type attached to the block is not recognized.");
                                         }
+
                                     }
                                     timeline.ActionList.Add(new CreateMenuAction(this, menu, [.. menu.BlockList]));
                                     break;

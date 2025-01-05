@@ -40,7 +40,11 @@ namespace EngineComponents
         /// <summary>
         /// Is the input field selected.
         /// </summary>
-        internal bool IsSelected { get; set; }
+        internal bool IsSelected { get; set; } = false;
+        /// <summary>
+        /// Is the input field interactable.
+        /// </summary>
+        internal bool IsLocked { get; set; } = false;
         /// <summary>
         /// The button component of the input field.
         /// </summary>
@@ -61,10 +65,10 @@ namespace EngineComponents
         /// The hover color of the input field.
         /// </summary>
         private Color HoverColor { get; set; }
-        public InputField(Game Game, Block block, int ButtonYOffset, int width, int height, string placeholder, string buttonText, IButtonEvent buttonEvent)
+        public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, IButtonEvent buttonEvent)
         {
-            XPosition = block.XPosition;
-            YPosition = block.YPosition;
+            XPosition = block.XPosition + xPosition;
+            YPosition = block.YPosition + yPosition;
             Width = width;
             Height = height;
             Placeholder = placeholder;
@@ -83,6 +87,7 @@ namespace EngineComponents
         /// </summary>
         private void UpdateInputField()
         {
+            if (IsLocked) return;
             if (Game.IsLeftMouseButtonPressed())
             {
                 if (Game.GetMouseXPosition() >= XPosition && Game.GetMouseXPosition() <= XPosition + Width && Game.GetMouseYPosition() >= YPosition && Game.GetMouseYPosition() <= YPosition + Height)
