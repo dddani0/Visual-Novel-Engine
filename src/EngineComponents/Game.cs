@@ -127,7 +127,6 @@ namespace EngineComponents
         public SliderImport? Slider { get; set; }
         [JsonPropertyName("Sprite")]
         public SpriteImport? Sprite { get; set; }
-
     }
     /// <summary>
     /// The ButtonComponentImport class is a helper class to import the list of buttons from a json file.
@@ -168,13 +167,20 @@ namespace EngineComponents
         public int Width { get; set; }
         [JsonPropertyName("InputFieldHeight")]
         public int Height { get; set; }
-        [JsonPropertyName("InputFieldText")] public string InputFieldPlaceholder { get; set; }
+        [JsonPropertyName("InputFieldText")]
+        public string InputFieldText { get; set; }
+        [JsonPropertyName("InputFieldPlaceholder")]
+        public string InputFieldPlaceholder { get; set; }
         [JsonPropertyName("IsVisible")]
         public string InputFieldIsVisible { get; set; }
         [JsonPropertyName("IsSelected")]
         public string InputFieldIsSelected { get; set; }
-        [JsonPropertyName("Button")]
-        public ButtonComponentImport InputFieldButton { get; set; }
+        [JsonPropertyName("InputFieldButtonText")]
+        public string InputFieldButtonText { get; set; }
+        [JsonPropertyName("InputFieldButtonEventType")]
+        public string InputFieldButtonEventType { get; set; }
+        [JsonPropertyName("InputFieldButtonEvent")]
+        public ActionImport InputFieldButtonEvent { get; set; }
         [JsonPropertyName("BorderWidth")]
         public int InputFieldBorderWidth { get; set; }
         [JsonPropertyName("InputFieldColor")]
@@ -230,16 +236,15 @@ namespace EngineComponents
         [JsonPropertyName("SliderDragRadius")]
         public int SliderDragRadius { get; set; }
         [JsonPropertyName("IsVisible")]
-        public string SliderIsVisible { get; set; }
-        [JsonPropertyName("IsSelected")]
-        public string SliderIsSelected { get; set; }
-        [JsonPropertyName("UnitValue")]
         public int UnitValue { get; set; }
         [JsonPropertyName("SliderColor")]
         public int[] SliderColor { get; set; }
         [JsonPropertyName("SliderBorderColor")]
         public int[] SliderBorderColor { get; set; }
     }
+    /// <summary>
+    /// The SpriteImport class is a helper class to import the Sprite component.
+    /// </summary>
     internal class SpriteImport
     {
         [JsonPropertyName("SpritePath")]
@@ -710,6 +715,62 @@ namespace EngineComponents
                                                 block.BlockYPosition,
                                                 null
                                             );
+                                            IButtonEvent inputFieldButtonEvent = block.InputField.InputFieldButtonEventType switch
+                                            {
+                                                "TextBoxCreateAction" => new TextBoxCreateAction(
+                                                    TextBox.CreateNewTextBox(
+                                                        this,
+                                                        block.InputField.InputFieldButtonEvent.CharactersPerSecond.Value,
+                                                        new Font() { BaseSize = 30, GlyphPadding = 5 },
+                                                        new Color() { R = 0, G = 0, B = 0, A = 255 },
+                                                        new Color() { R = 0, G = 0, B = 0, A = 255 },
+                                                        (TextBox.PositionType)block.InputField.InputFieldButtonEvent.PositionType.Value,
+                                                        block.InputField.InputFieldButtonEvent.HorizontalTextMargin.Value,
+                                                        block.InputField.InputFieldButtonEvent.VerticalTextMargin.Value,
+                                                        block.InputField.InputFieldButtonEvent.WordWrap.Value,
+                                                        block.InputField.InputFieldButtonEvent.TextBoxTitle,
+                                                        [.. block.InputField.InputFieldButtonEvent.TextBoxContent])),
+                                                "AddSpriteAction" => new AddSpriteAction(
+                                                    new Sprite(block.InputField.InputFieldButtonEvent.SpritePath),
+                                                    this),
+                                                "TintSpriteAction" => new TintSpriteAction(
+                                                    new Sprite(block.InputField.InputFieldButtonEvent.SpritePath),
+                                                    new Color()
+                                                    {
+                                                        R = (byte)block.InputField.InputFieldButtonEvent.TintColor[0],
+                                                        G = (byte)block.InputField.InputFieldButtonEvent.TintColor[1],
+                                                        B = (byte)block.InputField.InputFieldButtonEvent.TintColor[2],
+                                                        A = (byte)block.InputField.InputFieldButtonEvent.TintColor[3]
+                                                    },
+                                                    this),
+                                                "RemoveSpriteAction" => new RemoveSpriteAction(
+                                                    new Sprite(block.InputField.InputFieldButtonEvent.SpritePath),
+                                                    this),
+                                                "NativeLoadSceneAction" => new NativeLoadSceneAction(
+                                                    this,
+                                                    block.InputField.InputFieldButtonEvent.SceneID.Value),
+                                                "CreateVariableAction" => new CreateVariableAction(
+                                                    this,
+                                                    new Variable(
+                                                        block.InputField.InputFieldButtonEvent.VariableName,
+                                                        block.InputField.InputFieldButtonEvent.VariableValue,
+                                                        (VariableType)block.InputField.InputFieldButtonEvent.VariableType.Value)),
+                                                "IncrementVariableAction" => new IncrementVariableAction(
+                                                    this,
+                                                    block.InputField.InputFieldButtonEvent.VariableName,
+                                                    int.Parse(block.InputField.InputFieldButtonEvent.VariableValue)),
+                                                "DecrementVariableAction" => new DecrementVariableAction(
+                                                    this,
+                                                    block.InputField.InputFieldButtonEvent.VariableName,
+                                                    int.Parse(block.InputField.InputFieldButtonEvent.VariableValue)),
+                                                "SetVariableTrueAction" => new SetVariableTrueAction(
+                                                    this,
+                                                    block.InputField.InputFieldButtonEvent.VariableName),
+                                                "SetVariableFalseAction" => new SetVariableFalseAction(
+                                                    this,
+                                                    block.InputField.InputFieldButtonEvent.VariableName),
+                                                _ => throw new InvalidOperationException("Failed to load scene settings, because the event type is not recognized.")
+                                            };
                                             newBlock.SetComponent(new InputField(
                                                 this,
                                                 newBlock,
@@ -719,59 +780,8 @@ namespace EngineComponents
                                                 block.InputField.Width,
                                                 block.InputField.Height,
                                                 block.InputField.InputFieldPlaceholder,
-                                                new Button(
-                                                    this,
-                                                    newBlock,
-                                                    block.InputField.InputFieldButton.ButtonXPosition,
-                                                    block.InputField.InputFieldButton.ButtonYPosition,
-                                                    block.InputField.InputFieldButton.ButtonWidth,
-                                                    block.InputField.InputFieldButton.ButtonHeight,
-                                                    block.InputField.InputFieldButton.ButtonText,
-                                                    new Color()
-                                                    {
-                                                        R = (byte)block.InputField.InputFieldButton.ButtonColor[0],
-                                                        G = (byte)block.InputField.InputFieldButton.ButtonColor[1],
-                                                        B = (byte)block.InputField.InputFieldButton.ButtonColor[2],
-                                                        A = (byte)block.InputField.InputFieldButton.ButtonColor[3]
-                                                    },
-                                                    new Color()
-                                                    {
-                                                        R = (byte)block.InputField.InputFieldButton.ButtonBorderColor[0],
-                                                        G = (byte)block.InputField.InputFieldButton.ButtonBorderColor[1],
-                                                        B = (byte)block.InputField.InputFieldButton.ButtonBorderColor[2],
-                                                        A = (byte)block.InputField.InputFieldButton.ButtonBorderColor[3]
-                                                    },
-                                                    new Color()
-                                                    {
-                                                        R = (byte)block.InputField.InputFieldButton.ButtonHoverColor[0],
-                                                        G = (byte)block.InputField.InputFieldButton.ButtonHoverColor[1],
-                                                        B = (byte)block.InputField.InputFieldButton.ButtonHoverColor[2],
-                                                        A = (byte)block.InputField.InputFieldButton.ButtonHoverColor[3]
-                                                    },
-                                                    null
-                                                ),
-                                                block.InputField.InputFieldBorderWidth,
-                                                new Color()
-                                                {
-                                                    R = (byte)block.InputField.InputFieldColor[0],
-                                                    G = (byte)block.InputField.InputFieldColor[1],
-                                                    B = (byte)block.InputField.InputFieldColor[2],
-                                                    A = (byte)block.InputField.InputFieldColor[3]
-                                                },
-                                                new Color()
-                                                {
-                                                    R = (byte)block.InputField.InputFieldBorderColor[0],
-                                                    G = (byte)block.InputField.InputFieldBorderColor[1],
-                                                    B = (byte)block.InputField.InputFieldBorderColor[2],
-                                                    A = (byte)block.InputField.InputFieldBorderColor[3]
-                                                },
-                                                new Color()
-                                                {
-                                                    R = (byte)block.InputField.InputFieldHoverColor[0],
-                                                    G = (byte)block.InputField.InputFieldHoverColor[1],
-                                                    B = (byte)block.InputField.InputFieldHoverColor[2],
-                                                    A = (byte)block.InputField.InputFieldHoverColor[3]
-                                                }
+                                                block.InputField.InputFieldButtonText,
+                                                null
                                             ));
                                             menu.BlockList.Add(newBlock);
                                         }
@@ -790,9 +800,6 @@ namespace EngineComponents
                                                 block.Slider.SliderWidth,
                                                 block.Slider.SliderHeight,
                                                 block.Slider.SliderDragRadius,
-                                                block.Slider.SliderIsVisible == "True",
-                                                block.Slider.SliderIsSelected == "True",
-                                                block.Slider.UnitValue,
                                                 new Color()
                                                 {
                                                     R = (byte)block.Slider.SliderColor[0],
