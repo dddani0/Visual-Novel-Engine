@@ -62,13 +62,13 @@ namespace EngineComponents
         /// The hover color of the DropBox.
         /// </summary>
         private Color DropBoxHoverColor { get; set; }
-        public DropBox(Block block, int xPosition, int yPosition, int width, int height, string text, Button[] options, Color dropBoxColor, Color dropBoxBorderColor, Color dropBoxHoverColor)
+        public DropBox(Block block, int xPosition, int yPosition, int width, int height, Button[] options, Color dropBoxColor, Color dropBoxBorderColor, Color dropBoxHoverColor)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;
             Width = width;
             Height = height;
-            Text = text;
+            Text = options[0].Text;
             DropBoxColor = dropBoxColor;
             DropBoxBorderColor = dropBoxBorderColor;
             DropBoxHoverColor = dropBoxHoverColor;
@@ -78,6 +78,8 @@ namespace EngineComponents
             Options = [];
             for (int i = 0; i < options.Length; i++)
             {
+                options[i].Width = Width;
+                options[i].Height = Height;
                 options[i].XPosition = XPosition - Width / 2;
                 options[i].YPosition = (YPosition - Height / 2) - i * options[i].Height;
                 Options.Add(options[i]);

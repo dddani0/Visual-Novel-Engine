@@ -26,11 +26,11 @@
                 "MenuFullScreen": "True",
                 "MenuBlockList": [
                     {
-                        "BlockXPosition": 0,
-                        "BlockYPosition": 0,
+                        "BlockXPosition": 200,
+                        "BlockYPosition": 100,
                         "Button": {
-                            "ButtonXPosition": 400,
-                            "ButtonYPosition": 400,
+                            "ButtonXPosition": 0,
+                            "ButtonYPosition": 0,
                             "ButtonWidth": 200,
                             "ButtonHeight": 100,
                             "ButtonText": "Button1",
@@ -57,6 +57,96 @@
                                 "Type": "NativeLoadSceneAction",
                                 "SceneID": 2
                             }
+                        }
+                    },
+                    {
+                        "BlockXPosition": 400,
+                        "BlockYPosition": 200,
+                        "DropBox": {
+                            "DropBoxXPosition": 0,
+                            "DropBoxYPosition": 0,
+                            "DropBoxWidth": 200,
+                            "DropBoxHeight": 100,
+                            "DropBoxOptions": [
+                                {
+                                    "ButtonText": "Button1",
+                                    "Event": {
+                                        "Type": "NativeLoadSceneAction",
+                                        "SceneID": 2
+                                    }
+                                },
+                                {
+                                    "ButtonXPosition": 400,
+                                    "ButtonYPosition": 200,
+                                    "ButtonWidth": 200,
+                                    "ButtonHeight": 100,
+                                    "ButtonText": "Button2",
+                                    "ButtonBorderWidth": 2,
+                                    "ButtonColor": [
+                                        155,
+                                        155,
+                                        115,
+                                        255
+                                    ],
+                                    "ButtonBorderColor": [
+                                        0,
+                                        0,
+                                        255,
+                                        255
+                                    ],
+                                    "ButtonHoverColor": [
+                                        155,
+                                        155,
+                                        115,
+                                        200
+                                    ],
+                                    "Event": {
+                                        "Type": "NativeLoadSceneAction",
+                                        "SceneID": 2
+                                    }
+                                }
+                            ],
+                            "DropBoxColor": [
+                                155,
+                                155,
+                                115,
+                                255
+                            ],
+                            "DropBoxBorderColor": [
+                                0,
+                                0,
+                                255,
+                                255
+                            ],
+                            "DropBoxHoverColor": [
+                                155,
+                                155,
+                                115,
+                                200
+                            ]
+                        }
+                    },
+                    {
+                        "BlockXPosition": 400,
+                        "BlockYPosition": 600,
+                        "Slider": {
+                            "SliderXPosition": 0,
+                            "SliderYPosition": 0,
+                            "SliderWidth": 200,
+                            "SliderHeight": 100,
+                            "SliderDragRadius": 50,
+                            "SliderColor": [
+                                155,
+                                155,
+                                115,
+                                255
+                            ],
+                            "SliderBorderColor": [
+                                0,
+                                0,
+                                255,
+                                255
+                            ]
                         }
                     }
                 ],

@@ -9,11 +9,11 @@ namespace EngineComponents.Actions
     {
         Variable Variable;
         string VariableName { get; }
-        public int IncrementValue { get; set; }
+        public int DecrementValue { get; set; }
         Game Game { get; set; }
-        public DecrementVariableAction(Game game, string variableName, int incrementValue)
+        public DecrementVariableAction(Game game, string variableName, int decrementValue)
         {
-            IncrementValue = incrementValue;
+            DecrementValue = decrementValue;
             Game = game;
             VariableName = variableName;
         }
@@ -24,7 +24,7 @@ namespace EngineComponents.Actions
             if (Variable.Type == VariableType.Int)
             {
                 var value = int.Parse(Variable.Value);
-                value -= IncrementValue;
+                value -= DecrementValue;
                 Variable.SetValue(value);
                 Game.ActiveScene.Timeline.NextStep();
             }

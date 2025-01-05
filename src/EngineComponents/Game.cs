@@ -177,8 +177,6 @@ namespace EngineComponents
         public string InputFieldIsSelected { get; set; }
         [JsonPropertyName("InputFieldButtonText")]
         public string InputFieldButtonText { get; set; }
-        [JsonPropertyName("InputFieldButtonEventType")]
-        public string InputFieldButtonEventType { get; set; }
         [JsonPropertyName("InputFieldButtonEvent")]
         public ActionImport InputFieldButtonEvent { get; set; }
         [JsonPropertyName("BorderWidth")]
@@ -204,21 +202,23 @@ namespace EngineComponents
         [JsonPropertyName("DropBoxHeight")]
         public int DropBoxHeight { get; set; }
         [JsonPropertyName("DropBoxText")]
-        public string DropBoxText { get; set; }
-        [JsonPropertyName("IsSelected")]
-        public string DropBoxIsSelected { get; set; }
-        [JsonPropertyName("IsVisible")]
-        public string DropBoxIsVisible { get; set; }
-        [JsonPropertyName("Options")]
-        public ButtonComponentImport[] DropBoxOptions { get; set; }
-        [JsonPropertyName("SelectedOption")]
-        public ButtonComponentImport DropBoxSelectedOption { get; set; }
+        public DropBoxOptionImport[] DropBoxOptions { get; set; }
         [JsonPropertyName("DropBoxColor")]
         public int[] DropBoxColor { get; set; }
         [JsonPropertyName("DropBoxBorderColor")]
         public int[] DropBoxBorderColor { get; set; }
         [JsonPropertyName("DropBoxHoverColor")]
         public int[] DropBoxHoverColor { get; set; }
+    }
+    /// <summary>
+    /// The DropBoxOptionImport class is a helper class to import the DropBoxOption component.
+    /// </summary>
+    internal class DropBoxOptionImport
+    {
+        [JsonPropertyName("OptionText")]
+        public string ButtonText { get; set; }
+        [JsonPropertyName("OptionEvent")]
+        public ActionImport OptionEvent { get; set; }
     }
     /// <summary>
     /// The SliderImport class is a helper class to import the Slider component.
@@ -235,8 +235,6 @@ namespace EngineComponents
         public int SliderHeight { get; set; }
         [JsonPropertyName("SliderDragRadius")]
         public int SliderDragRadius { get; set; }
-        [JsonPropertyName("IsVisible")]
-        public int UnitValue { get; set; }
         [JsonPropertyName("SliderColor")]
         public int[] SliderColor { get; set; }
         [JsonPropertyName("SliderBorderColor")]
@@ -249,36 +247,641 @@ namespace EngineComponents
     {
         [JsonPropertyName("SpritePath")]
         public string SpritePath { get; set; }
-        [JsonPropertyName("X")]
-        public int SpriteXPosition { get; set; }
-        [JsonPropertyName("Y")]
-        public int SpriteYPosition { get; set; }
+        [JsonPropertyName("SpriteXPosition")]
+        public int? SpriteXPosition { get; set; }
+        [JsonPropertyName("SpriteXPosition")]
+        public int? SpriteYPosition { get; set; }
+    }
+    /// <summary>
+    /// The GameLoader class is the class that turns raw data into exact objects, which the game can use.
+    /// Create Events from the scene.json file.
+    /// </summary>
+    public class GameLoader(Game game)
+    {
+        /// <summary>
+        /// The Game object.
+        /// </summary>
+        Game Game { get; set; } = game;
+        /// <summary>
+        /// Creates a sprite from the importer class
+        /// </summary>
+        /// <param name="rawAction"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        Sprite FetchSpriteFromImport(ActionImport rawAction)
+        {
+            if (rawAction.SpritePath == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the sprite path is null.");
+            }
+            if (File.Exists(Game.currentFolderPath + rawAction.SpritePath) is false)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the sprite path is invalid.");
+            }
+            return new Sprite(Game.currentFolderPath + rawAction.SpritePath);
+        }
+        /// <summary>
+        /// Creates a variable from the importer class
+        /// </summary>
+        /// <param name="rawAction"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        Sprite FetchSpriteFromImport(SpriteImport rawAction, Block block)
+        {
+            if (rawAction.SpritePath == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the sprite path is null.");
+            }
+            if (rawAction.SpriteXPosition == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the sprite x position is null.");
+            }
+            if (rawAction.SpriteYPosition == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the sprite y position is null.");
+            }
+            if (File.Exists(Game.currentFolderPath + rawAction.SpritePath) is false)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the sprite path is invalid.");
+            }
+            return new Sprite(Game.currentFolderPath + rawAction.SpritePath, block, rawAction.SpriteXPosition.Value, rawAction.SpriteYPosition.Value);
+        }
+        /// <summary>
+        /// Creates a variable from the importer class
+        /// </summary>
+        /// <param name="rawAction"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        Variable FetchVariableFromImport(ActionImport rawAction)
+        {
+            if (rawAction.VariableName == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+            }
+            if (rawAction.VariableValue == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
+            }
+            if (rawAction.VariableType == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the variable type is null.");
+            }
+            return new Variable(rawAction.VariableName, rawAction.VariableValue, (VariableType)rawAction.VariableType);
+        }
+        /// <summary>
+        /// Creates a button from the importer class
+        /// </summary>
+        /// <param name="rawDropBoxOption"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        Button FetchButtonFromImport(DropBoxOptionImport rawDropBoxOption, Block block)
+        {
+            return new Button(
+                Game,
+                block,
+                0,
+                0,
+                0,
+                0,
+                rawDropBoxOption.ButtonText,
+                new Color() { R = 0, G = 0, B = 0, A = 255 },
+                new Color() { R = 0, G = 0, B = 0, A = 255 },
+                new Color() { R = 0, G = 0, B = 0, A = 255 },
+                (IButtonEvent)FetchEventFromImport(rawDropBoxOption.OptionEvent)
+            );
+        }
+        /// <summary>
+        /// Creates a dropbox from the importer class
+        /// </summary>
+        /// <param name="rawDropBox"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        DropBox FetchDropBoxFromImport(DropBoxImport rawDropBox, Block block)
+        {
+            return new DropBox(
+                                    block,
+                                    rawDropBox.DropBoxXPosition,
+                                    rawDropBox.DropBoxYPosition,
+                                    rawDropBox.DropBoxWidth,
+                                    rawDropBox.DropBoxHeight,
+                                    rawDropBox.DropBoxOptions.Select(option => FetchButtonFromImport(option, block)).ToArray(),
+                                    new Color()
+                                    {
+                                        R = (byte)rawDropBox.DropBoxColor[0],
+                                        G = (byte)rawDropBox.DropBoxColor[1],
+                                        B = (byte)rawDropBox.DropBoxColor[2],
+                                        A = (byte)rawDropBox.DropBoxColor[3]
+                                    },
+                                    new Color()
+                                    {
+                                        R = (byte)rawDropBox.DropBoxBorderColor[0],
+                                        G = (byte)rawDropBox.DropBoxBorderColor[1],
+                                        B = (byte)rawDropBox.DropBoxBorderColor[2],
+                                        A = (byte)rawDropBox.DropBoxBorderColor[3]
+                                    },
+                                    new Color()
+                                    {
+                                        R = (byte)rawDropBox.DropBoxHoverColor[0],
+                                        G = (byte)rawDropBox.DropBoxHoverColor[1],
+                                        B = (byte)rawDropBox.DropBoxHoverColor[2],
+                                        A = (byte)rawDropBox.DropBoxHoverColor[3]
+                                    });
+        }
+        /// <summary>
+        /// Creates an input field from the importer class
+        /// </summary>
+        /// <param name="inputFieldImport"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        InputField FetchInputFieldFromImport(InputFieldImport inputFieldImport, Block block)
+        {
+            return new InputField(
+                Game,
+                block,
+                inputFieldImport.XPosition,
+                inputFieldImport.YPosition,
+                inputFieldImport.ButtonYOffset,
+                inputFieldImport.Width,
+                inputFieldImport.Height,
+                inputFieldImport.InputFieldPlaceholder,
+                inputFieldImport.InputFieldButtonText,
+                (IButtonEvent)FetchEventFromImport(inputFieldImport.InputFieldButtonEvent)
+            );
+        }
+        /// <summary>
+        /// Creates a block from the importer class
+        /// </summary>
+        /// <param name="rawBlock"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        Block FetchBlockFromImport(BlockImport rawBlock)
+        {
+            // The block has a button component.
+            if (rawBlock.Button != null)
+            {
+                if (rawBlock.Button.Event.Type == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the event type is null.");
+                }
+                if (rawBlock.Button.Event == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the event is null.");
+                }
+                if (rawBlock.Button.Event.CharactersPerSecond == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the characters per second is null.");
+                }
+                if (rawBlock.Button.Event.PositionType == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the position type is null.");
+                }
+                if (rawBlock.Button.Event.HorizontalTextMargin == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the horizontal text margin is null.");
+                }
+                if (rawBlock.Button.Event.VerticalTextMargin == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the vertical text margin is null.");
+                }
+                if (rawBlock.Button.Event.WordWrap == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the word wrap is null.");
+                }
+                if (rawBlock.Button.Event.TextBoxTitle == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the text box title is null.");
+                }
+                if (rawBlock.Button.Event.TextBoxContent == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the text box content is null.");
+                }
+                if (rawBlock.Button.Event.SpritePath == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the sprite path is null.");
+                }
+                if (rawBlock.Button.Event.TintColor == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the tint color is null.");
+                }
+                if (rawBlock.Button.Event.SceneID == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the scene ID is null.");
+                }
+                if (rawBlock.Button.Event.VariableName == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                }
+                if (rawBlock.Button.Event.VariableValue == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
+                }
+                if (rawBlock.Button.Event.VariableType == null)
+                {
+                    throw new InvalidOperationException("Failed to load scene settings, because the variable type is null.");
+                }
+                IButtonEvent newEvent = (IButtonEvent)FetchEventFromImport(rawBlock.Button.Event);
+                var newBlock = new Block(
+                    rawBlock.BlockXPosition,
+                    rawBlock.BlockYPosition,
+                    null
+                );
+                newBlock.SetComponent(new Button(
+                        Game,
+                        newBlock,
+                        rawBlock.Button.ButtonXPosition,
+                        rawBlock.Button.ButtonYPosition,
+                        rawBlock.Button.ButtonWidth,
+                        rawBlock.Button.ButtonHeight,
+                        rawBlock.Button.ButtonText,
+                        new Color()
+                        {
+                            R = (byte)rawBlock.Button.ButtonColor[0],
+                            G = (byte)rawBlock.Button.ButtonColor[1],
+                            B = (byte)rawBlock.Button.ButtonColor[2],
+                            A = (byte)rawBlock.Button.ButtonColor[3]
+                        },
+                        new Color()
+                        {
+                            R = (byte)rawBlock.Button.ButtonBorderColor[0],
+                            G = (byte)rawBlock.Button.ButtonBorderColor[1],
+                            B = (byte)rawBlock.Button.ButtonBorderColor[2],
+                            A = (byte)rawBlock.Button.ButtonBorderColor[3]
+                        },
+                        new Color()
+                        {
+                            R = (byte)rawBlock.Button.ButtonHoverColor[0],
+                            G = (byte)rawBlock.Button.ButtonHoverColor[1],
+                            B = (byte)rawBlock.Button.ButtonHoverColor[2],
+                            A = (byte)rawBlock.Button.ButtonHoverColor[3]
+                        },
+                        newEvent
+                    ));
+                return newBlock;
+            }
+            // The block has a dropbox component.
+            else if (rawBlock.DropBox != null)
+            {
+                var newBlock = new Block(
+                    rawBlock.BlockXPosition,
+                    rawBlock.BlockYPosition,
+                    null
+                );
+                newBlock.SetComponent(FetchDropBoxFromImport(rawBlock.DropBox, newBlock));
+                return newBlock;
+            }
+            // The block has an InputField component.
+            else if (rawBlock.InputField != null)
+            {
+                var newBlock = new Block(
+                    rawBlock.BlockXPosition,
+                    rawBlock.BlockYPosition,
+                    null
+                );
+                IButtonEvent inputFieldButtonEvent = (IButtonEvent)FetchEventFromImport(rawBlock.InputField.InputFieldButtonEvent);
+                newBlock.SetComponent(FetchInputFieldFromImport(rawBlock.InputField, newBlock));
+                return newBlock;
+            }
+            // The block has a Slider component.
+            else if (rawBlock.Slider != null)
+            {
+                var newBlock = new Block(
+                    rawBlock.BlockXPosition,
+                    rawBlock.BlockYPosition,
+                    null
+                );
+                newBlock.SetComponent(new Slider(
+                    newBlock,
+                    rawBlock.Slider.SliderXPosition,
+                    rawBlock.Slider.SliderYPosition,
+                    rawBlock.Slider.SliderWidth,
+                    rawBlock.Slider.SliderHeight,
+                    rawBlock.Slider.SliderDragRadius,
+                    new Color()
+                    {
+                        R = (byte)rawBlock.Slider.SliderColor[0],
+                        G = (byte)rawBlock.Slider.SliderColor[1],
+                        B = (byte)rawBlock.Slider.SliderColor[2],
+                        A = (byte)rawBlock.Slider.SliderColor[3]
+                    },
+                    new Color()
+                    {
+                        R = (byte)rawBlock.Slider.SliderBorderColor[0],
+                        G = (byte)rawBlock.Slider.SliderBorderColor[1],
+                        B = (byte)rawBlock.Slider.SliderBorderColor[2],
+                        A = (byte)rawBlock.Slider.SliderBorderColor[3]
+                    }
+                ));
+                return newBlock;
+            }
+            // The block has a Sprite component.
+            else if (rawBlock.Sprite != null)
+            {
+                var newBlock = new Block(
+                    rawBlock.BlockXPosition,
+                    rawBlock.BlockYPosition,
+                    null
+                );
+                newBlock.SetComponent(FetchSpriteFromImport(rawBlock.Sprite, newBlock));
+                return newBlock;
+            }
+            else
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the component type attached to the block is not recognized.");
+            }
+        }
+        /// <summary>
+        /// Creates a menu from the importer class
+        /// </summary>
+        /// <param name="rawMenu"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        Menu FetchMenuFromImport(ActionImport rawMenu)
+        {
+            if (rawMenu.MenuXPosition == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu X position is null.");
+            }
+            if (rawMenu.MenuYPosition == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu Y position is null.");
+            }
+            if (rawMenu.MenuWidth == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu width is null.");
+            }
+            if (rawMenu.MenuHeight == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu height is null.");
+            }
+            if (rawMenu.MenuFullScreen == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu fullscreen is null.");
+            }
+            if (rawMenu.MenuColor == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu color is null.");
+            }
+            if (rawMenu.MenuBorderColor == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu border color is null.");
+            }
+            var menuXPosition = rawMenu.MenuXPosition.Value;
+            var menuYPosition = rawMenu.MenuYPosition.Value;
+            var menuWidth = rawMenu.MenuWidth.Value;
+            var menuHeight = rawMenu.MenuHeight.Value;
+            var menuFullScreen = rawMenu.MenuFullScreen == "True";
+            var windowColor = new Color()
+            {
+                R = (byte)rawMenu.MenuColor[0],
+                G = (byte)rawMenu.MenuColor[1],
+                B = (byte)rawMenu.MenuColor[2],
+                A = (byte)rawMenu.MenuColor[3]
+            };
+            var windowBorderColor = new Color()
+            {
+                R = (byte)rawMenu.MenuBorderColor[0],
+                G = (byte)rawMenu.MenuBorderColor[1],
+                B = (byte)rawMenu.MenuBorderColor[2],
+                A = (byte)rawMenu.MenuBorderColor[3]
+            };
+            var menu = new Menu(
+                Game,
+                menuXPosition,
+                menuYPosition,
+                menuWidth,
+                menuHeight,
+                menuFullScreen,
+                [],
+                windowColor,
+                windowBorderColor);
+            if (rawMenu.MenuBlockList == null) return menu;
+            menu.BlockList.AddRange(rawMenu.MenuBlockList.Select(block => FetchBlockFromImport(block)));
+            return menu;
+        }
+        /// <summary>
+        /// Creates an event from the importer class
+        /// </summary>
+        /// <param name="rawAction"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        IEvent FetchEventFromImport(ActionImport rawAction)
+        {
+            switch (rawAction.Type)
+            {
+                case "TextBoxCreateAction":
+                    // Add the textbox to the timeline.
+                    if (rawAction.CharactersPerSecond.HasValue is false)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the characters per second is null.");
+                    }
+                    if (rawAction.Font == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the font is null.");
+                    }
+                    if (rawAction.TextBoxColor == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the textbox color is null.");
+                    }
+                    if (rawAction.TextBoxBorder == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the textbox border is null.");
+                    }
+                    if (rawAction.PositionType.HasValue is false)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the position type is null.");
+                    }
+                    if (rawAction.HorizontalTextMargin.HasValue is false)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the horizontal text margin is null.");
+                    }
+                    if (rawAction.VerticalTextMargin.HasValue is false)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the vertical text margin is null.");
+                    }
+                    if (rawAction.WordWrap.HasValue is false)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the word wrap is null.");
+                    }
+                    if (rawAction.TextBoxTitle == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the textbox title is null.");
+                    }
+                    if (rawAction.TextBoxContent == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the textbox content is null.");
+                    }
+                    var charactersPerSecond = rawAction.CharactersPerSecond.Value;
+                    var font = new Font() { BaseSize = 30, GlyphPadding = 5 };
+                    var textboxcolor = rawAction.TextBoxColor == null || rawAction.TextBoxColor.Length < 4 ?
+                    new Color() { R = 0, G = 0, B = 0, A = 255 } :
+                    new Color()
+                    {
+                        R = (byte)rawAction.TextBoxColor[0],
+                        G = (byte)rawAction.TextBoxColor[1],
+                        B = (byte)rawAction.TextBoxColor[2],
+                        A = (byte)rawAction.TextBoxColor[3]
+                    };
+                    var textboxborder = rawAction.TextBoxBorder == null || rawAction.TextBoxBorder.Length < 4 ?
+                    new Color() { R = 0, G = 0, B = 0, A = 255 } :
+                    new Color()
+                    {
+                        R = (byte)rawAction.TextBoxBorder[0],
+                        G = (byte)rawAction.TextBoxBorder[1],
+                        B = (byte)rawAction.TextBoxBorder[2],
+                        A = (byte)rawAction.TextBoxBorder[3]
+                    };
+                    var positionType = (TextBox.PositionType)rawAction.PositionType.Value;
+                    var horizontalTextMargin = rawAction.HorizontalTextMargin.Value;
+                    var verticalTextMargin = rawAction.VerticalTextMargin.Value;
+                    var wordWrap = rawAction.WordWrap.Value;
+                    var textBoxTitle = rawAction.TextBoxTitle;
+                    var textBoxContent = rawAction.TextBoxContent;
+                    //
+                    var textBox = TextBox.CreateNewTextBox(
+                        Game,
+                        charactersPerSecond,
+                        font,
+                        textboxcolor,
+                        textboxborder,
+                        positionType,
+                        horizontalTextMargin,
+                        verticalTextMargin,
+                        wordWrap,
+                        textBoxTitle,
+                        [.. textBoxContent]);
+                    //
+                    return new TextBoxCreateAction(textBox);
+                case "AddSpriteAction":
+                    // Add the sprite to the timeline.
+                    var sprite = FetchSpriteFromImport(rawAction);
+                    return new AddSpriteAction(sprite, Game);
+                case "TintSpriteAction":
+                    // Add the tint action to the timeline.
+                    var tintSprite = FetchSpriteFromImport(rawAction);
+                    var tintColor = new Color()
+                    {
+                        R = (byte)rawAction.TintColor[0],
+                        G = (byte)rawAction.TintColor[1],
+                        B = (byte)rawAction.TintColor[2],
+                        A = (byte)rawAction.TintColor[3]
+                    };
+                    return new TintSpriteAction(tintSprite, tintColor, Game);
+                case "RemoveSpriteAction":
+                    // Add the remove action to the timeline.
+                    var removeSprite = FetchSpriteFromImport(rawAction);
+                    return new RemoveSpriteAction(removeSprite, Game);
+                case "LoadSceneAction":
+                    // Add the load scene action to the timeline.
+                    if (rawAction.SceneID.HasValue is false)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
+                    }
+                    var sceneId = rawAction.SceneID.Value;
+                    return new LoadSceneAction(Game, sceneId);
+                    break;
+                case "NativeLoadSceneAction":
+                    // Add the native load scene action to the timeline.
+                    if (rawAction.SceneID.HasValue is false)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
+                    }
+                    var nativeSceneId = rawAction.SceneID.Value;
+                    return new NativeLoadSceneAction(Game, nativeSceneId);
+                case "CreateVariableAction":
+                    // Add the create variable action to the timeline.
+                    var variable = FetchVariableFromImport(rawAction);
+                    return new CreateVariableAction(Game, variable);
+                case "IncrementVariableAction":
+                    // Add the increment variable action to the timeline.
+                    if (rawAction.VariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                    }
+                    if (rawAction.VariableValue == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
+                    }
+                    return new IncrementVariableAction(Game, rawAction.VariableName, int.Parse(rawAction.VariableValue));
+                case "DecrementVariableAction":
+                    // Add the decrement variable action to the timeline.
+                    if (rawAction.VariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                    }
+                    if (rawAction.VariableValue == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
+                    }
+                    return new DecrementVariableAction(Game, rawAction.VariableName, int.Parse(rawAction.VariableValue));
+                case "SetVariableTrueAction":
+                    // Add the set variable true action to the timeline.
+                    if (rawAction.VariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                    }
+                    return new SetVariableTrueAction(Game, rawAction.VariableName);
+                case "SetVariableFalseAction":
+                    // Add the set variable false action to the timeline.
+                    if (rawAction.VariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                    }
+                    return new SetVariableFalseAction(Game, rawAction.VariableName);
+                case "SetBoolVariableAction":
+                    // Add the set variable action to the timeline.
+                    if (rawAction.VariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                    }
+                    if (rawAction.VariableValue == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
+                    }
+                    return new SetBoolVariableAction(Game, rawAction.VariableName, bool.Parse(rawAction.VariableValue));
+                case "ToggleVariableAction":
+                    // Add the toggle variable action to the timeline.
+                    if (rawAction.VariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                    }
+                    return new ToggleVariableAction(Game, rawAction.VariableName);
+                case "CreateMenuAction":
+                    // Add the create menu action to the timeline.
+                    var menu = FetchMenuFromImport(rawAction);
+                    return new CreateMenuAction(Game, menu, [.. menu.BlockList]));
+                default:
+                    throw new InvalidOperationException("Failed to load scene settings, because the action type is not recognized.");
+            }
+        }
     }
     /// <summary>
     /// The Game is the main class of the game.
-    /// It contains the game settings, scenes, variables and the active scene.
-    /// It is responsible for fetching the game settings, variables and scenes from the json files.
-    /// It is also responsible for loading the scene and updating the scene.
-    /// It manages inputs from the user.
+    /// The Game class contains the path to the following files: gamesettings, scenes, variables
+    /// Game class accesses the GameLoader Class
     /// </summary>
     public class Game
     {
         /// <summary>
+        /// The GameLoader deals with the raw data which is loaded into the game.
+        /// </summary>
+        GameLoader GameLoader;
+        /// <summary>
         /// The current folder path.
         /// </summary>
-        const string currentFolderPath = "../../../src/Data/";
+        internal const string currentFolderPath = "../../../src/Data/";
         /// <summary>
         /// The Game settings path.
         /// </summary>
-        const string relativeGameSettingsPath = currentFolderPath + "GameSettings.json";
+        internal const string relativeGameSettingsPath = currentFolderPath + "GameSettings.json";
         /// <summary>
         /// The Scene path.
         /// </summary>
-        const string relativeScenePath = currentFolderPath + "Scenes.json";
+        internal const string relativeScenePath = currentFolderPath + "Scenes.json";
         /// <summary>
         /// The Variable path.
         /// </summary>
-        const string relativeVariablePath = currentFolderPath + "Variables.json";
+        internal const string relativeVariablePath = currentFolderPath + "Variables.json";
         /// <summary>
         /// Temporary Game settings.
         /// </summary>
@@ -371,6 +974,8 @@ namespace EngineComponents
         {
             // Initialize the list of scenes.
             Scenes = [];
+            // Initialize the game loader.
+            GameLoader = new(this);
             // Fetch the scene settings.
             string rawFile = File.ReadAllText(relativeScenePath);
             var rawScenes = JsonSerializer.Deserialize<List<SceneImport>>(rawFile);
@@ -386,464 +991,7 @@ namespace EngineComponents
                     else
                         for (int i = 0; i < scene.ActionList.Count(); i++)
                         {
-                            switch (scene.ActionList[i].Type)
-                            {
-                                case "TextBoxCreateAction":
-                                    // Add the textbox to the timeline.
-                                    if (scene.ActionList[i].CharactersPerSecond.HasValue is false)
-                                    {
-                                        throw new InvalidOperationException("Failed to load scene settings, because the characters per second is null.");
-                                    }
-                                    var charactersPerSecond = scene.ActionList[i].CharactersPerSecond.Value;
-                                    var font = new Font() { BaseSize = 30, GlyphPadding = 5 };
-                                    var textboxcolor = scene.ActionList[i].TextBoxColor == null || scene.ActionList[i].TextBoxColor.Length < 4 ?
-                                    new Color() { R = 0, G = 0, B = 0, A = 255 } :
-                                    new Color()
-                                    {
-                                        R = (byte)scene.ActionList[i].TextBoxColor[0],
-                                        G = (byte)scene.ActionList[i].TextBoxColor[1],
-                                        B = (byte)scene.ActionList[i].TextBoxColor[2],
-                                        A = (byte)scene.ActionList[i].TextBoxColor[3]
-                                    };
-                                    var textboxborder = scene.ActionList[i].TextBoxBorder == null || scene.ActionList[i].TextBoxBorder.Length < 4 ?
-                                    new Color() { R = 0, G = 0, B = 0, A = 255 } :
-                                    new Color()
-                                    {
-                                        R = (byte)scene.ActionList[i].TextBoxBorder[0],
-                                        G = (byte)scene.ActionList[i].TextBoxBorder[1],
-                                        B = (byte)scene.ActionList[i].TextBoxBorder[2],
-                                        A = (byte)scene.ActionList[i].TextBoxBorder[3]
-                                    };
-                                    var positionType = (TextBox.PositionType)scene.ActionList[i].PositionType.Value;
-                                    var horizontalTextMargin = scene.ActionList[i].HorizontalTextMargin.Value;
-                                    var verticalTextMargin = scene.ActionList[i].VerticalTextMargin.Value;
-                                    var wordWrap = scene.ActionList[i].WordWrap.Value;
-                                    var textBoxTitle = scene.ActionList[i].TextBoxTitle;
-                                    var textBoxContent = scene.ActionList[i].TextBoxContent;
-                                    //
-                                    var textBox = TextBox.CreateNewTextBox(
-                                        this,
-                                        charactersPerSecond,
-                                        font,
-                                        textboxcolor,
-                                        textboxborder,
-                                        positionType,
-                                        horizontalTextMargin,
-                                        verticalTextMargin,
-                                        wordWrap,
-                                        textBoxTitle,
-                                        [.. textBoxContent]);
-                                    //
-                                    timeline.ActionList.Add(new TextBoxCreateAction(textBox));
-                                    break;
-                                case "AddSpriteAction":
-                                    // Add the sprite to the timeline.
-                                    if (scene.ActionList[i].SpritePath == null)
-                                    {
-                                        throw new InvalidOperationException("Failed to load scene settings, because the sprite path is null.");
-                                    }
-                                    var spritePath = currentFolderPath + scene.ActionList[i].SpritePath;
-                                    var sprite = new Sprite(spritePath);
-                                    timeline.ActionList.Add(new AddSpriteAction(sprite, this));
-                                    break;
-                                case "TintSpriteAction":
-                                    // Add the tint action to the timeline.
-                                    var tintSprite = new Sprite(scene.ActionList[i].SpritePath);
-                                    var tintColor = new Color()
-                                    {
-                                        R = (byte)scene.ActionList[i].TintColor[0],
-                                        G = (byte)scene.ActionList[i].TintColor[1],
-                                        B = (byte)scene.ActionList[i].TintColor[2],
-                                        A = (byte)scene.ActionList[i].TintColor[3]
-                                    };
-                                    timeline.ActionList.Add(new TintSpriteAction(tintSprite, tintColor, this));
-                                    break;
-                                case "RemoveSpriteAction":
-                                    // Add the remove action to the timeline.
-                                    var removeSprite = new Sprite(currentFolderPath + scene.ActionList[i].SpritePath);
-                                    timeline.ActionList.Add(new RemoveSpriteAction(removeSprite, this));
-                                    break;
-                                case "LoadSceneAction":
-                                    // Add the load scene action to the timeline.
-                                    if (scene.ActionList[i].SceneID.HasValue is false)
-                                    {
-                                        throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
-                                    }
-                                    var sceneId = scene.ActionList[i].SceneID.Value;
-                                    timeline.ActionList.Add(new LoadSceneAction(this, sceneId));
-                                    break;
-                                case "NativeLoadSceneAction":
-                                    // Add the native load scene action to the timeline.
-                                    if (scene.ActionList[i].SceneID.HasValue is false)
-                                    {
-                                        throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
-                                    }
-                                    var nativeSceneId = scene.ActionList[i].SceneID.Value;
-                                    timeline.ActionList.Add(new NativeLoadSceneAction(this, nativeSceneId));
-                                    break;
-                                case "CreateVariableAction":
-                                    // Add the create variable action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new CreateVariableAction(
-                                            this,
-                                            new Variable(
-                                                scene.ActionList[i].VariableName,
-                                                scene.ActionList[i].VariableValue,
-                                                (VariableType)scene.ActionList[i].VariableType.Value)));
-                                    break;
-                                case "IncrementVariableAction":
-                                    // Add the increment variable action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new IncrementVariableAction(
-                                            this,
-                                            scene.ActionList[i].VariableName,
-                                            int.Parse(scene.ActionList[i].VariableValue)));
-                                    break;
-                                case "DecrementVariableAction":
-                                    // Add the decrement variable action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new DecrementVariableAction(
-                                            this,
-                                            scene.ActionList[i].VariableName,
-                                            int.Parse(scene.ActionList[i].VariableValue)));
-                                    break;
-                                case "SetVariableTrueAction":
-                                    // Add the set variable true action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new SetVariableTrueAction(
-                                            this,
-                                            scene.ActionList[i].VariableName));
-                                    break;
-                                case "SetVariableFalseAction":
-                                    // Add the set variable false action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new SetVariableFalseAction(
-                                            this,
-                                            scene.ActionList[i].VariableName));
-                                    break;
-                                case "SetBoolVariableAction":
-                                    // Add the set variable action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new SetBoolVariableAction(
-                                            this,
-                                            scene.ActionList[i].VariableName,
-                                            bool.Parse(scene.ActionList[i].VariableValue)));
-                                    break;
-                                case "ToggleVariableAction":
-                                    // Add the toggle variable action to the timeline.
-                                    timeline.ActionList.Add(
-                                        new ToggleVariableAction(
-                                            this,
-                                            scene.ActionList[i].VariableName));
-                                    break;
-                                case "CreateMenuAction":
-                                    // Add the create menu action to the timeline.
-                                    var menuXPosition = scene.ActionList[i].MenuXPosition.Value;
-                                    var menuYPosition = scene.ActionList[i].MenuYPosition.Value;
-                                    var menuWidth = scene.ActionList[i].MenuWidth.Value;
-                                    var menuHeight = scene.ActionList[i].MenuHeight.Value;
-                                    var menuFullScreen = scene.ActionList[i].MenuFullScreen == "True";
-                                    var windowColor = new Color()
-                                    {
-                                        R = (byte)scene.ActionList[i].MenuColor[0],
-                                        G = (byte)scene.ActionList[i].MenuColor[1],
-                                        B = (byte)scene.ActionList[i].MenuColor[2],
-                                        A = (byte)scene.ActionList[i].MenuColor[3]
-                                    };
-                                    var windowBorderColor = new Color()
-                                    {
-                                        R = (byte)scene.ActionList[i].MenuBorderColor[0],
-                                        G = (byte)scene.ActionList[i].MenuBorderColor[1],
-                                        B = (byte)scene.ActionList[i].MenuBorderColor[2],
-                                        A = (byte)scene.ActionList[i].MenuBorderColor[3]
-                                    };
-                                    var menu = new Menu(
-                                        this,
-                                        menuXPosition,
-                                        menuYPosition,
-                                        menuWidth,
-                                        menuHeight,
-                                        menuFullScreen,
-                                        [],
-                                        windowColor,
-                                        windowBorderColor);
-                                    foreach (BlockImport? block in scene.ActionList[i].MenuBlockList)
-                                    {
-                                        // The block has a button component.
-                                        if (block.Button != null)
-                                        {
-                                            IButtonEvent newEvent = block.Button.Event.Type switch
-                                            {
-                                                "TextBoxCreateAction" => new TextBoxCreateAction(
-                                                    TextBox.CreateNewTextBox(
-                                                        this,
-                                                        block.Button.Event.CharactersPerSecond.Value,
-                                                        new Font() { BaseSize = 30, GlyphPadding = 5 },
-                                                        new Color() { R = 0, G = 0, B = 0, A = 255 },
-                                                        new Color() { R = 0, G = 0, B = 0, A = 255 },
-                                                        (TextBox.PositionType)block.Button.Event.PositionType.Value,
-                                                        block.Button.Event.HorizontalTextMargin.Value,
-                                                        block.Button.Event.VerticalTextMargin.Value,
-                                                        block.Button.Event.WordWrap.Value,
-                                                        block.Button.Event.TextBoxTitle,
-                                                        [.. block.Button.Event.TextBoxContent])),
-                                                "AddSpriteAction" => new AddSpriteAction(
-                                                    new Sprite(block.Button.Event.SpritePath),
-                                                    this),
-                                                "TintSpriteAction" => new TintSpriteAction(
-                                                    new Sprite(block.Button.Event.SpritePath),
-                                                    new Color()
-                                                    {
-                                                        R = (byte)block.Button.Event.TintColor[0],
-                                                        G = (byte)block.Button.Event.TintColor[1],
-                                                        B = (byte)block.Button.Event.TintColor[2],
-                                                        A = (byte)block.Button.Event.TintColor[3]
-                                                    },
-                                                    this),
-                                                "RemoveSpriteAction" => new RemoveSpriteAction(
-                                                    new Sprite(block.Button.Event.SpritePath),
-                                                    this),
-                                                "NativeLoadSceneAction" => new NativeLoadSceneAction(
-                                                    this,
-                                                    block.Button.Event.SceneID.Value),
-                                                "CreateVariableAction" => new CreateVariableAction(
-                                                    this,
-                                                    new Variable(
-                                                        block.Button.Event.VariableName,
-                                                        block.Button.Event.VariableValue,
-                                                        (VariableType)block.Button.Event.VariableType.Value)),
-                                                "IncrementVariableAction" => new IncrementVariableAction(
-                                                    this,
-                                                    block.Button.Event.VariableName,
-                                                    int.Parse(block.Button.Event.VariableValue)),
-                                                "DecrementVariableAction" => new DecrementVariableAction(
-                                                    this,
-                                                    block.Button.Event.VariableName,
-                                                    int.Parse(block.Button.Event.VariableValue)),
-                                                "SetVariableTrueAction" => new SetVariableTrueAction(
-                                                    this,
-                                                    block.Button.Event.VariableName),
-                                                "SetVariableFalseAction" => new SetVariableFalseAction(
-                                                    this,
-                                                    block.Button.Event.VariableName),
-                                                null => throw new InvalidOperationException("Failed to load scene settings, because the event type is not recognized."),
-                                                _ => throw new NotImplementedException()
-                                            };
-                                            var newBlock = new Block(
-                                                block.BlockXPosition,
-                                                block.BlockYPosition,
-                                                null
-                                            );
-                                            newBlock.SetComponent(new Button(
-                                                    this,
-                                                    newBlock,
-                                                    block.Button.ButtonXPosition,
-                                                    block.Button.ButtonYPosition,
-                                                    block.Button.ButtonWidth,
-                                                    block.Button.ButtonHeight,
-                                                    block.Button.ButtonText,
-                                                    new Color()
-                                                    {
-                                                        R = (byte)block.Button.ButtonColor[0],
-                                                        G = (byte)block.Button.ButtonColor[1],
-                                                        B = (byte)block.Button.ButtonColor[2],
-                                                        A = (byte)block.Button.ButtonColor[3]
-                                                    },
-                                                    new Color()
-                                                    {
-                                                        R = (byte)block.Button.ButtonBorderColor[0],
-                                                        G = (byte)block.Button.ButtonBorderColor[1],
-                                                        B = (byte)block.Button.ButtonBorderColor[2],
-                                                        A = (byte)block.Button.ButtonBorderColor[3]
-                                                    },
-                                                    new Color()
-                                                    {
-                                                        R = (byte)block.Button.ButtonHoverColor[0],
-                                                        G = (byte)block.Button.ButtonHoverColor[1],
-                                                        B = (byte)block.Button.ButtonHoverColor[2],
-                                                        A = (byte)block.Button.ButtonHoverColor[3]
-                                                    },
-                                                    newEvent
-                                                ));
-                                            menu.BlockList.Add(newBlock);
-                                        }
-                                        // The block has a dropbox component.
-                                        else if (block.DropBox != null)
-                                        {
-                                            var newBlock = new Block(
-                                                block.BlockXPosition,
-                                                block.BlockYPosition,
-                                                null
-                                            );
-                                            newBlock.SetComponent(new DropBox(
-                                                newBlock,
-                                                block.DropBox.DropBoxXPosition,
-                                                block.DropBox.DropBoxYPosition,
-                                                block.DropBox.DropBoxWidth,
-                                                block.DropBox.DropBoxHeight,
-                                                block.DropBox.DropBoxText,
-                                                [],
-                                                new Color()
-                                                {
-                                                    R = (byte)block.DropBox.DropBoxColor[0],
-                                                    G = (byte)block.DropBox.DropBoxColor[1],
-                                                    B = (byte)block.DropBox.DropBoxColor[2],
-                                                    A = (byte)block.DropBox.DropBoxColor[3]
-                                                },
-                                                new Color()
-                                                {
-                                                    R = (byte)block.DropBox.DropBoxBorderColor[0],
-                                                    G = (byte)block.DropBox.DropBoxBorderColor[1],
-                                                    B = (byte)block.DropBox.DropBoxBorderColor[2],
-                                                    A = (byte)block.DropBox.DropBoxBorderColor[3]
-                                                },
-                                                new Color()
-                                                {
-                                                    R = (byte)block.DropBox.DropBoxHoverColor[0],
-                                                    G = (byte)block.DropBox.DropBoxHoverColor[1],
-                                                    B = (byte)block.DropBox.DropBoxHoverColor[2],
-                                                    A = (byte)block.DropBox.DropBoxHoverColor[3]
-                                                }
-                                            ));
-                                            menu.BlockList.Add(newBlock);
-                                        }
-                                        // The block has an InputField component.
-                                        else if (block.InputField != null)
-                                        {
-                                            var newBlock = new Block(
-                                                block.BlockXPosition,
-                                                block.BlockYPosition,
-                                                null
-                                            );
-                                            IButtonEvent inputFieldButtonEvent = block.InputField.InputFieldButtonEventType switch
-                                            {
-                                                "TextBoxCreateAction" => new TextBoxCreateAction(
-                                                    TextBox.CreateNewTextBox(
-                                                        this,
-                                                        block.InputField.InputFieldButtonEvent.CharactersPerSecond.Value,
-                                                        new Font() { BaseSize = 30, GlyphPadding = 5 },
-                                                        new Color() { R = 0, G = 0, B = 0, A = 255 },
-                                                        new Color() { R = 0, G = 0, B = 0, A = 255 },
-                                                        (TextBox.PositionType)block.InputField.InputFieldButtonEvent.PositionType.Value,
-                                                        block.InputField.InputFieldButtonEvent.HorizontalTextMargin.Value,
-                                                        block.InputField.InputFieldButtonEvent.VerticalTextMargin.Value,
-                                                        block.InputField.InputFieldButtonEvent.WordWrap.Value,
-                                                        block.InputField.InputFieldButtonEvent.TextBoxTitle,
-                                                        [.. block.InputField.InputFieldButtonEvent.TextBoxContent])),
-                                                "AddSpriteAction" => new AddSpriteAction(
-                                                    new Sprite(block.InputField.InputFieldButtonEvent.SpritePath),
-                                                    this),
-                                                "TintSpriteAction" => new TintSpriteAction(
-                                                    new Sprite(block.InputField.InputFieldButtonEvent.SpritePath),
-                                                    new Color()
-                                                    {
-                                                        R = (byte)block.InputField.InputFieldButtonEvent.TintColor[0],
-                                                        G = (byte)block.InputField.InputFieldButtonEvent.TintColor[1],
-                                                        B = (byte)block.InputField.InputFieldButtonEvent.TintColor[2],
-                                                        A = (byte)block.InputField.InputFieldButtonEvent.TintColor[3]
-                                                    },
-                                                    this),
-                                                "RemoveSpriteAction" => new RemoveSpriteAction(
-                                                    new Sprite(block.InputField.InputFieldButtonEvent.SpritePath),
-                                                    this),
-                                                "NativeLoadSceneAction" => new NativeLoadSceneAction(
-                                                    this,
-                                                    block.InputField.InputFieldButtonEvent.SceneID.Value),
-                                                "CreateVariableAction" => new CreateVariableAction(
-                                                    this,
-                                                    new Variable(
-                                                        block.InputField.InputFieldButtonEvent.VariableName,
-                                                        block.InputField.InputFieldButtonEvent.VariableValue,
-                                                        (VariableType)block.InputField.InputFieldButtonEvent.VariableType.Value)),
-                                                "IncrementVariableAction" => new IncrementVariableAction(
-                                                    this,
-                                                    block.InputField.InputFieldButtonEvent.VariableName,
-                                                    int.Parse(block.InputField.InputFieldButtonEvent.VariableValue)),
-                                                "DecrementVariableAction" => new DecrementVariableAction(
-                                                    this,
-                                                    block.InputField.InputFieldButtonEvent.VariableName,
-                                                    int.Parse(block.InputField.InputFieldButtonEvent.VariableValue)),
-                                                "SetVariableTrueAction" => new SetVariableTrueAction(
-                                                    this,
-                                                    block.InputField.InputFieldButtonEvent.VariableName),
-                                                "SetVariableFalseAction" => new SetVariableFalseAction(
-                                                    this,
-                                                    block.InputField.InputFieldButtonEvent.VariableName),
-                                                _ => throw new InvalidOperationException("Failed to load scene settings, because the event type is not recognized.")
-                                            };
-                                            newBlock.SetComponent(new InputField(
-                                                this,
-                                                newBlock,
-                                                block.InputField.XPosition,
-                                                block.InputField.YPosition,
-                                                block.InputField.ButtonYOffset,
-                                                block.InputField.Width,
-                                                block.InputField.Height,
-                                                block.InputField.InputFieldPlaceholder,
-                                                block.InputField.InputFieldButtonText,
-                                                null
-                                            ));
-                                            menu.BlockList.Add(newBlock);
-                                        }
-                                        // The block has a Slider component.
-                                        else if (block.Slider != null)
-                                        {
-                                            var newBlock = new Block(
-                                                block.BlockXPosition,
-                                                block.BlockYPosition,
-                                                null
-                                            );
-                                            newBlock.SetComponent(new Slider(
-                                                newBlock,
-                                                block.Slider.SliderXPosition,
-                                                block.Slider.SliderYPosition,
-                                                block.Slider.SliderWidth,
-                                                block.Slider.SliderHeight,
-                                                block.Slider.SliderDragRadius,
-                                                new Color()
-                                                {
-                                                    R = (byte)block.Slider.SliderColor[0],
-                                                    G = (byte)block.Slider.SliderColor[1],
-                                                    B = (byte)block.Slider.SliderColor[2],
-                                                    A = (byte)block.Slider.SliderColor[3]
-                                                },
-                                                new Color()
-                                                {
-                                                    R = (byte)block.Slider.SliderBorderColor[0],
-                                                    G = (byte)block.Slider.SliderBorderColor[1],
-                                                    B = (byte)block.Slider.SliderBorderColor[2],
-                                                    A = (byte)block.Slider.SliderBorderColor[3]
-                                                }
-                                            ));
-                                            menu.BlockList.Add(newBlock);
-                                        }
-                                        // The block has a Sprite component.
-                                        else if (block.Sprite != null)
-                                        {
-                                            var newBlock = new Block(
-                                                block.BlockXPosition,
-                                                block.BlockYPosition,
-                                                null
-                                            );
-                                            newBlock.SetComponent(new Sprite(
-                                                block.Sprite.SpritePath,
-                                                newBlock,
-                                                block.Sprite.SpriteXPosition,
-                                                block.Sprite.SpriteYPosition
-                                            ));
-                                            menu.BlockList.Add(newBlock);
-                                        }
-                                        else
-                                        {
-                                            throw new InvalidOperationException("Failed to load scene settings, because the component type attached to the block is not recognized.");
-                                        }
-
-                                    }
-                                    timeline.ActionList.Add(new CreateMenuAction(this, menu, [.. menu.BlockList]));
-                                    break;
-                                default:
-                                    throw new InvalidOperationException("Failed to load scene settings, because the action type is not recognized.");
-                            }
+                            timeline.ActionList.Add(GameLoader.FetchEventFromImport(scene.ActionList[i]));
                         }
                     Scenes.Add(new Scene(scene.Name, this)
                     {

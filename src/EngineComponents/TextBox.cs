@@ -405,7 +405,7 @@ namespace EngineComponents
             return;
             bool isTurnedOff() => IsEnabled is false;
             bool isDone() => TextCollectionIndex >= TextCollectionCount;
-            bool headerExists() => string.IsNullOrEmpty(TextBoxTitle) is false;
+            bool headerExists() => TextBoxTitle.Length > 0;
             bool isSkipBatch() => Game.IsLeftMouseButtonPressed();
             bool shouldProceedNextBatch() =>
                 TextCollectionIndex < TextCollectionCount && IsFinished() is true && Game.IsLeftMouseButtonPressed();
