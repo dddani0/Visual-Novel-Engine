@@ -330,12 +330,52 @@ namespace EngineComponents
             return new Variable(rawAction.VariableName, rawAction.VariableValue, (VariableType)rawAction.VariableType);
         }
         /// <summary>
-        /// Creates a button from the importer class
+        /// Creates an event from the importer class
+        /// </summary>
+        /// <param name="buttonComponentImport"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        Button FetchButtonFromImport(ButtonComponentImport buttonComponentImport, Block block)
+        {
+            return new Button(
+                Game,
+                block,
+                buttonComponentImport.ButtonXPosition,
+                buttonComponentImport.ButtonYPosition,
+                buttonComponentImport.ButtonWidth,
+                buttonComponentImport.ButtonHeight,
+                buttonComponentImport.ButtonText,
+                new Color()
+                {
+                    R = (byte)buttonComponentImport.ButtonColor[0],
+                    G = (byte)buttonComponentImport.ButtonColor[1],
+                    B = (byte)buttonComponentImport.ButtonColor[2],
+                    A = (byte)buttonComponentImport.ButtonColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)buttonComponentImport.ButtonBorderColor[0],
+                    G = (byte)buttonComponentImport.ButtonBorderColor[1],
+                    B = (byte)buttonComponentImport.ButtonBorderColor[2],
+                    A = (byte)buttonComponentImport.ButtonBorderColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)buttonComponentImport.ButtonHoverColor[0],
+                    G = (byte)buttonComponentImport.ButtonHoverColor[1],
+                    B = (byte)buttonComponentImport.ButtonHoverColor[2],
+                    A = (byte)buttonComponentImport.ButtonHoverColor[3]
+                },
+                (IButtonEvent)FetchEventFromImport(buttonComponentImport.Event)
+            );
+        }
+        /// <summary>
+        /// Creates an option from the importer class
         /// </summary>
         /// <param name="rawDropBoxOption"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        Button FetchButtonFromImport(DropBoxOptionImport rawDropBoxOption, Block block)
+        Button FetchDropBoxOptionFromImport(DropBoxOptionImport rawDropBoxOption, Block block)
         {
             return new Button(
                 Game,
@@ -365,7 +405,7 @@ namespace EngineComponents
                                     rawDropBox.DropBoxYPosition,
                                     rawDropBox.DropBoxWidth,
                                     rawDropBox.DropBoxHeight,
-                                    rawDropBox.DropBoxOptions.Select(option => FetchButtonFromImport(option, block)).ToArray(),
+                                    rawDropBox.DropBoxOptions.Select(option => FetchDropBoxOptionFromImport(option, block)).ToArray(),
                                     new Color()
                                     {
                                         R = (byte)rawDropBox.DropBoxColor[0],
@@ -409,6 +449,32 @@ namespace EngineComponents
                 (IButtonEvent)FetchEventFromImport(inputFieldImport.InputFieldButtonEvent)
             );
         }
+
+        Slider FetchSliderFromImport(SliderImport rawSlider, Block block)
+        {
+            return new Slider(
+                block,
+                rawSlider.SliderXPosition,
+                rawSlider.SliderYPosition,
+                rawSlider.SliderWidth,
+                rawSlider.SliderHeight,
+                rawSlider.SliderDragRadius,
+                new Color()
+                {
+                    R = (byte)rawSlider.SliderColor[0],
+                    G = (byte)rawSlider.SliderColor[1],
+                    B = (byte)rawSlider.SliderColor[2],
+                    A = (byte)rawSlider.SliderColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)rawSlider.SliderBorderColor[0],
+                    G = (byte)rawSlider.SliderBorderColor[1],
+                    B = (byte)rawSlider.SliderBorderColor[2],
+                    A = (byte)rawSlider.SliderBorderColor[3]
+                }
+            );
+        }
         /// <summary>
         /// Creates a block from the importer class
         /// </summary>
@@ -420,103 +486,12 @@ namespace EngineComponents
             // The block has a button component.
             if (rawBlock.Button != null)
             {
-                if (rawBlock.Button.Event.Type == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the event type is null.");
-                }
-                if (rawBlock.Button.Event == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the event is null.");
-                }
-                if (rawBlock.Button.Event.CharactersPerSecond == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the characters per second is null.");
-                }
-                if (rawBlock.Button.Event.PositionType == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the position type is null.");
-                }
-                if (rawBlock.Button.Event.HorizontalTextMargin == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the horizontal text margin is null.");
-                }
-                if (rawBlock.Button.Event.VerticalTextMargin == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the vertical text margin is null.");
-                }
-                if (rawBlock.Button.Event.WordWrap == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the word wrap is null.");
-                }
-                if (rawBlock.Button.Event.TextBoxTitle == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the text box title is null.");
-                }
-                if (rawBlock.Button.Event.TextBoxContent == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the text box content is null.");
-                }
-                if (rawBlock.Button.Event.SpritePath == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the sprite path is null.");
-                }
-                if (rawBlock.Button.Event.TintColor == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the tint color is null.");
-                }
-                if (rawBlock.Button.Event.SceneID == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the scene ID is null.");
-                }
-                if (rawBlock.Button.Event.VariableName == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
-                }
-                if (rawBlock.Button.Event.VariableValue == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
-                }
-                if (rawBlock.Button.Event.VariableType == null)
-                {
-                    throw new InvalidOperationException("Failed to load scene settings, because the variable type is null.");
-                }
-                IButtonEvent newEvent = (IButtonEvent)FetchEventFromImport(rawBlock.Button.Event);
                 var newBlock = new Block(
                     rawBlock.BlockXPosition,
                     rawBlock.BlockYPosition,
                     null
                 );
-                newBlock.SetComponent(new Button(
-                        Game,
-                        newBlock,
-                        rawBlock.Button.ButtonXPosition,
-                        rawBlock.Button.ButtonYPosition,
-                        rawBlock.Button.ButtonWidth,
-                        rawBlock.Button.ButtonHeight,
-                        rawBlock.Button.ButtonText,
-                        new Color()
-                        {
-                            R = (byte)rawBlock.Button.ButtonColor[0],
-                            G = (byte)rawBlock.Button.ButtonColor[1],
-                            B = (byte)rawBlock.Button.ButtonColor[2],
-                            A = (byte)rawBlock.Button.ButtonColor[3]
-                        },
-                        new Color()
-                        {
-                            R = (byte)rawBlock.Button.ButtonBorderColor[0],
-                            G = (byte)rawBlock.Button.ButtonBorderColor[1],
-                            B = (byte)rawBlock.Button.ButtonBorderColor[2],
-                            A = (byte)rawBlock.Button.ButtonBorderColor[3]
-                        },
-                        new Color()
-                        {
-                            R = (byte)rawBlock.Button.ButtonHoverColor[0],
-                            G = (byte)rawBlock.Button.ButtonHoverColor[1],
-                            B = (byte)rawBlock.Button.ButtonHoverColor[2],
-                            A = (byte)rawBlock.Button.ButtonHoverColor[3]
-                        },
-                        newEvent
-                    ));
+                newBlock.SetComponent(FetchButtonFromImport(rawBlock.Button, newBlock));
                 return newBlock;
             }
             // The block has a dropbox component.
@@ -550,28 +525,7 @@ namespace EngineComponents
                     rawBlock.BlockYPosition,
                     null
                 );
-                newBlock.SetComponent(new Slider(
-                    newBlock,
-                    rawBlock.Slider.SliderXPosition,
-                    rawBlock.Slider.SliderYPosition,
-                    rawBlock.Slider.SliderWidth,
-                    rawBlock.Slider.SliderHeight,
-                    rawBlock.Slider.SliderDragRadius,
-                    new Color()
-                    {
-                        R = (byte)rawBlock.Slider.SliderColor[0],
-                        G = (byte)rawBlock.Slider.SliderColor[1],
-                        B = (byte)rawBlock.Slider.SliderColor[2],
-                        A = (byte)rawBlock.Slider.SliderColor[3]
-                    },
-                    new Color()
-                    {
-                        R = (byte)rawBlock.Slider.SliderBorderColor[0],
-                        G = (byte)rawBlock.Slider.SliderBorderColor[1],
-                        B = (byte)rawBlock.Slider.SliderBorderColor[2],
-                        A = (byte)rawBlock.Slider.SliderBorderColor[3]
-                    }
-                ));
+                newBlock.SetComponent(FetchSliderFromImport(rawBlock.Slider, newBlock));
                 return newBlock;
             }
             // The block has a Sprite component.
