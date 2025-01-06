@@ -47,8 +47,8 @@ namespace EngineComponents
     {
         [JsonPropertyName("Type")]
         public required string Type { get; set; }
-        [JsonPropertyName("SpritePath")]
-        public string? SpritePath { get; set; }
+        [JsonPropertyName("Sprite")]
+        public SpriteImport? Sprite { get; set; }
         [JsonPropertyName("CharactersPerSecond")]
         public double? CharactersPerSecond { get; set; }
         [JsonPropertyName("Font")] //Need font importer
@@ -143,6 +143,10 @@ namespace EngineComponents
         public required int ButtonHeight { get; set; }
         [JsonPropertyName("ButtonText")]
         public required string ButtonText { get; set; }
+        [JsonPropertyName("ButtonBorderWidth")]
+        public int ButtonBorderWidth { get; set; }
+        [JsonPropertyName("TextColor")]
+        public required int[] TextColor { get; set; }
         [JsonPropertyName("ButtonColor")]
         public required int[] ButtonColor { get; set; }
         [JsonPropertyName("ButtonBorderColor")]
@@ -201,7 +205,7 @@ namespace EngineComponents
         public int DropBoxWidth { get; set; }
         [JsonPropertyName("DropBoxHeight")]
         public int DropBoxHeight { get; set; }
-        [JsonPropertyName("DropBoxText")]
+        [JsonPropertyName("DropBoxOptions")]
         public DropBoxOptionImport[] DropBoxOptions { get; set; }
         [JsonPropertyName("DropBoxColor")]
         public int[] DropBoxColor { get; set; }
@@ -246,10 +250,10 @@ namespace EngineComponents
     internal class SpriteImport
     {
         [JsonPropertyName("SpritePath")]
-        public string SpritePath { get; set; }
+        public required string SpritePath { get; set; }
         [JsonPropertyName("SpriteXPosition")]
         public int? SpriteXPosition { get; set; }
-        [JsonPropertyName("SpriteXPosition")]
+        [JsonPropertyName("SpriteYPosition")]
         public int? SpriteYPosition { get; set; }
     }
     /// <summary>
@@ -268,7 +272,7 @@ namespace EngineComponents
         /// <param name="rawAction"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        Sprite FetchSpriteFromImport(ActionImport rawAction)
+        Sprite FetchSpriteFromImport(SpriteImport rawAction)
         {
             if (rawAction.SpritePath == null)
             {
@@ -342,9 +346,17 @@ namespace EngineComponents
                 block,
                 buttonComponentImport.ButtonXPosition,
                 buttonComponentImport.ButtonYPosition,
+                buttonComponentImport.ButtonBorderWidth,
                 buttonComponentImport.ButtonWidth,
                 buttonComponentImport.ButtonHeight,
                 buttonComponentImport.ButtonText,
+                new Color()
+                {
+                    R = (byte)buttonComponentImport.TextColor[0],
+                    G = (byte)buttonComponentImport.TextColor[1],
+                    B = (byte)buttonComponentImport.TextColor[2],
+                    A = (byte)buttonComponentImport.TextColor[3]
+                },
                 new Color()
                 {
                     R = (byte)buttonComponentImport.ButtonColor[0],
@@ -384,7 +396,9 @@ namespace EngineComponents
                 0,
                 0,
                 0,
+                0,
                 rawDropBoxOption.ButtonText,
+                new Color() { R = 0, G = 0, B = 0, A = 255 },
                 new Color() { R = 0, G = 0, B = 0, A = 255 },
                 new Color() { R = 0, G = 0, B = 0, A = 255 },
                 new Color() { R = 0, G = 0, B = 0, A = 255 },
@@ -449,7 +463,12 @@ namespace EngineComponents
                 (IButtonEvent)FetchEventFromImport(inputFieldImport.InputFieldButtonEvent)
             );
         }
-
+        /// <summary>
+        /// Creates a slider from the importer class
+        /// </summary>
+        /// <param name="rawSlider"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
         Slider FetchSliderFromImport(SliderImport rawSlider, Block block)
         {
             return new Slider(
@@ -619,7 +638,7 @@ namespace EngineComponents
         /// <param name="rawAction"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        IEvent FetchEventFromImport(ActionImport rawAction)
+        internal IEvent FetchEventFromImport(ActionImport rawAction)
         {
             switch (rawAction.Type)
             {
@@ -708,11 +727,23 @@ namespace EngineComponents
                     return new TextBoxCreateAction(textBox);
                 case "AddSpriteAction":
                     // Add the sprite to the timeline.
-                    var sprite = FetchSpriteFromImport(rawAction);
+                    if (rawAction.Sprite == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the sprite is null.");
+                    }
+                    var sprite = FetchSpriteFromImport(rawAction.Sprite);
                     return new AddSpriteAction(sprite, Game);
                 case "TintSpriteAction":
                     // Add the tint action to the timeline.
-                    var tintSprite = FetchSpriteFromImport(rawAction);
+                    if (rawAction.Sprite == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the sprite is null.");
+                    }
+                    if (rawAction.TintColor == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the tint color is null.");
+                    }
+                    var tintSprite = FetchSpriteFromImport(rawAction.Sprite);
                     var tintColor = new Color()
                     {
                         R = (byte)rawAction.TintColor[0],
@@ -723,7 +754,11 @@ namespace EngineComponents
                     return new TintSpriteAction(tintSprite, tintColor, Game);
                 case "RemoveSpriteAction":
                     // Add the remove action to the timeline.
-                    var removeSprite = FetchSpriteFromImport(rawAction);
+                    if (rawAction.Sprite == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the sprite is null.");
+                    }
+                    var removeSprite = FetchSpriteFromImport(rawAction.Sprite);
                     return new RemoveSpriteAction(removeSprite, Game);
                 case "LoadSceneAction":
                     // Add the load scene action to the timeline.
@@ -803,7 +838,7 @@ namespace EngineComponents
                 case "CreateMenuAction":
                     // Add the create menu action to the timeline.
                     var menu = FetchMenuFromImport(rawAction);
-                    return new CreateMenuAction(Game, menu, [.. menu.BlockList]));
+                    return new CreateMenuAction(Game, menu, [.. menu.BlockList]);
                 default:
                     throw new InvalidOperationException("Failed to load scene settings, because the action type is not recognized.");
             }
@@ -986,7 +1021,6 @@ namespace EngineComponents
             ActiveScene = Scenes[0];
             ActiveScene.Timeline.StartTimeline();
         }
-
         /// <summary>
         /// Loads the scene.
         /// </summary>

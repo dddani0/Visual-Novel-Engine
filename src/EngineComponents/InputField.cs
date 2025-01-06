@@ -74,7 +74,7 @@ namespace EngineComponents
             Placeholder = placeholder;
             IsVisible = true;
             IsSelected = false;
-            Button = new Button(Game, block, 0, 0 - ButtonYOffset, Width, Height, buttonText, InputFieldColor, InputFieldBorderColor, HoverColor, buttonEvent);
+            Button = new Button(Game, block, 0, 0 - ButtonYOffset,0, Width, Height, buttonText, Color.Black,InputFieldColor, InputFieldBorderColor, HoverColor, buttonEvent);
         }
         /// <summary>
         /// Returns if the input field is visible.

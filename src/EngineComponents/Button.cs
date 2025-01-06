@@ -30,13 +30,23 @@ namespace EngineComponents
         /// The text on the button.
         /// </summary>
         internal string Text { get; set; }
+        /// <summary>
+        /// Is the cursor hovering above the button?
+        /// </summary>
         internal bool isHover;
+        /// <summary>
+        /// Is the button pressed.
+        /// </summary>
         internal bool isPressed;
 
         /// <summary>
         /// The border width of the button.
         /// </summary>
         int BorderWidth { get; set; }
+        /// <summary>
+        /// The color of the text.
+        /// </summary>
+        private Color TextColor { get; set; }
         /// <summary>
         /// The color of the button.
         /// </summary>
@@ -53,7 +63,26 @@ namespace EngineComponents
         /// The event which is attached to the button.
         /// </summary>
         private IButtonEvent Event { get; }
-        private Block ParentMenu { get; }
+        /// <summary>
+        /// The parent block of the button.
+        /// </summary>
+        private Block ParentBlock { get; }
+        /// <summary>
+        /// Width of a character within the confines of the Font
+        /// </summary>
+        private int CharacterWidth { get; set; }
+        /// <summary>
+        /// Height of a character within the confines of the Font
+        /// </summary>
+        private int CharacterHeight { get; set; }
+        /// <summary>
+        /// Width of the text
+        /// </summary>
+        private int TextWidth { get; set; }
+        /// <summary>
+        /// The font of the button.
+        /// </summary>
+        private Font Font { get; set; }
         Game Game { get; }
         /// <summary>
         /// Creates a button.
@@ -65,23 +94,29 @@ namespace EngineComponents
         /// <param name="width">Width of the Button</param>
         /// <param name="height">Heigth of the Button</param>
         /// <param name="text">The text on the button</param>
-        /// <param name="color">The neutral color of the Button</param>
+        /// <param name="buttonColor">The neutral color of the Button</param>
         /// <param name="borderColor">The Border color of the Button</param>
         /// <param name="hoverColor">The color of the button in hovering state.</param>
         /// <param name="buttonEvent">The event which is attached to the button</param>
-        public Button(Game game, Block block, int xPos, int yPos, int width, int height, string text, Color color, Color borderColor, Color hoverColor, IButtonEvent buttonEvent)
+        public Button(Game game, Block block, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, IButtonEvent buttonEvent)
         {
-            ParentMenu = block;
+            ParentBlock = block;
             XPosition = block.XPosition + xPos;
             YPosition = block.YPosition + yPos;
             Width = width;
             Height = height;
+            BorderWidth = borderWidth;
             Text = text;
-            Color = color;
+            Color = buttonColor;
             BorderColor = borderColor;
             HoverColor = hoverColor;
+            TextColor = textColor;
             Event = buttonEvent;
             Game = game;
+            Font = new Font() { BaseSize = 30, GlyphPadding = 5 };
+            CharacterWidth = (Font.BaseSize / 2) + Font.GlyphPadding;
+            CharacterHeight = Font.BaseSize;
+            TextWidth = Text.Length * CharacterWidth;
         }
 
         /// <summary>
@@ -103,7 +138,7 @@ namespace EngineComponents
             PressButton();
             Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, isHover ? HoverColor : Color);
             Raylib.DrawRectangleLinesEx(new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height), BorderWidth, BorderColor);
-            Raylib.DrawTextEx(new Font() { BaseSize = 30, GlyphPadding = 5 }, Text, new Vector2(XPosition, YPosition), 30, 5, Color.White);
+            Raylib.DrawTextEx(Font, Text, new Vector2(XPosition - TextWidth / 2, YPosition - CharacterHeight / 2), 30, 5, TextColor);
         }
         /// <summary>
         /// Checks if the button is enabled.

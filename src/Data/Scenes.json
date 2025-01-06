@@ -33,24 +33,30 @@
                             "ButtonYPosition": 0,
                             "ButtonWidth": 200,
                             "ButtonHeight": 100,
-                            "ButtonText": "Button1",
-                            "ButtonBorderWidth": 2,
+                            "ButtonText": "Gomb",
+                            "ButtonBorderWidth": 5,
+                            "TextColor": [
+                                0,
+                                0,
+                                0,
+                                255
+                            ],
                             "ButtonColor": [
-                                155,
-                                155,
-                                115,
+                                248,
+                                0,
+                                0,
                                 255
                             ],
                             "ButtonBorderColor": [
+                                49,
                                 0,
                                 0,
-                                255,
                                 255
                             ],
                             "ButtonHoverColor": [
-                                155,
-                                155,
-                                115,
+                                207,
+                                0,
+                                0,
                                 200
                             ],
                             "Event": {
@@ -60,8 +66,8 @@
                         }
                     },
                     {
-                        "BlockXPosition": 400,
-                        "BlockYPosition": 200,
+                        "BlockXPosition": 200,
+                        "BlockYPosition": 400,
                         "DropBox": {
                             "DropBoxXPosition": 0,
                             "DropBoxYPosition": 0,
@@ -69,38 +75,15 @@
                             "DropBoxHeight": 100,
                             "DropBoxOptions": [
                                 {
-                                    "ButtonText": "Button1",
-                                    "Event": {
+                                    "OptionText": "Button1",
+                                    "OptionEvent": {
                                         "Type": "NativeLoadSceneAction",
                                         "SceneID": 2
                                     }
                                 },
                                 {
-                                    "ButtonXPosition": 400,
-                                    "ButtonYPosition": 200,
-                                    "ButtonWidth": 200,
-                                    "ButtonHeight": 100,
-                                    "ButtonText": "Button2",
-                                    "ButtonBorderWidth": 2,
-                                    "ButtonColor": [
-                                        155,
-                                        155,
-                                        115,
-                                        255
-                                    ],
-                                    "ButtonBorderColor": [
-                                        0,
-                                        0,
-                                        255,
-                                        255
-                                    ],
-                                    "ButtonHoverColor": [
-                                        155,
-                                        155,
-                                        115,
-                                        200
-                                    ],
-                                    "Event": {
+                                    "OptionText": "Button1",
+                                    "OptionEvent": {
                                         "Type": "NativeLoadSceneAction",
                                         "SceneID": 2
                                     }
@@ -127,14 +110,14 @@
                         }
                     },
                     {
-                        "BlockXPosition": 400,
+                        "BlockXPosition": 200,
                         "BlockYPosition": 600,
                         "Slider": {
                             "SliderXPosition": 0,
                             "SliderYPosition": 0,
                             "SliderWidth": 200,
                             "SliderHeight": 100,
-                            "SliderDragRadius": 50,
+                            "SliderDragRadius": 5,
                             "SliderColor": [
                                 155,
                                 155,

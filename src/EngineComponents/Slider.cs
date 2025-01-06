@@ -32,7 +32,7 @@ namespace EngineComponents
         /// <summary>
         /// Is the Slider enabled.
         /// </summary>
-        internal bool IsVisible { get; set; }
+        internal bool IsVisible { get; set; } = true;
         /// <summary>
         /// Is the Slider selected.
         /// </summary>
