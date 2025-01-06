@@ -27,52 +27,12 @@
                 "MenuBlockList": [
                     {
                         "BlockXPosition": 200,
-                        "BlockYPosition": 100,
-                        "Button": {
-                            "ButtonXPosition": 0,
-                            "ButtonYPosition": 0,
-                            "ButtonWidth": 200,
-                            "ButtonHeight": 100,
-                            "ButtonText": "Gomb",
-                            "ButtonBorderWidth": 5,
-                            "TextColor": [
-                                0,
-                                0,
-                                0,
-                                255
-                            ],
-                            "ButtonColor": [
-                                248,
-                                0,
-                                0,
-                                255
-                            ],
-                            "ButtonBorderColor": [
-                                49,
-                                0,
-                                0,
-                                255
-                            ],
-                            "ButtonHoverColor": [
-                                207,
-                                0,
-                                0,
-                                200
-                            ],
-                            "Event": {
-                                "Type": "NativeLoadSceneAction",
-                                "SceneID": 2
-                            }
-                        }
-                    },
-                    {
-                        "BlockXPosition": 200,
                         "BlockYPosition": 400,
                         "DropBox": {
                             "DropBoxXPosition": 0,
                             "DropBoxYPosition": 0,
-                            "DropBoxWidth": 200,
-                            "DropBoxHeight": 100,
+                            "DropBoxWidth": 100,
+                            "DropBoxHeight": 50,
                             "DropBoxOptions": [
                                 {
                                     "OptionText": "Button1",
@@ -82,30 +42,50 @@
                                     }
                                 },
                                 {
-                                    "OptionText": "Button1",
+                                    "OptionText": "Gomb2",
+                                    "OptionEvent": {
+                                        "Type": "NativeLoadSceneAction",
+                                        "SceneID": 2
+                                    }
+                                },
+                                {
+                                    "OptionText": "Gomb3",
+                                    "OptionEvent": {
+                                        "Type": "NativeLoadSceneAction",
+                                        "SceneID": 2
+                                    }
+                                },
+                                {
+                                    "OptionText": "Gomb4",
                                     "OptionEvent": {
                                         "Type": "NativeLoadSceneAction",
                                         "SceneID": 2
                                     }
                                 }
                             ],
-                            "DropBoxColor": [
-                                155,
-                                155,
-                                115,
-                                255
-                            ],
-                            "DropBoxBorderColor": [
-                                0,
-                                0,
+                            "DropBoxTextColor": [
+                                255,
+                                255,
                                 255,
                                 255
                             ],
+                            "DropBoxColor": [
+                                255,
+                                0,
+                                0,
+                                255
+                            ],
+                            "DropBoxBorderColor": [
+                                143,
+                                0,
+                                0,
+                                255
+                            ],
                             "DropBoxHoverColor": [
-                                155,
-                                155,
-                                115,
-                                200
+                                225,
+                                0,
+                                0,
+                                255
                             ]
                         }
                     },

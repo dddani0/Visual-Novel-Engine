@@ -207,6 +207,8 @@ namespace EngineComponents
         public int DropBoxHeight { get; set; }
         [JsonPropertyName("DropBoxOptions")]
         public DropBoxOptionImport[] DropBoxOptions { get; set; }
+        [JsonPropertyName("DropBoxTextColor")]
+        public int[] DropBoxTextColor { get; set; }
         [JsonPropertyName("DropBoxColor")]
         public int[] DropBoxColor { get; set; }
         [JsonPropertyName("DropBoxBorderColor")]
@@ -344,6 +346,7 @@ namespace EngineComponents
             return new Button(
                 Game,
                 block,
+                new Font() { BaseSize = 30, GlyphPadding = 5 },
                 buttonComponentImport.ButtonXPosition,
                 buttonComponentImport.ButtonYPosition,
                 buttonComponentImport.ButtonBorderWidth,
@@ -387,21 +390,47 @@ namespace EngineComponents
         /// <param name="rawDropBoxOption"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        Button FetchDropBoxOptionFromImport(DropBoxOptionImport rawDropBoxOption, Block block)
+        Button FetchDropBoxOptionFromImport(DropBoxImport rawDropBox, DropBoxOptionImport rawDropBoxOption, Block block)
         {
+            //Each dropbox option's Y position is calculated by the height of the dropbox and the index of the option in the DropBox.cs class.
             return new Button(
                 Game,
                 block,
+                new Font() { BaseSize = 10, GlyphPadding = 2 },
                 0,
                 0,
                 0,
-                0,
-                0,
+                rawDropBox.DropBoxWidth,
+                rawDropBox.DropBoxHeight,
                 rawDropBoxOption.ButtonText,
-                new Color() { R = 0, G = 0, B = 0, A = 255 },
-                new Color() { R = 0, G = 0, B = 0, A = 255 },
-                new Color() { R = 0, G = 0, B = 0, A = 255 },
-                new Color() { R = 0, G = 0, B = 0, A = 255 },
+                new Color()
+                {
+                    R = (byte)rawDropBox.DropBoxTextColor[0],
+                    G = (byte)rawDropBox.DropBoxTextColor[1],
+                    B = (byte)rawDropBox.DropBoxTextColor[2],
+                    A = (byte)rawDropBox.DropBoxTextColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)rawDropBox.DropBoxColor[0],
+                    G = (byte)rawDropBox.DropBoxColor[1],
+                    B = (byte)rawDropBox.DropBoxColor[2],
+                    A = (byte)rawDropBox.DropBoxColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)rawDropBox.DropBoxBorderColor[0],
+                    G = (byte)rawDropBox.DropBoxBorderColor[1],
+                    B = (byte)rawDropBox.DropBoxBorderColor[2],
+                    A = (byte)rawDropBox.DropBoxBorderColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)rawDropBox.DropBoxHoverColor[0],
+                    G = (byte)rawDropBox.DropBoxHoverColor[1],
+                    B = (byte)rawDropBox.DropBoxHoverColor[2],
+                    A = (byte)rawDropBox.DropBoxHoverColor[3]
+                },
                 (IButtonEvent)FetchEventFromImport(rawDropBoxOption.OptionEvent)
             );
         }
@@ -419,7 +448,7 @@ namespace EngineComponents
                                     rawDropBox.DropBoxYPosition,
                                     rawDropBox.DropBoxWidth,
                                     rawDropBox.DropBoxHeight,
-                                    rawDropBox.DropBoxOptions.Select(option => FetchDropBoxOptionFromImport(option, block)).ToArray(),
+                                    rawDropBox.DropBoxOptions.Select(option => FetchDropBoxOptionFromImport(rawDropBox, option, block)).ToArray(),
                                     new Color()
                                     {
                                         R = (byte)rawDropBox.DropBoxColor[0],

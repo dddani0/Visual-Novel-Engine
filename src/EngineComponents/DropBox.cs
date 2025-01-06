@@ -37,7 +37,7 @@ namespace EngineComponents
         /// <summary>
         /// Is the DropBox visible.
         /// </summary>
-        internal bool IsVisible { get; set; }
+        internal bool IsVisible { get; set; } = true;
         /// <summary>
         /// Is the DropBox locked.
         /// </summary>
@@ -73,15 +73,12 @@ namespace EngineComponents
             DropBoxBorderColor = dropBoxBorderColor;
             DropBoxHoverColor = dropBoxHoverColor;
             IsSelected = false;
-            IsVisible = true;
             // Position options below each other
             Options = [];
             for (int i = 0; i < options.Length; i++)
             {
-                options[i].Width = Width;
-                options[i].Height = Height;
-                options[i].XPosition = XPosition - Width / 2;
-                options[i].YPosition = (YPosition - Height / 2) - i * options[i].Height;
+                options[i].XPosition = XPosition;
+                options[i].YPosition = YPosition + ((i + 1) * Height);
                 Options.Add(options[i]);
             }
         }
@@ -106,6 +103,10 @@ namespace EngineComponents
         private void UpdateDropBox()
         {
             if (IsLocked) return;
+            if (Game.IsLeftMouseButtonPressed() && Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height)))
+            {
+                IsSelected = !IsSelected;
+            }
             if (IsSelected)
             {
                 foreach (Button option in Options)
