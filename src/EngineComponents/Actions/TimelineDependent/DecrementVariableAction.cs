@@ -1,6 +1,6 @@
 using EngineComponents.Interfaces;
 
-namespace EngineComponents.Actions
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Decrements the already declaired integer variable with a value.

@@ -1,7 +1,7 @@
 namespace EngineComponents.Interfaces
 {
     /// <summary>
-    /// Interface for events.
+    /// Interface for general events.
     /// </summary>
     public interface IEvent
     {

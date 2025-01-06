@@ -1,15 +1,15 @@
 using EngineComponents.Interfaces;
 
-namespace EngineComponents.Actions
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Sets the already declaired boolean variable to true.
     /// </summary>
-    public class SetVariableTrueAction : IEvent, IButtonEvent
+    public class SetVariableFalseAction : IEvent, IButtonEvent
     {
         readonly string VariableName;
         Game Game { get; set; }
-        public SetVariableTrueAction(Game game, string variableName)
+        public SetVariableFalseAction(Game game, string variableName)
         {
             Game = game;
             VariableName = variableName;
@@ -17,15 +17,15 @@ namespace EngineComponents.Actions
 
         public void PerformEvent()
         {
-            var variable = Game.VariableList.First(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
+            var variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (variable.Type == VariableType.Bool)
             {
-                variable.SetValue(true);
+                variable.SetValue(false);
                 Game.ActiveScene.Timeline.NextStep();
             }
             else
             {
-                throw new System.Exception("Variable is not a boolean");
+                throw new Exception("Variable is not a boolean");
             }
         }
     }

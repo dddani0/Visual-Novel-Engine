@@ -1,11 +1,11 @@
 using EngineComponents.Interfaces;
 
-namespace EngineComponents.Actions
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Increments the already declaired integer variable with a value.
     /// </summary>
-    public class IncrementVariableAction : IEvent, IButtonEvent
+    public class IncrementVariableAction : IEvent
     {
         Variable Variable;
         string VariableName { get; }

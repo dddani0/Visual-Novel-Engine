@@ -14,7 +14,7 @@
             {
                 "Type": "CreateVariableAction",
                 "VariableName": "myVar",
-                "VariableValue": "valtozo ertek",
+                "VariableValue": "0",
                 "VariableType": 1
             },
             {
@@ -116,7 +116,12 @@
                                 255,
                                 255,
                                 255
-                            ]
+                            ],
+                            "SliderEvent": {
+                                "Type": "IncrementVariableAction",
+                                "VariableName": "myVar",
+                                "VariableValue": "2"
+                            }
                         }
                     }
                 ],

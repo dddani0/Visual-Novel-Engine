@@ -1,31 +1,33 @@
 using EngineComponents.Interfaces;
 
-namespace EngineComponents.Actions
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Sets the already declaired boolean variable to true.
     /// </summary>
-    public class SetVariableFalseAction : IEvent, IButtonEvent
+    public class SetBoolVariableAction : IEvent
     {
         readonly string VariableName;
         Game Game { get; set; }
-        public SetVariableFalseAction(Game game, string variableName)
+        bool Value { get; set; }
+        public SetBoolVariableAction(Game game, string variableName, bool value)
         {
             Game = game;
+            Value = value;
             VariableName = variableName;
         }
 
         public void PerformEvent()
         {
-            var variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
+            var variable = Game.VariableList.First(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (variable.Type == VariableType.Bool)
             {
-                variable.SetValue(false);
+                variable.SetValue(Value);
                 Game.ActiveScene.Timeline.NextStep();
             }
             else
             {
-                throw new Exception("Variable is not a boolean");
+                throw new System.Exception("Variable is not a boolean");
             }
         }
     }

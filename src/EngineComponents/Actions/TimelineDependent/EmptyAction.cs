@@ -1,6 +1,6 @@
 using EngineComponents.Interfaces;
 
-namespace EngineComponents.Actions
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Empty action.

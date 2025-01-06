@@ -126,7 +126,8 @@ namespace EngineComponents
         {
             if (!isHover || !Game.IsLeftMouseButtonPressed()) return;
             isPressed = true;
-            Event.PerformEvent();
+            IEvent eventToPerform = (IEvent)Event;
+            eventToPerform.PerformEvent();
         }
         /// <summary>
         /// Renders the button on the screen.

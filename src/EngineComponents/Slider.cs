@@ -58,6 +58,7 @@ namespace EngineComponents
         /// The border color of the Slider.
         /// </summary>
         private Color SliderBorderColor { get; set; }
+        private IEvent Event { get; set; }
         /// <summary>
         /// Creates a new Slider.
         /// </summary>
@@ -71,7 +72,8 @@ namespace EngineComponents
         /// <param name="sliderDragColor">The color of the slider drag component</param>
         /// <param name="sliderColor">The color of the slider's drag component</param>
         /// <param name="sliderBorderColor">The color of the border of the slider.</param>
-        public Slider(Block block, int xPosition, int yPosition, int width, int height, int borderWidth, int sliderDragRadius, Color sliderDragColor, Color sliderColor, Color sliderBorderColor)
+        /// <param name="sliderEvent">The event that is triggered when the slider is interacted with.</param>
+        public Slider(Block block, int xPosition, int yPosition, int width, int height, int borderWidth, int sliderDragRadius, Color sliderDragColor, Color sliderColor, Color sliderBorderColor, ISettingsEvent sliderEvent)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;
@@ -82,6 +84,7 @@ namespace EngineComponents
             SliderDragColor = sliderDragColor;
             SliderColor = sliderColor;
             SliderBorderColor = sliderBorderColor;
+            Event = (IEvent)sliderEvent;
         }
         public bool Enabled() => IsVisible;
         /// <summary>
@@ -98,6 +101,7 @@ namespace EngineComponents
                 {
                     UnitValue = (int)Raylib.GetMousePosition().X - XPosition;
                 }
+                Event.PerformEvent();
             }
             if (UnitValue < 0) UnitValue = 0;
             if (UnitValue > Width) UnitValue = Width;

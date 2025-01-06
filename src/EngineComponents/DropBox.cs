@@ -131,5 +131,26 @@ namespace EngineComponents
             Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition - Height / 2, Width, Height, DropBoxBorderColor);
             Raylib.DrawText(Text, XPosition - Width / 2, YPosition - Height / 2, 20, Color.Black);
         }
+        /// <summary>
+        /// Get a DropBox option.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="block"></param>
+        /// <param name="font"></param>
+        /// <param name="xPosition"></param>
+        /// <param name="yPosition"></param>
+        /// <param name="borderWidth"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="text"></param>
+        /// <param name="buttonEvent"></param>
+        /// <param name="textColor"></param>
+        /// <param name="buttonColor"></param>
+        /// <param name="borderColor"></param>
+        /// <param name="hoverColor"></param>
+        /// <returns></returns>
+        public static Button GetDropBoxOption(Game game, Block block, Font font, int xPosition, int yPosition, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, ISettingsEvent buttonEvent)
+            => new(game, block, font, xPosition, yPosition, borderWidth, width, height, text, textColor, buttonColor, borderColor, hoverColor, (IButtonEvent)buttonEvent);
+
     }
 }

@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using EngineComponents.Actions;
+using EngineComponents.Actions.TimelineIndependent;
+using EngineComponents.Actions.TimelineDependent;
 using EngineComponents.Interfaces;
 using Raylib_cs;
 
@@ -249,6 +250,8 @@ namespace EngineComponents
         public int[] SliderColor { get; set; }
         [JsonPropertyName("SliderBorderColor")]
         public int[] SliderBorderColor { get; set; }
+        [JsonPropertyName("SliderEvent")]
+        public ActionImport SliderEvent { get; set; }
     }
     /// <summary>
     /// The SpriteImport class is a helper class to import the Sprite component.
@@ -397,7 +400,7 @@ namespace EngineComponents
         Button FetchDropBoxOptionFromImport(DropBoxImport rawDropBox, DropBoxOptionImport rawDropBoxOption, Block block)
         {
             //Each dropbox option's Y position is calculated by the height of the dropbox and the index of the option in the DropBox.cs class.
-            return new Button(
+            return DropBox.GetDropBoxOption(
                 Game,
                 block,
                 new Font() { BaseSize = 10, GlyphPadding = 2 },
@@ -435,7 +438,7 @@ namespace EngineComponents
                     B = (byte)rawDropBox.DropBoxHoverColor[2],
                     A = (byte)rawDropBox.DropBoxHoverColor[3]
                 },
-                (IButtonEvent)FetchEventFromImport(rawDropBoxOption.OptionEvent)
+                (ISettingsEvent)FetchEventFromImport(rawDropBoxOption.OptionEvent)
             );
         }
         /// <summary>
@@ -532,7 +535,8 @@ namespace EngineComponents
                     G = (byte)rawSlider.SliderBorderColor[1],
                     B = (byte)rawSlider.SliderBorderColor[2],
                     A = (byte)rawSlider.SliderBorderColor[3]
-                }
+                },
+                (ISettingsEvent)FetchEventFromImport(rawSlider.SliderEvent)
             );
         }
         /// <summary>

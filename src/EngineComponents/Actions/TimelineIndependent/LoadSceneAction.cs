@@ -1,21 +1,24 @@
 using EngineComponents.Interfaces;
 
-namespace EngineComponents.Actions
+namespace EngineComponents.Actions.TimelineIndependent
 {
     /// <summary>
-    /// Loads a new scene natively (without trigger).
+    /// Loads a new scene with trigger.
     /// </summary>
-    class NativeLoadSceneAction : IEvent, IButtonEvent
+    class LoadSceneAction : IEvent
     {
         readonly Game Game;
+        private bool triggered = false;
         readonly long sceneID;
-        public NativeLoadSceneAction(Game game, long sceneId)
+        public LoadSceneAction(Game game, long sceneId)
         {
             Game = game;
             sceneID = sceneId;
         }
+        public void TriggerEvent() => triggered = true;
         public void PerformEvent()
         {
+            if (triggered is false) return;
             if (!Game.Scenes.Any(scene => scene.Id == sceneID))
             {
                 throw new Exception($"Scene with {sceneID} ID not found.");

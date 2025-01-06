@@ -1,6 +1,6 @@
 using EngineComponents.Interfaces;
 
-namespace EngineComponents.Actions
+namespace EngineComponents.Actions.TimelineDependent
 {
     class RemoveSpriteAction : IEvent, IButtonEvent
     {

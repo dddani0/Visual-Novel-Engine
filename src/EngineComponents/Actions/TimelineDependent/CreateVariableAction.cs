@@ -1,6 +1,6 @@
 using EngineComponents.Interfaces;
 
-namespace EngineComponents
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Creates a new variable.
