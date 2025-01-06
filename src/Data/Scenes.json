@@ -90,23 +90,30 @@
                         }
                     },
                     {
-                        "BlockXPosition": 200,
+                        "BlockXPosition": 400,
                         "BlockYPosition": 600,
                         "Slider": {
                             "SliderXPosition": 0,
                             "SliderYPosition": 0,
-                            "SliderWidth": 200,
-                            "SliderHeight": 100,
-                            "SliderDragRadius": 5,
+                            "SliderWidth": 100,
+                            "SliderHeight": 10,
+                            "SliderBorderWidth": 1,
+                            "SliderDragRadius": 15,
+                            "SliderDragColor": [
+                                0,
+                                0,
+                                0,
+                                255
+                            ],
                             "SliderColor": [
-                                155,
-                                155,
-                                115,
+                                255,
+                                0,
+                                0,
                                 255
                             ],
                             "SliderBorderColor": [
-                                0,
-                                0,
+                                255,
+                                255,
                                 255,
                                 255
                             ]

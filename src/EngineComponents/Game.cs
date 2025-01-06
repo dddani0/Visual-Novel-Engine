@@ -239,8 +239,12 @@ namespace EngineComponents
         public int SliderWidth { get; set; }
         [JsonPropertyName("SliderHeight")]
         public int SliderHeight { get; set; }
+        [JsonPropertyName("SliderBorderWidth")]
+        public int SliderBorderWidth { get; set; }
         [JsonPropertyName("SliderDragRadius")]
         public int SliderDragRadius { get; set; }
+        [JsonPropertyName("SliderDragColor")]
+        public int[] SliderDragColor { get; set; }
         [JsonPropertyName("SliderColor")]
         public int[] SliderColor { get; set; }
         [JsonPropertyName("SliderBorderColor")]
@@ -506,7 +510,15 @@ namespace EngineComponents
                 rawSlider.SliderYPosition,
                 rawSlider.SliderWidth,
                 rawSlider.SliderHeight,
+                rawSlider.SliderBorderWidth,
                 rawSlider.SliderDragRadius,
+                new Color()
+                {
+                    R = (byte)rawSlider.SliderDragColor[0],
+                    G = (byte)rawSlider.SliderDragColor[1],
+                    B = (byte)rawSlider.SliderDragColor[2],
+                    A = (byte)rawSlider.SliderDragColor[3]
+                },
                 new Color()
                 {
                     R = (byte)rawSlider.SliderColor[0],
