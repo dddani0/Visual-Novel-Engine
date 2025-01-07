@@ -1023,7 +1023,7 @@ namespace EngineComponents
                         throw new InvalidOperationException("Failed to load scene settings, because the action list is null.");
                     }
                     else
-                        for (int i = 0; i < scene.ActionList.Count(); i++)
+                        for (int i = 0; i < scene.ActionList.Length; i++)
                         {
                             timeline.ActionList.Add(GameLoader.FetchEventFromImport(scene.ActionList[i]));
                         }
