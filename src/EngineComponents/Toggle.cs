@@ -13,7 +13,7 @@ namespace EngineComponents
         internal int BorderWidth { get; set; }
         internal string Text { get; set; }
         internal bool IsVisible { get; set; }
-        internal bool IsActive { get; set; }
+        internal bool IsToggled { get; set; }
         internal bool IsLocked { get; set; }
         internal Font Font { get; set; }
         private Color Color { get; set; }
@@ -38,7 +38,7 @@ namespace EngineComponents
             YPosition = block.YPosition + yPosition;
             Text = text;
             IsVisible = isVisible;
-            IsActive = isActive;
+            IsToggled = isActive;
             IsLocked = isLocked;
             Color = color;
             BorderColor = borderColor;
@@ -51,7 +51,7 @@ namespace EngineComponents
             if (IsLocked) return;
             if (Game.IsLeftMouseButtonPressed() && Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, 20, 20)))
             {
-                IsActive = !IsActive;
+                IsToggled = !IsToggled;
             }
         }
         /// <summary>

@@ -4,6 +4,7 @@ using EngineComponents.Actions.TimelineIndependent;
 using EngineComponents.Actions.TimelineDependent;
 using EngineComponents.Interfaces;
 using Raylib_cs;
+using EngineComponents.Actions;
 
 namespace EngineComponents
 {
@@ -80,6 +81,8 @@ namespace EngineComponents
         public string? VariableValue { get; set; }
         [JsonPropertyName("VariableType")]
         public int? VariableType { get; set; }
+        [JsonPropertyName("ImpendingVariable")]
+        public string ImpendingVariableName { get; set; }
         [JsonPropertyName("MenuXPosition")]
         public int? MenuXPosition { get; set; }
         [JsonPropertyName("MenuYPosition")]
@@ -120,6 +123,8 @@ namespace EngineComponents
         public int BlockYPosition { get; set; }
         [JsonPropertyName("Button")]
         public ButtonComponentImport? Button { get; set; }
+        [JsonPropertyName("StaticButton")]
+        public ButtonComponentImport? StaticButton { get; set; }
         [JsonPropertyName("InputField")]
         public InputFieldImport? InputField { get; set; }
         [JsonPropertyName("DropBox")]
@@ -343,7 +348,7 @@ namespace EngineComponents
             return new Variable(rawAction.VariableName, rawAction.VariableValue, (VariableType)rawAction.VariableType);
         }
         /// <summary>
-        /// Creates an event from the importer class
+        /// Creates a button with a Timeline dependent or a general event attached to it from the importer class
         /// </summary>
         /// <param name="buttonComponentImport"></param>
         /// <param name="block"></param>
@@ -388,8 +393,57 @@ namespace EngineComponents
                     B = (byte)buttonComponentImport.ButtonHoverColor[2],
                     A = (byte)buttonComponentImport.ButtonHoverColor[3]
                 },
-                (IButtonEvent)FetchEventFromImport(buttonComponentImport.Event)
+                (IButtonEvent)FetchTimelineDependentEventFromImport(buttonComponentImport.Event)
             );
+        }
+        /// <summary>
+        /// Creates a button with a Timeline independent or a general event attached to it from the importer class
+        /// </summary>
+        /// <param name="buttonComponentImport"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        Button FetchStaticButtonFromImport(ButtonComponentImport buttonComponentImport, Block block)
+        {
+            return new Button(
+                            Game,
+                            block,
+                            new Font() { BaseSize = 30, GlyphPadding = 5 },
+                            buttonComponentImport.ButtonXPosition,
+                            buttonComponentImport.ButtonYPosition,
+                            buttonComponentImport.ButtonBorderWidth,
+                            buttonComponentImport.ButtonWidth,
+                            buttonComponentImport.ButtonHeight,
+                            buttonComponentImport.ButtonText,
+                            new Color()
+                            {
+                                R = (byte)buttonComponentImport.TextColor[0],
+                                G = (byte)buttonComponentImport.TextColor[1],
+                                B = (byte)buttonComponentImport.TextColor[2],
+                                A = (byte)buttonComponentImport.TextColor[3]
+                            },
+                            new Color()
+                            {
+                                R = (byte)buttonComponentImport.ButtonColor[0],
+                                G = (byte)buttonComponentImport.ButtonColor[1],
+                                B = (byte)buttonComponentImport.ButtonColor[2],
+                                A = (byte)buttonComponentImport.ButtonColor[3]
+                            },
+                            new Color()
+                            {
+                                R = (byte)buttonComponentImport.ButtonBorderColor[0],
+                                G = (byte)buttonComponentImport.ButtonBorderColor[1],
+                                B = (byte)buttonComponentImport.ButtonBorderColor[2],
+                                A = (byte)buttonComponentImport.ButtonBorderColor[3]
+                            },
+                            new Color()
+                            {
+                                R = (byte)buttonComponentImport.ButtonHoverColor[0],
+                                G = (byte)buttonComponentImport.ButtonHoverColor[1],
+                                B = (byte)buttonComponentImport.ButtonHoverColor[2],
+                                A = (byte)buttonComponentImport.ButtonHoverColor[3]
+                            },
+                            (IButtonEvent)FetchTimelineIndependentEventFromImport(buttonComponentImport.Event)
+                        );
         }
         /// <summary>
         /// Creates an option from the importer class
@@ -438,7 +492,7 @@ namespace EngineComponents
                     B = (byte)rawDropBox.DropBoxHoverColor[2],
                     A = (byte)rawDropBox.DropBoxHoverColor[3]
                 },
-                (ISettingsEvent)FetchEventFromImport(rawDropBoxOption.OptionEvent)
+                FetchTimelineIndependentEventFromImport(rawDropBoxOption.OptionEvent)
             );
         }
         /// <summary>
@@ -496,7 +550,7 @@ namespace EngineComponents
                 inputFieldImport.Height,
                 inputFieldImport.InputFieldPlaceholder,
                 inputFieldImport.InputFieldButtonText,
-                (IButtonEvent)FetchEventFromImport(inputFieldImport.InputFieldButtonEvent)
+                (IButtonEvent)FetchTimelineIndependentEventFromImport(inputFieldImport.InputFieldButtonEvent)
             );
         }
         /// <summary>
@@ -536,7 +590,7 @@ namespace EngineComponents
                     B = (byte)rawSlider.SliderBorderColor[2],
                     A = (byte)rawSlider.SliderBorderColor[3]
                 },
-                (ISettingsEvent)FetchEventFromImport(rawSlider.SliderEvent)
+                FetchTimelineIndependentEventFromImport(rawSlider.SliderEvent)
             );
         }
         /// <summary>
@@ -558,6 +612,17 @@ namespace EngineComponents
                 newBlock.SetComponent(FetchButtonFromImport(rawBlock.Button, newBlock));
                 return newBlock;
             }
+            // The block has a static button component.
+            else if (rawBlock.StaticButton != null)
+            {
+                var newBlock = new Block(
+                    rawBlock.BlockXPosition,
+                    rawBlock.BlockYPosition,
+                    null
+                );
+                newBlock.SetComponent(FetchStaticButtonFromImport(rawBlock.StaticButton, newBlock));
+                return newBlock;
+            }
             // The block has a dropbox component.
             else if (rawBlock.DropBox != null)
             {
@@ -577,7 +642,7 @@ namespace EngineComponents
                     rawBlock.BlockYPosition,
                     null
                 );
-                IButtonEvent inputFieldButtonEvent = (IButtonEvent)FetchEventFromImport(rawBlock.InputField.InputFieldButtonEvent);
+                IButtonEvent inputFieldButtonEvent = (IButtonEvent)FetchTimelineIndependentEventFromImport(rawBlock.InputField.InputFieldButtonEvent);
                 newBlock.SetComponent(FetchInputFieldFromImport(rawBlock.InputField, newBlock));
                 return newBlock;
             }
@@ -678,12 +743,13 @@ namespace EngineComponents
             return menu;
         }
         /// <summary>
-        /// Creates an event from the importer class
+        /// Creates a Timelinedependent or a general event from the importer class.
+        /// Get event from the union of the timeline dependent and general events.
         /// </summary>
         /// <param name="rawAction"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        internal IEvent FetchEventFromImport(ActionImport rawAction)
+        internal IEvent FetchTimelineDependentEventFromImport(ActionImport rawAction)
         {
             switch (rawAction.Type)
             {
@@ -836,7 +902,11 @@ namespace EngineComponents
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
                     }
-                    return new IncrementVariableAction(Game, rawAction.VariableName, int.Parse(rawAction.VariableValue));
+                    if (rawAction.ImpendingVariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the impending variable type is null.");
+                    }
+                    return new IncrementVariableAction(Game, rawAction.VariableName, rawAction.ImpendingVariableName);
                 case "DecrementVariableAction":
                     // Add the decrement variable action to the timeline.
                     if (rawAction.VariableName == null)
@@ -847,7 +917,11 @@ namespace EngineComponents
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
                     }
-                    return new DecrementVariableAction(Game, rawAction.VariableName, int.Parse(rawAction.VariableValue));
+                    if (rawAction.ImpendingVariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the impending variable type is null.");
+                    }
+                    return new DecrementVariableAction(Game, rawAction.VariableName, rawAction.ImpendingVariableName);
                 case "SetVariableTrueAction":
                     // Add the set variable true action to the timeline.
                     if (rawAction.VariableName == null)
@@ -885,7 +959,62 @@ namespace EngineComponents
                     var menu = FetchMenuFromImport(rawAction);
                     return new CreateMenuAction(Game, menu, [.. menu.BlockList]);
                 default:
-                    throw new InvalidOperationException("Failed to load scene settings, because the action type is not recognized.");
+                    throw new InvalidOperationException("Failed to load scene settings, because Either the action type is not recognized, or the event is timeline independent.");
+            }
+        }
+        /// <summary>
+        /// Creates a timeline independent event from the importer class
+        /// Get event from the union of the timeline independent and general events.
+        /// </summary>
+        /// <param name="rawAction"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        private ISettingsEvent FetchTimelineIndependentEventFromImport(ActionImport rawAction)
+        {
+            switch (rawAction.Type)
+            {
+                case "NativeLoadSceneAction":
+                    // Add the native load scene action to the timeline.
+                    if (rawAction.SceneID.HasValue is false)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
+                    }
+                    var nativeSceneId = rawAction.SceneID.Value;
+                    IEvent NativeLoadSceneAction = new NativeLoadSceneAction(Game, nativeSceneId);
+                    return (ISettingsEvent)NativeLoadSceneAction;
+                case "LoadSceneAction":
+                    // Add the load scene action to the timeline.
+                    if (rawAction.SceneID.HasValue is false)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
+                    }
+                    var sceneId = rawAction.SceneID.Value;
+                    IEvent LoadSceneAction = new LoadSceneAction(Game, sceneId);
+                    return (ISettingsEvent)LoadSceneAction;
+                case "SetVariableValueAction":
+                    // Add the set variable value action to the timeline.
+                    if (rawAction.VariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                    }
+                    if (rawAction.VariableValue == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
+                    }
+                    if (rawAction.VariableType == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable type is null.");
+                    }
+                    //IEvent SetVariableValueAction = new SetVariableValueAction(Game, rawAction.VariableName, rawAction.VariableValue, (VariableType)rawAction.VariableType);
+                    return null;
+                case "CreateStaticMenuAction":
+                    return null;
+                    break;
+                case "SwitchStaticMenuAction":
+                    return null;
+                    break;
+                default:
+                    throw new InvalidOperationException("Failed to load scene settings,  because Either the action type is not recognized, or the Timeline independent action type is not recognized.");
             }
         }
     }
@@ -993,7 +1122,7 @@ namespace EngineComponents
                             VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.Float));
                             break;
                         case 4:
-                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.Bool));
+                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.Boolean));
                             break;
                         default:
                             throw new InvalidOperationException("Failed to load variable settings, because the variable type is not recognized.");
@@ -1025,7 +1154,7 @@ namespace EngineComponents
                     else
                         for (int i = 0; i < scene.ActionList.Length; i++)
                         {
-                            timeline.ActionList.Add(GameLoader.FetchEventFromImport(scene.ActionList[i]));
+                            timeline.ActionList.Add(GameLoader.FetchTimelineDependentEventFromImport(scene.ActionList[i]));
                         }
                     Scenes.Add(new Scene(scene.Name, this)
                     {
@@ -1134,5 +1263,6 @@ namespace EngineComponents
         public static int GetMouseXPosition() => Raylib.GetMouseX();
         public static int GetMouseYPosition() => Raylib.GetMouseY();
         public static bool IsKeyPressed(KeyboardKey key) => Raylib.IsKeyPressed(key);
+        public static bool IsKeyDown(KeyboardKey key) => Raylib.IsKeyDown(key);
     }
 }

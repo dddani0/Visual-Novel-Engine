@@ -21,10 +21,10 @@ namespace EngineComponents.Actions.TimelineDependent
         /// <param name="game">Active game</param>
         /// <param name="variableName">The variable which is to be increased</param>
         /// <param name="incrementValue">The incrementing value of the parameter</param>
-        public IncrementVariableAction(Game game, string variableName, int incrementValue)
+        public IncrementVariableAction(Game game, string variableName, string incrementVariableName)
         {
             Game = game;
-            IncrementIntegerValue = incrementValue;
+            IncrementVariableName = incrementVariableName;
             VariableName = variableName;
         }
         /// <summary>
@@ -33,24 +33,6 @@ namespace EngineComponents.Actions.TimelineDependent
         /// <param name="game">Active game</param>
         /// <param name="variableName">The variable which is to be increased</param>
         /// <param name="incrementValue">The incrementing value of the parameter</param>
-        public IncrementVariableAction(Game game, string variableName, float incrementValue)
-        {
-            Game = game;
-            IncrementFloatValue = incrementValue;
-            VariableName = variableName;
-        }
-        /// <summary>
-        /// Constructor for incrementing the variable with another variable.
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="variableName"></param>
-        /// <param name="incrementVariableName"></param>
-        public IncrementVariableAction(Game game, string variableName, string incrementVariableName)
-        {
-            Game = game;
-            VariableName = variableName;
-            IncrementVariableName = incrementVariableName;
-        }
         /// <summary>
         /// Increments the variable with the constant value or with a variable value.
         /// </summary>
@@ -58,23 +40,20 @@ namespace EngineComponents.Actions.TimelineDependent
         public void PerformEvent()
         {
             Variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
-            if (IncrementVariableName != null)
+            IncrementVariable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(IncrementVariableName)) ?? throw new System.Exception("Variable not found!");
+            if (IncrementVariable.Type == VariableType.Int)
             {
-                IncrementVariable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(IncrementVariableName)) ?? throw new System.Exception("Variable not found!");
-                if (IncrementVariable.Type == VariableType.Int)
-                {
-                    IsIntegerIncrement = true;
-                    IncrementIntegerValue = int.Parse(IncrementVariable.Value);
-                }
-                else if (IncrementVariable.Type == VariableType.Float)
-                {
-                    IsIntegerIncrement = false;
-                    IncrementFloatValue = float.Parse(IncrementVariable.Value);
-                }
-                else
-                {
-                    throw new System.Exception("Variable is not an integer or float");
-                }
+                IsIntegerIncrement = true;
+                IncrementIntegerValue = int.Parse(IncrementVariable.Value);
+            }
+            else if (IncrementVariable.Type == VariableType.Float)
+            {
+                IsIntegerIncrement = false;
+                IncrementFloatValue = float.Parse(IncrementVariable.Value);
+            }
+            else
+            {
+                throw new System.Exception("Variable is not an integer or float");
             }
             var value = IsIntegerIncrement ? int.Parse(Variable.Value) : float.Parse(Variable.Value);
             value += IsIntegerIncrement ? IncrementIntegerValue : IncrementFloatValue;

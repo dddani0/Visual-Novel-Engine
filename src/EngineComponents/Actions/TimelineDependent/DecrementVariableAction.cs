@@ -20,36 +20,12 @@ namespace EngineComponents.Actions.TimelineDependent
         /// </summary>
         /// <param name="game"></param>
         /// <param name="variableName"></param>
-        /// <param name="decrementValue"></param>
-        public DecrementVariableAction(Game game, string variableName, int decrementValue)
-        {
-            Game = game;
-            DecrementIntegerValue = decrementValue;
-            VariableName = variableName;
-        }
-        /// <summary>
-        /// Constructor for decrementing the variable with a constant float value.
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="variableName"></param>
-        /// <param name="decrementValue"></param>
-        public DecrementVariableAction(Game game, string variableName, float decrementValue)
-        {
-            Game = game;
-            DecrementFloatValue = decrementValue;
-            VariableName = variableName;
-        }
-        /// <summary>
-        /// Constructor for decrementing the variable with another variable.
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="variableName"></param>
         /// <param name="decrementVariableName"></param>
         public DecrementVariableAction(Game game, string variableName, string decrementVariableName)
         {
             Game = game;
-            VariableName = variableName;
             DecrementVariableName = decrementVariableName;
+            VariableName = variableName;
         }
         /// <summary>
         /// Decrements the variable with the constant value or with a variable value.
@@ -58,24 +34,22 @@ namespace EngineComponents.Actions.TimelineDependent
         public void PerformEvent()
         {
             Variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
-            if (DecrementVariableName != null)
+            DecrementVariable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(DecrementVariableName)) ?? throw new System.Exception("Variable not found!");
+            if (DecrementVariable.Type == VariableType.Int)
             {
-                DecrementVariable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(DecrementVariableName)) ?? throw new System.Exception("Variable not found!");
-                if (DecrementVariable.Type == VariableType.Int)
-                {
-                    IsIntegerIncrement = true;
-                    DecrementIntegerValue = int.Parse(DecrementVariable.Value);
-                }
-                else if (DecrementVariable.Type == VariableType.Float)
-                {
-                    IsIntegerIncrement = false;
-                    DecrementFloatValue = float.Parse(DecrementVariable.Value);
-                }
-                else
-                {
-                    throw new System.Exception("Variable is not an integer or float");
-                }
+                IsIntegerIncrement = true;
+                DecrementIntegerValue = int.Parse(DecrementVariable.Value);
             }
+            else if (DecrementVariable.Type == VariableType.Float)
+            {
+                IsIntegerIncrement = false;
+                DecrementFloatValue = float.Parse(DecrementVariable.Value);
+            }
+            else
+            {
+                throw new System.Exception("Variable is not an integer or float");
+            }
+
             var value = IsIntegerIncrement ? int.Parse(Variable.Value) : float.Parse(Variable.Value);
             value += IsIntegerIncrement ? DecrementIntegerValue : DecrementFloatValue;
             Variable.SetValue(value);

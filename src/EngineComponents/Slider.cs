@@ -45,7 +45,8 @@ namespace EngineComponents
         /// The normalized value of the Slider.
         /// Value between 0 and 1.
         /// </summary>
-        internal int UnitValue { get; set; }
+        internal float UnitValue { get; set; }
+        internal float Value { get; set; }
         /// <summary>
         /// The color of the Slider's draggable part.
         /// </summary>
@@ -100,6 +101,7 @@ namespace EngineComponents
                     Raylib.GetMousePosition().Y >= YPosition - Height && Raylib.GetMousePosition().Y <= YPosition + Height)
                 {
                     UnitValue = (int)Raylib.GetMousePosition().X - XPosition;
+                    XPosition += (int)UnitValue;
                 }
                 Event.PerformEvent();
             }
@@ -115,12 +117,13 @@ namespace EngineComponents
             UpdateSlider();
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, SliderColor);
             Raylib.DrawRectangleLinesEx(new Rectangle(XPosition, YPosition, Width, Height), BorderWidth, SliderBorderColor);
-            Raylib.DrawCircle(XPosition + UnitValue, YPosition + Height / 2, SliderDragRadius, SliderDragColor);
+            Raylib.DrawCircle(XPosition, YPosition + Height / 2, SliderDragRadius, SliderDragColor);
         }
         /// <summary>
         /// Fetch the value of the Slider.
         /// </summary>
         /// <returns></returns>
-        public int FetchUnitValue() => UnitValue;
+        public float FetchUnitValue() => UnitValue;
+        public float GetSliderValue() => UnitValue * Value;
     }
 }

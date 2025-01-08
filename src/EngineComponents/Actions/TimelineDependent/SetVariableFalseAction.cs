@@ -18,7 +18,7 @@ namespace EngineComponents.Actions.TimelineDependent
         public void PerformEvent()
         {
             var variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
-            if (variable.Type == VariableType.Bool)
+            if (variable.Type == VariableType.Boolean)
             {
                 variable.SetValue(false);
                 Game.ActiveScene.Timeline.NextStep();

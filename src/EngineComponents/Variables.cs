@@ -5,7 +5,7 @@ namespace EngineComponents
         String,
         Int,
         Float,
-        Bool
+        Boolean
     }
     /// <summary>
     /// Represents a variable that can be used in the game.
