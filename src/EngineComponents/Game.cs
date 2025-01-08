@@ -127,6 +127,8 @@ namespace EngineComponents
         public ButtonComponentImport? StaticButton { get; set; }
         [JsonPropertyName("InputField")]
         public InputFieldImport? InputField { get; set; }
+        [JsonPropertyName("StaticInputField")]
+        public InputFieldImport? StaticInputField { get; set; }
         [JsonPropertyName("DropBox")]
         public DropBoxImport? DropBox { get; set; }
         [JsonPropertyName("Slider")]
@@ -612,8 +614,38 @@ namespace EngineComponents
                 newBlock.SetComponent(FetchButtonFromImport(rawBlock.Button, newBlock));
                 return newBlock;
             }
+            // The block has an InputField component.
+            else if (rawBlock.InputField != null)
+            {
+                var newBlock = new Block(
+                    rawBlock.BlockXPosition,
+                    rawBlock.BlockYPosition,
+                    null
+                );
+                IButtonEvent inputFieldButtonEvent = (IButtonEvent)FetchTimelineDependentEventFromImport(rawBlock.InputField.InputFieldButtonEvent);
+                newBlock.SetComponent(FetchInputFieldFromImport(rawBlock.InputField, newBlock));
+                return newBlock;
+            }
+            // The block has a Sprite component.
+            else if (rawBlock.Sprite != null)
+            {
+                var newBlock = new Block(
+                    rawBlock.BlockXPosition,
+                    rawBlock.BlockYPosition,
+                    null
+                );
+                newBlock.SetComponent(FetchSpriteFromImport(rawBlock.Sprite, newBlock));
+                return newBlock;
+            }
+            else
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because either the component type attached to the block is not recognized or the type is static.");
+            }
+        }
+        Block FetchStaticBlockFromImport(BlockImport rawBlock)
+        {
             // The block has a static button component.
-            else if (rawBlock.StaticButton != null)
+            if (rawBlock.StaticButton != null)
             {
                 var newBlock = new Block(
                     rawBlock.BlockXPosition,
@@ -635,15 +667,15 @@ namespace EngineComponents
                 return newBlock;
             }
             // The block has an InputField component.
-            else if (rawBlock.InputField != null)
+            else if (rawBlock.StaticInputField != null)
             {
                 var newBlock = new Block(
                     rawBlock.BlockXPosition,
                     rawBlock.BlockYPosition,
                     null
                 );
-                IButtonEvent inputFieldButtonEvent = (IButtonEvent)FetchTimelineIndependentEventFromImport(rawBlock.InputField.InputFieldButtonEvent);
-                newBlock.SetComponent(FetchInputFieldFromImport(rawBlock.InputField, newBlock));
+                IButtonEvent inputFieldButtonEvent = (IButtonEvent)FetchTimelineIndependentEventFromImport(rawBlock.StaticInputField.InputFieldButtonEvent);
+                newBlock.SetComponent(FetchInputFieldFromImport(rawBlock.StaticInputField, newBlock));
                 return newBlock;
             }
             // The block has a Slider component.
@@ -670,7 +702,7 @@ namespace EngineComponents
             }
             else
             {
-                throw new InvalidOperationException("Failed to load scene settings, because the component type attached to the block is not recognized.");
+                throw new InvalidOperationException("Failed to load scene settings, because either the component type attached to the block is not recognized or the type is not static.");
             }
         }
         /// <summary>
@@ -680,6 +712,69 @@ namespace EngineComponents
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
         Menu FetchMenuFromImport(ActionImport rawMenu)
+        {
+            if (rawMenu.MenuXPosition == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu X position is null.");
+            }
+            if (rawMenu.MenuYPosition == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu Y position is null.");
+            }
+            if (rawMenu.MenuWidth == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu width is null.");
+            }
+            if (rawMenu.MenuHeight == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu height is null.");
+            }
+            if (rawMenu.MenuFullScreen == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu fullscreen is null.");
+            }
+            if (rawMenu.MenuColor == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu color is null.");
+            }
+            if (rawMenu.MenuBorderColor == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu border color is null.");
+            }
+            var menuXPosition = rawMenu.MenuXPosition.Value;
+            var menuYPosition = rawMenu.MenuYPosition.Value;
+            var menuWidth = rawMenu.MenuWidth.Value;
+            var menuHeight = rawMenu.MenuHeight.Value;
+            var menuFullScreen = rawMenu.MenuFullScreen == "True";
+            var windowColor = new Color()
+            {
+                R = (byte)rawMenu.MenuColor[0],
+                G = (byte)rawMenu.MenuColor[1],
+                B = (byte)rawMenu.MenuColor[2],
+                A = (byte)rawMenu.MenuColor[3]
+            };
+            var windowBorderColor = new Color()
+            {
+                R = (byte)rawMenu.MenuBorderColor[0],
+                G = (byte)rawMenu.MenuBorderColor[1],
+                B = (byte)rawMenu.MenuBorderColor[2],
+                A = (byte)rawMenu.MenuBorderColor[3]
+            };
+            var menu = new Menu(
+                Game,
+                menuXPosition,
+                menuYPosition,
+                menuWidth,
+                menuHeight,
+                menuFullScreen,
+                [],
+                windowColor,
+                windowBorderColor);
+            if (rawMenu.MenuBlockList == null) return menu;
+            menu.BlockList.AddRange(rawMenu.MenuBlockList.Select(block => FetchBlockFromImport(block)));
+            return menu;
+        }
+        Menu FetchStaticMenuFromImport(ActionImport rawMenu)
         {
             if (rawMenu.MenuXPosition == null)
             {
@@ -1008,8 +1103,9 @@ namespace EngineComponents
                     //IEvent SetVariableValueAction = new SetVariableValueAction(Game, rawAction.VariableName, rawAction.VariableValue, (VariableType)rawAction.VariableType);
                     return null;
                 case "CreateStaticMenuAction":
-                    return null;
-                    break;
+                    // Add the create menu action to the timeline.
+                    var menu = FetchStaticMenuFromImport(rawAction);
+                    return (ISettingsEvent)new CreateMenuAction(Game, menu, [.. menu.BlockList]);
                 case "SwitchStaticMenuAction":
                     return null;
                     break;

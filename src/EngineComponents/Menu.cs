@@ -7,7 +7,7 @@ namespace EngineComponents
     /// Represents a menu, which is a collection of blocks.
     /// A Block is a component with coordinates.
     /// </summary>
-    class Menu : IPermanentRenderingObject
+    public class Menu : IPermanentRenderingObject
     {
         /// <summary>
         /// The absolute position on the X axis.
@@ -41,6 +41,7 @@ namespace EngineComponents
         /// The border color of the menu.
         /// </summary>
         internal Color MenuBorderColor { get; set; }
+        internal bool IsVisible { get; set; }
         internal Game Game { get; set; }
 
         public Menu(Game game, int xPos, int yPos, int width, int height, bool isFullScreen, List<Block> blockList, Color windowColor, Color windowBorderColor)
@@ -73,9 +74,6 @@ namespace EngineComponents
         /// Checks if the menu is enabled.
         /// </summary>
         /// <returns></returns>
-        public bool Enabled()
-        {
-            return true;
-        }
+        public bool Enabled() => IsVisible;
     }
 }

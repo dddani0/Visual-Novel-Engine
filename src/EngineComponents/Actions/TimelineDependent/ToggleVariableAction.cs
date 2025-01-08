@@ -7,8 +7,8 @@ namespace EngineComponents.Actions.TimelineDependent
     /// </summary>
     public class ToggleVariableAction : IEvent
     {
+        private readonly Game Game;
         readonly string VariableName;
-        Game Game { get; set; }
         public ToggleVariableAction(Game game, string variableName)
         {
             Game = game;

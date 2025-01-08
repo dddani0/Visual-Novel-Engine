@@ -1,6 +1,6 @@
 using EngineComponents.Interfaces;
 
-namespace EngineComponents.Actions.TimelineDependent
+namespace EngineComponents.Actions
 {
     /// <summary>
     /// Creates a menu.
@@ -9,7 +9,7 @@ namespace EngineComponents.Actions.TimelineDependent
     {
         private readonly Game Game;
         private readonly Menu Menu;
-        Block[] Blocks { get; }
+        private Block[] Blocks { get; }
         /// <summary>
         /// Constructor for the CreateMenuAction.
         /// </summary>

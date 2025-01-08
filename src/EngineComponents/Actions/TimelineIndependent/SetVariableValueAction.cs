@@ -9,12 +9,12 @@ namespace EngineComponents.Actions.TimelineIndependent
     /// </summary>
     public class SetVariableValueAction : IEvent
     {
-        private Variable Variable { get; set; }
-        private string VariableName { get; }
-        private string StringValue { get; set; }
-        private Slider SliderComponent { get; set; }
-        private Toggle ToggleComponent { get; set; }
-        private Game Game { get; set; }
+        private readonly Game Game;
+        private Variable Variable;
+        private readonly string VariableName;
+        private string StringValue;
+        private Slider SliderComponent;
+        private Toggle ToggleComponent;
         /// <summary>
         /// Constructor for setting the variable with a constant integer value.
         /// </summary>
