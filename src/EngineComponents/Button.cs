@@ -118,11 +118,32 @@ namespace EngineComponents
             CharacterHeight = Font.BaseSize;
             TextWidth = Text.Length * CharacterWidth;
         }
+        /// <summary>
+        /// Creates a static button.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="block"></param>
+        /// <param name="font"></param>
+        /// <param name="xPos"></param>
+        /// <param name="yPos"></param>
+        /// <param name="borderWidth"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="text"></param>
+        /// <param name="textColor"></param>
+        /// <param name="buttonColor"></param>
+        /// <param name="borderColor"></param>
+        /// <param name="hoverColor"></param>
+        /// <param name="staticButtonEvent"></param>
+        /// <returns></returns>
+        public static Button CreateStaticButton(Game game, Block block, Font font, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, ISettingsEvent staticButtonEvent)
+        => new(game, block, font, xPos, yPos, borderWidth, width, height, text, textColor, buttonColor, borderColor, hoverColor, (IButtonEvent)staticButtonEvent);
+
 
         /// <summary>
         /// Executes the event when the button is pressed.
         /// </summary>
-        public void PressButton()
+        public void ButtonPress()
         {
             if (!isHover || !Game.IsLeftMouseButtonPressed()) return;
             isPressed = true;
@@ -136,7 +157,7 @@ namespace EngineComponents
         {
             if (Enabled() is false) return;
             isHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height));
-            PressButton();
+            ButtonPress();
             Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, isHover ? HoverColor : Color);
             Raylib.DrawRectangleLinesEx(new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height), BorderWidth, BorderColor);
             Raylib.DrawTextEx(Font, Text, new Vector2(XPosition - TextWidth / 2, YPosition - CharacterHeight / 2), Font.BaseSize, 5, TextColor);
@@ -146,5 +167,6 @@ namespace EngineComponents
         /// </summary>
         /// <returns></returns>
         public bool Enabled() => isPressed is false;
+
     }
 }

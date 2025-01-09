@@ -8,9 +8,9 @@ namespace EngineComponents.Actions.TimelineDependent
     /// </summary>
     class TintSpriteAction : IEvent, IButtonEvent
     {
-        readonly Game Game;
-        readonly Sprite sprite;
-        readonly Color color;
+        private readonly Game Game;
+        private readonly Sprite sprite;
+        private readonly Color color;
         /// <summary>
         /// Tints a sprite with a color.
         /// </summary>
