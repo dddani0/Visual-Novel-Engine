@@ -89,12 +89,12 @@ namespace EngineComponents
         public int? MenuXPosition { get; set; }
         [JsonPropertyName("MenuYPosition")]
         public int? MenuYPosition { get; set; }
-        [JsonPropertyName("MenuStatic")]
-        public string? MenuStatic { get; set; }
         [JsonPropertyName("MenuWidth")]
         public int? MenuWidth { get; set; }
         [JsonPropertyName("MenuHeight")]
         public int? MenuHeight { get; set; }
+        [JsonPropertyName("MenuStatic")]
+        public string? MenuStatic { get; set; }
         [JsonPropertyName("MenuFullScreen")]
         public string? MenuFullScreen { get; set; }
         [JsonPropertyName("MenuBlockList")]
@@ -721,7 +721,7 @@ namespace EngineComponents
                 windowColor,
                 windowBorderColor);
             if (rawMenu.MenuBlockList == null) return menu;
-            menu.BlockList.AddRange(rawMenu.MenuStatic == "True" ? rawMenu.MenuBlockList.Select(block => FetchBlockFromImport(block)) : rawMenu.MenuBlockList.Select(block => FetchStaticBlockFromImport(block)));
+            menu.BlockList.AddRange(rawMenu.MenuStatic == "True" ? rawMenu.MenuBlockList.Select(block => FetchStaticBlockFromImport(block)) : rawMenu.MenuBlockList.Select(block => FetchBlockFromImport(block)));
             return menu;
         }
         /// <summary>
@@ -938,7 +938,7 @@ namespace EngineComponents
                 case "CreateMenuAction":
                     // Add the create menu action to the timeline.
                     var menu = FetchMenuFromImport(rawAction);
-                    return (IEvent)menu;
+                    return new CreateMenuAction(Game, menu, [.. menu.BlockList]);
                 default:
                     throw new InvalidOperationException("Failed to load scene settings, because Either the action type is not recognized, or the event is not a timeline dependent or a general one.");
             }
@@ -961,8 +961,8 @@ namespace EngineComponents
                         throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
                     }
                     var nativeSceneId = rawAction.SceneID.Value;
-                    IEvent NativeLoadSceneAction = new NativeLoadSceneAction(Game, nativeSceneId);
-                    return (ISettingsEvent)NativeLoadSceneAction;
+                    ISettingsEvent NativeLoadSceneAction = (ISettingsEvent)new NativeLoadSceneAction(Game, nativeSceneId);
+                    return NativeLoadSceneAction;
                 case "LoadSceneAction":
                     // Add the load scene action to the timeline.
                     if (rawAction.SceneID.HasValue is false)
@@ -991,7 +991,7 @@ namespace EngineComponents
                 case "CreateMenuAction":
                     // Add the create menu action to the timeline.
                     var menu = FetchMenuFromImport(rawAction);
-                    return (ISettingsEvent)menu;
+                    return new CreateMenuAction(Game, menu, [.. menu.BlockList]); ;
                 default:
                     throw new InvalidOperationException("Failed to load scene settings,  because Either the action type is not recognized, or the event is not a timeline independent or a general one.");
             }

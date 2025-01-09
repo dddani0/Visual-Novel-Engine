@@ -55,8 +55,8 @@ namespace EngineComponents
             Width = isFullScreen ? Raylib.GetScreenWidth() : width;
             Height = isFullScreen ? Raylib.GetScreenHeight() : height;
             //
-            XPosition = isFullScreen ? Raylib.GetScreenWidth() / 2 - Width / 2 : xPos; //placeholder
-            YPosition = isFullScreen ? Raylib.GetScreenHeight() / 2 - Height / 2 : yPos;
+            XPosition = isFullScreen ? Raylib.GetScreenWidth() / 2 - Width / 2 : xPos - Width / 2; //placeholder
+            YPosition = isFullScreen ? Raylib.GetScreenHeight() / 2 - Height / 2 : yPos - Height / 2; //placeholder
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 [
     {
         "Name": "Scene1",
-        "Id": 1,
+        "ID": 1,
         "Background": "SolidColor",
         "Color": [
             0,
@@ -19,14 +19,15 @@
             },
             {
                 "Type": "CreateMenuAction",
-                "MenuXPosition": 0,
-                "MenuYPosition": 0,
-                "MenuWidth": 700,
-                "MenuHeight": 700,
-                "MenuFullScreen": "True",
+                "MenuXPosition": 400,
+                "MenuYPosition": 400,
+                "MenuWidth": 600,
+                "MenuHeight": 600,
+                "MenuStatic": "True",
+                "MenuFullScreen": "False",
                 "MenuBlockList": [
                     {
-                        "BlockXPosition": 200,
+                        "BlockXPosition": 400,
                         "BlockYPosition": 400,
                         "DropBox": {
                             "DropBoxXPosition": 0,
@@ -88,41 +89,6 @@
                                 255
                             ]
                         }
-                    },
-                    {
-                        "BlockXPosition": 400,
-                        "BlockYPosition": 600,
-                        "Slider": {
-                            "SliderXPosition": 0,
-                            "SliderYPosition": 0,
-                            "SliderWidth": 100,
-                            "SliderHeight": 10,
-                            "SliderBorderWidth": 1,
-                            "SliderDragRadius": 15,
-                            "SliderDragColor": [
-                                0,
-                                0,
-                                0,
-                                255
-                            ],
-                            "SliderColor": [
-                                255,
-                                0,
-                                0,
-                                255
-                            ],
-                            "SliderBorderColor": [
-                                255,
-                                255,
-                                255,
-                                255
-                            ],
-                            "SliderEvent": {
-                                "Type": "IncrementVariableAction",
-                                "VariableName": "myVar",
-                                "VariableValue": "2"
-                            }
-                        }
                     }
                 ],
                 "MenuColor": [
@@ -142,7 +108,7 @@
     },
     {
         "Name": "Scene2",
-        "Id": 2,
+        "ID": 2,
         "Background": "SolidColor",
         "Color": [
             134,

@@ -5,7 +5,7 @@ namespace EngineComponents.Actions
     /// <summary>
     /// Loads a new scene with trigger.
     /// </summary>
-    class LoadSceneAction : IEvent
+    class LoadSceneAction : IEvent, ISettingsEvent, IButtonEvent
     {
         /// <summary>
         /// Active game.

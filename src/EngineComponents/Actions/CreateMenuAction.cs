@@ -5,7 +5,7 @@ namespace EngineComponents.Actions
     /// <summary>
     /// Creates a menu.
     /// </summary>
-    class CreateMenuAction : IEvent
+    class CreateMenuAction : IEvent, ISettingsEvent, IButtonEvent
     {
         private readonly Game Game;
         private readonly Menu Menu;
