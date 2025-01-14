@@ -1,3 +1,4 @@
+using System.Numerics;
 using EngineComponents.Interfaces;
 using Raylib_cs;
 
@@ -38,8 +39,13 @@ namespace EngineComponents
         /// </summary>
         internal bool IsVisible { get; set; }
         /// <summary>
+        /// Is the input field hovered.
+        /// </summary>
+        internal bool IsHover { get; set; }
+        /// <summary>
         /// Is the input field selected.
         /// </summary>
+        /// 
         internal bool IsSelected { get; set; } = false;
         /// <summary>
         /// Is the input field interactable.
@@ -64,8 +70,8 @@ namespace EngineComponents
         /// <summary>
         /// The hover color of the input field.
         /// </summary>
-        private Color HoverColor { get; set; }
-        public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, IButtonEvent buttonEvent)
+        private Color InputFieldHoverColor { get; set; }
+        public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, Color inputFieldColor, Color inputFieldBorderColor, Color inputFieldHoverColor, IButtonEvent buttonEvent)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;
@@ -74,7 +80,10 @@ namespace EngineComponents
             Placeholder = placeholder;
             IsVisible = true;
             IsSelected = false;
-            Button = new Button(Game, block, new Font() { BaseSize = 30 }, 0, 0 - ButtonYOffset, 0, Width, Height, buttonText, Color.Black, InputFieldColor, InputFieldBorderColor, HoverColor, buttonEvent);
+            InputFieldColor = inputFieldColor;
+            InputFieldBorderColor = inputFieldBorderColor;
+            InputFieldHoverColor = inputFieldHoverColor;
+            Button = new Button(Game, block, new Font() { BaseSize = 30 }, 0, ButtonYOffset, 0, Width, Height, buttonText, Color.Black, InputFieldColor, InputFieldBorderColor, InputFieldHoverColor, buttonEvent);
         }
         /// <summary>
         /// Returns if the input field is visible.
@@ -88,17 +97,6 @@ namespace EngineComponents
         private void UpdateInputField()
         {
             if (IsLocked) return;
-            if (Game.IsLeftMouseButtonPressed())
-            {
-                if (Game.GetMouseXPosition() >= XPosition && Game.GetMouseXPosition() <= XPosition + Width && Game.GetMouseYPosition() >= YPosition && Game.GetMouseYPosition() <= YPosition + Height)
-                {
-                    IsSelected = true;
-                }
-                else
-                {
-                    IsSelected = false;
-                }
-            }
             if (IsSelected)
             {
                 if (Game.IsKeyPressed(KeyboardKey.Backspace))
@@ -112,11 +110,23 @@ namespace EngineComponents
                 {
                     IsSelected = false;
                 }
-                else
+                else if (Raylib.GetKeyPressed() > 0)
                 {
-                    Text += Raylib.GetCharPressed();
+                    Text += (char)Raylib.GetCharPressed();
                 }
             }
+            if (Game.IsLeftMouseButtonPressed())
+            {
+                if (Game.GetMouseXPosition() >= XPosition && Game.GetMouseXPosition() <= XPosition + Width && Game.GetMouseYPosition() >= YPosition && Game.GetMouseYPosition() <= YPosition + Height)
+                {
+                    IsSelected = true;
+                }
+                else
+                {
+                    IsSelected = false;
+                }
+            }
+
         }
         /// <summary>
         /// Render the input field.
@@ -129,22 +139,23 @@ namespace EngineComponents
             // Render the Button component
             Button.Render();
             // draw the input field.
-            Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, InputFieldColor);
-            Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition - Height / 2, Width, Height, InputFieldBorderColor);
+            //IsHover = Raylib.CheckCollisionPointRec(new Vector2(Game.GetMouseXPosition(), Game.GetMouseYPosition()), new Rectangle(XPosition - Width / 2, YPosition + Height / 2, Width, Height));
+            Raylib.DrawRectangle(XPosition - Width / 2, YPosition + Height / 2, Width, Height, IsHover ? InputFieldHoverColor : InputFieldColor);
+            Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition + Height / 2, Width, Height, InputFieldBorderColor);
             switch (IsSelected)
             {
                 case true:
-                    Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, HoverColor);
+                    Raylib.DrawRectangle(XPosition - Width / 2, YPosition + Height / 2, Width, Height, InputFieldHoverColor);
                     break;
                 case false:
-                    Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, InputFieldColor);
+                    Raylib.DrawRectangle(XPosition - Width / 2, YPosition + Height / 2, Width, Height, InputFieldColor);
                     if (string.IsNullOrEmpty(Text))
                     {
-                        Raylib.DrawText(Placeholder, XPosition + 5, YPosition + 5, 20, Color.Black);
+                        Raylib.DrawText(Placeholder, XPosition - Width / 2, YPosition + Height / 2, 20, Color.Black);
                     }
                     else
                     {
-                        Raylib.DrawText(Text, XPosition + 5, YPosition + 5, 20, Color.Black);
+                        Raylib.DrawText(Text, XPosition - Width / 2, YPosition + Height, 20, Color.Black);
                     }
                     break;
             }

@@ -11,6 +11,8 @@ namespace EngineComponents
         internal int XPosition { get; set; }
         internal int YPosition { get; set; }
         internal int BorderWidth { get; set; }
+        internal int BoxSize { get; set; }
+        internal int TextXOffset { get; set; }
         internal string Text { get; set; }
         internal bool IsVisible { get; set; }
         internal bool IsToggled { get; set; }
@@ -18,7 +20,9 @@ namespace EngineComponents
         internal Font Font { get; set; }
         private Color Color { get; set; }
         private Color BorderColor { get; set; }
+        private Color ToggledColor { get; set; }
         public bool Enabled() => IsVisible;
+        internal IEvent SettingsEvent { get; set; }
 
         /// <summary>
         /// Creates a new toggle component.
@@ -32,16 +36,18 @@ namespace EngineComponents
         /// <param name="isLocked">Is interactable</param>
         /// <param name="color">Color of the toggle</param>
         /// <param name="borderColor">Border color of the toggle</param>
-        public Toggle(Block block, int xPosition, int yPosition, string text, bool isVisible, bool isActive, bool isLocked, Color color, Color borderColor)
+        public Toggle(Block block, int xPosition, int yPosition, int boxSize, int textXOffset, string text, bool isLocked, Color color, Color borderColor, Color toggledColor, ISettingsEvent settingsEvent)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;
+            BoxSize = boxSize;
+            TextXOffset = textXOffset;
             Text = text;
-            IsVisible = isVisible;
-            IsToggled = isActive;
             IsLocked = isLocked;
             Color = color;
             BorderColor = borderColor;
+            ToggledColor = toggledColor;
+            SettingsEvent = (IEvent)settingsEvent;
         }
         /// <summary>
         /// Updates the toggle component.
@@ -52,6 +58,7 @@ namespace EngineComponents
             if (Game.IsLeftMouseButtonPressed() && Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, 20, 20)))
             {
                 IsToggled = !IsToggled;
+                if (IsToggled) SettingsEvent.PerformEvent();
             }
         }
         /// <summary>
@@ -61,9 +68,11 @@ namespace EngineComponents
         {
             if (Enabled() is false) return;
             UpdateToggle();
-            Raylib.DrawRectangle(XPosition, YPosition, 20, 20, Color);
-            Raylib.DrawRectangleLines(XPosition, YPosition, 20, 20, BorderColor);
-            Raylib.DrawText(Text, XPosition + 30, YPosition, 20, Color);
+            Raylib.DrawRectangle(XPosition - BoxSize / 2, YPosition - BoxSize / 2, BoxSize, BoxSize, Color);
+            Raylib.DrawRectangleLines(XPosition - BoxSize / 2, YPosition - BoxSize / 2, BorderWidth, BorderWidth, BorderColor);
+            Raylib.DrawText(Text, XPosition + TextXOffset, YPosition, 20, Color);
+            if (!IsToggled) return;
+            Raylib.DrawRectangle(XPosition - BoxSize / 2, YPosition - BoxSize / 2, BoxSize, BoxSize, Color.Black);
         }
     }
 }

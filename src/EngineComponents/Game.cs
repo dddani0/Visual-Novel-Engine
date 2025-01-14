@@ -103,6 +103,8 @@ namespace EngineComponents
         public int[]? MenuColor { get; set; }
         [JsonPropertyName("MenuBorderColor")]
         public int[]? MenuBorderColor { get; set; }
+        [JsonPropertyName("MenuComponentID")]
+        public long MenuComponentID { get; set; }
     }
     /// <summary>
     /// The VariableImport class is a helper class to import the list of saved variables from a json file.
@@ -121,6 +123,8 @@ namespace EngineComponents
     /// </summary>
     internal class BlockImport
     {
+        [JsonPropertyName("BlockID")]
+        public required long BlockID { get; set; }
         [JsonPropertyName("BlockXPosition")]
         public int BlockXPosition { get; set; }
         [JsonPropertyName("BlockYPosition")]
@@ -137,6 +141,8 @@ namespace EngineComponents
         public DropBoxImport? DropBox { get; set; }
         [JsonPropertyName("Slider")]
         public SliderImport? Slider { get; set; }
+        [JsonPropertyName("Toggle")]
+        public ToggleImport? Toggle { get; set; }
         [JsonPropertyName("Sprite")]
         public SpriteImport? Sprite { get; set; }
     }
@@ -183,26 +189,20 @@ namespace EngineComponents
         public int Width { get; set; }
         [JsonPropertyName("InputFieldHeight")]
         public int Height { get; set; }
-        [JsonPropertyName("InputFieldText")]
-        public string InputFieldText { get; set; }
         [JsonPropertyName("InputFieldPlaceholder")]
-        public string InputFieldPlaceholder { get; set; }
-        [JsonPropertyName("IsVisible")]
-        public string InputFieldIsVisible { get; set; }
-        [JsonPropertyName("IsSelected")]
-        public string InputFieldIsSelected { get; set; }
+        public required string InputFieldPlaceholder { get; set; }
         [JsonPropertyName("InputFieldButtonText")]
-        public string InputFieldButtonText { get; set; }
+        public required string InputFieldButtonText { get; set; }
         [JsonPropertyName("InputFieldButtonEvent")]
-        public ActionImport InputFieldButtonEvent { get; set; }
+        public required ActionImport InputFieldButtonEvent { get; set; }
         [JsonPropertyName("BorderWidth")]
         public int InputFieldBorderWidth { get; set; }
         [JsonPropertyName("InputFieldColor")]
-        public int[] InputFieldColor { get; set; }
+        public required int[] InputFieldColor { get; set; }
         [JsonPropertyName("InputFieldBorderColor")]
-        public int[] InputFieldBorderColor { get; set; }
-        [JsonPropertyName("HoverColor")]
-        public int[] InputFieldHoverColor { get; set; }
+        public required int[] InputFieldBorderColor { get; set; }
+        [JsonPropertyName("InputFieldHoverColor")]
+        public required int[] InputFieldHoverColor { get; set; }
     }
     /// <summary>
     /// The DropBoxImport class is a helper class to import the DropBox component.
@@ -265,6 +265,30 @@ namespace EngineComponents
         public ActionImport SliderEvent { get; set; }
     }
     /// <summary>
+    /// The ToggleImport class is a helper class to import the Toggle component.
+    /// </summary>
+    internal class ToggleImport
+    {
+        [JsonPropertyName("ToggleXPosition")]
+        public int ToggleXPosition { get; set; }
+        [JsonPropertyName("ToggleYPosition")]
+        public int ToggleYPosition { get; set; }
+        [JsonPropertyName("ToggleBoxSize")]
+        public int ToggleBoxSize { get; set; }
+        [JsonPropertyName("ToggleTextXOffset")]
+        public int ToggleTextXOffset { get; set; }
+        [JsonPropertyName("ToggleText")]
+        public required string ToggleText { get; set; }
+        [JsonPropertyName("ToggleColor")]
+        public int[] ToggleColor { get; set; }
+        [JsonPropertyName("ToggleBorderColor")]
+        public int[] BorderColor { get; set; }
+        [JsonPropertyName("ToggleToggledColor")]
+        public int[] ToggledColor { get; set; }
+        [JsonPropertyName("ToggleEvent")]
+        public ActionImport ToggleEvent { get; set; }
+    }
+    /// <summary>
     /// The SpriteImport class is a helper class to import the Sprite component.
     /// </summary>
     internal class SpriteImport
@@ -286,6 +310,8 @@ namespace EngineComponents
         /// The Game object.
         /// </summary>
         Game Game { get; set; } = game;
+        internal List<Block> BlockListCache { get; set; } = [];
+        private long ComponentIDCache { get; set; }
         /// <summary>
         /// Creates a sprite from the importer class
         /// </summary>
@@ -556,6 +582,27 @@ namespace EngineComponents
                 inputFieldImport.Height,
                 inputFieldImport.InputFieldPlaceholder,
                 inputFieldImport.InputFieldButtonText,
+                new Color()
+                {
+                    R = (byte)inputFieldImport.InputFieldColor[0],
+                    G = (byte)inputFieldImport.InputFieldColor[1],
+                    B = (byte)inputFieldImport.InputFieldColor[2],
+                    A = (byte)inputFieldImport.InputFieldColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)inputFieldImport.InputFieldBorderColor[0],
+                    G = (byte)inputFieldImport.InputFieldBorderColor[1],
+                    B = (byte)inputFieldImport.InputFieldBorderColor[2],
+                    A = (byte)inputFieldImport.InputFieldBorderColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)inputFieldImport.InputFieldHoverColor[0],
+                    G = (byte)inputFieldImport.InputFieldHoverColor[1],
+                    B = (byte)inputFieldImport.InputFieldHoverColor[2],
+                    A = (byte)inputFieldImport.InputFieldHoverColor[3]
+                },
                 (IButtonEvent)FetchTimelineIndependentEventFromImport(inputFieldImport.InputFieldButtonEvent)
             );
         }
@@ -600,6 +647,46 @@ namespace EngineComponents
             );
         }
         /// <summary>
+        /// Creates a toggle from the importer class
+        /// </summary>
+        /// <param name="rawToggle"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        Toggle FetchToggleFromImport(ToggleImport rawToggle, Block block)
+        {
+            return new Toggle(
+                 block,
+                 rawToggle.ToggleXPosition,
+                 rawToggle.ToggleYPosition,
+                 rawToggle.ToggleBoxSize,
+                 rawToggle.ToggleTextXOffset,
+                 rawToggle.ToggleText,
+                 false,
+                 new Color()
+                 {
+                     R = (byte)rawToggle.ToggleColor[0],
+                     G = (byte)rawToggle.ToggleColor[1],
+                     B = (byte)rawToggle.ToggleColor[2],
+                     A = (byte)rawToggle.ToggleColor[3]
+                 },
+                 new Color()
+                 {
+                     R = (byte)rawToggle.BorderColor[0],
+                     G = (byte)rawToggle.BorderColor[1],
+                     B = (byte)rawToggle.BorderColor[2],
+                     A = (byte)rawToggle.BorderColor[3]
+                 },
+                 new Color()
+                 {
+                     R = (byte)rawToggle.ToggledColor[0],
+                     G = (byte)rawToggle.ToggledColor[1],
+                     B = (byte)rawToggle.ToggledColor[2],
+                     A = (byte)rawToggle.ToggledColor[3]
+                 },
+                 FetchTimelineIndependentEventFromImport(rawToggle.ToggleEvent)
+             );
+        }
+        /// <summary>
         /// Creates a block from the importer class
         /// </summary>
         /// <param name="rawBlock"></param>
@@ -607,9 +694,13 @@ namespace EngineComponents
         /// <exception cref="InvalidOperationException"></exception>
         Block FetchBlockFromImport(BlockImport rawBlock)
         {
-            var newBlock = new Block(rawBlock.BlockXPosition,
-            rawBlock.BlockYPosition,
-            null);
+            var newBlock = new Block(
+                rawBlock.BlockXPosition,
+                rawBlock.BlockYPosition,
+                null,
+                rawBlock.BlockID
+                );
+            ComponentIDCache = rawBlock.BlockID;
             // The block has a button component.
             if (rawBlock.Button != null)
                 newBlock.SetComponent(FetchButtonFromImport(rawBlock.Button, newBlock));
@@ -621,6 +712,7 @@ namespace EngineComponents
                 newBlock.SetComponent(FetchSpriteFromImport(rawBlock.Sprite, newBlock));
             else
                 throw new InvalidOperationException("Failed to load scene settings, because either the component type attached to the block is not recognized or the type is static.");
+            BlockListCache.Add(newBlock);
             return newBlock;
         }
         /// <summary>
@@ -634,8 +726,10 @@ namespace EngineComponents
             var newBlock = new Block(
                     rawBlock.BlockXPosition,
                     rawBlock.BlockYPosition,
-                    null
+                    null,
+                    rawBlock.BlockID
                 );
+            ComponentIDCache = rawBlock.BlockID;
             // The block has a static button component.
             if (rawBlock.StaticButton != null)
                 newBlock.SetComponent(FetchStaticButtonFromImport(rawBlock.StaticButton, newBlock));
@@ -648,11 +742,15 @@ namespace EngineComponents
             // The block has a Slider component.
             else if (rawBlock.Slider != null)
                 newBlock.SetComponent(FetchSliderFromImport(rawBlock.Slider, newBlock));
+            // The block has a Toggle component.
+            else if (rawBlock.Toggle != null)
+                newBlock.SetComponent(FetchToggleFromImport(rawBlock.Toggle, newBlock));
             // The block has a Sprite component.
             else if (rawBlock.Sprite != null)
                 newBlock.SetComponent(FetchSpriteFromImport(rawBlock.Sprite, newBlock));
             else
                 throw new InvalidOperationException("Failed to load scene settings, because either the component type attached to the block is not recognized or the type is not static.");
+            BlockListCache.Add(newBlock);
             return newBlock;
         }
         /// <summary>
@@ -978,16 +1076,8 @@ namespace EngineComponents
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
                     }
-                    if (rawAction.VariableValue == null)
-                    {
-                        throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
-                    }
-                    if (rawAction.VariableType == null)
-                    {
-                        throw new InvalidOperationException("Failed to load scene settings, because the variable type is null.");
-                    }
-                    //IEvent SetVariableValueAction = new SetVariableValueAction(Game, rawAction.VariableName, rawAction.VariableValue, (VariableType)rawAction.VariableType);
-                    return null;
+                    ISettingsEvent SetVariableValueAction = new SetVariableValueAction(Game, rawAction.VariableName, this, ComponentIDCache);
+                    return SetVariableValueAction;
                 case "CreateMenuAction":
                     // Add the create menu action to the timeline.
                     var menu = FetchMenuFromImport(rawAction);
@@ -1007,7 +1097,7 @@ namespace EngineComponents
         /// <summary>
         /// The GameLoader deals with the raw data which is loaded into the game.
         /// </summary>
-        GameLoader GameLoader;
+        private GameLoader GameLoader;
         /// <summary>
         /// The current folder path.
         /// </summary>

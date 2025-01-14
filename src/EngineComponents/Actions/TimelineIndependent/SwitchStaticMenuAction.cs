@@ -5,7 +5,7 @@ namespace EngineComponents.Actions.TimelineIndependent
     /// <summary>
     /// Switches the static menu.
     /// </summary>
-    public class SwitchStaticMenuAction : IEvent
+    public class SwitchStaticMenuAction : IEvent, ISettingsEvent
     {
         private readonly Game Game;
         private Menu DisablingMenu { get; }

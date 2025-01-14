@@ -138,8 +138,6 @@ namespace EngineComponents
         /// <returns></returns>
         public static Button CreateStaticButton(Game game, Block block, Font font, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, ISettingsEvent staticButtonEvent)
         => new(game, block, font, xPos, yPos, borderWidth, width, height, text, textColor, buttonColor, borderColor, hoverColor, (IButtonEvent)staticButtonEvent);
-
-
         /// <summary>
         /// Executes the event when the button is pressed.
         /// </summary>
