@@ -28,6 +28,7 @@ namespace EngineComponents
         /// The height of the text field.
         /// </summary>
         internal int Height { get; set; }
+        internal int BorderWidth { get; set; }
         /// <summary>
         /// The horizontal margin of the text.
         /// </summary>
@@ -66,6 +67,10 @@ namespace EngineComponents
         /// </summary>
         private Color TextColor { get; set; }
         /// <summary>
+        /// The color of the border.
+        /// </summary>
+        private Color BorderColor { get; set; }
+        /// <summary>
         /// The maximum character count that can be displayed in a single row.
         /// </summary>
         private int MaximumCharacterCount { get; set; }
@@ -80,12 +85,13 @@ namespace EngineComponents
         /// <param name="text">The string data.</param>
         /// <param name="font">Font of the textdata</param>
         /// <param name="textColor">The color of the text.</param>
-        public TextField(Block block, int xPos, int yPos, int width, int height, int horizontalTextMargin, int verticalTextMargin, string text, Font font, bool wordWrap, bool visible, Color textColor)
+        public TextField(Block block, int xPos, int yPos, int width, int height, int borderWidth, int horizontalTextMargin, int verticalTextMargin, string text, Font font, bool wordWrap, bool visible, Color textColor, Color borderColor)
         {
             XPosition = block.XPosition;
             YPosition = block.YPosition;
             Width = width;
             Height = height;
+            BorderWidth = borderWidth;
             HorizontalTextMargin = horizontalTextMargin;
             VerticalTextMargin = verticalTextMargin;
             Text = text;
@@ -93,9 +99,11 @@ namespace EngineComponents
             CharacterWidth = (Font.BaseSize + Font.GlyphPadding) / 2;
             CharacterHeight = Font.BaseSize;
             TextColor = textColor;
+            BorderColor = borderColor;
+            BorderWidth = borderWidth;
             IsVisible = visible;
             WordWrap = wordWrap;
-            MaximumCharacterCount = (int)(Width - 2 * HorizontalTextMargin - CharacterWidth) / CharacterWidth;
+            MaximumCharacterCount = (Width - 2 * HorizontalTextMargin - CharacterWidth) / CharacterWidth;
             FormatText(Text);
         }
         /// <summary>
@@ -148,7 +156,9 @@ namespace EngineComponents
         {
             if (IsVisible is false) return;
             if (Text is null) return;
-            Raylib.DrawTextEx(Font, SanatizedText(), new Vector2(XPosition + HorizontalTextMargin, YPosition + VerticalTextMargin), Font.BaseSize, 1, TextColor);
+            Raylib.DrawTextEx(Font, SanatizedText(), new Vector2(XPosition + HorizontalTextMargin, YPosition + VerticalTextMargin), Font.BaseSize, Font.GlyphPadding, TextColor);
+            if (BorderWidth <= 0) return;
+            Raylib.DrawRectangleLinesEx(new Rectangle(XPosition, YPosition, Width, Height), BorderWidth, BorderColor);
         }
         /// <summary>
         /// if visibile, returns true, otherwise false

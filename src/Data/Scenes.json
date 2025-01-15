@@ -18,87 +18,96 @@
                 "VariableType": 1
             },
             {
-                "MenuID": 1,
+                "ID": 1,
                 "Type": "CreateMenuAction",
-                "MenuXPosition": 400,
-                "MenuYPosition": 400,
-                "MenuWidth": 600,
-                "MenuHeight": 600,
-                "MenuStatic": "True",
-                "MenuFullScreen": "False",
-                "MenuBlockList": [
-                    {
-                        "BlockID": 1,
-                        "BlockXPosition": 400,
-                        "BlockYPosition": 100,
-                        "TextField": {
-                            "TextFieldXPosition": 0,
-                            "TextFieldYPosition": 0,
-                            "TextFieldWidth": 200,
-                            "TextFieldHeight": 50,
-                            "Text": "Hola, soy Dani. Mucho gusto. Come estas? :)",
-                            "IsVisible": "True",
-                            "WordWrap": "True",
-                            "TextFieldColor": [
-                                255,
-                                255,
-                                255,
-                                255
-                            ]
+                "Menu": {
+                    "XPosition": 400,
+                    "YPosition": 400,
+                    "Width": 600,
+                    "Height": 600,
+                    "FullScreen": "False",
+                    "Static": "True",
+                    "BlockList": [
+                        {
+                            "ID": 1,
+                            "XPosition": 400,
+                            "YPosition": 100,
+                            "TextField": {
+                                "XPosition": 0,
+                                "YPosition": 0,
+                                "Width": 200,
+                                "Height": 300,
+                                "BorderWidth": 2,
+                                "Text": "Hola, soy Dani. Mucho gusto. Come estas? :)",
+                                "IsVisible": "True",
+                                "WordWrap": "True",
+                                "Color": [
+                                    255,
+                                    255,
+                                    255,
+                                    255
+                                ],
+                                "BorderColor": [
+                                    0,
+                                    0,
+                                    0,
+                                    255
+                                ]
+                            }
+                        },
+                        {
+                            "ID": 2,
+                            "XPosition": 400,
+                            "YPosition": 400,
+                            "StaticInputField": {
+                                "XPosition": 0,
+                                "YPosition": 0,
+                                "ButtonYOffset": 100,
+                                "Width": 200,
+                                "Height": 50,
+                                "PlaceholderText": "Enter text here",
+                                "ButtonText": "Submit",
+                                "ButtonEvent": {
+                                    "Type": "SetVariableValueAction",
+                                    "VariableName": "myVar",
+                                    "VariableValue": "input",
+                                    "VariableType": 1
+                                },
+                                "BorderWidth": 2,
+                                "Color": [
+                                    255,
+                                    255,
+                                    0,
+                                    255
+                                ],
+                                "BorderColor": [
+                                    200,
+                                    200,
+                                    0,
+                                    255
+                                ],
+                                "HoverColor": [
+                                    0,
+                                    0,
+                                    255,
+                                    255
+                                ]
+                            }
                         }
-                    },
-                    {
-                        "BlockID": 2,
-                        "BlockXPosition": 400,
-                        "BlockYPosition": 400,
-                        "StaticInputField": {
-                            "InputFieldXPosition": 0,
-                            "InputFieldYPosition": 0,
-                            "ButtonYOffset": 100,
-                            "InputFieldWidth": 200,
-                            "InputFieldHeight": 50,
-                            "InputFieldPlaceholder": "Enter text here",
-                            "InputFieldButtonText": "Submit",
-                            "InputFieldButtonEvent": {
-                                "Type": "SetVariableValueAction",
-                                "VariableName": "myVar",
-                                "VariableValue": "input",
-                                "VariableType": 1
-                            },
-                            "InputFieldBorderWidth": 2,
-                            "InputFieldColor": [
-                                255,
-                                255,
-                                0,
-                                255
-                            ],
-                            "InputFieldBorderColor": [
-                                200,
-                                200,
-                                0,
-                                255
-                            ],
-                            "InputFieldHoverColor": [
-                                0,
-                                0,
-                                255,
-                                255
-                            ]
-                        }
-                    }
-                ],
-                "MenuColor": [
-                    18,
-                    135,
-                    49,
-                    255
-                ],
-                "MenuBorderColor": [
-                    10,
-                    64,
-                    24,
-                    255
-                ]
+                    ],
+                    "Color": [
+                        18,
+                        135,
+                        49,
+                        255
+                    ],
+                    "BorderColor": [
+                        10,
+                        64,
+                        24,
+                        255
+                    ]
+                }
             }
         ]
     },
