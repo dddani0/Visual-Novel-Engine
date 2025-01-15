@@ -80,7 +80,7 @@ namespace EngineComponents
         /// <param name="text">The string data.</param>
         /// <param name="font">Font of the textdata</param>
         /// <param name="textColor">The color of the text.</param>
-        public TextField(Block block, int width, int height, int horizontalTextMargin, int verticalTextMargin, string text, Font font, Color textColor)
+        public TextField(Block block, int xPos, int yPos, int width, int height, int horizontalTextMargin, int verticalTextMargin, string text, Font font, bool wordWrap, bool visible, Color textColor)
         {
             XPosition = block.XPosition;
             YPosition = block.YPosition;
@@ -93,7 +93,8 @@ namespace EngineComponents
             CharacterWidth = (Font.BaseSize + Font.GlyphPadding) / 2;
             CharacterHeight = Font.BaseSize;
             TextColor = textColor;
-            IsVisible = true;
+            IsVisible = visible;
+            WordWrap = wordWrap;
             MaximumCharacterCount = (int)(Width - 2 * HorizontalTextMargin - CharacterWidth) / CharacterWidth;
             FormatText(Text);
         }
@@ -108,23 +109,18 @@ namespace EngineComponents
             //
             bool IsFinished = false;
             string splittingText = Text;
-            // Due to string linearity, multiply the splitting count
+            //
             int splitCount = 1;
             //
             while (IsFinished is false)
             {
                 int nextSplitIndex = (MaximumCharacterCount - 1) * splitCount;
+                string nextString = splittingText[nextSplitIndex..];
                 //
-                while (IsFinished is false)
-                {
-                    int nextStringSplitIndex = (MaximumCharacterCount - 1) * splitCount;
-                    string nextString = splittingText.Remove(0, nextSplitIndex);
-                    //
-                    if (WordWrap) splittingText = WrapLine(nextString);
-                    else splittingText = nextString;
-                    if (nextString.Length <= MaximumCharacterCount) IsFinished = true;
-                    else splitCount++;
-                }
+                if (WordWrap) splittingText = WrapLine(splittingText);
+                else splittingText = splittingText.Insert(nextSplitIndex, "\n");
+                if (nextString.Length <= MaximumCharacterCount) IsFinished = true;
+                else splitCount++;
             }
             string WrapLine(string wrappingLine)
             {

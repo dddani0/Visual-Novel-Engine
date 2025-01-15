@@ -71,7 +71,53 @@ namespace EngineComponents
         /// The hover color of the input field.
         /// </summary>
         private Color InputFieldHoverColor { get; set; }
+        /// <summary>
+        /// Create a new input field with a button attached.
+        /// </summary>
+        /// <param name="Game"></param>
+        /// <param name="block"></param>
+        /// <param name="xPosition"></param>
+        /// <param name="yPosition"></param>
+        /// <param name="ButtonYOffset"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="placeholder"></param>
+        /// <param name="buttonText"></param>
+        /// <param name="inputFieldColor"></param>
+        /// <param name="inputFieldBorderColor"></param>
+        /// <param name="inputFieldHoverColor"></param>
+        /// <param name="buttonEvent"></param>
         public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, Color inputFieldColor, Color inputFieldBorderColor, Color inputFieldHoverColor, IButtonEvent buttonEvent)
+        {
+            XPosition = block.XPosition + xPosition;
+            YPosition = block.YPosition + yPosition;
+            Width = width;
+            Height = height;
+            Placeholder = placeholder;
+            IsVisible = true;
+            IsSelected = false;
+            InputFieldColor = inputFieldColor;
+            InputFieldBorderColor = inputFieldBorderColor;
+            InputFieldHoverColor = inputFieldHoverColor;
+            Button = new Button(Game, block, new Font() { BaseSize = 30 }, 0, ButtonYOffset, 0, Width, Height, buttonText, Color.Black, InputFieldColor, InputFieldBorderColor, InputFieldHoverColor, buttonEvent);
+        }
+        /// <summary>
+        /// Create a new static input field, with a static button attached.
+        /// </summary>
+        /// <param name="Game"></param>
+        /// <param name="block"></param>
+        /// <param name="xPosition"></param>
+        /// <param name="yPosition"></param>
+        /// <param name="ButtonYOffset"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="placeholder"></param>
+        /// <param name="buttonText"></param>
+        /// <param name="inputFieldColor"></param>
+        /// <param name="inputFieldBorderColor"></param>
+        /// <param name="inputFieldHoverColor"></param>
+        /// <param name="buttonEvent"></param>
+        public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, Color inputFieldColor, Color inputFieldBorderColor, Color inputFieldHoverColor, ISettingsEvent buttonEvent)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;

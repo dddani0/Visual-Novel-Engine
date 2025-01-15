@@ -5,7 +5,7 @@ namespace EngineComponents.Actions.TimelineDependent
     /// <summary>
     /// Sets the already declaired boolean variable to true.
     /// </summary>
-    public class SetBoolVariableAction : IEvent
+    public class SetBoolVariableAction : IEvent, IButtonEvent
     {
         readonly string VariableName;
         Game Game { get; set; }

@@ -149,6 +149,8 @@ namespace EngineComponents
         public SliderImport? Slider { get; set; }
         [JsonPropertyName("Toggle")]
         public ToggleImport? Toggle { get; set; }
+        [JsonPropertyName("TextField")]
+        public TextFieldImport? TextField { get; set; }
         [JsonPropertyName("Sprite")]
         public SpriteImport? Sprite { get; set; }
     }
@@ -293,6 +295,32 @@ namespace EngineComponents
         public int[] ToggledColor { get; set; }
         [JsonPropertyName("ToggleEvent")]
         public ActionImport ToggleEvent { get; set; }
+    }
+
+    internal class TextFieldImport
+    {
+        [JsonPropertyName("TextFieldXPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("TextFieldYPosition")]
+        public int YPosition { get; set; }
+        [JsonPropertyName("TextFieldWidth")]
+        public int Width { get; set; }
+        [JsonPropertyName("TextFieldHeight")]
+        public int Height { get; set; }
+        [JsonPropertyName("HorizontalTextMargin")]
+        public int HorizontalTextMargin { get; set; }
+        [JsonPropertyName("VerticalTextMargin")]
+        public int VerticalTextMargin { get; set; }
+        [JsonPropertyName("Text")]
+        public string? Text { get; set; }
+        [JsonPropertyName("IsVisible")]
+        public string IsVisible { get; set; }
+        [JsonPropertyName("WordWrap")]
+        public string WordWrap { get; set; }
+        [JsonPropertyName("Font")]
+        public string Font { get; set; }
+        [JsonPropertyName("TextFieldColor")]
+        public int[] TextFieldColor { get; set; }
     }
     /// <summary>
     /// The SpriteImport class is a helper class to import the Sprite component.
@@ -445,7 +473,7 @@ namespace EngineComponents
         /// <returns></returns>
         Button FetchStaticButtonFromImport(ButtonComponentImport buttonComponentImport, Block block)
         {
-            return Button.CreateStaticButton(
+            return new Button(
                             Game,
                             block,
                             new Font() { BaseSize = 30, GlyphPadding = 5 },
@@ -612,7 +640,49 @@ namespace EngineComponents
                     B = (byte)inputFieldImport.InputFieldHoverColor[2],
                     A = (byte)inputFieldImport.InputFieldHoverColor[3]
                 },
-                (IButtonEvent)FetchTimelineIndependentEventFromImport(inputFieldImport.InputFieldButtonEvent)
+                (IButtonEvent)FetchTimelineDependentEventFromImport(inputFieldImport.InputFieldButtonEvent)
+            );
+        }
+        /// <summary>
+        /// Creates a static input field from the importer class
+        /// </summary>
+        /// <param name="inputFieldImport"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        InputField FetchStaticInputFieldFromImport(InputFieldImport inputFieldImport, Block block)
+        {
+            return new InputField(
+                Game,
+                block,
+                inputFieldImport.XPosition,
+                inputFieldImport.YPosition,
+                inputFieldImport.ButtonYOffset,
+                inputFieldImport.Width,
+                inputFieldImport.Height,
+                inputFieldImport.InputFieldPlaceholder,
+                inputFieldImport.InputFieldButtonText,
+                new Color()
+                {
+                    R = (byte)inputFieldImport.InputFieldColor[0],
+                    G = (byte)inputFieldImport.InputFieldColor[1],
+                    B = (byte)inputFieldImport.InputFieldColor[2],
+                    A = (byte)inputFieldImport.InputFieldColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)inputFieldImport.InputFieldBorderColor[0],
+                    G = (byte)inputFieldImport.InputFieldBorderColor[1],
+                    B = (byte)inputFieldImport.InputFieldBorderColor[2],
+                    A = (byte)inputFieldImport.InputFieldBorderColor[3]
+                },
+                new Color()
+                {
+                    R = (byte)inputFieldImport.InputFieldHoverColor[0],
+                    G = (byte)inputFieldImport.InputFieldHoverColor[1],
+                    B = (byte)inputFieldImport.InputFieldHoverColor[2],
+                    A = (byte)inputFieldImport.InputFieldHoverColor[3]
+                },
+                FetchTimelineIndependentEventFromImport(inputFieldImport.InputFieldButtonEvent)
             );
         }
         /// <summary>
@@ -696,6 +766,35 @@ namespace EngineComponents
              );
         }
         /// <summary>
+        /// Creates a text field from the importer class
+        /// </summary>
+        /// <param name="rawTextField"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        TextField FetchTextFieldFromImport(TextFieldImport rawTextField, Block block)
+        {
+            return new TextField(
+                block,
+                rawTextField.XPosition,
+                rawTextField.YPosition,
+                rawTextField.Width,
+                rawTextField.Height,
+                rawTextField.HorizontalTextMargin,
+                rawTextField.VerticalTextMargin,
+                rawTextField.Text,
+                new Font() { BaseSize = 30, GlyphPadding = 5 },
+                rawTextField.IsVisible == "True",
+                rawTextField.WordWrap == "True",
+                new Color()
+                {
+                    R = (byte)rawTextField.TextFieldColor[0],
+                    G = (byte)rawTextField.TextFieldColor[1],
+                    B = (byte)rawTextField.TextFieldColor[2],
+                    A = (byte)rawTextField.TextFieldColor[3]
+                }
+            );
+        }
+        /// <summary>
         /// Creates a block from the importer class
         /// </summary>
         /// <param name="rawBlock"></param>
@@ -715,6 +814,9 @@ namespace EngineComponents
             // The block has an InputField component.
             else if (rawBlock.InputField != null)
                 newBlock.SetComponent(FetchInputFieldFromImport(rawBlock.InputField, newBlock));
+            // The block has a TextField component.
+            else if (rawBlock.TextField != null)
+                newBlock.SetComponent(FetchTextFieldFromImport(rawBlock.TextField, newBlock));
             // The block has a Sprite component.
             else if (rawBlock.Sprite != null)
                 newBlock.SetComponent(FetchSpriteFromImport(rawBlock.Sprite, newBlock));
@@ -745,13 +847,16 @@ namespace EngineComponents
                 newBlock.SetComponent(FetchDropBoxFromImport(rawBlock.DropBox, newBlock));
             // The block has an InputField component.
             else if (rawBlock.StaticInputField != null)
-                newBlock.SetComponent(FetchInputFieldFromImport(rawBlock.StaticInputField, newBlock));
+                newBlock.SetComponent(FetchStaticInputFieldFromImport(rawBlock.StaticInputField, newBlock));
             // The block has a Slider component.
             else if (rawBlock.Slider != null)
                 newBlock.SetComponent(FetchSliderFromImport(rawBlock.Slider, newBlock));
             // The block has a Toggle component.
             else if (rawBlock.Toggle != null)
                 newBlock.SetComponent(FetchToggleFromImport(rawBlock.Toggle, newBlock));
+            // The block has a TextField component.
+            else if (rawBlock.TextField != null)
+                newBlock.SetComponent(FetchTextFieldFromImport(rawBlock.TextField, newBlock));
             // The block has a Sprite component.
             else if (rawBlock.Sprite != null)
                 newBlock.SetComponent(FetchSpriteFromImport(rawBlock.Sprite, newBlock));

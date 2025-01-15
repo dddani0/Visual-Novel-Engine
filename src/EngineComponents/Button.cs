@@ -62,7 +62,7 @@ namespace EngineComponents
         /// <summary>
         /// The event which is attached to the button.
         /// </summary>
-        private IButtonEvent Event { get; }
+        private IEvent Event { get; }
         /// <summary>
         /// The parent block of the button.
         /// </summary>
@@ -111,7 +111,7 @@ namespace EngineComponents
             BorderColor = borderColor;
             HoverColor = hoverColor;
             TextColor = textColor;
-            Event = buttonEvent;
+            Event = (IEvent)buttonEvent;
             Game = game;
             Font = font;
             CharacterWidth = (Font.BaseSize / 2) + Font.GlyphPadding;
@@ -134,10 +134,28 @@ namespace EngineComponents
         /// <param name="buttonColor"></param>
         /// <param name="borderColor"></param>
         /// <param name="hoverColor"></param>
-        /// <param name="staticButtonEvent"></param>
-        /// <returns></returns>
-        public static Button CreateStaticButton(Game game, Block block, Font font, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, ISettingsEvent staticButtonEvent)
-        => new(game, block, font, xPos, yPos, borderWidth, width, height, text, textColor, buttonColor, borderColor, hoverColor, (IButtonEvent)staticButtonEvent);
+        /// <param name="buttonEvent"></param>
+        public Button(Game game, Block block, Font font, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, ISettingsEvent buttonEvent)
+        {
+            ParentBlock = block;
+            XPosition = block.XPosition + xPos;
+            YPosition = block.YPosition + yPos;
+            Width = width;
+            Height = height;
+            BorderWidth = borderWidth;
+            Text = text;
+            Color = buttonColor;
+            BorderColor = borderColor;
+            HoverColor = hoverColor;
+            TextColor = textColor;
+            Event = (IEvent)buttonEvent;
+            Game = game;
+            Font = font;
+            CharacterWidth = (Font.BaseSize / 2) + Font.GlyphPadding;
+            CharacterHeight = Font.BaseSize;
+            TextWidth = Text.Length * CharacterWidth;
+        }
+
         /// <summary>
         /// Executes the event when the button is pressed.
         /// </summary>

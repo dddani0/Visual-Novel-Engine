@@ -18,6 +18,7 @@
                 "VariableType": 1
             },
             {
+                "MenuID": 1,
                 "Type": "CreateMenuAction",
                 "MenuXPosition": 400,
                 "MenuYPosition": 400,
@@ -30,36 +31,20 @@
                         "BlockID": 1,
                         "BlockXPosition": 400,
                         "BlockYPosition": 100,
-                        "Toggle": {
-                            "ToggleXPosition": 0,
-                            "ToggleYPosition": 0,
-                            "ToggleBoxSize": 10,
-                            "ToggleTextXOffset": 100,
-                            "ToggleText": "World peace",
-                            "ToggleColor": [
+                        "TextField": {
+                            "TextFieldXPosition": 0,
+                            "TextFieldYPosition": 0,
+                            "TextFieldWidth": 200,
+                            "TextFieldHeight": 50,
+                            "Text": "Hello World",
+                            "IsVisible": "True",
+                            "WordWrap": "True",
+                            "TextFieldColor": [
                                 255,
                                 255,
-                                0,
+                                255,
                                 255
-                            ],
-                            "ToggleBorderColor": [
-                                200,
-                                200,
-                                0,
-                                255
-                            ],
-                            "ToggleToggledColor": [
-                                0,
-                                0,
-                                0,
-                                255
-                            ],
-                            "ToggleEvent": {
-                                "Type": "SetVariableValueAction",
-                                "VariableName": "myVar",
-                                "VariableType": 1,
-                                "BlockComponentID": 1
-                            }
+                            ]
                         }
                     },
                     {

@@ -5,7 +5,7 @@ namespace EngineComponents.Actions.TimelineDependent
     /// <summary>
     /// Increments the already declaired integer or float variable with a constant value or variable value.
     /// </summary>
-    public class IncrementVariableAction : IEvent
+    public class IncrementVariableAction : IEvent, IButtonEvent
     {
         private Variable Variable { get; set; }
         private Variable IncrementVariable { get; set; }
