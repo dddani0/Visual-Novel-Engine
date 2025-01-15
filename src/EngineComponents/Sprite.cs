@@ -24,7 +24,7 @@ namespace EngineComponents
         /// <summary>
         /// The state of the sprite.
         /// </summary>
-        internal bool Enabled { get; set; } = false;
+        internal bool Enabled { get; set; } = true;
         /// <summary>
         /// Position of the sprite on the X axis.
         /// </summary>

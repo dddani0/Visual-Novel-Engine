@@ -17,6 +17,7 @@ namespace EngineComponents.Actions.TimelineIndependent
         private string StringValue;
         private Slider SliderComponent;
         private Toggle ToggleComponent;
+        private InputField InputField;
         private bool IsComponentFound = false;
         /// <summary>
         /// Constructor for setting the variable with a constant integer value.
@@ -31,19 +32,6 @@ namespace EngineComponents.Actions.TimelineIndependent
             GameLoader = gameLoader;
             ComponentID = componentID;
         }
-        /// <summary>
-        /// Constructor for setting the variable with a constant string value.
-        /// Example use case: inputfield
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="variableName"></param>
-        /// <param name="value"></param>
-        public SetVariableValueAction(Game game, string variableName, String value)
-        {
-            Game = game;
-            VariableName = variableName;
-            StringValue = value;
-        }
 
         /// <summary>
         /// Sets the variable with the constant value or with a variable value.
@@ -56,15 +44,22 @@ namespace EngineComponents.Actions.TimelineIndependent
             {
                 foreach (var block in GameLoader.BlockListCache)
                 {
-                    if (block.ID == ComponentID)
+                    if (block.ID == ComponentID && IsComponentFound is false)
                     {
                         if (block.Component is Slider slider)
                         {
                             SliderComponent = slider;
+                            IsComponentFound = true;
                         }
                         else if (block.Component is Toggle toggle)
                         {
                             ToggleComponent = toggle;
+                            IsComponentFound = true;
+                        }
+                        else if (block.Component is InputField inputField)
+                        {
+                            InputField = inputField;
+                            IsComponentFound = true;
                         }
                         else
                         {
@@ -72,7 +67,6 @@ namespace EngineComponents.Actions.TimelineIndependent
                         }
                     }
                 }
-                IsComponentFound = true;
             }
             if (SliderComponent != null)
             {
@@ -97,9 +91,16 @@ namespace EngineComponents.Actions.TimelineIndependent
                     throw new System.Exception("Variable is not a Boolean");
                 }
             }
-            else if (StringValue != null)
+            else if (InputField != null)
             {
-                Variable.SetValue(StringValue);
+                if (Variable.Type == VariableType.String)
+                {
+                    Variable.SetValue(InputField.Text);
+                }
+                else
+                {
+                    throw new System.Exception("Variable is not a String");
+                }
             }
             else
             {

@@ -90,7 +90,7 @@ namespace EngineComponents
         [JsonPropertyName("StaticMenu")]
         public MenuImport? StaticMenu { get; set; }
         [JsonPropertyName("BlockComponentID")]
-        public long BlockComponentID { get; set; }
+        public long? BlockComponentID { get; set; }
         [JsonPropertyName("DisablingMenuID")]
         public long? DisablingMenuID { get; set; }
         [JsonPropertyName("EnablingMenuID")]
@@ -1220,7 +1220,11 @@ namespace EngineComponents
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
                     }
-                    ISettingsEvent SetVariableValueAction = new SetVariableValueAction(Game, actionImport.VariableName, this, actionImport.BlockComponentID);
+                    if (actionImport.BlockComponentID == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
+                    }
+                    ISettingsEvent SetVariableValueAction = new SetVariableValueAction(Game, actionImport.VariableName, this, actionImport.BlockComponentID.Value);
                     return SetVariableValueAction;
                 case "CreateMenuAction":
                     // Add the create menu action to the timeline.

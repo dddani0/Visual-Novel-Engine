@@ -14,13 +14,13 @@
             {
                 "Type": "CreateVariableAction",
                 "VariableName": "myVar",
-                "VariableValue": "0",
-                "VariableType": 1
+                "VariableValue": "Ez egy lófasz",
+                "VariableType": 0
             },
             {
-                "ID": 1,
                 "Type": "CreateMenuAction",
                 "Menu": {
+                    "ID": 1,
                     "XPosition": 400,
                     "YPosition": 400,
                     "Width": 600,
@@ -30,33 +30,6 @@
                     "BlockList": [
                         {
                             "ID": 1,
-                            "XPosition": 400,
-                            "YPosition": 100,
-                            "TextField": {
-                                "XPosition": 0,
-                                "YPosition": 0,
-                                "Width": 200,
-                                "Height": 300,
-                                "BorderWidth": 2,
-                                "Text": "Hola, soy Dani. Mucho gusto. Come estas? :)",
-                                "IsVisible": "True",
-                                "WordWrap": "True",
-                                "Color": [
-                                    255,
-                                    255,
-                                    255,
-                                    255
-                                ],
-                                "BorderColor": [
-                                    0,
-                                    0,
-                                    0,
-                                    255
-                                ]
-                            }
-                        },
-                        {
-                            "ID": 2,
                             "XPosition": 400,
                             "YPosition": 400,
                             "StaticInputField": {
@@ -70,8 +43,7 @@
                                 "ButtonEvent": {
                                     "Type": "SetVariableValueAction",
                                     "VariableName": "myVar",
-                                    "VariableValue": "input",
-                                    "VariableType": 1
+                                    "BlockComponentID": 1
                                 },
                                 "BorderWidth": 2,
                                 "Color": [
@@ -92,6 +64,16 @@
                                     255,
                                     255
                                 ]
+                            }
+                        },
+                        {
+                            "ID": 2,
+                            "XPosition": 400,
+                            "YPosition": 400,
+                            "Sprite": {
+                                "Path": "drhouse.png",
+                                "XPosition": 0,
+                                "YPosition": 0
                             }
                         }
                     ],
