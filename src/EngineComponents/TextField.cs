@@ -122,6 +122,8 @@ namespace EngineComponents
                 if (nextString.Length <= MaximumCharacterCount) IsFinished = true;
                 else splitCount++;
             }
+            Text = splittingText;
+            return;
             string WrapLine(string wrappingLine)
             {
                 int newLineIndex = (MaximumCharacterCount - 1) * splitCount;
