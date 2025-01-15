@@ -9,6 +9,7 @@ namespace EngineComponents
     /// </summary>
     public class Menu : IPermanentRenderingObject
     {
+        internal long ID { get; set; }
         /// <summary>
         /// The absolute position on the X axis.
         /// </summary>
@@ -44,9 +45,10 @@ namespace EngineComponents
         internal bool IsVisible { get; set; }
         internal Game Game { get; set; }
 
-        public Menu(Game game, int xPos, int yPos, int width, int height, bool isFullScreen, List<Block> blockList, Color windowColor, Color windowBorderColor)
+        public Menu(Game game, long id, int xPos, int yPos, int width, int height, bool isFullScreen, List<Block> blockList, Color windowColor, Color windowBorderColor)
         {
             Game = game;
+            ID = id;
             IsFullScreen = isFullScreen;
             BlockList = blockList;
             MenuColor = windowColor;

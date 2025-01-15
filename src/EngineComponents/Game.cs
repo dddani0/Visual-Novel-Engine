@@ -85,6 +85,8 @@ namespace EngineComponents
         public int? VariableType { get; set; }
         [JsonPropertyName("ImpendingVariable")]
         public string ImpendingVariableName { get; set; }
+        [JsonPropertyName("MenuID")]
+        public long? MenuID { get; set; }
         [JsonPropertyName("MenuXPosition")]
         public int? MenuXPosition { get; set; }
         [JsonPropertyName("MenuYPosition")]
@@ -105,6 +107,10 @@ namespace EngineComponents
         public int[]? MenuBorderColor { get; set; }
         [JsonPropertyName("BlockComponentID")]
         public long BlockComponentID { get; set; }
+        [JsonPropertyName("DisablingMenuID")]
+        public long? DisablingMenuID { get; set; }
+        [JsonPropertyName("EnablingMenuID")]
+        public long? EnablingMenuID { get; set; }
     }
     /// <summary>
     /// The VariableImport class is a helper class to import the list of saved variables from a json file.
@@ -310,7 +316,11 @@ namespace EngineComponents
         /// The Game object.
         /// </summary>
         Game Game { get; set; } = game;
+        /// <summary>
+        /// The cache of created blocks.
+        /// </summary>
         internal List<Block> BlockListCache { get; set; } = [];
+        internal List<Menu> MenuListCache { get; set; } = [];
         /// <summary>
         /// Creates a sprite from the importer class
         /// </summary>
@@ -786,6 +796,10 @@ namespace EngineComponents
             {
                 throw new InvalidOperationException("Failed to load scene settings, because the menu border color is null.");
             }
+            if (rawMenu.MenuID == null)
+            {
+                throw new InvalidOperationException("Failed to load scene settings, because the menu ID is null.");
+            }
             var menuXPosition = rawMenu.MenuXPosition.Value;
             var menuYPosition = rawMenu.MenuYPosition.Value;
             var menuWidth = rawMenu.MenuWidth.Value;
@@ -805,8 +819,10 @@ namespace EngineComponents
                 B = (byte)rawMenu.MenuBorderColor[2],
                 A = (byte)rawMenu.MenuBorderColor[3]
             };
+            var id = rawMenu.MenuID.Value;
             var menu = new Menu(
                 Game,
+                id,
                 menuXPosition,
                 menuYPosition,
                 menuWidth,
@@ -815,6 +831,7 @@ namespace EngineComponents
                 [],
                 windowColor,
                 windowBorderColor);
+            MenuListCache.Add(menu);
             if (rawMenu.MenuBlockList == null) return menu;
             menu.BlockList.AddRange(rawMenu.MenuStatic == "True" ? rawMenu.MenuBlockList.Select(block => FetchStaticBlockFromImport(block)) : rawMenu.MenuBlockList.Select(block => FetchBlockFromImport(block)));
             return menu;
@@ -1078,7 +1095,18 @@ namespace EngineComponents
                 case "CreateMenuAction":
                     // Add the create menu action to the timeline.
                     var menu = FetchMenuFromImport(rawAction);
-                    return new CreateMenuAction(Game, menu, [.. menu.BlockList]); ;
+                    return new CreateMenuAction(Game, menu, [.. menu.BlockList]);
+                case "SwitchStaticMenuAction":
+                    // Add the switch static menu action to the timeline.
+                    if (rawAction.DisablingMenuID == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the disabling menu id is null.");
+                    }
+                    if (rawAction.EnablingMenuID == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the enabling menu id is null.");
+                    }
+                    return new SwitchStaticMenuAction(Game, this, rawAction.DisablingMenuID.Value, rawAction.EnablingMenuID.Value);
                 default:
                     throw new InvalidOperationException("Failed to load scene settings,  because Either the action type is not recognized, or the event is not a timeline independent or a general one.");
             }
