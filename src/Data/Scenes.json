@@ -57,7 +57,8 @@
                             "ToggleEvent": {
                                 "Type": "SetVariableValueAction",
                                 "VariableName": "myVar",
-                                "VariableType": 1
+                                "VariableType": 1,
+                                "BlockComponentID": 1
                             }
                         }
                     },

@@ -103,8 +103,8 @@ namespace EngineComponents
         public int[]? MenuColor { get; set; }
         [JsonPropertyName("MenuBorderColor")]
         public int[]? MenuBorderColor { get; set; }
-        [JsonPropertyName("MenuComponentID")]
-        public long MenuComponentID { get; set; }
+        [JsonPropertyName("BlockComponentID")]
+        public long BlockComponentID { get; set; }
     }
     /// <summary>
     /// The VariableImport class is a helper class to import the list of saved variables from a json file.
@@ -311,7 +311,6 @@ namespace EngineComponents
         /// </summary>
         Game Game { get; set; } = game;
         internal List<Block> BlockListCache { get; set; } = [];
-        private long ComponentIDCache { get; set; }
         /// <summary>
         /// Creates a sprite from the importer class
         /// </summary>
@@ -700,7 +699,6 @@ namespace EngineComponents
                 null,
                 rawBlock.BlockID
                 );
-            ComponentIDCache = rawBlock.BlockID;
             // The block has a button component.
             if (rawBlock.Button != null)
                 newBlock.SetComponent(FetchButtonFromImport(rawBlock.Button, newBlock));
@@ -729,7 +727,6 @@ namespace EngineComponents
                     null,
                     rawBlock.BlockID
                 );
-            ComponentIDCache = rawBlock.BlockID;
             // The block has a static button component.
             if (rawBlock.StaticButton != null)
                 newBlock.SetComponent(FetchStaticButtonFromImport(rawBlock.StaticButton, newBlock));
@@ -1076,7 +1073,7 @@ namespace EngineComponents
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
                     }
-                    ISettingsEvent SetVariableValueAction = new SetVariableValueAction(Game, rawAction.VariableName, this, ComponentIDCache);
+                    ISettingsEvent SetVariableValueAction = new SetVariableValueAction(Game, rawAction.VariableName, this, rawAction.BlockComponentID);
                     return SetVariableValueAction;
                 case "CreateMenuAction":
                     // Add the create menu action to the timeline.
