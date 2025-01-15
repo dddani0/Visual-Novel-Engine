@@ -1,5 +1,6 @@
+using EngineComponents.Interfaces;
 using Raylib_cs;
-namespace EngineComponents.Actions
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Changes the sprite texture.

@@ -1,4 +1,6 @@
-namespace EngineComponents.Actions
+using EngineComponents.Interfaces;
+
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Empty action.

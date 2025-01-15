@@ -1,29 +1,39 @@
+using EngineComponents.Interfaces;
+
 namespace EngineComponents
 {
+    /// <summary>
+    /// Timeline holds the list of user assigned actions (e.g. Sprite change, textbox placement, etc.), which plays out during a scene.
+    /// Timeline also holds the list of sprites that are currently active in the scene.
+    /// Timeline aligns the sprites according to the screen.
+    /// </summary>
     public class Timeline
     {
         /// <summary>
-        /// Timeline holds the list of user assigned actions (e.g. Sprite change, textbox placement, etc.), which plays out during a scene.
-        /// Timeline also holds the list of sprites that are currently active in the scene.
-        /// Timeline aligns the sprites according to the screen.
+        /// The index of the current step in the timeline.
         /// </summary>
-
         int StepIndex { get; set; }
+        /// <summary>
+        /// The total number of steps in the timeline.
+        /// </summary>
         int StepCount { get; set; }
+        /// <summary>
+        /// The list of actions in the timeline.
+        /// </summary>
         internal List<IEvent> ActionList { get; set; }
+        /// <summary>
+        /// The list of sprites that are currently active in the scene.
+        /// They are rendered in the scene.
+        /// </summary>
         internal List<Sprite> SpriteRenderList { get; set; }
+        /// <summary>
+        /// Creates a timeline.
+        /// </summary>
         public Timeline()
         {
             ActionList = [];
             SpriteRenderList = [];
         }
-
-        public Timeline(IEvent[] events)
-        {
-            ActionList = [.. events];
-            SpriteRenderList = [];
-        }
-
         /// <summary>
         /// Executes the action in the timeline.
         /// </summary>
@@ -32,7 +42,6 @@ namespace EngineComponents
             if (StepIndex == StepCount) return; //Load next scene
             ActionList.ElementAt(StepIndex).PerformEvent();
         }
-
         /// <summary>
         /// Renders the active sprites in the timeline.
         /// </summary>
@@ -44,7 +53,6 @@ namespace EngineComponents
                 sprite.Render();
             }
         }
-
         /// <summary>
         /// Moves to the next step in the timeline.
         /// </summary>
@@ -52,7 +60,6 @@ namespace EngineComponents
         {
             StepIndex++;
         }
-
         /// <summary>
         /// Starts the timeline.
         /// </summary>

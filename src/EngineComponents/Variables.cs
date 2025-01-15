@@ -5,16 +5,32 @@ namespace EngineComponents
         String,
         Int,
         Float,
-        Bool
+        Boolean
     }
     /// <summary>
-    /// A class to store variables
+    /// Represents a variable that can be used in the game.
     /// </summary>
     public class Variable
     {
+        /// <summary>
+        /// The name of the variable.
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// The value of the variable.
+        /// Allowed types: String, Integer, Float, Boolean.
+        /// </summary>
         public string Value { get; set; }
+        /// <summary>
+        /// The type of the variable.
+        /// </summary>
         public VariableType Type { get; set; }
+        /// <summary>
+        /// Creates a variable.
+        /// </summary>
+        /// <param name="name">Name of the variable</param>
+        /// <param name="value">Value of the varaible</param>
+        /// <param name="type">Type of the variable.</param>
         public Variable(string name, string value, VariableType type)
         {
             Name = name;

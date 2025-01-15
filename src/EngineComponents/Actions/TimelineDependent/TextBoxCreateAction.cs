@@ -1,9 +1,11 @@
-namespace EngineComponents.Actions
+using EngineComponents.Interfaces;
+
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Initializes a new textbox.
     /// </summary>
-    class TextBoxCreateAction : IEvent
+    class TextBoxCreateAction : IEvent, IButtonEvent
     {
         readonly TextBox TextBox;
         public TextBoxCreateAction(TextBox textbox)

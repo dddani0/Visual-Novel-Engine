@@ -1,6 +1,8 @@
-namespace EngineComponents.Actions
+using EngineComponents.Interfaces;
+
+namespace EngineComponents.Actions.TimelineDependent
 {
-    class RemoveSpriteAction : IEvent
+    class RemoveSpriteAction : IEvent, IButtonEvent
     {
         readonly Game Game;
         readonly Sprite sprite;

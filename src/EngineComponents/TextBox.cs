@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Text.RegularExpressions;
 using Raylib_cs;
 
 namespace EngineComponents
@@ -8,67 +9,159 @@ namespace EngineComponents
     /// </summary>
     public class TextBox
     {
+        /// <summary>
+        /// The position type of the textbox.
+        /// </summary>
         public enum PositionType
         {
             defaultPosition,
             upperPosition
         }
-        readonly int[] textMargin = [10, 10];
-        private TextBox(
-            List<String> data, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, bool wordWrapEnabled, Game game)
-        {
-            Content = data;
-            CPSTextSpeed = cps;
-            //  
-            WordWrap = wordWrapEnabled;
-            //
-            SecondTimer = new Timer(1 / (float)CPSTextSpeed);
-            BlinkingCursorTimer = new Timer(0.5f);
-            //
-            TextIndex = 0;
-            TextCollectionCount = Content.Count;
-            //
-            Output = String.Empty;
-            IsBlinking = true;
-            IsEnabled = true;
-            TextBatchDone = false;
-            //
-            Position = textBoxPosition switch
-            {
-                PositionType.upperPosition => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
-                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
-                _ => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
-                                    Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 5.3f) - TextBoxPositionYOffset],
-            };
-            Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
-            Box = new Rectangle(XPosition, YPosition, XScale, YScale);
-            //
-            TextBoxBackground = textBoxBackground;
-            TextBoxBorder = textBoxBorder;
-            //
-            CurrentFont = theFont;
-            //
-            CharacterWidth = (CurrentFont.BaseSize + CurrentFont.GlyphPadding) / 2;
-            CharacterHeigth = CurrentFont.BaseSize + CurrentFont.GlyphPadding;
-            MaximumCharacterCount = (int)(Box.Width - 2 * textMargin[0] - CharacterWidth) / CharacterWidth;
-            MaximumRowCount = (int)((Box.Height - textMargin[1]) / CharacterHeigth);
-            //
-            Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
-            CurrentLoadedData = Content[TextCollectionIndex];
-            //
-            TextCount = CurrentLoadedData.Length;
-            //
-            Raylib.SetTextLineSpacing(CharacterHeigth);
-            //
-            Game = game;
-            //
-            ToggleEnability(); //Disables by default
-        }
-        private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, bool wordWrapEnabled, Game game)
+        /// <summary>
+        /// The horizontal margin of the text.
+        /// </summary>
+        int HorizontalTextMargin { get; }
+        /// <summary>
+        /// The vertical margin of the text.
+        /// </summary>
+        int VerticalTextMargin { get; }
+        /// <summary>
+        /// A timer for the textbox.
+        /// </summary>
+        internal Timer SecondTimer { get; private set; }
+        /// <summary>
+        /// A timer for the blinking cursor.
+        /// </summary>
+        internal Timer BlinkingCursorTimer { get; private set; }
+        /// <summary>
+        /// The content of the textbox.
+        /// </summary>
+        internal List<String> Content { get; private set; }
+        /// <summary>
+        /// The current loaded data of the textbox.
+        /// </summary>
+        private string CurrentLoadedData { get; set; }
+        /// <summary>
+        /// The output of the textbox.
+        /// </summary>
+        private string Output { get; set; }
+        /// <summary>
+        /// The output of the textbox without any illegal escape sequences.
+        /// Legal escape sequence is a newline.
+        /// </summary>
+        internal string SanatizedOutput => Regex.Replace(Output, @"\\(?!n)", "");
+        /// <summary>
+        /// The header of the textbox.
+        /// </summary>
+        internal string SanatizedHeader => Regex.Unescape(TextBoxTitle);
+        /// <summary>
+        /// The title of the textbox.
+        /// </summary>
+        private string TextBoxTitle { get; set; }
+        /// <summary>
+        /// The speed of the textbox (Characters per second).
+        /// </summary>
+        private double CPSTextSpeed { get; }
+        private const int TextBoxPositionYOffset = 5;
+        /// <summary>
+        /// The maximum character count of the textbox.
+        /// </summary>
+        private int MaximumCharacterCount { get; }
+        /// <summary>
+        /// The maximum number of rows enabled in a textbox.
+        /// </summary>
+        private int MaximumRowCount { get; }
+        /// <summary>
+        /// The width of the character.
+        /// </summary>
+        private int CharacterWidth { get; set; }
+        /// <summary>
+        /// The height of the character.
+        /// </summary>
+        private int CharacterHeigth { get; set; }
+        /// <summary>
+        /// The current character index of the text.
+        /// </summary>
+        private int TextIndex { get; set; }
+        /// <summary>
+        /// The current text count of the text.
+        /// </summary>
+        private int TextCount { get; set; }
+        /// <summary>
+        /// The current index of the text collection.
+        /// </summary>
+        private int TextCollectionIndex { get; set; }
+        /// <summary>
+        /// The count of the text collection.
+        /// </summary>
+        private int TextCollectionCount { get; set; }
+        private int IncrementTextDataIndex() => TextCollectionIndex++;
+        private int IncrementIndex() => TextIndex++;
+        /// <summary>
+        /// The position of the textbox.
+        /// </summary>
+        private int[] Position { get; set; }
+        /// <summary>
+        /// Check if the textbox is enabled.
+        /// </summary>
+        private bool IsEnabled { get; set; }
+        internal bool IsDisabled() => IsEnabled is false;
+        /// <summary>
+        /// Should the text wrap when initiating a new line?
+        /// </summary>
+        private bool WordWrap { get; set; }
+        /// <summary>
+        /// Check if the current batch of the textbox is done.
+        /// </summary>
+        private bool TextBatchDone { get; set; }
+        /// <summary>
+        /// Check if the textbox is blinking.
+        /// </summary>
+        private bool IsBlinking { get; set; }
+        private bool ToggleBlinking() => IsBlinking = !IsBlinking;
+        internal int XPosition => Position[0];
+        internal int YPosition => Position[1];
+        internal int XScale => Scale[0];
+        internal int YScale => Scale[1];
+        /// <summary>
+        /// The box which abstractly represents the textbox.
+        /// </summary>
+        internal Rectangle Box { get; set; }
+        /// <summary>
+        /// The font of the textbox.
+        /// </summary>
+        internal Font CurrentFont { get; set; }
+        /// <summary>
+        /// The background and border color of the textbox.
+        /// </summary>
+        internal Color TextBoxBackground { get; set; }
+        /// <summary>
+        /// The border color of the textbox.
+        /// </summary>
+        internal Color TextBoxBorder { get; set; }
+        internal readonly Game Game;
+        private int[] Scale { get; set; }
+        /// <summary>
+        /// Create a new textbox.
+        /// </summary>
+        /// <param name="data">List of string data</param>
+        /// <param name="title">Title of the textbox. Nullable parameter.</param>
+        /// <param name="cps">Characters per second</param>
+        /// <param name="theFont"></param>
+        /// <param name="textBoxBackground"></param>
+        /// <param name="textBoxBorder"></param>
+        /// <param name="textBoxPosition"></param>
+        /// <param name="horizontalTextMargin"></param>
+        /// <param name="verticalTextMargin"></param>
+        /// <param name="wordWrapEnabled">Should wrap lines with consideration of word progress.</param>
+        /// <param name="game">Active Game object</param>
+        private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, int horizontalTextMargin, int verticalTextMargin, bool wordWrapEnabled, Game game)
         {
             Content = data;
             CPSTextSpeed = cps;
             TextBoxTitle = title;
+            HorizontalTextMargin = horizontalTextMargin;
+            VerticalTextMargin = verticalTextMargin;
             //  
             WordWrap = wordWrapEnabled;
             //
@@ -100,8 +193,8 @@ namespace EngineComponents
             //
             CharacterWidth = (CurrentFont.BaseSize + CurrentFont.GlyphPadding) / 2;
             CharacterHeigth = CurrentFont.BaseSize + CurrentFont.GlyphPadding;
-            MaximumCharacterCount = (int)(Box.Width - 2 * textMargin[0] - CharacterWidth) / CharacterWidth;
-            MaximumRowCount = (int)((Box.Height - textMargin[1]) / CharacterHeigth);
+            MaximumCharacterCount = (int)(Box.Width - 2 * HorizontalTextMargin - CharacterWidth) / CharacterWidth;
+            MaximumRowCount = (int)((Box.Height - VerticalTextMargin) / CharacterHeigth);
             //Reference variables and fit the string to the textbox
             Content[TextCollectionIndex] = ReferenceVariables(Content[TextCollectionIndex]);
             Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
@@ -115,46 +208,6 @@ namespace EngineComponents
             //
             ToggleEnability(); //Disabled by default
         }
-
-        internal bool IsFinished => TextIndex == TextCount;
-        internal void ToggleEnability() => IsEnabled = !IsEnabled;
-        internal Timer SecondTimer { get; private set; }
-        internal Timer BlinkingCursorTimer { get; private set; }
-        internal List<String> Content { get; private set; }
-        private string CurrentLoadedData { get; set; }
-        private string Output { get; set; }
-        private string SanatizedOutput => Output.Replace("\t", String.Empty);
-        private string HeaderSanatization => TextBoxTitle.Replace("\t", String.Empty).Replace("\n", String.Empty);
-        private string TextBoxTitle { get; set; }
-        private double CPSTextSpeed { get; }
-        private const int TextBoxPositionYOffset = 5;
-        private int MaximumCharacterCount { get; }
-        private int MaximumRowCount { get; }
-        private int CharacterWidth { get; set; }
-        private int CharacterHeigth { get; set; }
-        private int TextIndex { get; set; }
-        private int TextCount { get; set; }
-        private int TextCollectionIndex { get; set; }
-        private int TextCollectionCount { get; set; }
-        private int IncrementTextDataIndex() => TextCollectionIndex++;
-        private int IncrementIndex() => TextIndex++;
-        private int[] Position { get; set; }
-        private bool IsEnabled { get; set; }
-        internal bool IsDisabled() => IsEnabled is false;
-        private bool WordWrap { get; set; }
-        private bool TextBatchDone { get; set; }
-        private bool IsBlinking { get; set; }
-        private bool ToggleBlinking() => IsBlinking = !IsBlinking;
-        internal int XPosition => Position[0];
-        internal int YPosition => Position[1];
-        internal int XScale => Scale[0];
-        internal int YScale => Scale[1];
-        internal Rectangle Box { get; set; }
-        internal Font CurrentFont { get; set; }
-        internal Color TextBoxBackground { get; set; }
-        internal Color TextBoxBorder { get; set; }
-        internal readonly Game Game;
-        private int[] Scale { get; set; }
 
         /// <summary>
         /// Splits the string data, to fit into the textbox framework.
@@ -302,21 +355,21 @@ namespace EngineComponents
             if (headerExists())
             {
                 //header textbox frame
-                Raylib.DrawRectangle(XPosition, YPosition - CharacterHeigth - textMargin[1], TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0] + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBackground);
-                Raylib.DrawRectangleLines((int)Box.Position.X, YPosition - CharacterHeigth - textMargin[1], TextBoxTitle.Length * CharacterWidth + 2 * textMargin[0] + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBorder);
+                Raylib.DrawRectangle(XPosition, YPosition - CharacterHeigth - VerticalTextMargin, TextBoxTitle.Length * CharacterWidth + 2 * HorizontalTextMargin + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBackground);
+                Raylib.DrawRectangleLines((int)Box.Position.X, YPosition - CharacterHeigth - VerticalTextMargin, TextBoxTitle.Length * CharacterWidth + 2 * HorizontalTextMargin + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBorder);
                 //Headertext
-                Raylib.DrawTextEx(CurrentFont, HeaderSanatization, new Vector2(XPosition + textMargin[0], YPosition - CharacterHeigth - textMargin[1]), CurrentFont.BaseSize, CurrentFont.GlyphPadding, Color.White);
+                Raylib.DrawTextEx(CurrentFont, SanatizedHeader, new Vector2(XPosition + HorizontalTextMargin, YPosition - CharacterHeigth - VerticalTextMargin), CurrentFont.BaseSize, CurrentFont.GlyphPadding, Color.White);
             }
             //Textbox and Border
             Raylib.DrawRectangle((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, TextBoxBackground);
             Raylib.DrawRectangleLines((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, TextBoxBorder);
             //draw current string data to screen.
-            Raylib.DrawTextEx(CurrentFont, SanatizedOutput, new Vector2(XPosition + textMargin[0], YPosition + textMargin[1]),
+            Raylib.DrawTextEx(CurrentFont, SanatizedOutput, new Vector2(XPosition + HorizontalTextMargin, YPosition + VerticalTextMargin),
                 CurrentFont.BaseSize,
                 CurrentFont.GlyphPadding,
                 Color.White);
             if (shouldProceedNextBatch()) { ToggleNextTextBatch(); return; }
-            if (IsFinished is true)
+            if (IsFinished() is true)
             {
                 //blinking cursor
                 if (BlinkingCursorTimer.OnCooldown()) BlinkingCursorTimer.DecreaseTimer();
@@ -327,7 +380,7 @@ namespace EngineComponents
                 }
                 if (IsBlinking)
                 {
-                    Raylib.DrawTextEx(CurrentFont, "I", new Vector2(XPosition + Box.Width - CharacterWidth - textMargin[0], YPosition + Box.Height - CharacterHeigth - textMargin[1]),
+                    Raylib.DrawTextEx(CurrentFont, "I", new Vector2(XPosition + Box.Width - CharacterWidth - HorizontalTextMargin, YPosition + Box.Height - CharacterHeigth - VerticalTextMargin),
                     CurrentFont.BaseSize,
                     CurrentFont.GlyphPadding,
                     Color.White);
@@ -352,101 +405,21 @@ namespace EngineComponents
             return;
             bool isTurnedOff() => IsEnabled is false;
             bool isDone() => TextCollectionIndex >= TextCollectionCount;
-            bool headerExists() => string.IsNullOrEmpty(TextBoxTitle) is false;
+            bool headerExists() => TextBoxTitle.Length > 0;
             bool isSkipBatch() => Game.IsLeftMouseButtonPressed();
             bool shouldProceedNextBatch() =>
-                TextCollectionIndex < TextCollectionCount && IsFinished is true && Game.IsLeftMouseButtonPressed();
+                TextCollectionIndex < TextCollectionCount && IsFinished() is true && Game.IsLeftMouseButtonPressed();
 
         }
         /// <summary>
-        /// Create textbox for string data, without a header.
-        /// Default color (Black and white) for textbox background and border colors.
+        /// Toggle the enability of the textbox.
         /// </summary>
-        /// <param name="game">The game instance</param>
-        /// <param name="characterPerSecond">Characters per second</param>
-        /// <param name="activeFont">The font which the textbox will use</param>
-        /// <param name="textBoxPosition">The position of the textbox</param>
-        /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
-        /// <param name="textBoxContent">text data</param>
-        /// <returns></returns>
-        public static TextBox CreateNewTextBox(
-            Game game,
-            double characterPerSecond,
-            Font activeFont,
-            PositionType textBoxPosition,
-            bool wordWrap,
-            List<String> textBoxContent)
-            =>
-            new(
-                textBoxContent,
-                characterPerSecond,
-                activeFont, Color.Black, Color.White,
-                textBoxPosition,
-                wordWrap,
-                game);
+        internal void ToggleEnability() => IsEnabled = !IsEnabled;
         /// <summary>
-        /// Create textbox for string data, without a header.
-        /// Custom color for textbox background and border color.
+        /// Check if the textbox is finished.
         /// </summary>
-        /// <param name="game">The game instance</param>
-        /// <param name="characterPerSecond">Characters per second</param>
-        /// <param name="activeFont">The font which the textbox will use</param>
-        /// <param name="textBoxcolor">Background color of the textbox.</param>
-        /// <param name="TextBoxBorder">Border color of the textbox.</param>
-        /// <param name="textBoxPosition">The position of the textbox</param>
-        /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
-        /// <param name="textBoxContent">text data</param>
         /// <returns></returns>
-        public static TextBox CreateNewTextBox(
-        Game game,
-        double characterPerSecond,
-        Font activeFont,
-        Color textBoxcolor,
-        Color textBoxBorderColor,
-            PositionType textBoxPosition,
-        bool wordWrap,
-        List<String> textBoxContent)
-        =>
-        new(
-        textBoxContent,
-        characterPerSecond,
-        activeFont,
-        textBoxcolor,
-        textBoxBorderColor,
-        textBoxPosition,
-        wordWrap,
-        game);
-        /// <summary>
-        /// Create textbox for string data with a header.
-        /// Custom color for textbox background and border color.
-        /// </summary>
-        /// <param name="game">The game instance</param>
-        /// <param name="characterPerSecond">Characters per second</param>
-        /// <param name="activeFont">The font which the textbox will use</param>
-        /// <param name="textBoxPosition">The position of the textbox</param>
-        /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
-        /// <param name="textBoxTitle">The header of the textbox.</param>
-        /// <param name="textBoxContent">text data</param>
-        /// <returns></returns>
-        public static TextBox CreateNewTextBox(
-            Game game,
-            double characterPerSecond,
-            Font activeFont,
-            PositionType textBoxPosition,
-            bool wordWrap,
-            string textBoxTitle,
-            List<String> textBoxContent)
-            =>
-            new(
-                textBoxContent,
-                textBoxTitle,
-                characterPerSecond,
-                activeFont,
-                Color.Black,
-                Color.White,
-                textBoxPosition,
-                wordWrap,
-                game);
+        internal bool IsFinished() => TextIndex == TextCount;
         /// <summary>
         /// Create textbox for string data with a header.
         /// Custom color for textbox background and border.
@@ -457,6 +430,8 @@ namespace EngineComponents
         /// <param name="TextBoxcolor">Background color of the textbox.</param>
         /// <param name="TextBoxBorder">Border color of the textbox.</param>
         /// <param name="textBoxPosition">The position of the textbox</param>
+        /// <param name="textMarginHorizontal">The horizontal margin of the text.</param>
+        /// <param name="textMarginVertical">The vertical margin of the text.</param>
         /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
         /// <param name="textBoxTitle">The header of the textbox.</param>
         /// <param name="textBoxContent">text data</param>
@@ -468,6 +443,8 @@ namespace EngineComponents
             Color TextBoxcolor,
             Color TextBoxBorder,
             PositionType textBoxPosition,
+            int textMarginHorizontal,
+            int textMarginVertical,
             bool wordWrap,
             string textBoxTitle,
             List<String> textBoxContent)
@@ -479,6 +456,8 @@ namespace EngineComponents
             activeFont,
             TextBoxcolor, TextBoxBorder,
             textBoxPosition,
+            textMarginHorizontal,
+            textMarginVertical,
             wordWrap,
             game);
     }

@@ -1,15 +1,16 @@
+using EngineComponents.Interfaces;
 using Raylib_cs;
 
-namespace EngineComponents.Actions
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Tints a sprite with a color.
     /// </summary>
-    class TintSpriteAction : IEvent
+    class TintSpriteAction : IEvent, IButtonEvent
     {
-        readonly Game Game;
-        readonly Sprite sprite;
-        readonly Color color;
+        private readonly Game Game;
+        private readonly Sprite sprite;
+        private readonly Color color;
         /// <summary>
         /// Tints a sprite with a color.
         /// </summary>

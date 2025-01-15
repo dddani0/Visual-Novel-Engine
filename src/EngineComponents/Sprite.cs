@@ -1,3 +1,4 @@
+using EngineComponents.Interfaces;
 using Raylib_cs;
 
 namespace EngineComponents
@@ -7,12 +8,32 @@ namespace EngineComponents
     /// </summary>
     class Sprite : IPermanentRenderingObject
     {
+        /// <summary>
+        /// The name of the sprite.
+        /// </summary>
         internal string Name { get; set; }
+        /// <summary>
+        /// The texture of the sprite.
+        /// </summary>
         internal Texture2D ImageTexture { get; set; }
+        /// <summary>
+        /// The color of the sprite.
+        /// Default: white.
+        /// </summary>
         internal Color Color { get; set; }
-        internal bool Enabled { get; set; } = false;
+        /// <summary>
+        /// The state of the sprite.
+        /// </summary>
+        internal bool Enabled { get; set; } = true;
+        /// <summary>
+        /// Position of the sprite on the X axis.
+        /// </summary>
         internal int X { get; set; }
+        /// <summary>
+        /// Position of the sprite on the Y axis.
+        /// </summary>
         internal int Y { get; set; }
+        internal Block Block { get; set; }
         /// <summary>
         /// Creates a sprite.
         /// </summary>
@@ -25,6 +46,15 @@ namespace EngineComponents
             Y = Raylib.GetScreenHeight() / 2 - ImageTexture.Width / 2;
             X = Raylib.GetScreenWidth() / 2 - ImageTexture.Height / 2;
             // default color
+            Color = Color.White;
+        }
+
+        public Sprite(string path, Block block, int x, int y)
+        {
+            Name = path;
+            ImageTexture = Raylib.LoadTexture(path);
+            X = block.XPosition + x;
+            Y = block.YPosition + y;
             Color = Color.White;
         }
         /// <summary>

@@ -1,9 +1,11 @@
-namespace EngineComponents.Actions
+using EngineComponents.Interfaces;
+
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Adds a sprite to the scene.
     /// </summary>
-    class AddSpriteAction : IEvent
+    class AddSpriteAction : IEvent, IButtonEvent
     {
         readonly Game Game;
         readonly Sprite sprite;

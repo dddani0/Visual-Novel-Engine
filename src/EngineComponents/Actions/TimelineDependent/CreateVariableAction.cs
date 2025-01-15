@@ -1,11 +1,13 @@
-namespace EngineComponents
+using EngineComponents.Interfaces;
+
+namespace EngineComponents.Actions.TimelineDependent
 {
     /// <summary>
     /// Creates a new variable.
     /// </summary>
     /// <param name="concurrentGame">Active game</param>
     /// <param name="variable">To be cerated variable</param>
-    class CreateVariableAction(Game concurrentGame, Variable variable) : IEvent
+    class CreateVariableAction(Game concurrentGame, Variable variable) : IEvent, IButtonEvent
     {
         Variable Variable { get; } = variable;
         Game Game { get; } = concurrentGame;
