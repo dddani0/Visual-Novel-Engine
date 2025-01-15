@@ -134,7 +134,6 @@ namespace EngineComponents
         [JsonPropertyName("BorderColor")]
         public int[]? BorderColor { get; set; }
     }
-
     /// <summary>
     /// The BlockImport class is a helper class to import the list of blocks from a json file.
     /// </summary>
@@ -222,6 +221,8 @@ namespace EngineComponents
         public required int[] BorderColor { get; set; }
         [JsonPropertyName("HoverColor")]
         public required int[] HoverColor { get; set; }
+        [JsonPropertyName("SelectedColor")]
+        public required int[] SelectedColor { get; set; }
     }
     /// <summary>
     /// The DropBoxImport class is a helper class to import the DropBox component.
@@ -479,7 +480,7 @@ namespace EngineComponents
                     B = (byte)buttonImport.HoverColor[2],
                     A = (byte)buttonImport.HoverColor[3]
                 },
-                (IButtonEvent)FetchTimelineDependentEventFromImport(buttonImport.Event)
+                (IButtonEvent)FetchTimelineDependentActionFromImport(buttonImport.Event)
             );
         }
         /// <summary>
@@ -528,7 +529,7 @@ namespace EngineComponents
                                 B = (byte)staticButtonImport.HoverColor[2],
                                 A = (byte)staticButtonImport.HoverColor[3]
                             },
-                            FetchTimelineIndependentEventFromImport(staticButtonImport.Event)
+                            FetchTimelineIndependentActionFromImport(staticButtonImport.Event)
                         );
         }
         /// <summary>
@@ -578,7 +579,7 @@ namespace EngineComponents
                     B = (byte)dropBoxImport.HoverColor[2],
                     A = (byte)dropBoxImport.HoverColor[3]
                 },
-                FetchTimelineIndependentEventFromImport(DropBoxOptionImport.Event)
+                FetchTimelineIndependentActionFromImport(DropBoxOptionImport.Event)
             );
         }
         /// <summary>
@@ -657,7 +658,14 @@ namespace EngineComponents
                     B = (byte)inputFieldImport.HoverColor[2],
                     A = (byte)inputFieldImport.HoverColor[3]
                 },
-                (IButtonEvent)FetchTimelineDependentEventFromImport(inputFieldImport.ButtonEvent)
+                new Color()
+                {
+                    R = (byte)inputFieldImport.SelectedColor[0],
+                    G = (byte)inputFieldImport.SelectedColor[1],
+                    B = (byte)inputFieldImport.SelectedColor[2],
+                    A = (byte)inputFieldImport.SelectedColor[3]
+                },
+                (IButtonEvent)FetchTimelineDependentActionFromImport(inputFieldImport.ButtonEvent)
             );
         }
         /// <summary>
@@ -699,7 +707,14 @@ namespace EngineComponents
                     B = (byte)staticInputFieldImport.HoverColor[2],
                     A = (byte)staticInputFieldImport.HoverColor[3]
                 },
-                FetchTimelineIndependentEventFromImport(staticInputFieldImport.ButtonEvent)
+                new Color()
+                {
+                    R = (byte)staticInputFieldImport.SelectedColor[0],
+                    G = (byte)staticInputFieldImport.SelectedColor[1],
+                    B = (byte)staticInputFieldImport.SelectedColor[2],
+                    A = (byte)staticInputFieldImport.SelectedColor[3]
+                },
+                FetchTimelineIndependentActionFromImport(staticInputFieldImport.ButtonEvent)
             );
         }
         /// <summary>
@@ -739,7 +754,7 @@ namespace EngineComponents
                     B = (byte)sliderImport.BorderColor[2],
                     A = (byte)sliderImport.BorderColor[3]
                 },
-                FetchTimelineIndependentEventFromImport(sliderImport.Event)
+                FetchTimelineIndependentActionFromImport(sliderImport.Event)
             );
         }
         /// <summary>
@@ -779,7 +794,7 @@ namespace EngineComponents
                      B = (byte)toggleImport.ActivatedColor[2],
                      A = (byte)toggleImport.ActivatedColor[3]
                  },
-                 FetchTimelineIndependentEventFromImport(toggleImport.Event)
+                 FetchTimelineIndependentActionFromImport(toggleImport.Event)
              );
         }
         /// <summary>
@@ -968,7 +983,7 @@ namespace EngineComponents
         /// <param name="actionImport"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        internal IEvent FetchTimelineDependentEventFromImport(ActionImport actionImport)
+        internal IEvent FetchTimelineDependentActionFromImport(ActionImport actionImport)
         {
             switch (actionImport.Type)
             {
@@ -1192,7 +1207,7 @@ namespace EngineComponents
         /// <param name="actionImport"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private ISettingsEvent FetchTimelineIndependentEventFromImport(ActionImport actionImport)
+        private ISettingsEvent FetchTimelineIndependentActionFromImport(ActionImport actionImport)
         {
             switch (actionImport.Type)
             {
@@ -1246,7 +1261,7 @@ namespace EngineComponents
                     }
                     return new SwitchStaticMenuAction(Game, this, actionImport.DisablingMenuID.Value, actionImport.EnablingMenuID.Value);
                 default:
-                    throw new InvalidOperationException("Failed to load scene settings,  because Either the action type is not recognized, or the event is not a timeline independent or a general one.");
+                    throw new InvalidOperationException("Failed to load scene settings, because Either the action type is not recognized, or the event is not a timeline independent or a general one.");
             }
         }
     }
@@ -1386,7 +1401,7 @@ namespace EngineComponents
                     else
                         for (int i = 0; i < scene.ActionList.Length; i++)
                         {
-                            timeline.ActionList.Add(GameLoader.FetchTimelineDependentEventFromImport(scene.ActionList[i]));
+                            timeline.ActionList.Add(GameLoader.FetchTimelineDependentActionFromImport(scene.ActionList[i]));
                         }
                     Scenes.Add(new Scene(scene.Name, this)
                     {
