@@ -1,4 +1,4 @@
-namespace Editor.Interface
+namespace EngineEditor.Interface
 {
     /// <summary>
     /// Represents an editor.
