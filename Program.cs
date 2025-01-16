@@ -1,4 +1,4 @@
-﻿using EngineComponents;
+﻿using TemplateGame.Component;
 using Raylib_cs;
 
 class Program
