@@ -1,12 +1,13 @@
 namespace EngineEditor.Interface
 {
     /// <summary>
-    /// Represents a component.
+    /// Represents a generic component.
     /// </summary>
-    interface IComponent : ITool
+    public interface IComponent
     {
-        void Edit();
-        void Scale();
-        void Destroy();
+        int XPosition { get; set; }
+        int YPosition { get; set; }
+        void Render();
+        void Update();
     }
 }

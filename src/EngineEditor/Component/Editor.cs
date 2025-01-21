@@ -3,13 +3,14 @@ using Raylib_cs;
 
 namespace EngineEditor.Component
 {
-    class Editor : IEditor
+    public class Editor : IEditor
     {
-        List<ITool> Toolbar { get; set; } = [];
-        List<IComponent> Components { get; set; } = [];
-
+        private Group Toolbar { get; set; }
+        internal List<Group> ComponentGroupList { get; set; } = [];
+        internal List<IDynamicComponent> ComponentList { get; set; } = [];
         public Editor()
         {
+            Toolbar = new Group(100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, GroupType.SolidColor, []);
         }
         public void Build()
         {
@@ -23,8 +24,16 @@ namespace EngineEditor.Component
 
         public void Update()
         {
-            Toolbar.ForEach(tool => tool.Render());
-            Components.ForEach(component => component.Render());
+            Toolbar.Show();
+            ComponentGroupList.ForEach(component => component.Show());
+            Raylib.ClearBackground(Color.LightGray);
+            //Only render each component from the component list if the component is not in a group
+            foreach (var component in ComponentList)
+            {
+                if (component.IsInGroup() is true) continue;
+                IComponent castedComponent = (IComponent)component;
+                castedComponent.Render();
+            }
         }
     }
 }

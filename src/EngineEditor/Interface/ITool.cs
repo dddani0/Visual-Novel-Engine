@@ -1,11 +1,10 @@
 namespace EngineEditor.Interface
 {
     /// <summary>
-    /// Represents a tool.
+    /// Represents a tool, which is a static component.
     /// </summary>
-    interface ITool
+    public interface ITool
     {
-        void Render();
-        void Update();
+        
     }
 }

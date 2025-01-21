@@ -1,57 +1,61 @@
+using System.Numerics;
 using EngineEditor.Interface;
 using Raylib_cs;
+
 namespace EngineEditor.Component
 {
-    public class Button : IButton, ITool
+    /// <summary>
+    /// Represents a button inside the editor.
+    /// </summary>
+    public class Button : IButton, IComponent, ITool
     {
-        internal int XPosition { get; set; }
-        internal int YPosition { get; set; }
+        public int XPosition { get; set; }
+        public int YPosition { get; set; }
         internal string Text { get; set; }
         internal int Width { get; set; }
         internal int Height { get; set; }
         internal int BorderWidth { get; set; }
-        Color Color { get; set; }
-        Color BorderColor { get; set; }
-        Color HoverColor { get; set; }
+        private Color Color { get; set; }
+        private Color BorderColor { get; set; }
+        private Color HoverColor { get; set; }
         internal bool Active { get; set; } = true;
         private bool IsHover { get; set; }
+        internal Editor Editor { get; set; }
+        private ICommand Command { get; set; }
 
-        public Button(int xPosition, int yPosition, string text, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor)
+        public Button(Editor editor, int xPosition, int yPosition, string text, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, ICommand command)
         {
+            Editor = editor;
             XPosition = xPosition;
             YPosition = yPosition;
-            Text = text;
+            //If length is greater than 5, set the text to the first 4 and add three dots to the end.
+            Text = text.Length > 5 ? $"{text[..5]}..." : text;
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
             Color = color;
             BorderColor = borderColor;
             HoverColor = hoverColor;
-            Create();
         }
 
         public void Render()
         {
             if (Active is false) return;
-            Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, Color);
+            Update();
+            Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, IsHover ? HoverColor : Color);
             Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition - Height / 2, Width, Height, BorderColor);
-        }
-
-        public void Create()
-        {
-        }
-
-        public void Destroy()
-        {
+            Raylib.DrawText(Text, XPosition - Raylib.MeasureText(Text, 20) / 2, YPosition - 10, 20, Color.Black);
         }
 
         public void Update()
         {
+            IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height));
             Click();
         }
         public void Click()
         {
-
+            if (!Raylib.IsMouseButtonPressed(MouseButton.Left) || !IsHover) return;
+            Command.Execute();
         }
     }
 }

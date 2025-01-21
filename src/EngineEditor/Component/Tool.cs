@@ -7,14 +7,15 @@ namespace EngineEditor.Component
     /// </summary>
     class Tool : ITool
     {
+        public int XPosition { get; set; }
+        public int YPosition { get; set; }
         public void Render()
         {
-            throw new NotImplementedException();
-        }
 
+        }
         public void Update()
         {
-            throw new NotImplementedException();
+
         }
     }
 }
