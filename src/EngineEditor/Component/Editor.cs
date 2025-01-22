@@ -11,6 +11,17 @@ namespace EngineEditor.Component
         public Editor()
         {
             Toolbar = new Group(100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, GroupType.SolidColor, []);
+            Toolbar.AddComponent(new Component(this, Toolbar, "Button", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
         }
         public void Build()
         {

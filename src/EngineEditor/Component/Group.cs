@@ -21,7 +21,9 @@ namespace EngineEditor.Component
         private Color Color { get; set; }
         private Color BorderColor { get; set; }
         private Color HoverColor { get; set; }
-        private const int Padding = 10;
+        const int Padding = 10;
+        const int MaximumHorizontalComponentCount = 4;
+        public int ComponentCount => ComponentList.Count;
 
         public Group(int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, GroupType groupType, ITool[] components)
         {
@@ -57,14 +59,22 @@ namespace EngineEditor.Component
         {
 
         }
-
+        /// <summary>
+        /// Updates the position of the components inside the group.
+        /// Dynamically changes the position of the components based on the amount of components in the group.
+        /// </summary>
         private void UpdateComponentPosition()
         {
+            int rowcount = 0;
             for (int i = 0; i < ComponentList.Count; i++)
             {
-                ComponentList[i].XPosition = XPosition + Padding;
-                ComponentList[i].YPosition = YPosition;
+                if (i % MaximumHorizontalComponentCount == 0) rowcount++;
+                ComponentList[i].XPosition = rowcount > 1 ? ComponentList[i % MaximumHorizontalComponentCount].XPosition : (i + 1) * (Padding + XPosition);
+                ComponentList[i].YPosition = rowcount * (YPosition + Padding);
             }
+            if (ComponentList.Count < 1) return;
+            Width = rowcount > 1 ? Width : (XPosition * ComponentList.Count) + 2 * Padding;
+            Height = YPosition * rowcount + Padding;
         }
         internal void AddComponent(IDynamicComponent component)
         {
