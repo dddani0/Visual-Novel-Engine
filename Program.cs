@@ -1,18 +1,21 @@
 ﻿using TemplateGame.Component;
+using EngineEditor.Component;
 using Raylib_cs;
 
 class Program
 {
     public static void Main()
     {
-        Raylib.InitWindow(800, 800, "placeholder game"); //placeholder data
+        Raylib.InitWindow(800, 800, "Falastini - Editor"); //placeholder data
 
-        Game game = new();
+        //Game game = new();
+        Editor editor = new();
 
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
-            game.UpdateScene();
+            //game.UpdateScene();
+            editor.Update();
             Raylib.EndDrawing();
         }
         Raylib.CloseWindow();

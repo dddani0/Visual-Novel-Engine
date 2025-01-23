@@ -9,8 +9,9 @@ namespace EngineEditor.Component
     /// <summary>
     /// Represents a component.
     /// </summary>
-    public class Component : IComponent, IDynamicComponent
+    public class Component : IComponent, IDinamicComponent
     {
+        internal readonly long ID;
         internal string Name { get; set; }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
@@ -23,6 +24,7 @@ namespace EngineEditor.Component
         internal bool IsLocked { get; set; }
         internal bool IsHover { get; set; }
         internal bool IsMoving { get; set; } = false;
+        internal bool IsRenaming { get; set; } = false;
         internal Button CloseButton { get; set; }
         internal Button InspectorButton { get; set; }
         internal Color Color { get; set; }
@@ -33,8 +35,9 @@ namespace EngineEditor.Component
         private Timer MoveTimer { get; set; }
         private Group? Group { get; set; }
 
-        public Component(Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor)
+        public Component(long id, Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor)
         {
+            ID = id;
             Name = name;
             XPosition = xPosition;
             YPosition = yPosition;

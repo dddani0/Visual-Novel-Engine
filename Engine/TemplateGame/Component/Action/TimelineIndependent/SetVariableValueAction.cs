@@ -10,7 +10,7 @@ namespace TemplateGame.Component.Action.TimelineIndependent
     public class SetVariableValueAction : IEvent, ISettingsEvent
     {
         private readonly Game Game;
-        private GameLoader GameLoader { get; set; }
+        private GameImporter GameLoader { get; set; }
         private long ComponentID { get; set; }
         private Variable Variable;
         private readonly string VariableName;
@@ -25,7 +25,7 @@ namespace TemplateGame.Component.Action.TimelineIndependent
         /// <param name="game">Active game.</param>
         /// <param name="variableName">Updating variable name.</param>
         /// <param name="component">Rendering component.</param>
-        public SetVariableValueAction(Game game, string variableName, GameLoader gameLoader, long componentID)
+        public SetVariableValueAction(Game game, string variableName, GameImporter gameLoader, long componentID)
         {
             Game = game;
             VariableName = variableName;

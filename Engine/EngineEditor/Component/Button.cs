@@ -19,6 +19,8 @@ namespace EngineEditor.Component
         private Color BorderColor { get; set; }
         private Color HoverColor { get; set; }
         internal bool Active { get; set; } = true;
+        internal bool Selected { get; set; }
+        private bool IsExecuted { get; set; }
         private bool IsHover { get; set; }
         internal Editor Editor { get; set; }
         private ICommand Command { get; set; }
@@ -29,7 +31,7 @@ namespace EngineEditor.Component
             XPosition = xPosition;
             YPosition = yPosition;
             //If length is greater than 5, set the text to the first 4 and add three dots to the end.
-            Text = text.Length > 5 ? $"{text[..5]}..." : text;
+            Text = text.Length > 6 ? $"{text[..5]}..." : text;
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
@@ -52,10 +54,31 @@ namespace EngineEditor.Component
             IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height));
             Click();
         }
+
+        internal void AddCommand(ICommand command)
+        {
+            Command = command;
+        }
         public void Click()
         {
-            if (!Raylib.IsMouseButtonPressed(MouseButton.Left) || !IsHover) return;
-            Command.Execute();
+            if (Selected)
+            {
+                if (IsExecuted is false)
+                {
+                    Command.Execute();
+                    IsExecuted = true;
+                }
+            }
+            if (IsHover && Raylib.IsMouseButtonPressed(MouseButton.Left))
+            {
+                Selected = true;
+                Command.Execute();
+            }
+            else if (IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left))
+            {
+                Selected = false;
+                IsExecuted = false;
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 using EngineEditor.Interface;
+using TemplateGame.Component;
+using TemplateGame.Interface;
 
 namespace EngineEditor.Component.Command
 {
@@ -9,11 +11,16 @@ namespace EngineEditor.Component.Command
     {
         private readonly Editor Editor;
         private readonly Component Component;
+        private string componentName;
 
-        public CreateComponentCommand(Editor editor, Component component)
+        public CreateComponentCommand(Editor editor, IPermanentRenderingObject component)
         {
             Editor = editor;
-            Component = component;
+            componentName = component switch
+            {
+                InputField => $"New InputField({Editor.IDGenerator.GenerateID()})",
+                Sprite => $"New Sprite({Editor.IDGenerator.GenerateID()})"
+            };
         }
 
         /// <summary>
@@ -21,7 +28,7 @@ namespace EngineEditor.Component.Command
         /// </summary>
         public void Execute()
         {
-            //Editor.ComponentGroupList.Add(Component);
+            Editor.ComponentList.Add(Component);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace TemplateGame.Component.Action.TimelineIndependent
     public class SwitchStaticMenuAction : IEvent, ISettingsEvent
     {
         private readonly Game Game;
-        private readonly GameLoader GameLoader;
+        private readonly GameImporter GameLoader;
         private Menu DisablingMenu { get; set; }
         private Menu EnablingMenu { get; set; }
         private readonly long disableMenuID;
@@ -19,7 +19,7 @@ namespace TemplateGame.Component.Action.TimelineIndependent
         /// <param name="game">Active game.</param>
         /// <param name="previousMenu">Menu to be rendered.</param>
         /// <param name="show">Show or hide the menu.</param>
-        public SwitchStaticMenuAction(Game game, GameLoader gameLoader, long disableMenuID, long enalbeMenuID)
+        public SwitchStaticMenuAction(Game game, GameImporter gameLoader, long disableMenuID, long enalbeMenuID)
         {
             Game = game;
             GameLoader = gameLoader;
