@@ -54,16 +54,11 @@ namespace EngineEditor.Component
             BackgroundType = GroupType.SolidColor;
             UpdateComponentPosition();
         }
-
-        public void Update()
-        {
-
-        }
         /// <summary>
         /// Updates the position of the components inside the group.
         /// Dynamically changes the position of the components based on the amount of components in the group.
         /// </summary>
-        private void UpdateComponentPosition()
+        internal void UpdateComponentPosition()
         {
             int rowcount = 0;
             for (int i = 0; i < ComponentList.Count; i++)
@@ -82,12 +77,21 @@ namespace EngineEditor.Component
             UpdateComponentPosition();
         }
 
+        internal void RemoveComponent(IDynamicComponent component)
+        {
+            ComponentList.Remove((IComponent)component);
+            UpdateComponentPosition();
+        }
+
         public void Show()
         {
-            Update();
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
-            ComponentList.ForEach(component => component.Render());
+            for (int i = 0; i < ComponentList.Count; i++)
+            {
+                IComponent? component = ComponentList[i];
+                component.Render();
+            }
         }
 
         public void Hide()

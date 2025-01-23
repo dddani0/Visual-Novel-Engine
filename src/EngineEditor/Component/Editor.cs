@@ -22,6 +22,7 @@ namespace EngineEditor.Component
             Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
             Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
             Toolbar.AddComponent(new Component(this, Toolbar, "Butts", 100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, Color.DarkGray));
+            ComponentGroupList.Add(Toolbar);
         }
         public void Build()
         {
@@ -37,10 +38,11 @@ namespace EngineEditor.Component
         {
             Toolbar.Show();
             ComponentGroupList.ForEach(component => component.Show());
-            Raylib.ClearBackground(Color.LightGray);
+            Raylib.ClearBackground(Color.Gray);
             //Only render each component from the component list if the component is not in a group
-            foreach (var component in ComponentList)
+            for (int i = 0; i < ComponentList.Count; i++)
             {
+                IDynamicComponent? component = ComponentList[i];
                 if (component.IsInGroup() is true) continue;
                 IComponent castedComponent = (IComponent)component;
                 castedComponent.Render();

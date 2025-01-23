@@ -22,14 +22,16 @@ namespace EngineEditor.Component
         internal bool IsSelected { get; set; }
         internal bool IsLocked { get; set; }
         internal bool IsHover { get; set; }
+        internal bool IsMoving { get; set; } = false;
         internal Button CloseButton { get; set; }
         internal Button InspectorButton { get; set; }
         internal Color Color { get; set; }
         internal Color BorderColor { get; set; }
         internal Color SelectedColor { get; set; }
         internal Color HoverColor { get; set; }
+        private Editor Editor { get; set; }
         private Timer MoveTimer { get; set; }
-        private Group Group { get; set; } = null;
+        private Group? Group { get; set; }
 
         public Component(Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor)
         {
@@ -45,7 +47,9 @@ namespace EngineEditor.Component
             HoverColor = hoverColor;
             CloseButton = new Button(editor, XPosition + Width - BorderWidth, YPosition + 10, "X", 20, 20, 1, Color.Red, Color.Black, Color.Red, null);
             InspectorButton = new Button(editor, XPosition + Width - BorderWidth - CloseButton.Width - CloseButton.BorderWidth, YPosition + 10, "I", 20, 20, 1, Color.Blue, Color.Black, Color.DarkBlue, null);
-            MoveTimer = new Timer(1f);
+            MoveTimer = new Timer(0.1f);
+            Group = group;
+            Editor = editor;
         }
 
         public void Render()
@@ -54,8 +58,6 @@ namespace EngineEditor.Component
             Raylib.DrawRectangleLinesEx(new Rectangle(XPosition, YPosition, Width, Height), BorderWidth, BorderColor);
             Raylib.DrawText(Name, XPosition + 5, YPosition + 5, 12, Color.Black);
             Update();
-            //render objects, but add a small background
-            //Children?.ForEach(child => child.Render());
         }
 
         public void Update()
@@ -88,6 +90,7 @@ namespace EngineEditor.Component
             }
             if (Raylib.IsMouseButtonDown(MouseButton.Left))
             {
+                IsMoving = true;
                 XPosition = Raylib.GetMouseX();
                 YPosition = Raylib.GetMouseY();
                 CloseButton.XPosition = XPosition + Width - BorderWidth;
@@ -95,6 +98,39 @@ namespace EngineEditor.Component
                 InspectorButton.XPosition = XPosition + Width - BorderWidth - CloseButton.Width - CloseButton.BorderWidth;
                 InspectorButton.YPosition = YPosition;
             }
+            //Detach this component if it's is dragged outside the group.
+            if (Group is null)
+            {
+                if (IsMoving is false) return;
+                foreach (var group in Editor.ComponentGroupList)
+                {
+                    if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(group.XPosition, group.YPosition, group.Width, group.Height)) && Raylib.IsMouseButtonReleased(MouseButton.Left))
+                    {
+                        Group = group;
+                        Group.AddComponent(this);
+                        Editor.ComponentList.Remove(this);
+                        IsMoving = false;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                if (Raylib.IsMouseButtonReleased(MouseButton.Left) && IsDraggedOutsideGroup())
+                {
+                    Group.RemoveComponent(this);
+                    Group = null;
+                    Editor.ComponentList.Add(this);
+                    IsMoving = false;
+                }
+                else if (Raylib.IsMouseButtonReleased(MouseButton.Left) && IsDraggedOutsideGroup() is false)
+                {
+                    Group.UpdateComponentPosition();
+                    IsMoving = false;
+                }
+            }
+            return;
+            bool IsDraggedOutsideGroup() => Group is not null && (XPosition < Group.XPosition || XPosition > Group.XPosition + Group.Width || YPosition < Group.YPosition || YPosition > Group.YPosition + Group.Height);
         }
 
         public bool IsInGroup() => Group != null;
