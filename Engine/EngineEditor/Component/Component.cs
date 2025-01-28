@@ -1,10 +1,12 @@
-using EngineEditor.Interface;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Raylib_cs;
 using TemplateGame.Component;
 using TemplateGame.Interface;
 using Timer = TemplateGame.Component.Timer;
+using System.Text.RegularExpressions;
+using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 
-namespace EngineEditor.Component
+namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
     /// <summary>
     /// Represents a component.
@@ -15,11 +17,11 @@ namespace EngineEditor.Component
         internal string Name { get; set; }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
+        private const int offset = 20;
         internal int Width { get; set; }
         internal int Height { get; set; }
         internal int BorderWidth { get; set; }
         internal IPermanentRenderingObject? RenderingObject { get; set; }
-        //Icon
         internal bool IsSelected { get; set; }
         internal bool IsLocked { get; set; }
         internal bool IsHover { get; set; }
@@ -35,8 +37,9 @@ namespace EngineEditor.Component
         private Timer MoveTimer { get; set; }
         private Group? Group { get; set; }
 
-        public Component(long id, Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor)
+        public Component(long id, Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor, IPermanentRenderingObject component)
         {
+            Editor = editor;
             ID = id;
             Name = name;
             XPosition = xPosition;
@@ -48,11 +51,17 @@ namespace EngineEditor.Component
             BorderColor = borderColor;
             SelectedColor = selectedColor;
             HoverColor = hoverColor;
-            CloseButton = new Button(editor, XPosition + Width - BorderWidth, YPosition + 10, "X", 20, 20, 1, Color.Red, Color.Black, Color.Red, null);
-            InspectorButton = new Button(editor, XPosition + Width - BorderWidth - CloseButton.Width - CloseButton.BorderWidth, YPosition + 10, "I", 20, 20, 1, Color.Blue, Color.Black, Color.DarkBlue, null);
+            Color closeButtonBaseColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.CloseButtonBaseColor);
+            Color closeButtonBorderColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.CloseButtonBorderColor);
+            Color closeButtonHoverColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.CloseButtonHoverColor);
+            CloseButton = new Button(editor, XPosition + Width - BorderWidth - offset - 20 / 2, YPosition - 1000, "X", 20, 20, 1, closeButtonBaseColor, closeButtonBorderColor, closeButtonHoverColor, new DeleteComponentCommand(Editor, this), Button.ButtonType.Trigger);
+            Color inspectorButtonBaseColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.InspectorButtonBaseColor);
+            Color inspectorButtonBorderColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.InspectorButtonBorderColor);
+            Color inspectorButtonHoverColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.InspectorButtonHoverColor);
+            InspectorButton = new Button(editor, XPosition + Width - BorderWidth - CloseButton.Width - CloseButton.BorderWidth - 20 / 2 - offset, YPosition + 20 / 2, "I", 20, 20, 1, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, null, Button.ButtonType.Trigger);
             MoveTimer = new Timer(0.1f);
             Group = group;
-            Editor = editor;
+            RenderingObject = component;
         }
 
         public void Render()
@@ -73,18 +82,38 @@ namespace EngineEditor.Component
             else if (IsSelected && IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left))
             {
                 IsSelected = false;
+                IsRenaming = false;
                 MoveTimer.ResetTimer();
             }
             if (IsSelected) //Selected shows buttons
             {
+                if (Raylib.IsMouseButtonPressed(MouseButton.Right)) IsRenaming = true;
                 Move();
                 CloseButton.Render();
                 InspectorButton.Render();
             }
+            if (IsRenaming)
+            {
+                if (Game.IsKeyPressed(KeyboardKey.Backspace))
+                {
+                    if (Name.Length > 0)
+                    {
+                        Name = Name.Remove(Name.Length - 1);
+                    }
+                }
+                else if (Game.IsKeyPressed(KeyboardKey.Enter))
+                {
+                    IsSelected = false;
+                }
+                else if (Raylib.GetKeyPressed() > 0)
+                {
+                    Name = Regex.Unescape(Name + ((char)Raylib.GetCharPressed()).ToString()).Replace('\0', ' ');
+                }
+            }
         }
-
         public void Move()
         {
+            if (IsRenaming is true) return;
             //If holding down the left mouse button, move the component.
             if (MoveTimer.OnCooldown())
             {

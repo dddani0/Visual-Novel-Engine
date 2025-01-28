@@ -1,23 +1,53 @@
-using System.Numerics;
-using EngineEditor.Component.Command;
-using EngineEditor.Interface;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Raylib_cs;
+using TemplateGame.Component;
+using VisualNovelEngine.Engine.EngineEditor.Component.Command;
+using System.Text.Json;
+using VisualNovelEngine.Engine.PortData;
 
-namespace EngineEditor.Component
+namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
     public class Editor : IEditor
     {
+        internal const string currentFolderPath = "../../../Engine/Data/";
+        internal const string EditorConfigPath = currentFolderPath + "EditorConfig.json";
+        internal const string RelativeEditorPath = currentFolderPath + "Editor.json";
+        internal int ComponentWidth { get; set; }
+        internal int ComponentHeight { get; set; }
+        internal int ComponentBorderWidth { get; set; }
+        internal int ComponentEnabledCharacterCount { get; set; }
+        internal EditorImporter EditorImporter { get; set; }
+        internal Color BaseColor { get; set; }
+        internal Color BorderColor { get; set; }
+        internal Color TextColor { get; set; }
+        internal Color HoverColor { get; set; }
         private Group Toolbar { get; set; }
         internal List<Group> ComponentGroupList { get; set; } = [];
         internal List<IDinamicComponent> ComponentList { get; set; } = [];
+        internal Window InspectorWindow { get; set; }
+        internal IDGenerator IDGenerator { get; set; }
         public Editor()
         {
-            IDGenerator iDGenerator = new();
-            var CreateButton = new Button(this, 100, 100, "Create", 100, 50, 5, Color.Red, Color.Black, Color.Gray, null);
-            CreateButton.AddCommand(new ShowSideWindowCommand(this, CreateButton, new Vector2(0, 75), []));
-            Toolbar = new Group(100, 100, 70, 70, 5, Color.Red, Color.Black, Color.Gray, GroupType.SolidColor, 1, [CreateButton]);
-            ComponentGroupList.Add(Toolbar);
+            IDGenerator = new();
+            EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
+            EditorConfigImport();
         }
+
+        private void EditorConfigImport()
+        {
+            ComponentWidth = EditorImporter.EditorButtonConfigurationImport.ComponentWidth;
+            ComponentHeight = EditorImporter.EditorButtonConfigurationImport.ComponentHeight;
+            ComponentBorderWidth = EditorImporter.EditorButtonConfigurationImport.ComponentBorderWidth;
+            ComponentEnabledCharacterCount = EditorImporter.EditorButtonConfigurationImport.ComponentEnabledCharacterCount;
+            //
+            BaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BaseColor);
+            BorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BorderColor);
+            TextColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.TextColor);
+            HoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.HoverColor);
+            //
+            Toolbar = EditorImporter.FetchToolBarFromImport(EditorImporter.EditorImport.ToolBar);
+        }
+
         public void Build()
         {
 
@@ -42,5 +72,10 @@ namespace EngineEditor.Component
                 castedComponent.Render();
             }
         }
+        /// <summary>
+        /// Generates a unique number ID.
+        /// </summary>
+        /// <returns></returns>
+        internal long GenerateID() => IDGenerator.GenerateID();
     }
 }

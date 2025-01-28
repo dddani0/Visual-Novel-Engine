@@ -1,14 +1,21 @@
-using System.Numerics;
-using EngineEditor.Interface;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Raylib_cs;
+using TemplateGame.Component;
+using Timer = TemplateGame.Component.Timer;
+using System.Numerics;
 
-namespace EngineEditor.Component
+namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
     /// <summary>
     /// Represents a button inside the editor.
     /// </summary>
     public class Button : IButton, IComponent, ITool
     {
+        public enum ButtonType
+        {
+            Trigger,
+            Hold
+        }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
         internal string Text { get; set; }
@@ -24,20 +31,25 @@ namespace EngineEditor.Component
         private bool IsHover { get; set; }
         internal Editor Editor { get; set; }
         private ICommand Command { get; set; }
+        internal ButtonType Type { get; set; }
+        private Timer Timer { get; set; }
 
-        public Button(Editor editor, int xPosition, int yPosition, string text, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, ICommand command)
+        public Button(Editor editor, int xPosition, int yPosition, string text, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, ICommand command, ButtonType type)
         {
             Editor = editor;
             XPosition = xPosition;
             YPosition = yPosition;
             //If length is greater than 5, set the text to the first 4 and add three dots to the end.
-            Text = text.Length > 6 ? $"{text[..5]}..." : text;
+            Text = text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..10]}..." : text;
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
             Color = color;
             BorderColor = borderColor;
             HoverColor = hoverColor;
+            Command = command;
+            Type = type;
+            Timer = new Timer(0.1f);
         }
 
         public void Render()
@@ -53,6 +65,7 @@ namespace EngineEditor.Component
         {
             IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height));
             Click();
+            Timer.DecreaseTimer();
         }
 
         internal void AddCommand(ICommand command)
@@ -61,18 +74,22 @@ namespace EngineEditor.Component
         }
         public void Click()
         {
-            if (Selected)
-            {
-                if (IsExecuted is false)
-                {
-                    Command.Execute();
-                    IsExecuted = true;
-                }
-            }
             if (IsHover && Raylib.IsMouseButtonPressed(MouseButton.Left))
             {
-                Selected = true;
-                Command.Execute();
+                switch (Type)
+                {
+                    case ButtonType.Trigger:
+                        if (Timer.OnCooldown()) return;
+                        Selected = true;
+                        Command.Execute();
+                        Selected = false;
+                        Timer.ResetTimer();
+                        break;
+                    case ButtonType.Hold:
+                        Selected = true;
+                        Command.Execute();
+                        break;
+                }
             }
             else if (IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left))
             {

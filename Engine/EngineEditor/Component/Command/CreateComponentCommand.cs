@@ -1,26 +1,28 @@
-using EngineEditor.Interface;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
+using Raylib_cs;
 using TemplateGame.Component;
+using VisualNovelEngine.Engine.EngineEditor.Component;
 using TemplateGame.Interface;
 
-namespace EngineEditor.Component.Command
+namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
 {
     /// <summary>
     /// Represents an empty command.
     /// </summary>
     public class CreateComponentCommand : ICommand
     {
+        public enum RenderingObjectType
+        {
+            Sprite
+        }
+        private RenderingObjectType RenderableObjectType;
         private readonly Editor Editor;
-        private readonly Component Component;
-        private string componentName;
+        private Component Component;
 
-        public CreateComponentCommand(Editor editor, IPermanentRenderingObject component)
+        public CreateComponentCommand(Editor editor, RenderingObjectType componentType)
         {
             Editor = editor;
-            componentName = component switch
-            {
-                InputField => $"New InputField({Editor.IDGenerator.GenerateID()})",
-                Sprite => $"New Sprite({Editor.IDGenerator.GenerateID()})"
-            };
+            RenderableObjectType = componentType;
         }
 
         /// <summary>
@@ -28,6 +30,14 @@ namespace EngineEditor.Component.Command
         /// </summary>
         public void Execute()
         {
+            var id = Editor.GenerateID();
+            switch (RenderableObjectType)
+            {
+                case RenderingObjectType.Sprite:
+
+                    Component = new Component(id, Editor, null, $"New Sprite({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, new Sprite("NullPath"));
+                    break;
+            }
             Editor.ComponentList.Add(Component);
         }
     }

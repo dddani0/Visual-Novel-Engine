@@ -6,7 +6,7 @@ namespace TemplateGame.Component
     /// <summary>
     /// A sprite that can be rendered on the screen.
     /// </summary>
-    class Sprite : IPermanentRenderingObject
+    public class Sprite : IPermanentRenderingObject
     {
         /// <summary>
         /// The name of the sprite.

@@ -1,9 +1,8 @@
-
 using System.Numerics;
-using EngineEditor.Interface;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Raylib_cs;
 
-namespace EngineEditor.Component.Command
+namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
 {
     public class ShowSideWindowCommand : ICommand
     {
@@ -15,7 +14,7 @@ namespace EngineEditor.Component.Command
         {
             Editor = editor;
             ToolButton = button;
-            Group = new Group((int)(button.XPosition + offset.X), (int)(button.YPosition + offset.Y), 70, 70, 5, Color.Red, Color.Black, Color.Gray, GroupType.SolidColor, 1, commands)
+            Group = new Group(Editor, (int)(button.XPosition + offset.X), (int)(button.YPosition + offset.Y), 70, 70, 5, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, GroupType.SolidColor, 1, commands)
             {
                 IsActive = false
             };

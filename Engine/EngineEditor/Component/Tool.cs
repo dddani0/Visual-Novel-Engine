@@ -1,6 +1,6 @@
-using EngineEditor.Interface;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
 
-namespace EngineEditor.Component
+namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
     /// <summary>
     /// Represents a tool.

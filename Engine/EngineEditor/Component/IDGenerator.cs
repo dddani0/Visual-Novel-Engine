@@ -1,8 +1,12 @@
-namespace EngineEditor.Component
+namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
     public class IDGenerator
     {
-        long ID { get; set; } = 0;
-        public int GenerateID() => (int)ID++;
+        public int ID { get; private set; }
+        public IDGenerator()
+        {
+            ID = 0;
+        }
+        public int GenerateID() => ID++;
     }
 }

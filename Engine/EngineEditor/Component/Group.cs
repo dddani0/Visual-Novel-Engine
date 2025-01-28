@@ -1,7 +1,7 @@
-using EngineEditor.Interface;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Raylib_cs;
 
-namespace EngineEditor.Component
+namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
     public enum GroupType
     {
@@ -11,6 +11,7 @@ namespace EngineEditor.Component
 
     public class Group : IWindow
     {
+        Editor Editor { get; set; }
         internal int XPosition { get; set; }
         internal int YPosition { get; set; }
         internal int Width { get; set; }
@@ -20,7 +21,7 @@ namespace EngineEditor.Component
         GroupType BackgroundType { get; set; }
         private Color Color { get; set; }
         private Color BorderColor { get; set; }
-        private Color SelectedColor { get; set; }
+        private Color HoverColor { get; set; }
         internal bool IsActive { get; set; } = true;
         private bool IsSelected { get; set; } = false;
         private bool IsHover { get; set; } = false;
@@ -30,8 +31,9 @@ namespace EngineEditor.Component
         public int ComponentCount => ComponentList.Count;
         private Button ButtonDependency { get; set; }
 
-        public Group(int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, GroupType groupType, int maximumHorizontalElements, ITool[] components)
+        public Group(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, GroupType groupType, int maximumHorizontalElements, ITool[] components)
         {
+            Editor = editor;
             XPosition = xPosition;
             YPosition = yPosition;
             if (components.Length > 0)
@@ -49,15 +51,16 @@ namespace EngineEditor.Component
             BorderWidth = borderWidth;
             Color = color;
             BorderColor = borderColor;
-            SelectedColor = hoverColor;
+            HoverColor = hoverColor;
             BackgroundType = groupType;
             MaximumHorizontalComponentCount = maximumHorizontalElements;
             IsStatic = true;
             UpdateComponentPosition();
         }
 
-        public Group(int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, IDinamicComponent[] components)
+        public Group(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, IDinamicComponent[] components)
         {
+            Editor = editor;
             XPosition = xPosition;
             YPosition = yPosition;
             ComponentList = [.. (IEnumerable<IComponent>)components];
@@ -66,7 +69,7 @@ namespace EngineEditor.Component
             BorderWidth = borderWidth;
             Color = color;
             BorderColor = borderColor;
-            SelectedColor = hoverColor;
+            HoverColor = hoverColor;
             BackgroundType = GroupType.SolidColor;
             UpdateComponentPosition();
         }
@@ -80,12 +83,12 @@ namespace EngineEditor.Component
             for (int i = 0; i < ComponentList.Count; i++)
             {
                 if (i % MaximumHorizontalComponentCount == 0) rowcount++;
-                ComponentList[i].XPosition = rowcount > 1 ? ComponentList[i % MaximumHorizontalComponentCount].XPosition : (i + 1) * (Padding + XPosition);
-                ComponentList[i].YPosition = rowcount * (YPosition + Padding);
+                ComponentList[i].XPosition = rowcount > 1 ? (Editor.ComponentWidth) : (i + 1) * (Padding + Editor.ComponentWidth);
+                ComponentList[i].YPosition = rowcount * (Editor.ComponentHeight + Padding);
             }
             if (ComponentList.Count < 1) return;
-            Width = rowcount > 1 ? Width : (XPosition * ComponentList.Count) + 2 * Padding;
-            Height = YPosition * rowcount + Padding;
+            Width = rowcount > 1 ? Width : Editor.ComponentWidth * ComponentList.Count + 2 * Padding;
+            Height = Editor.ComponentHeight * rowcount + Padding;
         }
 
         internal void SelectButtonDependency(Button button)
@@ -155,8 +158,8 @@ namespace EngineEditor.Component
         }
         public void Show()
         {
-            Raylib.DrawRectangle(XPosition, YPosition, Width, Height, IsSelected ? SelectedColor : Color);
-            Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
+            Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, IsSelected ? HoverColor : Color);
+            Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition - Height / 2, Width, Height, BorderColor);
             if (ComponentList.Count < 1) return;
             for (int i = 0; i < ComponentList.Count; i++)
             {

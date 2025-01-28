@@ -1,4 +1,4 @@
-namespace EngineEditor.Interface
+namespace VisualNovelEngine.Engine.EngineEditor.Interface
 {
     /// <summary>
     /// Represents a command.

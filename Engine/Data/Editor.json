@@ -1,7 +1,38 @@
 {
-    "ToolBar": [
-        {
-            
-        }
-    ]
+    "ToolBar": {
+        "XPosition": 50,
+        "YPosition": 50,
+        "Width": 300,
+        "Height": 50,
+        "BorderWidth": 1,
+        "ITool": [
+            {
+                "XPosition": 0,
+                "YPosition": 0,
+                "Text": "Create",
+                "Command": {
+                    "Type": "EmptyCommand"
+                },
+                "Type": 0
+            },
+            {
+                "XPosition": 100,
+                "YPosition": 0,
+                "Text": "Save",
+                "Command": {
+                    "Type": "EmptyCommand"
+                },
+                "Type": 0
+            },
+            {
+                "XPosition": 200,
+                "YPosition": 0,
+                "Text": "Build",
+                "Command": {
+                    "Type": "EmptyCommand"
+                },
+                "Type": 0
+            }
+        ]
+    }
 }

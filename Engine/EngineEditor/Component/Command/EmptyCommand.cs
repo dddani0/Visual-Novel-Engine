@@ -1,6 +1,6 @@
-using EngineEditor.Interface;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
 
-namespace EngineEditor.Component.Command
+namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
 {
     /// <summary>
     /// Represents an empty command.

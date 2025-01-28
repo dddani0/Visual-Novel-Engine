@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Engine.PortData
+namespace VisualNovelEngine.Engine.PortData
 {
     /// <summary>
     /// The "GameExim" class is a helper class to import/export the game settings to or from a JSON file.
@@ -15,7 +15,7 @@ namespace Engine.PortData
         public int WindowHeigth { get; set; }
     }
     /// <summary>
-    /// The SceneImport class is a helper class to import/export the list of scenes to or from a JSON file.
+    /// The "SceneExim" class is a helper class to import/export the list of scenes to or from a JSON file.
     /// </summary>
     internal class SceneExim
     {
@@ -35,7 +35,7 @@ namespace Engine.PortData
         public ActionExim[]? ActionList { get; set; }
     }
     /// <summary>
-    /// The ActionImport class is a helper class to import/export the list of actions to or from a JSON file.
+    /// The "ActionExim" class is a helper class to import/export the list of actions to or from a JSON file.
     /// </summary>
     internal class ActionExim
     {
@@ -89,7 +89,7 @@ namespace Engine.PortData
         public long? EnablingMenuID { get; set; }
     }
     /// <summary>
-    /// The VariableImport class is a helper class to import/export the list of variables to or from a JSON file.
+    /// The "VariableExim" class is a helper class to import/export the list of variables to or from a JSON file.
     /// </summary>
     internal class VariableExim
     {
@@ -101,7 +101,7 @@ namespace Engine.PortData
         public required int Type { get; set; }
     }
     /// <summary>
-    /// The MenuImport class is a helper class to import/export the list of menus to or from a JSON file.
+    /// The "MenuExim" class is a helper class to import/export the list of menus to or from a JSON file.
     /// </summary>
     internal class MenuExim
     {
@@ -127,7 +127,7 @@ namespace Engine.PortData
         public int[]? BorderColor { get; set; }
     }
     /// <summary>
-    /// The BlockImport class is a helper class to import/export the list of blocks to or from a JSON file.
+    /// The "BlockExim" class is a helper class to import/export the list of blocks to or from a JSON file.
     /// </summary>
     internal class BlockExim
     {
@@ -157,7 +157,7 @@ namespace Engine.PortData
         public SpriteExim? Sprite { get; set; }
     }
     /// <summary>
-    /// The ButtonComponentImport class is a helper class to import/export the Button component's data to or from a JSON file.
+    /// The "ButtonComponentExim" class is a helper class to import/export the Button component's data to or from a JSON file.
     /// </summary>
     internal class ButtonComponentExim
     {
@@ -185,7 +185,7 @@ namespace Engine.PortData
         public required ActionExim Event { get; set; }
     }
     /// <summary>
-    /// The TextBoxCreateAction class is a helper class to import/export the TextBox component's data to or from a JSON file.
+    /// The "InputFieldExim" class is a helper class to import/export the TextBox component's data to or from a JSON file.
     /// </summary>
     internal class InputFieldExim
     {
@@ -217,7 +217,7 @@ namespace Engine.PortData
         public required int[] SelectedColor { get; set; }
     }
     /// <summary>
-    /// The DropBoxImport class is a helper class to import/export the DropBox component's data to or from a JSON file.
+    /// The "DropBoxExim" class is a helper class to import/export the DropBox component's data to or from a JSON file.
     /// </summary>
     internal class DropBoxExim
     {
@@ -241,7 +241,7 @@ namespace Engine.PortData
         public required int[] HoverColor { get; set; }
     }
     /// <summary>
-    /// The DropBoxOptionImport class is a helper class to import/export the DropBoxOption component's data to or from a JSON file.
+    /// The "DropBoxOptionExim" class is a helper class to import/export the DropBoxOption component's data to or from a JSON file.
     /// </summary>
     internal class DropBoxOptionExim
     {
@@ -251,7 +251,7 @@ namespace Engine.PortData
         public required ActionExim Event { get; set; }
     }
     /// <summary>
-    /// The SliderImport class is a helper class to import/export the Slider component's data to or from a JSON file.
+    /// The "SliderExim" class is a helper class to import/export the Slider component's data to or from a JSON file.
     /// </summary>
     internal class SliderExim
     {
@@ -277,7 +277,7 @@ namespace Engine.PortData
         public required ActionExim Event { get; set; }
     }
     /// <summary>
-    /// The ToggleImport class is a helper class to import/export the Toggle component's data to or from a JSON file.
+    /// The "ToggleExim" class is a helper class to import/export the Toggle component's data to or from a JSON file.
     /// </summary>
     internal class ToggleExim
     {
@@ -301,7 +301,7 @@ namespace Engine.PortData
         public required ActionExim Event { get; set; }
     }
     /// <summary>
-    /// The TextFieldImport class is a helper class to import/export the TextField component's data to or from a JSON file.
+    /// The "TextFieldExim" class is a helper class to import/export the TextField component's data to or from a JSON file.
     /// </summary>
     internal class TextFieldExim
     {
@@ -333,7 +333,7 @@ namespace Engine.PortData
         public required int[] BorderColor { get; set; }
     }
     /// <summary>
-    /// The SpriteImport class is a helper class to import/export the Sprite component's data to or from a JSON file.
+    /// The "SpriteExim" class is a helper class to import/export the Sprite component's data to or from a JSON file.
     /// </summary>
     internal class SpriteExim
     {
