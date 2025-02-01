@@ -1,30 +1,44 @@
 using System.Numerics;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Raylib_cs;
+using System.ComponentModel;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
 {
     public class ShowSideWindowCommand : ICommand
     {
-        private readonly Group Group;
+        private MiniWindow? SideWindow { get; set; } = null;
         private readonly Editor Editor;
-        private readonly Button ToolButton;
-
-        public ShowSideWindowCommand(Editor editor, Button button, Vector2 offset, ITool[] commands)
+        private Button ToolButton;
+        private string ButtonName { get; set; }
+        Button[] Buttons { get; set; }
+        public ShowSideWindowCommand(Editor editor, string buttonName, Button[] buttons)
         {
             Editor = editor;
-            ToolButton = button;
-            Group = new Group(Editor, (int)(button.XPosition + offset.X), (int)(button.YPosition + offset.Y), 70, 70, 5, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, GroupType.SolidColor, 1, commands)
-            {
-                IsActive = false
-            };
-            Group.SelectButtonDependency(ToolButton);
+            ButtonName = buttonName;
+            Buttons = buttons;
         }
 
         public void Execute()
         {
-            if (Editor.ComponentGroupList.Contains(Group)) return;
-            Editor.ComponentGroupList.Add(Group);
+            if (ToolButton == null)
+            {
+                ToolButton = Editor.Toolbar.ComponentList.Select(x => x as Button).FirstOrDefault(x => x.Text == ButtonName);
+            }
+            if (Editor.MiniWindow.Contains(SideWindow)) return;
+            SideWindow = new MiniWindow(
+                Editor,
+                ToolButton.XPosition,
+                ToolButton.YPosition + Editor.ComponentHeight,
+                Editor.ComponentWidth,
+                Editor.ComponentWidth,
+                Editor.ComponentBorderWidth,
+                Editor.BaseColor,
+                Editor.BorderColor,
+                [.. Buttons]
+            );
+            Editor.MiniWindow.Add(SideWindow);
+
         }
     }
 }

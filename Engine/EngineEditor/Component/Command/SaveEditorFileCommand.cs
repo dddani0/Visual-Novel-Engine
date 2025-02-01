@@ -3,17 +3,15 @@ using VisualNovelEngine.Engine.EngineEditor.Interface;
 namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
 {
     /// <summary>
-    /// Represents an empty command.
+    /// Represents a command that saves the editor file.
     /// </summary>
-    public class DeleteComponentCommand : ICommand
+    public class SaveEditorFileCommand : ICommand
     {
         private readonly Editor Editor;
-        private readonly Component Component;
 
-        public DeleteComponentCommand(Editor editor, Component component)
+        public SaveEditorFileCommand(Editor editor)
         {
             Editor = editor;
-            Component = component;
         }
 
         /// <summary>
@@ -21,7 +19,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         /// </summary>
         public void Execute()
         {
-            Editor.ActiveScene.ComponentList.Remove(Component);
+            Editor.Save();
         }
     }
 }

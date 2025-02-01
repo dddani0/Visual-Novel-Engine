@@ -13,7 +13,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
     /// </summary>
     public class Component : IComponent, IDinamicComponent
     {
-        internal readonly long ID;
+        internal readonly int ID;
         internal string Name { get; set; }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
@@ -37,7 +37,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         private Timer MoveTimer { get; set; }
         private Group? Group { get; set; }
 
-        public Component(long id, Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor, IPermanentRenderingObject component)
+        public Component(int id, Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor, IPermanentRenderingObject component)
         {
             Editor = editor;
             ID = id;
@@ -134,13 +134,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             if (Group is null)
             {
                 if (IsMoving is false) return;
-                foreach (var group in Editor.ComponentGroupList)
+                foreach (var group in Editor.ActiveScene.ComponentGroupList)
                 {
                     if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(group.XPosition, group.YPosition, group.Width, group.Height)) && Raylib.IsMouseButtonReleased(MouseButton.Left))
                     {
                         Group = group;
                         Group.AddComponent(this);
-                        Editor.ComponentList.Remove(this);
+                        Editor.ActiveScene.ComponentList.Remove(this);
                         IsMoving = false;
                         break;
                     }
@@ -152,7 +152,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 {
                     Group.RemoveComponent(this);
                     Group = null;
-                    Editor.ComponentList.Add(this);
+                    Editor.ActiveScene.ComponentList.Add(this);
                     IsMoving = false;
                 }
                 else if (Raylib.IsMouseButtonReleased(MouseButton.Left) && IsDraggedOutsideGroup() is false)

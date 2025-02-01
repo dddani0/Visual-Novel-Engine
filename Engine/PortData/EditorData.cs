@@ -4,39 +4,12 @@ namespace VisualNovelEngine.Engine.PortData
 {
     public class EditorImport
     {
+        [JsonPropertyName("ProjectName")]
+        public required string ProjectName { get; set; }
         [JsonPropertyName("ToolBar")]
         public required GroupImport ToolBar { get; set; }
-    }
-    public class EditorConfigurationImport
-    {
-        [JsonPropertyName("ComponentWidth")]
-        public required int ComponentWidth { get; set; }
-        [JsonPropertyName("ComponentHeight")]
-        public required int ComponentHeight { get; set; }
-        [JsonPropertyName("ComponentBorderWidth")]
-        public required int ComponentBorderWidth { get; set; }
-        [JsonPropertyName("ComponentEnabledCharacterCount")]
-        public required int ComponentEnabledCharacterCount { get; set; }
-        [JsonPropertyName("BaseColor")]
-        public required int[] BaseColor { get; set; }
-        [JsonPropertyName("BorderColor")]
-        public required int[] BorderColor { get; set; }
-        [JsonPropertyName("TextColor")]
-        public required int[] TextColor { get; set; }
-        [JsonPropertyName("HoverColor")]
-        public required int[] HoverColor { get; set; }
-        [JsonPropertyName("InspectorButtonBaseColor")]
-        public required int[] InspectorButtonBaseColor { get; set; }
-        [JsonPropertyName("InspectorButtonBorderColor")]
-        public required int[] InspectorButtonBorderColor { get; set; }
-        [JsonPropertyName("InspectorButtonHoverColor")]
-        public required int[] InspectorButtonHoverColor { get; set; }
-        [JsonPropertyName("CloseButtonBaseColor")]
-        public required int[] CloseButtonBaseColor { get; set; }
-        [JsonPropertyName("CloseButtonBorderColor")]
-        public required int[] CloseButtonBorderColor { get; set; }
-        [JsonPropertyName("CloseButtonHoverColor")]
-        public required int[] CloseButtonHoverColor { get; set; }
+        [JsonPropertyName("Scenes")]
+        public SceneImport[] Scenes { get; set; }
     }
     public class GroupImport
     {
@@ -50,8 +23,10 @@ namespace VisualNovelEngine.Engine.PortData
         public int Height { get; set; }
         [JsonPropertyName("BorderWidth")]
         public int BorderWidth { get; set; }
-        [JsonPropertyName("ITool")]
-        public ButtonImport[] ITool { get; set; }
+        [JsonPropertyName("Buttons")]
+        public ButtonImport[]? Buttons { get; set; }
+        [JsonPropertyName("Components")]
+        public ButtonImport[]? Components { get; set; }
     }
     public class ButtonImport
     {
@@ -66,11 +41,38 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Type")]
         public int Type { get; set; }
     }
+    public class ComponentImport
+    {
+
+    }
     public class CommandImport
     {
         [JsonPropertyName("Type")]
         public required string Type { get; set; }
         [JsonPropertyName("RenderingObjectType")]
         public int RenderingObjectType { get; set; }
+        [JsonPropertyName("EnabledRowComponentCount")]
+        public int EnabledRowComponentCount { get; set; }
+        [JsonPropertyName("XPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("YPosition")]
+        public int YPosition { get; set; }
+        [JsonPropertyName("ParentButtonName")]
+        public string? ParentButtonName { get; set; }
+        [JsonPropertyName("Buttons")]
+        public ButtonImport[]? Buttons { get; set; }
+        [JsonPropertyName("Components")]
+        public ComponentImport[]? Components { get; set; }
+        [JsonPropertyName("ButtonDependency")]
+        public ButtonImport? ButtonDependency { get; set; }
+    }
+    public class SceneImport
+    {
+        [JsonPropertyName("Name")]
+        public required string Name { get; set; }
+        [JsonPropertyName("Components")]
+        public ComponentImport[]? Components { get; set; }
+        [JsonPropertyName("GroupList")]
+        public GroupImport[]? GroupList { get; set; }
     }
 }

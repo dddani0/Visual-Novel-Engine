@@ -38,7 +38,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                     Component = new Component(id, Editor, null, $"New Sprite({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, new Sprite("NullPath"));
                     break;
             }
-            Editor.ComponentList.Add(Component);
+            Editor.ActiveScene.ComponentList.Add(Component);
         }
     }
 }

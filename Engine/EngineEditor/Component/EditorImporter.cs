@@ -4,6 +4,7 @@ using VisualNovelEngine.Engine.PortData;
 using ICommand = VisualNovelEngine.Engine.EngineEditor.Interface.ICommand;
 using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 using static VisualNovelEngine.Engine.EngineEditor.Component.Command.CreateComponentCommand;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -12,7 +13,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         Editor Editor { get; set; }
         internal EditorConfigurationImport EditorButtonConfigurationImport { get; set; }
         internal EditorImport EditorImport { get; set; }
-
         public EditorImporter(Editor editor, string editorConfigPath, string editorDataPath)
         {
             Editor = editor;
@@ -35,7 +35,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             B = (byte)color[2],
             A = (byte)color[3]
         };
-
+        public Scene FetchSceneFromImport(SceneImport sceneImport)
+        {
+            return new Scene(Editor,
+            sceneImport.Name,
+             [.. sceneImport.Components.Select(FetchComponentFromImport)],
+             [.. sceneImport.GroupList.Select(FetchGroupFromImport)]);
+        }
         public Group FetchToolBarFromImport(GroupImport toolBarImport)
         {
             return new Group(
@@ -50,8 +56,31 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 FetchColorFromImport(EditorButtonConfigurationImport.HoverColor),
                 GroupType.SolidColor,
                 4,
-                [.. toolBarImport.ITool.Select(FetchButtonFromImport)]
+                [.. toolBarImport.Buttons.Select(FetchButtonFromImport)]
             );
+        }
+
+        public Group FetchGroupFromImport(GroupImport groupImport)
+        {
+            return new Group(
+                Editor,
+                groupImport.XPosition,
+                groupImport.YPosition,
+                groupImport.Width,
+                groupImport.Height,
+                groupImport.BorderWidth,
+                FetchColorFromImport(EditorButtonConfigurationImport.BaseColor),
+                FetchColorFromImport(EditorButtonConfigurationImport.BorderColor),
+                FetchColorFromImport(EditorButtonConfigurationImport.HoverColor),
+                GroupType.SolidColor,
+                4,
+                [.. groupImport.Buttons.Select(FetchButtonFromImport)]
+            );
+        }
+
+        Component FetchComponentFromImport(ComponentImport componentImport)
+        {
+            return null;
         }
 
         public Button FetchButtonFromImport(ButtonImport buttonImport)
@@ -73,12 +102,31 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
 
         public ICommand FetchCommandFromImport(CommandImport commandImport)
         {
-            return commandImport.Type switch
+            switch (commandImport.Type)
             {
-                "EmptyCommand" => new EmptyCommand(),
-                "CreateComponentCommand" => new CreateComponentCommand(Editor, (RenderingObjectType)commandImport.RenderingObjectType),
-                _ => throw new Exception("Command type not found!"),
-            };
+                case "EmptyCommand":
+                    return new EmptyCommand();
+                case "CreateComponentCommand":
+                    return new CreateComponentCommand(Editor, (RenderingObjectType)commandImport.RenderingObjectType);
+                case "ShowSideWindowCommand":
+                    if (commandImport.Buttons == null) throw new Exception("Buttons not found!");
+                    if (commandImport.ParentButtonName == null) throw new Exception("Parent button name not found!");
+                    string parentButtonName = commandImport.ParentButtonName;
+                    Button[] buttons = [.. commandImport.Buttons.Select(FetchButtonFromImport)];
+                    return new ShowSideWindowCommand(Editor, parentButtonName, buttons);
+                case "ShowWindowCommand":
+                    //Create an IComponent array with elements from CommandImport.Components and CommandImport.Buttons
+                    IComponent[] components = commandImport.Components?.Select(componentImport => FetchComponentFromImport(componentImport)).Cast<IComponent>()
+                        .Concat(commandImport.Buttons?.Select(buttonImport => FetchButtonFromImport(buttonImport)).Cast<IComponent>() ?? [])
+                        .ToArray() ?? [];
+                    return new ShowWindowCommand(Editor,
+                        commandImport.EnabledRowComponentCount,
+                        commandImport.XPosition,
+                        commandImport.YPosition,
+                        components);
+                default:
+                    throw new Exception("Command type not found!");
+            }
         }
     }
 }

@@ -1,17 +1,31 @@
 {
+    "ProjectName": "ProjectName",
     "ToolBar": {
-        "XPosition": 50,
-        "YPosition": 50,
-        "Width": 300,
-        "Height": 50,
+        "XPosition": 0,
+        "YPosition": 0,
+        "Width": 0,
+        "Height": 0,
         "BorderWidth": 1,
-        "ITool": [
+        "Buttons": [
             {
                 "XPosition": 0,
                 "YPosition": 0,
                 "Text": "Create",
                 "Command": {
-                    "Type": "EmptyCommand"
+                    "Type": "ShowSideWindowCommand",
+                    "ParentButtonName": "Create",
+                    "Buttons": [
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Sprite",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 0
+                            },
+                            "Type": 0
+                        }
+                    ]
                 },
                 "Type": 0
             },
@@ -34,5 +48,12 @@
                 "Type": 0
             }
         ]
-    }
+    },
+    "Scenes": [
+        {
+            "Name": "Scene1",
+            "Components": [],
+            "GroupList": []
+        }
+    ]
 }

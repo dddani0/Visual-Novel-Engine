@@ -17,7 +17,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal int Width { get; set; }
         internal int Height { get; set; }
         internal int BorderWidth { get; set; }
-        List<IComponent> ComponentList { get; set; }
+        internal List<IComponent> ComponentList { get; set; }
         GroupType BackgroundType { get; set; }
         private Color Color { get; set; }
         private Color BorderColor { get; set; }
@@ -26,7 +26,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         private bool IsSelected { get; set; } = false;
         private bool IsHover { get; set; } = false;
         private bool IsStatic { get; set; } = false;
-        const int Padding = 10;
+        const int Padding = 5;
         internal int MaximumHorizontalComponentCount = 4;
         public int ComponentCount => ComponentList.Count;
         private Button ButtonDependency { get; set; }
@@ -83,12 +83,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             for (int i = 0; i < ComponentList.Count; i++)
             {
                 if (i % MaximumHorizontalComponentCount == 0) rowcount++;
-                ComponentList[i].XPosition = rowcount > 1 ? (Editor.ComponentWidth) : (i + 1) * (Padding + Editor.ComponentWidth);
-                ComponentList[i].YPosition = rowcount * (Editor.ComponentHeight + Padding);
+                ComponentList[i].XPosition = rowcount > 1 ? Width : Padding + XPosition + (i * (Padding + Editor.ComponentWidth));
+                ComponentList[i].YPosition = YPosition + Padding + ((rowcount - 1) * (Editor.ComponentHeight + Padding));
             }
             if (ComponentList.Count < 1) return;
-            Width = rowcount > 1 ? Width : Editor.ComponentWidth * ComponentList.Count + 2 * Padding;
-            Height = Editor.ComponentHeight * rowcount + Padding;
+            Width = rowcount > 1 ? Width : (Editor.ComponentWidth * ComponentList.Count) + (ComponentList.Count * 2 * BorderWidth) + (2 * Padding);
+            Height = Editor.ComponentHeight * rowcount + (2 * Padding);
         }
 
         internal void SelectButtonDependency(Button button)
@@ -125,16 +125,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         internal void Update()
         {
-            switch (IsActive)
-            {
-                case true:
-                    Show();
-                    if (IsStatic is false) Move();
-                    break;
-                case false:
-                    Hide();
-                    break;
-            }
+            if (IsActive is false) return;
+            if (IsStatic is false) Move();
+            Show();
             if (ButtonDependency is null) return;
             IsActive = ButtonDependency.Selected;
         }
@@ -158,18 +151,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         public void Show()
         {
-            Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, IsSelected ? HoverColor : Color);
-            Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition - Height / 2, Width, Height, BorderColor);
+            Raylib.DrawRectangle(XPosition, YPosition, Width, Height, IsSelected ? HoverColor : Color);
+            Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
             if (ComponentList.Count < 1) return;
             for (int i = 0; i < ComponentList.Count; i++)
             {
                 IComponent? component = ComponentList[i];
                 component.Render();
             }
-        }
-        public void Hide()
-        {
-
         }
     }
 }

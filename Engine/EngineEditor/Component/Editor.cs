@@ -21,11 +21,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Color BorderColor { get; set; }
         internal Color TextColor { get; set; }
         internal Color HoverColor { get; set; }
-        private Group Toolbar { get; set; }
-        internal List<Group> ComponentGroupList { get; set; } = [];
-        internal List<IDinamicComponent> ComponentList { get; set; } = [];
-        internal Window InspectorWindow { get; set; }
+        internal Group Toolbar { get; set; }
+        internal string ProjectName { get; set; }
         internal IDGenerator IDGenerator { get; set; }
+        internal List<Scene> SceneList { get; set; } = [];
+        internal Scene ActiveScene { get; set; }
+        internal List<MiniWindow> MiniWindow { get; set; } = [];
         public Editor()
         {
             IDGenerator = new();
@@ -46,6 +47,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             HoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.HoverColor);
             //
             Toolbar = EditorImporter.FetchToolBarFromImport(EditorImporter.EditorImport.ToolBar);
+            ProjectName = EditorImporter.EditorImport.ProjectName;
+            SceneList = [.. EditorImporter.EditorImport.Scenes.Select(EditorImporter.FetchSceneFromImport)];
+            ActiveScene = SceneList[0];
         }
 
         public void Build()
@@ -55,27 +59,22 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
 
         public void Save()
         {
-
         }
 
         public void Update()
         {
-            Toolbar.Update();
-            ComponentGroupList.ForEach(component => component.Update());
             Raylib.ClearBackground(Color.Gray);
-            //Only render each component from the component list if the component is not in a group
-            for (int i = 0; i < ComponentList.Count; i++)
+            ActiveScene.Update();
+            Toolbar.Update();
+            for (int i = 0; i < MiniWindow.Count; i++)
             {
-                IDinamicComponent? component = ComponentList[i];
-                if (component.IsInGroup() is true) continue;
-                IComponent castedComponent = (IComponent)component;
-                castedComponent.Render();
+                MiniWindow[i].Show();
             }
         }
         /// <summary>
         /// Generates a unique number ID.
         /// </summary>
         /// <returns></returns>
-        internal long GenerateID() => IDGenerator.GenerateID();
+        internal int GenerateID() => IDGenerator.GenerateID();
     }
 }

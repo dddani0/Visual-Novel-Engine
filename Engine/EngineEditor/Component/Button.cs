@@ -40,7 +40,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             XPosition = xPosition;
             YPosition = yPosition;
             //If length is greater than 5, set the text to the first 4 and add three dots to the end.
-            Text = text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..10]}..." : text;
+            Text = text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..Editor.ComponentEnabledCharacterCount]}..." : text;
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
@@ -56,14 +56,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             if (Active is false) return;
             Update();
-            Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, IsHover ? HoverColor : Color);
-            Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition - Height / 2, Width, Height, BorderColor);
-            Raylib.DrawText(Text, XPosition - Raylib.MeasureText(Text, 20) / 2, YPosition - 10, 20, Color.Black);
+            Raylib.DrawRectangle(XPosition, YPosition, Width, Height, IsHover ? HoverColor : Color);
+            Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
+            Raylib.DrawText(Text, XPosition, YPosition, 20, Color.Black);
         }
 
         public void Update()
         {
-            IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height));
+            IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition, YPosition, Width, Height));
             Click();
             Timer.DecreaseTimer();
         }
