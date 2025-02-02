@@ -24,6 +24,46 @@
                                 "RenderingObjectType": 0
                             },
                             "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Scene",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 0
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Sprite",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 0
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Sprite",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 0
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Sprite",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 0
+                            },
+                            "Type": 0
                         }
                     ]
                 },

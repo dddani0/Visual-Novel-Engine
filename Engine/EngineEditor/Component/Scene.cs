@@ -7,7 +7,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         private Editor Editor { get; set; }
         private readonly int ID;
         string Name { get; set; }
-        internal bool IsActive { get; set; }
+        internal bool IsActive { get; set; } = true;
         internal Timeline Timeline { get; set; }
         internal List<IDinamicComponent> ComponentList { get; set; } = [];
         internal List<Group> ComponentGroupList { get; set; } = [];
@@ -19,8 +19,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ID = Editor.GenerateID();
             Name = sceneName;
             Timeline = new();
-            IsActive = false;
-            InspectorWindow = new(Editor, 0, 0, 300, 300, Editor.ComponentBorderWidth, 1, Editor.BaseColor, Editor.BorderColor, null);
+            InspectorWindow = new(Editor, 0, 0, 1, null);
         }
 
         internal void Update()

@@ -3,6 +3,9 @@
     "ComponentHeight": 50,
     "ComponentBorderWidth": 1,
     "ComponentEnabledCharacterCount": 6,
+    "InspectorWidth": 200,
+    "InspectorHeight": 200,
+    "InspectorBorderWidth": 1,
     "BaseColor": [
         239,
         182,

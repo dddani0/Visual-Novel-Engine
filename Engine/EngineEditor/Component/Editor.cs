@@ -16,6 +16,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal int ComponentHeight { get; set; }
         internal int ComponentBorderWidth { get; set; }
         internal int ComponentEnabledCharacterCount { get; set; }
+        internal int InspectorWidth { get; set; }
+        internal int InspectorHeight { get; set; }
+        internal int InspectorBorderWidth { get; set; }
         internal EditorImporter EditorImporter { get; set; }
         internal Color BaseColor { get; set; }
         internal Color BorderColor { get; set; }
@@ -40,6 +43,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ComponentHeight = EditorImporter.EditorButtonConfigurationImport.ComponentHeight;
             ComponentBorderWidth = EditorImporter.EditorButtonConfigurationImport.ComponentBorderWidth;
             ComponentEnabledCharacterCount = EditorImporter.EditorButtonConfigurationImport.ComponentEnabledCharacterCount;
+            //
+            InspectorWidth = EditorImporter.EditorButtonConfigurationImport.InspectorWidth;
+            InspectorHeight = EditorImporter.EditorButtonConfigurationImport.InspectorHeight;
+            InspectorBorderWidth = EditorImporter.EditorButtonConfigurationImport.InspectorBorderWidth;
             //
             BaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BaseColor);
             BorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BorderColor);

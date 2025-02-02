@@ -119,7 +119,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     IComponent[] components = commandImport.Components?.Select(componentImport => FetchComponentFromImport(componentImport)).Cast<IComponent>()
                         .Concat(commandImport.Buttons?.Select(buttonImport => FetchButtonFromImport(buttonImport)).Cast<IComponent>() ?? [])
                         .ToArray() ?? [];
-                    return new ShowWindowCommand(Editor,
+                    return new ShowInspectorCommand(Editor,
                         commandImport.EnabledRowComponentCount,
                         commandImport.XPosition,
                         commandImport.YPosition,

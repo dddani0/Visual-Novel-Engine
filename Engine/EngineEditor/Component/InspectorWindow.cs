@@ -1,4 +1,5 @@
 using Raylib_cs;
+using TemplateGame.Interface;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
@@ -20,18 +21,18 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Component? ActiveComponent { get; set; } = null;
         internal Button CloseButton { get; set; }
         internal List<IComponent> ComponentList { get; set; } = [];
-        public InspectorWindow(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, int enabledRowComponentCount, Color color, Color borderColor, IComponent[] components)
+        public InspectorWindow(Editor editor, int xPosition, int yPosition, int enabledRowComponentCount, IPermanentRenderingObject component)
         {
             Editor = editor;
             XPosition = xPosition;
             YPosition = yPosition;
-            BorderWidth = borderWidth;
-            Color = color;
-            BorderColor = borderColor;
+            Width = Editor.InspectorWidth;
+            Height = Editor.InspectorHeight;
+            BorderWidth = Editor.InspectorBorderWidth;
+            Color = Editor.BaseColor;
+            BorderColor = Editor.BorderColor;
             CloseButton = new Button(Editor, XPosition + Width, YPosition, "X", Editor.ComponentWidth, 20, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null, Button.ButtonType.Trigger);
-            if (components is null) return;
-            for (int i = 0; i < components.Length; i++) ComponentList.Add(components[i]);
-            UpdateComponentPosition(width, height, enabledRowComponentCount);
+            //Considering the component add textbox, toggle and buttons
         }
 
         private void UpdateComponentPosition(int width, int height, int enabledRowComponentCount)

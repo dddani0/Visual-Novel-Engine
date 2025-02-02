@@ -54,11 +54,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Color closeButtonBaseColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.CloseButtonBaseColor);
             Color closeButtonBorderColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.CloseButtonBorderColor);
             Color closeButtonHoverColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.CloseButtonHoverColor);
-            CloseButton = new Button(editor, XPosition + Width - BorderWidth - offset - 20 / 2, YPosition - 1000, "X", 20, 20, 1, closeButtonBaseColor, closeButtonBorderColor, closeButtonHoverColor, new DeleteComponentCommand(Editor, this), Button.ButtonType.Trigger);
+            CloseButton = new Button(editor, XPosition + offset, YPosition, "X", 20, 20, 1, closeButtonBaseColor, closeButtonBorderColor, closeButtonHoverColor, new DeleteComponentCommand(Editor, this), Button.ButtonType.Trigger);
             Color inspectorButtonBaseColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.InspectorButtonBaseColor);
             Color inspectorButtonBorderColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.InspectorButtonBorderColor);
             Color inspectorButtonHoverColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.InspectorButtonHoverColor);
-            InspectorButton = new Button(editor, XPosition + Width - BorderWidth - CloseButton.Width - CloseButton.BorderWidth - 20 / 2 - offset, YPosition + 20 / 2, "I", 20, 20, 1, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, null, Button.ButtonType.Trigger);
+            InspectorButton = new Button(editor, XPosition + offset + CloseButton.Width, YPosition, "I", 20, 20, 1, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, new ShowInspectorCommand(Editor, 1, 0, 0, null), Button.ButtonType.Trigger);
             MoveTimer = new Timer(0.1f);
             Group = group;
             RenderingObject = component;
@@ -123,11 +123,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             if (Raylib.IsMouseButtonDown(MouseButton.Left))
             {
                 IsMoving = true;
-                XPosition = Raylib.GetMouseX();
-                YPosition = Raylib.GetMouseY();
-                CloseButton.XPosition = XPosition + Width - BorderWidth;
+                XPosition = Raylib.GetMouseX() - Raylib.GetMouseX() + XPosition;
+                YPosition = Raylib.GetMouseY() - Raylib.GetMouseY() + YPosition;
+                CloseButton.XPosition = XPosition + offset;
                 CloseButton.YPosition = YPosition;
-                InspectorButton.XPosition = XPosition + Width - BorderWidth - CloseButton.Width - CloseButton.BorderWidth;
+                InspectorButton.XPosition = XPosition + offset + CloseButton.Width;
                 InspectorButton.YPosition = YPosition;
             }
             //Detach this component if it's is dragged outside the group.

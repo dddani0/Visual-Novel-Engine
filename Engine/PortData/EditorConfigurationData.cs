@@ -10,6 +10,12 @@ public class EditorConfigurationImport
     public required int ComponentBorderWidth { get; set; }
     [JsonPropertyName("ComponentEnabledCharacterCount")]
     public required int ComponentEnabledCharacterCount { get; set; }
+    [JsonPropertyName("InspectorWidth")]
+    public required int InspectorWidth { get; set; }
+    [JsonPropertyName("InspectorHeight")]
+    public required int InspectorHeight { get; set; }
+    [JsonPropertyName("InspectorBorderWidth")]
+    public required int InspectorBorderWidth { get; set; }
     [JsonPropertyName("BaseColor")]
     public required int[] BaseColor { get; set; }
     [JsonPropertyName("BorderColor")]
