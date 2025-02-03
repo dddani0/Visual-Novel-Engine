@@ -44,6 +44,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             {
                 ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, component.ID.ToString(), Raylib.GetFontDefault(), true));
                 ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault(), false));
+                ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, [CloseButton, CloseButton, CloseButton]));
             }
             ActiveComponent = component;
             UpdateComponentPosition(Width, Height, EnabledRowComponentCount);
