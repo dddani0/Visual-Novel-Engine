@@ -58,7 +58,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Color inspectorButtonBaseColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.InspectorButtonBaseColor);
             Color inspectorButtonBorderColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.InspectorButtonBorderColor);
             Color inspectorButtonHoverColor = Editor.EditorImporter.FetchColorFromImport(Editor.EditorImporter.EditorButtonConfigurationImport.InspectorButtonHoverColor);
-            InspectorButton = new Button(editor, XPosition + offset + CloseButton.Width, YPosition, "I", 20, 20, 1, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, new ShowInspectorCommand(Editor, 1, 0, 0, null), Button.ButtonType.Trigger);
+            InspectorButton = new Button(editor, XPosition + offset + CloseButton.Width, YPosition, "I", 20, 20, 1, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, new ShowInspectorCommand(Editor, 1, 200, 200), Button.ButtonType.Trigger);
             MoveTimer = new Timer(0.1f);
             Group = group;
             RenderingObject = component;

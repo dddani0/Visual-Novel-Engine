@@ -11,7 +11,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Timeline Timeline { get; set; }
         internal List<IDinamicComponent> ComponentList { get; set; } = [];
         internal List<Group> ComponentGroupList { get; set; } = [];
-        internal InspectorWindow InspectorWindow { get; set; }
+        internal InspectorWindow? InspectorWindow { get; set; } = null;
 
         public Scene(Editor editor, string sceneName, IDinamicComponent[] components, Group[] groups)
         {
@@ -19,13 +19,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ID = Editor.GenerateID();
             Name = sceneName;
             Timeline = new();
-            InspectorWindow = new(Editor, 0, 0, 1, null);
         }
 
         internal void Update()
         {
             if (IsActive is false) return;
             Show();
+            if (InspectorWindow == null) return;
             InspectorWindow.Show();
         }
 

@@ -114,7 +114,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     string parentButtonName = commandImport.ParentButtonName;
                     Button[] buttons = [.. commandImport.Buttons.Select(FetchButtonFromImport)];
                     return new ShowSideWindowCommand(Editor, parentButtonName, buttons);
-                case "ShowWindowCommand":
+                case "ShowInspectorCommand":
                     //Create an IComponent array with elements from CommandImport.Components and CommandImport.Buttons
                     IComponent[] components = commandImport.Components?.Select(componentImport => FetchComponentFromImport(componentImport)).Cast<IComponent>()
                         .Concat(commandImport.Buttons?.Select(buttonImport => FetchButtonFromImport(buttonImport)).Cast<IComponent>() ?? [])
@@ -122,8 +122,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     return new ShowInspectorCommand(Editor,
                         commandImport.EnabledRowComponentCount,
                         commandImport.XPosition,
-                        commandImport.YPosition,
-                        components);
+                        commandImport.YPosition);
                 default:
                     throw new Exception("Command type not found!");
             }

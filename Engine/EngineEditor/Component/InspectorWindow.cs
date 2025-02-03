@@ -1,4 +1,5 @@
 using Raylib_cs;
+using TemplateGame.Component;
 using TemplateGame.Interface;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 
@@ -15,9 +16,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal int Width { get; set; }
         internal int Height { get; set; }
         internal int BorderWidth { get; set; }
+        internal int EnabledRowComponentCount { get; set; }
         internal Color Color { get; set; }
         internal Color BorderColor { get; set; }
-        internal bool Active { get; set; }
+        internal bool Active { get; set; } = false;
         internal Component? ActiveComponent { get; set; } = null;
         internal Button CloseButton { get; set; }
         internal List<IComponent> ComponentList { get; set; } = [];
@@ -31,8 +33,24 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderWidth = Editor.InspectorBorderWidth;
             Color = Editor.BaseColor;
             BorderColor = Editor.BorderColor;
+            EnabledRowComponentCount = enabledRowComponentCount;
             CloseButton = new Button(Editor, XPosition + Width, YPosition, "X", Editor.ComponentWidth, 20, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null, Button.ButtonType.Trigger);
             //Considering the component add textbox, toggle and buttons
+            if (component is Sprite sprite)
+            {
+                ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault()));
+            }
+        }
+
+        internal void SetActiveComponent(Component component)
+        {
+            if (component.RenderingObject is Sprite sprite)
+            {
+                //
+                ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault()));
+            }
+            ActiveComponent = component;
+            UpdateComponentPosition(Width, Height, EnabledRowComponentCount);
         }
 
         private void UpdateComponentPosition(int width, int height, int enabledRowComponentCount)
