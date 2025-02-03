@@ -21,11 +21,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal string? Text { get; set; }
         internal bool Editing { get; set; }
         internal bool IsHover { get; set; }
+        internal bool IsStatic { get; set; }
         internal Font Font { get; set; }
         private Color Color { get; set; }
         private Color BorderColor { get; set; }
 
-        public TextField(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, string text, Font font)
+        public TextField(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, string text, Font font, bool isStatic)
         {
             Editor = editor;
             XPosition = xPosition;
@@ -37,6 +38,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Font = font;
             Color = Editor.BaseColor;
             BorderColor = Editor.BorderColor;
+            IsStatic = isStatic;
         }
 
         public void Render()
@@ -49,6 +51,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
 
         public void Update()
         {
+            if (IsStatic) return;
             IsHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, Width, Height));
             if (IsHover && Raylib.IsMouseButtonPressed(MouseButton.Left)) Editing = true;
             else if (IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left)) Editing = false;

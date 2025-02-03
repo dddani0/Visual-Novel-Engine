@@ -14,7 +14,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         public ShowInspectorCommand(Editor editor, int enabledRowComponentCount, int xPos, int yPos)
         {
             Editor = editor;
-            Window = new InspectorWindow(editor, xPos, yPos, enabledRowComponentCount, null);
+            Window = new InspectorWindow(editor, xPos, yPos, enabledRowComponentCount);
         }
 
         /// <summary>

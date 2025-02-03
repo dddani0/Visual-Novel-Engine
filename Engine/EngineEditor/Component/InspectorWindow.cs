@@ -1,3 +1,4 @@
+using Namespace;
 using Raylib_cs;
 using TemplateGame.Component;
 using TemplateGame.Interface;
@@ -23,7 +24,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Component? ActiveComponent { get; set; } = null;
         internal Button CloseButton { get; set; }
         internal List<IComponent> ComponentList { get; set; } = [];
-        public InspectorWindow(Editor editor, int xPosition, int yPosition, int enabledRowComponentCount, IPermanentRenderingObject component)
+        public InspectorWindow(Editor editor, int xPosition, int yPosition, int enabledRowComponentCount)
         {
             Editor = editor;
             XPosition = xPosition;
@@ -35,19 +36,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderColor = Editor.BorderColor;
             EnabledRowComponentCount = enabledRowComponentCount;
             CloseButton = new Button(Editor, XPosition + Width, YPosition, "X", Editor.ComponentWidth, 20, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null, Button.ButtonType.Trigger);
-            //Considering the component add textbox, toggle and buttons
-            if (component is Sprite sprite)
-            {
-                ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault()));
-            }
         }
 
         internal void SetActiveComponent(Component component)
         {
             if (component.RenderingObject is Sprite sprite)
             {
-                //
-                ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault()));
+                ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, component.ID.ToString(), Raylib.GetFontDefault(), true));
+                ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault(), false));
             }
             ActiveComponent = component;
             UpdateComponentPosition(Width, Height, EnabledRowComponentCount);
@@ -63,19 +59,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             {
                 if (i % enabledRowComponentCount == 0) rowcount++;
                 //If the component is a button, update the position of the button.
-                switch (ComponentList[i])
-                {
-                    case Button button:
-                        button.XPosition = rowcount > 1 ? ComponentList[i % enabledRowComponentCount].XPosition : XPosition + (i * (Editor.ComponentWidth));
-                        button.YPosition = YPosition + ((rowcount - 1) * Editor.ComponentHeight);
-                        continue;
-                    case Component component:
-                        component.XPosition = rowcount > 1 ? ComponentList[i % enabledRowComponentCount].XPosition : XPosition + (i * (Editor.ComponentWidth));
-                        component.YPosition = YPosition + ((rowcount - 1) * Editor.ComponentHeight);
-                        continue;
-                    default:
-                        break;
-                }
+                ComponentList[i].XPosition = rowcount > 1 ? ComponentList[i % enabledRowComponentCount].XPosition : XPosition + (i * (Editor.ComponentWidth));
+                ComponentList[i].YPosition = YPosition + ((rowcount - 1) * Editor.ComponentHeight);
             }
             if (ComponentList.Count >= enabledRowComponentCount)
             {
