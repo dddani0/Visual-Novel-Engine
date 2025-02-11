@@ -30,13 +30,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Editor = editor;
             XPosition = xPosition;
             YPosition = yPosition;
-            Width = Editor.InspectorWidth;
-            Height = Editor.InspectorHeight;
-            BorderWidth = Editor.InspectorBorderWidth;
+            Width = Editor.InspectorWindowWidth;
+            Height = Editor.InspectorWindowHeight;
+            BorderWidth = Editor.InspectorWindowBorderWidth;
             Color = Editor.BaseColor;
             BorderColor = Editor.BorderColor;
             EnabledRowComponentCount = enabledRowComponentCount;
-            CloseButton = new Button(Editor, XPosition, YPosition, "X", Editor.ComponentWidth, 20, Editor.ComponentBorderWidth, Color.Red, Editor.BorderColor, Editor.HoverColor, new CloseInspectorCommand(Editor, this), Button.ButtonType.Trigger);
+            CloseButton = new Button(Editor, XPosition + Editor.InspectorWindowWidth - Editor.SmallButtonWidth, YPosition, "X", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseInspectorCommand(Editor, this), Button.ButtonType.Trigger);
         }
 
         internal void SetActiveComponent(Component component)
@@ -45,7 +45,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             {
                 ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, component.ID.ToString(), Raylib.GetFontDefault(), true));
                 ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault(), false));
-                ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, [CloseButton, CloseButton, CloseButton]));
             }
             ActiveComponent = component;
             UpdateComponentPosition(Width, Height, EnabledRowComponentCount);

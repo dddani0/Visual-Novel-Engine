@@ -8,13 +8,31 @@ public class EditorConfigurationImport
     public required int ComponentHeight { get; set; }
     [JsonPropertyName("ComponentBorderWidth")]
     public required int ComponentBorderWidth { get; set; }
+    [JsonPropertyName("ButtonWidth")]
+    public required int ButtonWidth { get; set; }
+    [JsonPropertyName("ButtonHeight")]
+    public required int ButtonHeight { get; set; }
+    [JsonPropertyName("ButtonBorderWidth")]
+    public required int ButtonBorderWidth { get; set; }
+    [JsonPropertyName("SmallButtonWidth")]
+    public required int SmallButtonWidth { get; set; }
+    [JsonPropertyName("SmallButtonHeight")]
+    public required int SmallButtonHeight { get; set; }
+    [JsonPropertyName("SmallButtonBorderWidth")]
+    public required int SmallButtonBorderWidth { get; set; }
+    [JsonPropertyName("SideButtonWidth")]
+    public required int SideButtonWidth { get; set; }
+    [JsonPropertyName("SideButtonHeight")]
+    public required int SideButtonHeight { get; set; }
+    [JsonPropertyName("SideButtonBorderWidth")]
+    public required int SideButtonBorderWidth { get; set; }
     [JsonPropertyName("ComponentEnabledCharacterCount")]
     public required int ComponentEnabledCharacterCount { get; set; }
-    [JsonPropertyName("InspectorWidth")]
+    [JsonPropertyName("InspectorWindowWidth")]
     public required int InspectorWidth { get; set; }
-    [JsonPropertyName("InspectorHeight")]
+    [JsonPropertyName("InspectorWindowHeight")]
     public required int InspectorHeight { get; set; }
-    [JsonPropertyName("InspectorBorderWidth")]
+    [JsonPropertyName("InspectorWindowBorderWidth")]
     public required int InspectorBorderWidth { get; set; }
     [JsonPropertyName("BaseColor")]
     public required int[] BaseColor { get; set; }

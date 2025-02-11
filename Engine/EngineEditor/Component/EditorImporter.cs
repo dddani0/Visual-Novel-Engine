@@ -135,6 +135,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     if (commandImport.DependentButton == null) throw new Exception("Dependent button name not found!");
                     string parentButtonName = commandImport.DependentButton;
                     Button[] buttons = [.. commandImport.Buttons.Select(FetchButtonFromImport)];
+                    foreach (Button button in buttons)
+                    {
+                        button.Width = EditorButtonConfigurationImport.SideButtonWidth;
+                        button.Height = EditorButtonConfigurationImport.SideButtonHeight;
+                        button.BorderWidth = EditorButtonConfigurationImport.SideButtonBorderWidth;
+                    }
                     return new ShowSideWindowCommand(Editor, parentButtonName, buttons);
                 case "ShowInspectorCommand":
                     return new ShowInspectorCommand(Editor,
@@ -143,6 +149,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         commandImport.YPosition);
                 case "SaveProjectDataCommand":
                     return new SaveProjectDataCommand(Editor);
+                case "BuildProjectCommand":
+                    return new BuildProjectCommand(Editor);
                 default:
                     throw new Exception("Command type not found!");
             }
@@ -174,10 +182,15 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         XPosition = showInspectorCommand.XPosition,
                         YPosition = showInspectorCommand.YPosition
                     };
-                case SaveProjectDataCommand _:
+                case SaveProjectDataCommand saveProjectDataCommand:
                     return new()
                     {
                         Type = "SaveProjectDataCommand"
+                    };
+                case BuildProjectCommand buildProjectCommand:
+                    return new()
+                    {
+                        Type = "BuildProjectCommand"
                     };
                 default:
                     throw new Exception("Command type not found!");

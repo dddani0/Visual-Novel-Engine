@@ -45,6 +45,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             for (int i = 0; i < ButtonList.Count; i++)
             {
+                ButtonList[i].Width = Editor.EditorImporter.EditorButtonConfigurationImport.SideButtonWidth;
+                ButtonList[i].Height = Editor.EditorImporter.EditorButtonConfigurationImport.SideButtonHeight;
+                ButtonList[i].BorderWidth = Editor.EditorImporter.EditorButtonConfigurationImport.SideButtonBorderWidth;
                 ButtonList[i].XPosition = XPosition;
                 ButtonList[i].YPosition = YPosition + ((i + 1) * Height);
             }

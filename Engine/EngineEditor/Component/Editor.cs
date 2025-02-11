@@ -17,18 +17,33 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal int ComponentWidth { get; set; }
         internal int ComponentHeight { get; set; }
         internal int ComponentBorderWidth { get; set; }
+        internal int ButtonWidth { get; set; }
+        internal int ButtonHeight { get; set; }
+        internal int ButtonBorderWidth { get; set; }
+        internal int SmallButtonWidth { get; set; }
+        internal int SmallButtonHeight { get; set; }
+        internal int SmallButtonBorderWidth { get; set; }
+        internal int SideButtonWidth { get; set; }
+        internal int SideButtonHeight { get; set; }
+        internal int SideButtonBorderWidth { get; set; }
         internal int ComponentEnabledCharacterCount { get; set; }
-        internal int InspectorWidth { get; set; }
-        internal int InspectorHeight { get; set; }
-        internal int InspectorBorderWidth { get; set; }
-        internal EditorImporter EditorImporter { get; set; }
+        internal int InspectorWindowWidth { get; set; }
+        internal int InspectorWindowHeight { get; set; }
+        internal int InspectorWindowBorderWidth { get; set; }
         internal Color BaseColor { get; set; }
         internal Color BorderColor { get; set; }
         internal Color TextColor { get; set; }
         internal Color HoverColor { get; set; }
+        internal Color InspectorButtonBaseColor { get; set; }
+        internal Color InspectorButtonBorderColor { get; set; }
+        internal Color InspectorButtonHoverColor { get; set; }
+        internal Color CloseButtonBaseColor { get; set; }
+        internal Color CloseButtonBorderColor { get; set; }
+        internal Color CloseButtonHoverColor { get; set; }
         internal Group Toolbar { get; set; }
         internal string ProjectName { get; set; }
         internal IDGenerator IDGenerator { get; set; }
+        internal EditorImporter EditorImporter { get; set; }
         internal List<Scene> SceneList { get; set; } = [];
         internal Scene ActiveScene { get; set; }
         internal List<MiniWindow> MiniWindow { get; set; } = [];
@@ -48,9 +63,21 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ComponentBorderWidth = EditorImporter.EditorButtonConfigurationImport.ComponentBorderWidth;
             ComponentEnabledCharacterCount = EditorImporter.EditorButtonConfigurationImport.ComponentEnabledCharacterCount;
             //
-            InspectorWidth = EditorImporter.EditorButtonConfigurationImport.InspectorWidth;
-            InspectorHeight = EditorImporter.EditorButtonConfigurationImport.InspectorHeight;
-            InspectorBorderWidth = EditorImporter.EditorButtonConfigurationImport.InspectorBorderWidth;
+            ButtonWidth = EditorImporter.EditorButtonConfigurationImport.ButtonWidth;
+            ButtonHeight = EditorImporter.EditorButtonConfigurationImport.ButtonHeight;
+            ButtonBorderWidth = EditorImporter.EditorButtonConfigurationImport.ButtonBorderWidth;
+            //
+            SmallButtonWidth = EditorImporter.EditorButtonConfigurationImport.SmallButtonWidth;
+            SmallButtonHeight = EditorImporter.EditorButtonConfigurationImport.SmallButtonHeight;
+            SmallButtonBorderWidth = EditorImporter.EditorButtonConfigurationImport.SmallButtonBorderWidth;
+            //
+            SideButtonWidth = EditorImporter.EditorButtonConfigurationImport.SideButtonWidth;
+            SideButtonHeight = EditorImporter.EditorButtonConfigurationImport.SideButtonHeight;
+            SideButtonBorderWidth = EditorImporter.EditorButtonConfigurationImport.SideButtonBorderWidth;
+            //
+            InspectorWindowWidth = EditorImporter.EditorButtonConfigurationImport.InspectorWidth;
+            InspectorWindowHeight = EditorImporter.EditorButtonConfigurationImport.InspectorHeight;
+            InspectorWindowBorderWidth = EditorImporter.EditorButtonConfigurationImport.InspectorBorderWidth;
             //
             BaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BaseColor);
             BorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BorderColor);
@@ -70,6 +97,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
 
         public void Save()
         {
+            var editorJson = JsonSerializer.Serialize(EditorImporter.ExportEditorData(this), new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            File.WriteAllText(SaveFilePath, editorJson);
         }
 
         public void Update()

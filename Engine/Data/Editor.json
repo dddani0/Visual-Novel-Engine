@@ -44,7 +44,7 @@
                 "YPosition": 0,
                 "Text": "Build",
                 "Command": {
-                    "Type": "EmptyCommand"
+                    "Type": "BuildProjectCommand"
                 },
                 "Type": 0
             }
