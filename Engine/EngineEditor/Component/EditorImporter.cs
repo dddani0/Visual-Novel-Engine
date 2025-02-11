@@ -1,10 +1,13 @@
 using System.Text.Json;
 using Raylib_cs;
-using VisualNovelEngine.Engine.PortData;
 using ICommand = VisualNovelEngine.Engine.EngineEditor.Interface.ICommand;
 using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 using static VisualNovelEngine.Engine.EngineEditor.Component.Command.CreateComponentCommand;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
+using VisualNovelEngine.Engine.PortData;
+using TemplateGame.Interface;
+using TemplateGame.Component;
+using System.Text.RegularExpressions;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -12,7 +15,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
     {
         Editor Editor { get; set; }
         internal EditorConfigurationImport EditorButtonConfigurationImport { get; set; }
-        internal EditorImport EditorImport { get; set; }
+        internal EditorEXIM EditorImport { get; set; }
         public EditorImporter(Editor editor, string editorConfigPath, string editorDataPath)
         {
             Editor = editor;
@@ -21,7 +24,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             EditorButtonConfigurationImport = JsonSerializer.Deserialize<EditorConfigurationImport>(rawFile) ?? throw new Exception("Editor preference file not found!");
             //Editor data
             rawFile = File.ReadAllText(editorDataPath) ?? throw new Exception("Editor data file not found!");
-            EditorImport = JsonSerializer.Deserialize<EditorImport>(rawFile) ?? throw new Exception("Editor data file not found!");
+            EditorImport = JsonSerializer.Deserialize<EditorEXIM>(rawFile) ?? throw new Exception("Editor data file not found!");
         }
         /// <summary>
         /// Fetches a color from an import object.
@@ -35,14 +38,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             B = (byte)color[2],
             A = (byte)color[3]
         };
-        public Scene FetchSceneFromImport(SceneImport sceneImport)
+        public Scene FetchSceneFromImport(SceneEXIM sceneImport)
         {
             return new Scene(Editor,
             sceneImport.Name,
              [.. sceneImport.Components.Select(FetchComponentFromImport)],
              [.. sceneImport.GroupList.Select(FetchGroupFromImport)]);
         }
-        public Group FetchToolBarFromImport(GroupImport toolBarImport)
+        public Group FetchToolBarFromImport(GroupEXIM toolBarImport)
         {
             return new Group(
                 Editor,
@@ -59,8 +62,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 [.. toolBarImport.Buttons.Select(FetchButtonFromImport)]
             );
         }
-
-        public Group FetchGroupFromImport(GroupImport groupImport)
+        public Group FetchGroupFromImport(GroupEXIM groupImport)
         {
             return new Group(
                 Editor,
@@ -77,13 +79,34 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 [.. groupImport.Buttons.Select(FetchButtonFromImport)]
             );
         }
-
-        Component FetchComponentFromImport(ComponentImport componentImport)
+        Component FetchComponentFromImport(ComponentEXIM componentImport)
         {
-            return null;
+            return new Component(
+                componentImport.ID,
+                Editor,
+                null,
+                componentImport.Name,
+                componentImport.XPosition,
+                componentImport.YPosition,
+                Editor.ComponentWidth,
+                Editor.ComponentHeight,
+                Editor.ComponentBorderWidth,
+                Editor.BaseColor,
+                Editor.BorderColor,
+                Editor.HoverColor,
+                Editor.HoverColor,
+                FetchRenderingObjectFromImport(componentImport.RenderingObject)
+            );
         }
-
-        public Button FetchButtonFromImport(ButtonImport buttonImport)
+        public IPermanentRenderingObject FetchRenderingObjectFromImport(RenderingObjectEXIM renderingObjectImport)
+        {
+            return renderingObjectImport.Type switch
+            {
+                "Sprite" => new Sprite(renderingObjectImport.Path),
+                _ => throw new Exception("Rendering object type not found!"),
+            };
+        }
+        public Button FetchButtonFromImport(ButtonEXIM buttonImport)
         {
             return new Button(Editor,
                 buttonImport.XPosition,
@@ -99,7 +122,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 (Button.ButtonType)buttonImport.Type
             );
         }
-
         public ICommand FetchCommandFromImport(CommandImport commandImport)
         {
             switch (commandImport.Type)
@@ -110,21 +132,132 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     return new CreateComponentCommand(Editor, (RenderingObjectType)commandImport.RenderingObjectType);
                 case "ShowSideWindowCommand":
                     if (commandImport.Buttons == null) throw new Exception("Buttons not found!");
-                    if (commandImport.ParentButtonName == null) throw new Exception("Parent button name not found!");
-                    string parentButtonName = commandImport.ParentButtonName;
+                    if (commandImport.DependentButton == null) throw new Exception("Dependent button name not found!");
+                    string parentButtonName = commandImport.DependentButton;
                     Button[] buttons = [.. commandImport.Buttons.Select(FetchButtonFromImport)];
                     return new ShowSideWindowCommand(Editor, parentButtonName, buttons);
                 case "ShowInspectorCommand":
-                    //Create an IComponent array with elements from CommandImport.Components and CommandImport.Buttons
-                    IComponent[] components = commandImport.Components?.Select(componentImport => FetchComponentFromImport(componentImport)).Cast<IComponent>()
-                        .Concat(commandImport.Buttons?.Select(buttonImport => FetchButtonFromImport(buttonImport)).Cast<IComponent>() ?? [])
-                        .ToArray() ?? [];
                     return new ShowInspectorCommand(Editor,
                         commandImport.EnabledRowComponentCount,
                         commandImport.XPosition,
                         commandImport.YPosition);
+                case "SaveProjectDataCommand":
+                    return new SaveProjectDataCommand(Editor);
                 default:
                     throw new Exception("Command type not found!");
+            }
+        }
+        public CommandImport ExportCommandData(ICommand command)
+        {
+            switch (command)
+            {
+                case EmptyCommand emptyCommand:
+                    return new() { Type = "EmptyCommand" };
+                case CreateComponentCommand createComponentCommand:
+                    return new()
+                    {
+                        Type = "CreateComponentCommand",
+                        RenderingObjectType = (int)createComponentCommand.RenderableObjectType
+                    };
+                case ShowSideWindowCommand showSideWindowCommand:
+                    return new()
+                    {
+                        Type = "ShowSideWindowCommand",
+                        DependentButton = showSideWindowCommand.DependentButtonName,
+                        Buttons = [.. showSideWindowCommand.Buttons.Select(ExportButtonData)]
+                    };
+                case ShowInspectorCommand showInspectorCommand:
+                    return new()
+                    {
+                        Type = "ShowInspectorCommand",
+                        EnabledRowComponentCount = showInspectorCommand.EnabledRowComponentCount,
+                        XPosition = showInspectorCommand.XPosition,
+                        YPosition = showInspectorCommand.YPosition
+                    };
+                case SaveProjectDataCommand _:
+                    return new()
+                    {
+                        Type = "SaveProjectDataCommand"
+                    };
+                default:
+                    throw new Exception("Command type not found!");
+            }
+        }
+        public EditorEXIM ExportEditorData(Editor editor)
+        {
+            return new()
+            {
+                ID = editor.IDGenerator.CurrentID(),
+                //Project name should only allow basic characters, and remove . and / from the name.
+                ProjectName = Regex.Replace(editor.ProjectName, @"[^a-zA-Z0-9\s]", ""),
+                ToolBar = ExportGroupData(editor.Toolbar),
+                Scenes = [.. editor.SceneList.Select(ExportSceneData)],
+            };
+        }
+        public GroupEXIM ExportGroupData(Group group)
+        {
+            ButtonEXIM[] buttons = [.. group.ComponentList.Select(x => x as Button).Select(ExportButtonData)];
+            ComponentEXIM[] components = null;
+            if (buttons.Length < group.ComponentList.Count())
+            {
+                components = [.. group.ComponentList.Select(x => x as Component).Select(ExportComponentData)];
+            }
+            buttons ??= [];
+            components ??= [];
+            return new()
+            {
+                XPosition = group.XPosition,
+                YPosition = group.YPosition,
+                Width = group.Width,
+                Height = group.Height,
+                BorderWidth = group.BorderWidth,
+                Buttons = [.. buttons],
+                Components = [.. components]
+            };
+        }
+        public ButtonEXIM ExportButtonData(Button button)
+        {
+            return new()
+            {
+                XPosition = button.XPosition,
+                YPosition = button.YPosition,
+                Text = button.Text,
+                Command = ExportCommandData(button.Command),
+                Type = (int)button.Type
+            };
+        }
+        public ComponentEXIM ExportComponentData(Component component)
+        {
+            return new()
+            {
+                ID = component.ID,
+                Name = component.Name,
+                XPosition = component.XPosition,
+                YPosition = component.YPosition,
+                RenderingObject = ExportRenderingObjectData(component.RenderingObject)
+            };
+        }
+        public SceneEXIM ExportSceneData(Scene scene)
+        {
+            return new()
+            {
+                Name = scene.Name,
+                Components = [],
+                GroupList = []
+            };
+        }
+        public RenderingObjectEXIM ExportRenderingObjectData(IPermanentRenderingObject permanentRenderingObject)
+        {
+            switch (permanentRenderingObject)
+            {
+                case Sprite sprite:
+                    return new()
+                    {
+                        Type = "Sprite",
+                        Path = sprite.Path
+                    };
+                default:
+                    throw new Exception("Rendering object type not found!");
             }
         }
     }

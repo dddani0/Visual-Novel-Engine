@@ -1,17 +1,20 @@
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace VisualNovelEngine.Engine.PortData
 {
-    public class EditorImport
+    public class EditorEXIM
     {
+        [JsonPropertyName("ID")]
+        public int ID { get; set; }
         [JsonPropertyName("ProjectName")]
         public required string ProjectName { get; set; }
         [JsonPropertyName("ToolBar")]
-        public required GroupImport ToolBar { get; set; }
+        public required GroupEXIM ToolBar { get; set; }
         [JsonPropertyName("Scenes")]
-        public SceneImport[] Scenes { get; set; }
+        public SceneEXIM[] Scenes { get; set; }
     }
-    public class GroupImport
+    public class GroupEXIM
     {
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
@@ -24,11 +27,11 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("BorderWidth")]
         public int BorderWidth { get; set; }
         [JsonPropertyName("Buttons")]
-        public ButtonImport[]? Buttons { get; set; }
+        public ButtonEXIM[]? Buttons { get; set; }
         [JsonPropertyName("Components")]
-        public ButtonImport[]? Components { get; set; }
+        public ComponentEXIM[]? Components { get; set; }
     }
-    public class ButtonImport
+    public class ButtonEXIM
     {
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
@@ -41,9 +44,25 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Type")]
         public int Type { get; set; }
     }
-    public class ComponentImport
+    public class ComponentEXIM
     {
-
+        [JsonPropertyName("ID")]
+        public int ID { get; set; }
+        [JsonPropertyName("Name")]
+        public required string Name { get; set; }
+        [JsonPropertyName("XPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("YPosition")]
+        public int YPosition { get; set; }
+        [JsonPropertyName("RenderingObject")]
+        public required RenderingObjectEXIM RenderingObject { get; set; }
+    }
+    public class RenderingObjectEXIM
+    {
+        [JsonPropertyName("Type")]
+        public required string Type { get; set; }
+        [JsonPropertyName("Path")]
+        public required string Path { get; set; }
     }
     public class CommandImport
     {
@@ -58,21 +77,19 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("YPosition")]
         public int YPosition { get; set; }
         [JsonPropertyName("ParentButtonName")]
-        public string? ParentButtonName { get; set; }
+        public string? DependentButton { get; set; }
         [JsonPropertyName("Buttons")]
-        public ButtonImport[]? Buttons { get; set; }
-        [JsonPropertyName("Components")]
-        public ComponentImport[]? Components { get; set; }
+        public ButtonEXIM[]? Buttons { get; set; }
         [JsonPropertyName("ButtonDependency")]
-        public ButtonImport? ButtonDependency { get; set; }
+        public ButtonEXIM? ButtonDependency { get; set; }
     }
-    public class SceneImport
+    public class SceneEXIM
     {
         [JsonPropertyName("Name")]
         public required string Name { get; set; }
         [JsonPropertyName("Components")]
-        public ComponentImport[]? Components { get; set; }
+        public ComponentEXIM[]? Components { get; set; }
         [JsonPropertyName("GroupList")]
-        public GroupImport[]? GroupList { get; set; }
+        public GroupEXIM[]? GroupList { get; set; }
     }
 }

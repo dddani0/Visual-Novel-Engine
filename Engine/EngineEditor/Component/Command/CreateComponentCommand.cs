@@ -15,7 +15,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         {
             Sprite
         }
-        private RenderingObjectType RenderableObjectType;
+        internal RenderingObjectType RenderableObjectType;
         private readonly Editor Editor;
         private Component Component;
 

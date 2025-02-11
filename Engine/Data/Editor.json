@@ -1,5 +1,6 @@
 {
-    "ProjectName": "ProjectName",
+    "ID": 2,
+    "ProjectName": "Dani kis projektjének a kis dzsészönje...,.",
     "ToolBar": {
         "XPosition": 0,
         "YPosition": 0,
@@ -24,46 +25,6 @@
                                 "RenderingObjectType": 0
                             },
                             "Type": 0
-                        },
-                        {
-                            "XPosition": 0,
-                            "YPosition": 0,
-                            "Text": "Scene",
-                            "Command": {
-                                "Type": "CreateComponentCommand",
-                                "RenderingObjectType": 0
-                            },
-                            "Type": 0
-                        },
-                        {
-                            "XPosition": 0,
-                            "YPosition": 0,
-                            "Text": "Sprite",
-                            "Command": {
-                                "Type": "CreateComponentCommand",
-                                "RenderingObjectType": 0
-                            },
-                            "Type": 0
-                        },
-                        {
-                            "XPosition": 0,
-                            "YPosition": 0,
-                            "Text": "Sprite",
-                            "Command": {
-                                "Type": "CreateComponentCommand",
-                                "RenderingObjectType": 0
-                            },
-                            "Type": 0
-                        },
-                        {
-                            "XPosition": 0,
-                            "YPosition": 0,
-                            "Text": "Sprite",
-                            "Command": {
-                                "Type": "CreateComponentCommand",
-                                "RenderingObjectType": 0
-                            },
-                            "Type": 0
                         }
                     ]
                 },
@@ -74,7 +35,7 @@
                 "YPosition": 0,
                 "Text": "Save",
                 "Command": {
-                    "Type": "EmptyCommand"
+                    "Type": "SaveProjectDataCommand"
                 },
                 "Type": 0
             },
@@ -92,7 +53,18 @@
     "Scenes": [
         {
             "Name": "Scene1",
-            "Components": [],
+            "Components": [
+                {
+                    "ID": 1,
+                    "Name": "Sprite",
+                    "XPosition": 0,
+                    "YPosition": 0,
+                    "RenderingObject": {
+                        "Type": "Sprite",
+                        "Path": "null"
+                    }
+                }
+            ],
             "GroupList": []
         }
     ]

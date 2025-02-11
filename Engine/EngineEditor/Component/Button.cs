@@ -30,7 +30,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         private bool IsExecuted { get; set; }
         private bool IsHover { get; set; }
         internal Editor Editor { get; set; }
-        private ICommand Command { get; set; }
+        internal ICommand Command { get; set; }
         internal ButtonType Type { get; set; }
         private Timer Timer { get; set; }
 

@@ -13,6 +13,10 @@ namespace TemplateGame.Component
         /// </summary>
         internal string Name { get; set; }
         /// <summary>
+        /// The path to the sprite.
+        /// </summary>
+        internal string Path;
+        /// <summary>
         /// The texture of the sprite.
         /// </summary>
         internal Texture2D ImageTexture { get; set; }
@@ -40,7 +44,8 @@ namespace TemplateGame.Component
         /// <param name="path">Path to the sprite image.</param>
         public Sprite(string path)
         {
-            Name = path;
+            Path = path;
+            Name = Path;
             ImageTexture = Raylib.LoadTexture(path);
             //default position
             Y = Raylib.GetScreenHeight() / 2 - ImageTexture.Width / 2;

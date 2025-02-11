@@ -8,13 +8,19 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
     /// </summary>
     public class ShowInspectorCommand : ICommand
     {
-        Editor Editor { get; set; }
+        internal Editor Editor { get; set; }
         private readonly InspectorWindow Window;
+        internal int EnabledRowComponentCount;
+        internal int XPosition { get; set; }
+        internal int YPosition { get; set; }
 
         public ShowInspectorCommand(Editor editor, int enabledRowComponentCount, int xPos, int yPos)
         {
             Editor = editor;
-            Window = new InspectorWindow(editor, xPos, yPos, enabledRowComponentCount);
+            EnabledRowComponentCount = enabledRowComponentCount;
+            XPosition = xPos;
+            YPosition = yPos;
+            Window = new InspectorWindow(editor, xPos, yPos, EnabledRowComponentCount);
         }
 
         /// <summary>

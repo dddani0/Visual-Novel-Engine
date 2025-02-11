@@ -2,6 +2,7 @@ using Namespace;
 using Raylib_cs;
 using TemplateGame.Component;
 using TemplateGame.Interface;
+using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
@@ -35,7 +36,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Color = Editor.BaseColor;
             BorderColor = Editor.BorderColor;
             EnabledRowComponentCount = enabledRowComponentCount;
-            CloseButton = new Button(Editor, XPosition + Width, YPosition, "X", Editor.ComponentWidth, 20, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null, Button.ButtonType.Trigger);
+            CloseButton = new Button(Editor, XPosition, YPosition, "X", Editor.ComponentWidth, 20, Editor.ComponentBorderWidth, Color.Red, Editor.BorderColor, Editor.HoverColor, new CloseInspectorCommand(Editor, this), Button.ButtonType.Trigger);
         }
 
         internal void SetActiveComponent(Component component)
@@ -48,6 +49,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             }
             ActiveComponent = component;
             UpdateComponentPosition(Width, Height, EnabledRowComponentCount);
+        }
+
+        internal void DropActiveComponent()
+        {
+            ComponentList.Clear();
+            ActiveComponent = null;
+            Active = false;
         }
 
         private void UpdateComponentPosition(int width, int height, int enabledRowComponentCount)
@@ -79,6 +87,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             if (Active is false) return;
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
+            CloseButton.Render();
             //for loop render each tool
             if (ComponentList.Count < 1) return;
             for (int i = 0; i < ComponentList.Count; i++) ComponentList[i].Render();

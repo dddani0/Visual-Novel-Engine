@@ -6,7 +6,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
     {
         private Editor Editor { get; set; }
         private readonly int ID;
-        string Name { get; set; }
+        internal string Name { get; set; }
         internal bool IsActive { get; set; } = true;
         internal Timeline Timeline { get; set; }
         internal List<IDinamicComponent> ComponentList { get; set; } = [];

@@ -4,6 +4,7 @@ using TemplateGame.Component;
 using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 using System.Text.Json;
 using VisualNovelEngine.Engine.PortData;
+using System.Text.RegularExpressions;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -12,6 +13,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal const string currentFolderPath = "../../../Engine/Data/";
         internal const string EditorConfigPath = currentFolderPath + "EditorConfig.json";
         internal const string RelativeEditorPath = currentFolderPath + "Editor.json";
+        internal string SaveFilePath { get; set; } = currentFolderPath;
         internal int ComponentWidth { get; set; }
         internal int ComponentHeight { get; set; }
         internal int ComponentBorderWidth { get; set; }
@@ -32,13 +34,15 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal List<MiniWindow> MiniWindow { get; set; } = [];
         public Editor()
         {
-            IDGenerator = new();
             EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
             EditorConfigImport();
+            SaveFilePath += Regex.Replace(ProjectName, @"[^a-zA-Z0-9\s]", "") + ".json";
         }
 
         private void EditorConfigImport()
         {
+            IDGenerator = new(EditorImporter.EditorImport.ID);
+            //
             ComponentWidth = EditorImporter.EditorButtonConfigurationImport.ComponentWidth;
             ComponentHeight = EditorImporter.EditorButtonConfigurationImport.ComponentHeight;
             ComponentBorderWidth = EditorImporter.EditorButtonConfigurationImport.ComponentBorderWidth;

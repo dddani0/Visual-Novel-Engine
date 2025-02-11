@@ -9,27 +9,24 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
     {
         private MiniWindow? SideWindow { get; set; } = null;
         private readonly Editor Editor;
-        private Button ToolButton;
-        private string ButtonName { get; set; }
-        Button[] Buttons { get; set; }
+        internal Button DependentButton;
+        internal string DependentButtonName { get; set; }
+        internal Button[] Buttons { get; set; }
         public ShowSideWindowCommand(Editor editor, string buttonName, Button[] buttons)
         {
             Editor = editor;
-            ButtonName = buttonName;
+            DependentButtonName = buttonName;
             Buttons = buttons;
         }
 
         public void Execute()
         {
-            if (ToolButton == null)
-            {
-                ToolButton = Editor.Toolbar.ComponentList.Select(x => x as Button).FirstOrDefault(x => x.Text == ButtonName);
-            }
+            DependentButton ??= Editor.Toolbar.ComponentList.Select(x => x as Button).FirstOrDefault(x => x.Text == DependentButtonName);
             if (Editor.MiniWindow.Contains(SideWindow)) return;
             SideWindow = new MiniWindow(
                 Editor,
-                ToolButton.XPosition,
-                ToolButton.YPosition + Editor.ComponentHeight,
+                DependentButton.XPosition,
+                DependentButton.YPosition + Editor.ComponentHeight,
                 Editor.ComponentWidth,
                 Editor.ComponentWidth,
                 Editor.ComponentBorderWidth,
