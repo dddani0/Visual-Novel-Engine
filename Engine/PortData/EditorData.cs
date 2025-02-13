@@ -9,6 +9,10 @@ namespace VisualNovelEngine.Engine.PortData
         public int ID { get; set; }
         [JsonPropertyName("ProjectName")]
         public required string ProjectName { get; set; }
+        [JsonPropertyName("WindowWidth")]
+        public int WindowWidth { get; set; }
+        [JsonPropertyName("WindowHeight")]
+        public int WindowHeight { get; set; }
         [JsonPropertyName("ToolBar")]
         public required GroupEXIM ToolBar { get; set; }
         [JsonPropertyName("Scenes")]
@@ -85,11 +89,36 @@ namespace VisualNovelEngine.Engine.PortData
     }
     public class SceneEXIM
     {
+        [JsonPropertyName("ID")]
+        public int ID { get; set; }
         [JsonPropertyName("Name")]
         public required string Name { get; set; }
         [JsonPropertyName("Components")]
         public ComponentEXIM[]? Components { get; set; }
         [JsonPropertyName("GroupList")]
         public GroupEXIM[]? GroupList { get; set; }
+        [JsonPropertyName("Timeline")]
+        public TimelineEXIM Timeline { get; set; }
+    }
+    public class TimelineEXIM
+    {
+        [JsonPropertyName("XPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("YPosition")]
+        public int YPosition { get; set; }
+        [JsonPropertyName("Width")]
+        public int Width { get; set; }
+        [JsonPropertyName("Height")]
+        public int Height { get; set; }
+        [JsonPropertyName("BorderWidth")]
+        public int BorderWidth { get; set; }
+        [JsonPropertyName("Events")]
+        public EventEXIM[]? Events { get; set; }
+        [JsonPropertyName("Buttons")]
+        public ButtonEXIM[]? Buttons { get; set; }
+    }
+    public class EventEXIM
+    {
+
     }
 }

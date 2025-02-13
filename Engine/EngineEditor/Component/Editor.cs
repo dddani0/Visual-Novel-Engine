@@ -79,6 +79,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             InspectorWindowHeight = EditorImporter.EditorButtonConfigurationImport.InspectorHeight;
             InspectorWindowBorderWidth = EditorImporter.EditorButtonConfigurationImport.InspectorBorderWidth;
             //
+            CloseButtonBaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.CloseButtonBaseColor);
+            CloseButtonBorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.CloseButtonBorderColor);
+            CloseButtonHoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.CloseButtonHoverColor);
+            //
+            InspectorButtonBaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.InspectorButtonBaseColor);
+            InspectorButtonBorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.InspectorButtonBorderColor);
+            InspectorButtonHoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.InspectorButtonHoverColor);
+            //
             BaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BaseColor);
             BorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BorderColor);
             TextColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.TextColor);

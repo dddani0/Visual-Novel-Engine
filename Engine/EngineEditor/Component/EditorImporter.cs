@@ -201,8 +201,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             return new()
             {
                 ID = editor.IDGenerator.CurrentID(),
-                //Project name should only allow basic characters, and remove . and / from the name.
                 ProjectName = Regex.Replace(editor.ProjectName, @"[^a-zA-Z0-9\s]", ""),
+                WindowWidth = 800,
+                WindowHeight = 800,
                 ToolBar = ExportGroupData(editor.Toolbar),
                 Scenes = [.. editor.SceneList.Select(ExportSceneData)],
             };
@@ -254,9 +255,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             return new()
             {
+                ID = scene.ID,
                 Name = scene.Name,
-                Components = [],
-                GroupList = []
+                Components = [.. scene.ComponentList.Select(x => x as Component).Select(ExportComponentData)],
+                GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)]
             };
         }
         public RenderingObjectEXIM ExportRenderingObjectData(IPermanentRenderingObject permanentRenderingObject)

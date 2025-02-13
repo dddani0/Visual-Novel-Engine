@@ -1,6 +1,8 @@
 {
     "ID": 2,
-    "ProjectName": "Dani kis projektjének a kis dzsészönje...,.",
+    "ProjectName": "Szakdolgozat játék",
+    "WindowWidth": 800,
+    "WindowHeight": 800,
     "ToolBar": {
         "XPosition": 0,
         "YPosition": 0,

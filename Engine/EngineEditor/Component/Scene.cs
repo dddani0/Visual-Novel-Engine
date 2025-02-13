@@ -5,7 +5,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
     public class Scene : IWindow
     {
         private Editor Editor { get; set; }
-        private readonly int ID;
+        internal readonly int ID;
         internal string Name { get; set; }
         internal bool IsActive { get; set; } = true;
         internal Timeline Timeline { get; set; }
@@ -18,13 +18,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Editor = editor;
             ID = Editor.GenerateID();
             Name = sceneName;
-            Timeline = new();
+            Timeline = new(Editor, 0, 600);
         }
 
         internal void Update()
         {
             if (IsActive is false) return;
             Show();
+            Timeline.Show();
             if (InspectorWindow == null) return;
             InspectorWindow.Show();
         }

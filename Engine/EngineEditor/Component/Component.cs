@@ -17,9 +17,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal string Name { get; set; }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
-        private const int offset = 20;
         internal int Width { get; set; }
         internal int Height { get; set; }
+        private int CloseButtonXPosition { get; set; }
+        private int InspectorButtonXPosition { get; set; }
         internal int BorderWidth { get; set; }
         internal IPermanentRenderingObject? RenderingObject { get; set; }
         internal bool IsSelected { get; set; }
@@ -46,6 +47,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             YPosition = yPosition;
             Width = width;
             Height = height;
+            CloseButtonXPosition = XPosition + Width - Editor.SmallButtonWidth;
+            InspectorButtonXPosition = XPosition + Width - 2 * Editor.SmallButtonWidth;
             BorderWidth = borderWidth;
             Color = color;
             BorderColor = borderColor;
@@ -54,11 +57,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Color closeButtonBaseColor = Editor.CloseButtonBaseColor;
             Color closeButtonBorderColor = Editor.CloseButtonBorderColor;
             Color closeButtonHoverColor = Editor.CloseButtonHoverColor;
-            CloseButton = new Button(editor, XPosition + offset, YPosition, "X", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, closeButtonBaseColor, closeButtonBorderColor, closeButtonHoverColor, new DeleteComponentCommand(Editor, this), Button.ButtonType.Trigger);
+            CloseButton = new Button(editor, CloseButtonXPosition, YPosition, "X", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, closeButtonBaseColor, closeButtonBorderColor, closeButtonHoverColor, new DeleteComponentCommand(Editor, this), Button.ButtonType.Trigger);
             Color inspectorButtonBaseColor = Editor.InspectorButtonBaseColor;
             Color inspectorButtonBorderColor = Editor.InspectorButtonBorderColor;
             Color inspectorButtonHoverColor = Editor.InspectorButtonHoverColor;
-            InspectorButton = new Button(editor, XPosition + offset + CloseButton.Width, YPosition, "I", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, new ShowInspectorCommand(Editor, 1, 200, 200), Button.ButtonType.Trigger);
+            InspectorButton = new Button(editor, InspectorButtonXPosition, YPosition, "I", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, new ShowInspectorCommand(Editor, 1, 200, 200), Button.ButtonType.Trigger);
             MoveTimer = new Timer(0.1f);
             Group = group;
             RenderingObject = component;
@@ -122,13 +125,18 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             }
             if (Raylib.IsMouseButtonDown(MouseButton.Left))
             {
-                IsMoving = true;
-                XPosition = Raylib.GetMouseX() - Raylib.GetMouseX() + XPosition;
-                YPosition = Raylib.GetMouseY() - Raylib.GetMouseY() + YPosition;
-                CloseButton.XPosition = XPosition + offset;
-                CloseButton.YPosition = YPosition;
-                InspectorButton.XPosition = XPosition + offset + CloseButton.Width;
-                InspectorButton.YPosition = YPosition;
+                if (IsHover is false)
+                {
+                    IsMoving = true;
+                    XPosition = Raylib.GetMouseX();
+                    YPosition = Raylib.GetMouseY();
+                    CloseButtonXPosition = XPosition + Width - Editor.SmallButtonWidth;
+                    CloseButton.XPosition = CloseButtonXPosition;
+                    CloseButton.YPosition = YPosition;
+                    InspectorButtonXPosition = XPosition + Width - 2 * Editor.SmallButtonWidth;
+                    InspectorButton.XPosition = InspectorButtonXPosition;
+                    InspectorButton.YPosition = YPosition;
+                }
             }
             //Detach this component if it's is dragged outside the group.
             if (Group is null)

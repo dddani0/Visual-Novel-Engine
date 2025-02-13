@@ -12,6 +12,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         internal Button DependentButton;
         internal string DependentButtonName { get; set; }
         internal Button[] Buttons { get; set; }
+        /// <summary>
+        /// Constructor for toolbar associated purposes
+        /// </summary>
+        /// <param name="editor"></param>
+        /// <param name="buttonName"></param>
+        /// <param name="buttons"></param>
         public ShowSideWindowCommand(Editor editor, string buttonName, Button[] buttons)
         {
             Editor = editor;
@@ -19,9 +25,19 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             Buttons = buttons;
         }
 
+        public ShowSideWindowCommand(Editor editor, Button dependentButton, Button[] buttons)
+        {
+            Editor = editor;
+            DependentButton = dependentButton;
+            Buttons = buttons;
+        }
+
         public void Execute()
         {
-            DependentButton ??= Editor.Toolbar.ComponentList.Select(x => x as Button).FirstOrDefault(x => x.Text == DependentButtonName);
+            if (DependentButton == null)
+            {
+                DependentButton = Editor.Toolbar.ComponentList.Select(x => x as Button).FirstOrDefault(x => x.Text == DependentButtonName);
+            }
             if (Editor.MiniWindow.Contains(SideWindow)) return;
             SideWindow = new MiniWindow(
                 Editor,
@@ -35,7 +51,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 [.. Buttons]
             );
             Editor.MiniWindow.Add(SideWindow);
-
         }
     }
 }

@@ -14,7 +14,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         public enum ButtonType
         {
             Trigger,
-            Hold
+            Hold,
+            Toggle
         }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
@@ -89,10 +90,19 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         Selected = true;
                         Command.Execute();
                         break;
+                    case ButtonType.Toggle:
+                        if (Selected) Selected = false;
+                        else
+                        {
+                            Command.Execute();
+                            Selected = true;
+                        }
+                        break;
                 }
             }
             else if (IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left))
             {
+                if (Type is ButtonType.Toggle) return;
                 Selected = false;
                 IsExecuted = false;
             }

@@ -46,9 +46,9 @@
         255
     ],
     "InspectorButtonBorderColor": [
-        0,
-        0,
-        0,
+        255,
+        255,
+        255,
         255
     ],
     "InspectorButtonHoverColor": [
@@ -64,9 +64,9 @@
         255
     ],
     "CloseButtonBorderColor": [
-        0,
-        0,
-        0,
+        255,
+        255,
+        255,
         255
     ],
     "CloseButtonHoverColor": [
