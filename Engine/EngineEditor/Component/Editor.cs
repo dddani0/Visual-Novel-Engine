@@ -34,6 +34,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Color BorderColor { get; set; }
         internal Color TextColor { get; set; }
         internal Color HoverColor { get; set; }
+        internal Color EditorColor { get; set; }
         internal Color InspectorButtonBaseColor { get; set; }
         internal Color InspectorButtonBorderColor { get; set; }
         internal Color InspectorButtonHoverColor { get; set; }
@@ -47,6 +48,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal List<Scene> SceneList { get; set; } = [];
         internal Scene ActiveScene { get; set; }
         internal List<MiniWindow> MiniWindow { get; set; } = [];
+        public bool Busy => ActiveScene.InspectorWindow?.Active is true;
         public Editor()
         {
             EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
@@ -91,6 +93,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BorderColor);
             TextColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.TextColor);
             HoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.HoverColor);
+            EditorColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.EditorColor);
             //
             Toolbar = EditorImporter.FetchToolBarFromImport(EditorImporter.EditorImport.ToolBar);
             ProjectName = EditorImporter.EditorImport.ProjectName;
@@ -114,7 +117,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
 
         public void Update()
         {
-            Raylib.ClearBackground(Color.Gray);
+            Raylib.ClearBackground(EditorColor);
             ActiveScene.Update();
             Toolbar.Update();
             for (int i = 0; i < MiniWindow.Count; i++)

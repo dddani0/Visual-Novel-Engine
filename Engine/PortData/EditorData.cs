@@ -102,23 +102,12 @@ namespace VisualNovelEngine.Engine.PortData
     }
     public class TimelineEXIM
     {
-        [JsonPropertyName("XPosition")]
-        public int XPosition { get; set; }
-        [JsonPropertyName("YPosition")]
-        public int YPosition { get; set; }
-        [JsonPropertyName("Width")]
-        public int Width { get; set; }
-        [JsonPropertyName("Height")]
-        public int Height { get; set; }
-        [JsonPropertyName("BorderWidth")]
-        public int BorderWidth { get; set; }
         [JsonPropertyName("Events")]
         public EventEXIM[]? Events { get; set; }
-        [JsonPropertyName("Buttons")]
-        public ButtonEXIM[]? Buttons { get; set; }
     }
     public class EventEXIM
     {
-
+        [JsonPropertyName("Type")]
+        public string Type { get; set; }
     }
 }

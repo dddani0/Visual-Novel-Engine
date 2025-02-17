@@ -133,6 +133,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         public void Move()
         {
+            if (Editor.Busy) return;
             IsHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, Width, Height));
             if (Raylib.IsMouseButtonPressed(MouseButton.Left) && IsHover)
             {

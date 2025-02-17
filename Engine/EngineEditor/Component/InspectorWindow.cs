@@ -1,6 +1,8 @@
 using Namespace;
 using Raylib_cs;
 using TemplateGame.Component;
+using TemplateGame.Component.Action;
+using TemplateGame.Component.Action.TimelineDependent;
 using TemplateGame.Interface;
 using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
@@ -23,6 +25,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Color BorderColor { get; set; }
         internal bool Active { get; set; } = false;
         internal Component? ActiveComponent { get; set; } = null;
+        internal IEvent? ActiveEvent { get; set; } = null;
         internal Button CloseButton { get; set; }
         internal List<IComponent> ComponentList { get; set; } = [];
         public InspectorWindow(Editor editor, int xPosition, int yPosition, int enabledRowComponentCount)
@@ -47,6 +50,39 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault(), false));
             }
             ActiveComponent = component;
+            UpdateComponentPosition(Width, Height, EnabledRowComponentCount);
+        }
+        internal void SetActiveComponent(IEvent eventData)
+        {
+            //DANI ezt dolgozd ki!
+            ActiveEvent = eventData;
+            switch (eventData)
+            {
+                case CreateMenuAction createMenuAction:
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Create Menu Action", Raylib.GetFontDefault(), false));
+                    break;
+                case LoadSceneAction loadSceneAction:
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Load Scene Action", Raylib.GetFontDefault(), false));
+                    break;
+                case NativeLoadSceneAction nativeLoadSceneAction:
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Native Load Scene Action", Raylib.GetFontDefault(), false));
+                    break;
+                case AddSpriteAction addSpriteAction:
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Add Sprite Action", Raylib.GetFontDefault(), false));
+                    break;
+                case ChangeSpriteAction changeSpriteAction:
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Change Sprite Action", Raylib.GetFontDefault(), false));
+                    break;
+                case CreateVariableAction createVariableAction:
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Create Variable Action", Raylib.GetFontDefault(), false));
+                    break;
+                case DecrementVariableAction decrementVariableAction:
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Decrement Variable Action", Raylib.GetFontDefault(), false));
+                    break;
+                case EmptyAction:
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Empty Action", Raylib.GetFontDefault(), false));
+                    break;
+            }
             UpdateComponentPosition(Width, Height, EnabledRowComponentCount);
         }
 

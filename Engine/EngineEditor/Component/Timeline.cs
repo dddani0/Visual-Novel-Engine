@@ -100,7 +100,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Editor.BaseColor,
                 Editor.BorderColor,
                 Editor.HoverColor,
-                null,
+                new ShowInspectorCommand(Editor, action, 1),
                 Button.ButtonType.Trigger));
         }
     }

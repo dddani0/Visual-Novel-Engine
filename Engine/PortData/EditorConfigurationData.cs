@@ -42,6 +42,8 @@ public class EditorConfigurationImport
     public required int[] TextColor { get; set; }
     [JsonPropertyName("HoverColor")]
     public required int[] HoverColor { get; set; }
+    [JsonPropertyName("EditorColor")]
+    public required int[] EditorColor { get; set; }
     [JsonPropertyName("InspectorButtonBaseColor")]
     public required int[] InspectorButtonBaseColor { get; set; }
     [JsonPropertyName("InspectorButtonBorderColor")]

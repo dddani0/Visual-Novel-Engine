@@ -49,6 +49,15 @@
                     "Type": "BuildProjectCommand"
                 },
                 "Type": 0
+            },
+            {
+                "XPosition": 200,
+                "YPosition": 0,
+                "Text": "Trash",
+                "Command": {
+                    "Type": "DeleteAllComponentCommand"
+                },
+                "Type": 0
             }
         ]
     },

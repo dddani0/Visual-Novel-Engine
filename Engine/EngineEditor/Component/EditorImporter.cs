@@ -8,6 +8,8 @@ using VisualNovelEngine.Engine.PortData;
 using TemplateGame.Interface;
 using TemplateGame.Component;
 using System.Text.RegularExpressions;
+using TemplateGame.Component.Action.TimelineDependent;
+using TemplateGame.Component.Action;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -44,6 +46,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             sceneImport.Name,
              [.. sceneImport.Components.Select(FetchComponentFromImport)],
              [.. sceneImport.GroupList.Select(FetchGroupFromImport)]);
+        }
+        public IEvent FetchEventFromImport(EventEXIM eventImport)
+        {
+            return eventImport.Type switch
+            {
+                "EmptyAction" => new EmptyAction(null),
+                _ => throw new Exception("Event type not found!"),
+            };
         }
         public Group FetchToolBarFromImport(GroupEXIM toolBarImport)
         {
@@ -144,13 +154,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     return new ShowSideWindowCommand(Editor, parentButtonName, buttons);
                 case "ShowInspectorCommand":
                     return new ShowInspectorCommand(Editor,
-                        commandImport.EnabledRowComponentCount,
-                        commandImport.XPosition,
-                        commandImport.YPosition);
+                        commandImport.EnabledRowComponentCount);
                 case "SaveProjectDataCommand":
                     return new SaveProjectDataCommand(Editor);
                 case "BuildProjectCommand":
                     return new BuildProjectCommand(Editor);
+                case "DeleteAllComponentCommand":
+                    return new DeleteAllComponentCommand(Editor);
                 default:
                     throw new Exception("Command type not found!");
             }
@@ -258,7 +268,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 ID = scene.ID,
                 Name = scene.Name,
                 Components = [.. scene.ComponentList.Select(x => x as Component).Select(ExportComponentData)],
-                GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)]
+                GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
+                Timeline = ExportTimelineData(scene.Timeline)
             };
         }
         public RenderingObjectEXIM ExportRenderingObjectData(IPermanentRenderingObject permanentRenderingObject)
@@ -274,6 +285,38 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 default:
                     throw new Exception("Rendering object type not found!");
             }
+        }
+
+        public TimelineEXIM ExportTimelineData(Timeline timeline)
+        {
+            return new()
+            {
+                Events = [.. timeline.Events.Select(ExportEventData)]
+            };
+        }
+
+        public EventEXIM ExportEventData(IEvent eventData)
+        {
+            return eventData switch
+            {
+                EmptyAction emptyAction => new() { Type = "EmptyAction" },
+                CreateMenuAction createMenuAction => new() { Type = "CreateMenuAction" },
+                LoadSceneAction loadSceneAction => new() { Type = "LoadSceneAction" },
+                NativeLoadSceneAction nativeLoadSceneAction => new() { Type = "NativeLoadSceneAction" },
+                AddSpriteAction addSpriteAction => new() { Type = "AddSpriteAction" },
+                ChangeSpriteAction changeSpriteAction => new() { Type = "ChangeSpriteAction" },
+                CreateVariableAction createVariableAction => new() { Type = "CreateVariableAction" },
+                DecrementVariableAction decrementVariableAction => new() { Type = "DecrementVariableAction" },
+                IncrementVariableAction incrementVariableAction => new() { Type = "IncrementVariableAction" },
+                RemoveSpriteAction removeSpriteAction => new() { Type = "RemoveSpriteAction" },
+                SetBoolVariableAction setBoolVariableAction => new() { Type = "SetBoolVariableAction" },
+                SetVariableFalseAction setVariableFalseAction => new() { Type = "SetVariableFalseAction" },
+                SetVariableTrueAction setVariableTrueAction => new() { Type = "SetVariableTrueAction" },
+                TextBoxCreateAction textBoxCreateAction => new() { Type = "TextBoxCreateAction" },
+                TintSpriteAction tintSpriteAction => new() { Type = "TintSpriteAction" },
+                ToggleVariableAction toggleVariableAction => new() { Type = "ToggleVariableAction" },
+                _ => throw new Exception("Event type not found!"),
+            };
         }
     }
 }

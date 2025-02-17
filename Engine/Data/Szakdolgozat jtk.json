@@ -1,0 +1,105 @@
+{
+  "ID": 3,
+  "ProjectName": "Szakdolgozat jtk",
+  "WindowWidth": 800,
+  "WindowHeight": 800,
+  "ToolBar": {
+    "XPosition": 0,
+    "YPosition": 0,
+    "Width": 316,
+    "Height": 60,
+    "BorderWidth": 1,
+    "Buttons": [
+      {
+        "XPosition": 5,
+        "YPosition": 5,
+        "Text": "Create",
+        "Command": {
+          "Type": "ShowSideWindowCommand",
+          "RenderingObjectType": 0,
+          "EnabledRowComponentCount": 0,
+          "XPosition": 0,
+          "YPosition": 0,
+          "ParentButtonName": "Create",
+          "Buttons": [
+            {
+              "XPosition": 0,
+              "YPosition": 0,
+              "Text": "Sprite",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "RenderingObjectType": 0,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            }
+          ],
+          "ButtonDependency": null
+        },
+        "Type": 0
+      },
+      {
+        "XPosition": 110,
+        "YPosition": 5,
+        "Text": "Save",
+        "Command": {
+          "Type": "SaveProjectDataCommand",
+          "RenderingObjectType": 0,
+          "EnabledRowComponentCount": 0,
+          "XPosition": 0,
+          "YPosition": 0,
+          "ParentButtonName": null,
+          "Buttons": null,
+          "ButtonDependency": null
+        },
+        "Type": 0
+      },
+      {
+        "XPosition": 215,
+        "YPosition": 5,
+        "Text": "Build",
+        "Command": {
+          "Type": "BuildProjectCommand",
+          "RenderingObjectType": 0,
+          "EnabledRowComponentCount": 0,
+          "XPosition": 0,
+          "YPosition": 0,
+          "ParentButtonName": null,
+          "Buttons": null,
+          "ButtonDependency": null
+        },
+        "Type": 0
+      }
+    ],
+    "Components": []
+  },
+  "Scenes": [
+    {
+      "ID": 2,
+      "Name": "Scene1",
+      "Components": [],
+      "GroupList": [],
+      "Timeline": {
+        "Events": [
+          {
+            "Type": "EmptyAction"
+          },
+          {
+            "Type": "EmptyAction"
+          },
+          {
+            "Type": "EmptyAction"
+          },
+          {
+            "Type": "EmptyAction"
+          }
+        ]
+      }
+    }
+  ]
+}
