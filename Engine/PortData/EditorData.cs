@@ -72,6 +72,12 @@ namespace VisualNovelEngine.Engine.PortData
     {
         [JsonPropertyName("Type")]
         public required string Type { get; set; }
+        [JsonPropertyName("ErrorType")]
+        public int? ErrorType { get; set; }
+        [JsonPropertyName("ErrorMessage")]
+        public string? ErrorMessage { get; set; }
+        [JsonPropertyName("WarningButtons")]
+        public ButtonEXIM[]? WarningButtons { get; set; }
         [JsonPropertyName("RenderingObjectType")]
         public int RenderingObjectType { get; set; }
         [JsonPropertyName("EnabledRowComponentCount")]

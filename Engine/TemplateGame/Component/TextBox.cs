@@ -1,13 +1,14 @@
 using System.Numerics;
 using System.Text.RegularExpressions;
 using Raylib_cs;
+using TemplateGame.Interface;
 
 namespace TemplateGame.Component
 {
     /// <summary>
     /// Store, Write, Edit and Delete text according to need.
     /// </summary>
-    public class TextBox
+    public class TextBox : IPermanentRenderingObject
     {
         /// <summary>
         /// The position type of the textbox.
@@ -329,7 +330,8 @@ namespace TemplateGame.Component
                 ToggleEnability();
                 ResetTextBox();
                 return;
-            };
+            }
+            ;
             //Reference variables and fit the string to the textbox
             if (Content[TextCollectionIndex].Contains("$[") is false) Content[TextCollectionIndex] = ReferenceVariables(Content[TextCollectionIndex]);
             //Only wrap if its not already wrapped
@@ -346,9 +348,56 @@ namespace TemplateGame.Component
             Output = String.Empty;
         }
         /// <summary>
-        /// Write currently loaded textdata to screen (within the textbox framework).
+        /// Toggle the enability of the textbox.
         /// </summary>
-        internal void WriteToScreen()
+        internal void ToggleEnability() => IsEnabled = !IsEnabled;
+        /// <summary>
+        /// Check if the textbox is finished.
+        /// </summary>
+        /// <returns></returns>
+        internal bool IsFinished() => TextIndex == TextCount;
+        /// <summary>
+        /// Create textbox for string data with a header.
+        /// Custom color for textbox background and border.
+        /// </summary>
+        /// <param name="game">The game instance</param>
+        /// <param name="characterPerSecond">Characters per second</param>
+        /// <param name="activeFont">The font which the textbox will use</param>
+        /// <param name="TextBoxcolor">Background color of the textbox.</param>
+        /// <param name="TextBoxBorder">Border color of the textbox.</param>
+        /// <param name="textBoxPosition">The position of the textbox</param>
+        /// <param name="textMarginHorizontal">The horizontal margin of the text.</param>
+        /// <param name="textMarginVertical">The vertical margin of the text.</param>
+        /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
+        /// <param name="textBoxTitle">The header of the textbox.</param>
+        /// <param name="textBoxContent">text data</param>
+        /// <returns></returns>
+        public static TextBox CreateNewTextBox(
+            Game game,
+            double characterPerSecond,
+            Font activeFont,
+            Color TextBoxcolor,
+            Color TextBoxBorder,
+            PositionType textBoxPosition,
+            int textMarginHorizontal,
+            int textMarginVertical,
+            bool wordWrap,
+            string textBoxTitle,
+            List<String> textBoxContent)
+            =>
+            new(
+            textBoxContent,
+            textBoxTitle,
+            characterPerSecond,
+            activeFont,
+            TextBoxcolor, TextBoxBorder,
+            textBoxPosition,
+            textMarginHorizontal,
+            textMarginVertical,
+            wordWrap,
+            game);
+
+        public void Render()
         {
             //Return if disabled or finished. (render nothing)
             if (isTurnedOff() || isDone()) return;
@@ -409,56 +458,11 @@ namespace TemplateGame.Component
             bool isSkipBatch() => Game.IsLeftMouseButtonPressed();
             bool shouldProceedNextBatch() =>
                 TextCollectionIndex < TextCollectionCount && IsFinished() is true && Game.IsLeftMouseButtonPressed();
-
         }
-        /// <summary>
-        /// Toggle the enability of the textbox.
-        /// </summary>
-        internal void ToggleEnability() => IsEnabled = !IsEnabled;
-        /// <summary>
-        /// Check if the textbox is finished.
-        /// </summary>
-        /// <returns></returns>
-        internal bool IsFinished() => TextIndex == TextCount;
-        /// <summary>
-        /// Create textbox for string data with a header.
-        /// Custom color for textbox background and border.
-        /// </summary>
-        /// <param name="game">The game instance</param>
-        /// <param name="characterPerSecond">Characters per second</param>
-        /// <param name="activeFont">The font which the textbox will use</param>
-        /// <param name="TextBoxcolor">Background color of the textbox.</param>
-        /// <param name="TextBoxBorder">Border color of the textbox.</param>
-        /// <param name="textBoxPosition">The position of the textbox</param>
-        /// <param name="textMarginHorizontal">The horizontal margin of the text.</param>
-        /// <param name="textMarginVertical">The vertical margin of the text.</param>
-        /// <param name="wordWrap">Should wrap the entire word when initiating a new line?</param>
-        /// <param name="textBoxTitle">The header of the textbox.</param>
-        /// <param name="textBoxContent">text data</param>
-        /// <returns></returns>
-        public static TextBox CreateNewTextBox(
-            Game game,
-            double characterPerSecond,
-            Font activeFont,
-            Color TextBoxcolor,
-            Color TextBoxBorder,
-            PositionType textBoxPosition,
-            int textMarginHorizontal,
-            int textMarginVertical,
-            bool wordWrap,
-            string textBoxTitle,
-            List<String> textBoxContent)
-            =>
-            new(
-            textBoxContent,
-            textBoxTitle,
-            characterPerSecond,
-            activeFont,
-            TextBoxcolor, TextBoxBorder,
-            textBoxPosition,
-            textMarginHorizontal,
-            textMarginVertical,
-            wordWrap,
-            game);
+
+        public bool Enabled()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

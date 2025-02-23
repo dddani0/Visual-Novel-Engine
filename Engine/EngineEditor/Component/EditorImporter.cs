@@ -10,6 +10,7 @@ using TemplateGame.Component;
 using System.Text.RegularExpressions;
 using TemplateGame.Component.Action.TimelineDependent;
 using TemplateGame.Component.Action;
+using EngineEditor.Component;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -159,8 +160,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     return new SaveProjectDataCommand(Editor);
                 case "BuildProjectCommand":
                     return new BuildProjectCommand(Editor);
-                case "DeleteAllComponentCommand":
-                    return new DeleteAllComponentCommand(Editor);
+                case "ShowErrorCommand":
+                    if (commandImport.ErrorMessage == null) throw new Exception("Error message not found!");
+                    if (commandImport.WarningButtons == null) throw new Exception("Warning buttons not found!");
+                    if (commandImport.ErrorType == null) throw new Exception("Error type not found!");
+                    return new ShowErrorCommand(Editor, (ErrorWindow.ErrorType)commandImport.ErrorType, commandImport.ErrorMessage, [.. commandImport.WarningButtons.Select(FetchButtonFromImport)]);
+                case "DeleteAllComponentsCommand":
+                    return new DeleteAllComponentsCommand(Editor);
                 default:
                     throw new Exception("Command type not found!");
             }

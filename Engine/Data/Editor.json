@@ -30,7 +30,7 @@
                         }
                     ]
                 },
-                "Type": 0
+                "Type": 2
             },
             {
                 "XPosition": 100,
@@ -55,7 +55,20 @@
                 "YPosition": 0,
                 "Text": "Trash",
                 "Command": {
-                    "Type": "DeleteAllComponentCommand"
+                    "Type": "ShowErrorCommand",
+                    "ErrorType": 0,
+                    "ErrorMessage": "You are about to delete every component and group in the scene. Are you sure you want to continue?",
+                    "WarningButtons": [
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Yes",
+                            "Command": {
+                                "Type": "DeleteAllComponentsCommand"
+                            },
+                            "Type": 0
+                        }
+                    ]
                 },
                 "Type": 0
             }

@@ -38,7 +38,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             {
                 DependentButton = Editor.Toolbar.ComponentList.Select(x => x as Button).FirstOrDefault(x => x.Text == DependentButtonName);
             }
-            if (Editor.MiniWindow.Contains(SideWindow)) return;
+            if (Editor.MiniWindow.Contains(SideWindow))
+            {
+                if (DependentButton.Selected is false)
+                {
+                    Editor.MiniWindow.Remove(SideWindow);
+                }
+                return;
+            }
             SideWindow = new MiniWindow(
                 Editor,
                 DependentButton.XPosition,

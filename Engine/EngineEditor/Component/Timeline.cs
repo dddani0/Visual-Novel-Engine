@@ -1,3 +1,4 @@
+using EngineEditor.Component;
 using Raylib_cs;
 using TemplateGame.Interface;
 using VisualNovelEngine.Engine.EngineEditor.Component.Command;
@@ -17,8 +18,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal List<Button> EventButtons { get; set; } = [];
         internal Button AddGeneralEventButton { get; set; }
         internal Button AddTimelineIndependentEventButton { get; set; }
-        internal Button RemoveEventButton { get; set; }
+        internal Button RemoveEventsButton { get; set; }
         internal Button EditEventButton { get; set; }
+        internal Scrollbar Scrollbar { get; set; }
 
         public Timeline(Editor editor, int xPos, int yPos)
         {
@@ -40,13 +42,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Editor.BorderColor,
                 Editor.HoverColor,
                 null,
-                0);
+                (Button.ButtonType)2);
             AddGeneralEventButton.AddCommand(new ShowSideWindowCommand(Editor, AddGeneralEventButton, [
                 new Button(
                     Editor,
                     0,
                     0,
-                    "New 'MenuAction'",
+                    "New 'MenuAction' action",
                     Editor.ButtonWidth,
                     Editor.ButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -62,7 +64,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Editor,
                     0,
                     0,
-                    "new 'LoadSceneAction'",
+                    "new 'LoadSceneAction' action",
                     Editor.ButtonWidth,
                     Editor.ButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -72,7 +74,240 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.LoadSceneAction),
                     0
                     ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'NativeLoadSceneAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.NativeLoadSceneAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'AddSpriteAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.AddSpriteAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'ChangeSpriteAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.ChangeSpriteAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'CreateVariableAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.CreateVariableAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'DecrementVariableAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.DecrementVariableAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'EmptyAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.EmptyAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'IncrementVariableAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.IncrementVariableAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'RemoveSpriteAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.RemoveSpriteAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'SetBoolVariableAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.SetBoolVariableAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'SetVariableFalseAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.SetVariableFalseAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'SetVariableTrueAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.SetVariableTrueAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'TextBoxCreateAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.TextBoxCreateAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'TintSpriteAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.TintSpriteAction),
+                    0
+                    ),
+                new Button(
+                    Editor,
+                    0,
+                    0,
+                    "new 'ToggleVariableAction' action",
+                    Editor.ButtonWidth,
+                    Editor.ButtonHeight,
+                    Editor.ButtonBorderWidth,
+                    Editor.BaseColor,
+                    Editor.BorderColor,
+                    Editor.HoverColor,
+                    new CreateGeneralEventCommand(Editor, CreateGeneralEventCommand.ActionType.ToggleVariableAction),
+                    0
+                    )
             ]));
+            RemoveEventsButton = new(
+                Editor,
+                XPosition + Width - Editor.ButtonWidth,
+                YPosition,
+                "Remove",
+                Editor.ButtonWidth,
+                Editor.ButtonHeight,
+                Editor.ButtonBorderWidth,
+                Editor.BaseColor,
+                Editor.BorderColor,
+                Editor.HoverColor,
+                new ShowErrorCommand(Editor, ErrorWindow.ErrorType.Quit, "Delete all events from timeline?", [
+                    new Button(
+                        Editor,
+                        0,
+                        0,
+                        "Yes",
+                        Editor.ButtonWidth,
+                        Editor.ButtonHeight,
+                        Editor.ButtonBorderWidth,
+                        Editor.BaseColor,
+                        Editor.BorderColor,
+                        Editor.HoverColor,
+                        new DeleteAllEventsCommand(Editor),
+                        0
+                    )
+                ]),
+                Button.ButtonType.Trigger);
+            Scrollbar = new(
+                Editor,
+                XPosition,
+                YPosition + Height - Editor.SmallButtonHeight,
+                Editor.SmallButtonHeight,
+                Editor.SmallButtonWidth,
+                Scrollbar.ScrollbarType.Horizontal,
+                false,
+                [.. EventButtons]);
         }
 
         public void Show()
@@ -80,11 +315,19 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Editor.BaseColor);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, Editor.BorderColor);
             AddGeneralEventButton.Render();
-            for (int i = 0; i < Events.Count; i++) EventButtons[i].Render();
+            for (int i = 0; i < Events.Count; i++)
+            {
+                if ((EventButtons.Count * Editor.ButtonWidth) > (XPosition + Width)) ScrollBar();
+                EventButtons[i].Render();
+            }
             if (Events.Count <= 0) return;
-            //RemoveEventButton.Render();
+            RemoveEventsButton.Render();
         }
 
+        private void ScrollBar()
+        {
+            Scrollbar.Render();
+        }
         internal void AddEvent(IEvent action)
         {
             Events.Add(action);
@@ -102,6 +345,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Editor.HoverColor,
                 new ShowInspectorCommand(Editor, action, 1),
                 Button.ButtonType.Trigger));
+            Scrollbar.AddComponent(EventButtons[^1]);
         }
     }
 }

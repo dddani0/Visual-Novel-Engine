@@ -2,11 +2,11 @@ using VisualNovelEngine.Engine.EngineEditor.Interface;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
 {
-    class DeleteAllComponentCommand : ICommand
+    class DeleteAllComponentsCommand : ICommand
     {
         internal Editor Editor { get; set; }
-
-        public DeleteAllComponentCommand(Editor editor)
+        
+        public DeleteAllComponentsCommand(Editor editor)
         {
             Editor = editor;
         }

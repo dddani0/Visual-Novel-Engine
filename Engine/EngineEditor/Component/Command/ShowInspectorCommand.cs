@@ -49,6 +49,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 Editor.ActiveScene.InspectorWindow = Window;
                 return;
             }
+            {
+                Window.DropActiveComponent();
+            }
             //Search for the first selected component and set it as the active component.
             //Convert the selected component to a component.
             Window.SetActiveComponent((Component)Editor.ActiveScene.ComponentList.FirstOrDefault(x =>

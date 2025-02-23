@@ -18,7 +18,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
             {
                 TextBox.ToggleEnability();
             }
-            TextBox.WriteToScreen();
+            TextBox.Render();
         }
     }
 }

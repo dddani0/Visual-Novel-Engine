@@ -18,7 +18,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The current folder path.
         /// </summary>
-        internal const string currentFolderPath = "../../../src/Data/";
+        internal const string currentFolderPath = "../../../Engine/Data/";
         /// <summary>
         /// The Game settings path.
         /// </summary>

@@ -5,6 +5,7 @@ using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 using System.Text.Json;
 using VisualNovelEngine.Engine.PortData;
 using System.Text.RegularExpressions;
+using EngineEditor.Component;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -14,6 +15,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal const string EditorConfigPath = currentFolderPath + "EditorConfig.json";
         internal const string RelativeEditorPath = currentFolderPath + "Editor.json";
         internal string SaveFilePath { get; set; } = currentFolderPath;
+        internal Game Game { get; set; }
         internal int ComponentWidth { get; set; }
         internal int ComponentHeight { get; set; }
         internal int ComponentBorderWidth { get; set; }
@@ -48,9 +50,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal List<Scene> SceneList { get; set; } = [];
         internal Scene ActiveScene { get; set; }
         internal List<MiniWindow> MiniWindow { get; set; } = [];
+        internal ErrorWindow? ErrorWindow { get; set; } = null;
         public bool Busy => ActiveScene.InspectorWindow?.Active is true;
         public Editor()
         {
+            Game = new();
             EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
             EditorConfigImport();
             SaveFilePath += Regex.Replace(ProjectName, @"[^a-zA-Z0-9\s]", "") + ".json";
@@ -124,6 +128,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             {
                 MiniWindow[i].Show();
             }
+            ErrorWindow?.Show();
         }
         /// <summary>
         /// Generates a unique number ID.

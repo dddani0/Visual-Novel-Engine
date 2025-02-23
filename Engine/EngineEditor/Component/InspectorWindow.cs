@@ -28,6 +28,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal IEvent? ActiveEvent { get; set; } = null;
         internal Button CloseButton { get; set; }
         internal List<IComponent> ComponentList { get; set; } = [];
+        internal bool IsOverflow { get; set; } = false;
         public InspectorWindow(Editor editor, int xPosition, int yPosition, int enabledRowComponentCount)
         {
             Editor = editor;
@@ -54,7 +55,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         internal void SetActiveComponent(IEvent eventData)
         {
-            //DANI ezt dolgozd ki!
             ActiveEvent = eventData;
             switch (eventData)
             {
@@ -117,6 +117,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Height = YPosition + (Editor.ComponentHeight * rowcount);
             }
         }
+        
         public void Show()
         {
             if (Active is false) return;

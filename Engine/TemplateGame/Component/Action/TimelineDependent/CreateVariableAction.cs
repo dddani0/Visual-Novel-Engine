@@ -7,12 +7,12 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// <summary>
     /// Creates a new variable.
     /// </summary>
-    /// <param name="concurrentGame">Active game</param>
+    /// <param name="game">Active game</param>
     /// <param name="variable">To be cerated variable</param>
-    class CreateVariableAction(Game concurrentGame, Variable variable) : IEvent, IButtonEvent
+    class CreateVariableAction(Game game, Variable variable) : IEvent, IButtonEvent
     {
         Variable Variable { get; } = variable;
-        Game Game { get; } = concurrentGame;
+        Game Game { get; } = game;
 
         public void PerformEvent()
         {

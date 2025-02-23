@@ -91,7 +91,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         Command.Execute();
                         break;
                     case ButtonType.Toggle:
-                        if (Selected) Selected = false;
+                        if (Selected)
+                        {
+                            Selected = false;
+                        }
                         else
                         {
                             Command.Execute();
