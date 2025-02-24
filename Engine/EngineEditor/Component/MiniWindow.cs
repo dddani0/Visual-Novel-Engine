@@ -19,6 +19,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Color BorderColor { get; set; }
         internal bool IsHover { get; set; } = false;
         internal List<Button> ComponentList { get; set; } = [];
+        internal Scrollbar Scrollbar { get; set; }
 
         public MiniWindow(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Button[] buttons)
         {
@@ -32,6 +33,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderColor = borderColor;
             ComponentList.AddRange(buttons);
             UpdateComponentPosition();
+            Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Height, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
         }
 
         private void UpdateComponentPosition()
@@ -47,13 +49,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         public void Show()
         {
             IsHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, Width, Height));
-            if (IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left))
-            {
-                //Disable with timer, but timer is not implemented yet
-            }
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
             if (ComponentList == null) return;
+            if (ComponentList.Count * Editor.ComponentHeight > Height) Scrollbar.Render();
             for (int i = 0; i < ComponentList.Count; i++)
             {
                 ComponentList[i].Render();

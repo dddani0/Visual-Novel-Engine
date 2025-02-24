@@ -15,6 +15,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         public void Execute()
         {
             Editor.ActiveScene.Timeline.Events.Clear();
+            Editor.ActiveScene.Timeline.EventButtons.Clear();
         }
     }
 }

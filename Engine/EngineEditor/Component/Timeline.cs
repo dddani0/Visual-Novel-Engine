@@ -304,7 +304,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 XPosition,
                 YPosition + Height - Editor.SmallButtonHeight,
                 Editor.SmallButtonHeight,
-                Editor.SmallButtonWidth,
+                Raylib.GetScreenWidth(),
                 Scrollbar.ScrollbarType.Horizontal,
                 false,
                 [.. EventButtons]);
@@ -317,9 +317,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             AddGeneralEventButton.Render();
             for (int i = 0; i < Events.Count; i++)
             {
-                if ((EventButtons.Count * Editor.ButtonWidth) > (XPosition + Width)) ScrollBar();
                 EventButtons[i].Render();
             }
+            if ((EventButtons.Count * Editor.ButtonWidth) > (XPosition + Width)) ScrollBar();
             if (Events.Count <= 0) return;
             RemoveEventsButton.Render();
         }

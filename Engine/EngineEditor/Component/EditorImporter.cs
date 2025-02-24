@@ -109,6 +109,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 FetchRenderingObjectFromImport(componentImport.RenderingObject)
             );
         }
+        //DANI IDE SÜSS!
         public IPermanentRenderingObject FetchRenderingObjectFromImport(RenderingObjectEXIM renderingObjectImport)
         {
             return renderingObjectImport.Type switch

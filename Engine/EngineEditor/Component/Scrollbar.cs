@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using Raylib_cs;
+using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
@@ -18,20 +19,15 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal int Width { get; set; }
         internal int Height { get; set; }
         internal int BorderWidth { get; set; }
-        internal int ScrollWidth { get; set; }
-        internal int ScrollHeight { get; set; }
-        internal int ScrollXPosition { get; set; }
-        internal int ScrollYPosition { get; set; }
-        internal bool IsHover { get; set; }
         internal bool IsStatic { get; set; }
-        internal bool IsSelected { get; set; } = false;
-        internal bool IsScrolling { get; set; } = false;
         internal Color Color { get; set; }
         internal Color BorderColor { get; set; }
         internal Color ScrollColor { get; set; }
         internal Color ScrollHoverColor { get; set; }
         internal Color ScrollBorderColor { get; set; }
         List<IComponent> Components { get; set; } = [];
+        private Button NextButton { get; set; }
+        private Button PreviousButton { get; set; }
         public Scrollbar(Editor editor, int xPosition, int yPosition, int height, int width, ScrollbarType type, bool isStatic, IComponent[] components)
         {
             Editor = editor;
@@ -40,8 +36,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Width = width;
             Height = height;
             Width = width;
-            ScrollWidth = Width / 2;
-            ScrollHeight = Height;
             Type = type;
             IsStatic = isStatic;
             BorderWidth = Editor.ComponentBorderWidth;
@@ -50,62 +44,81 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ScrollColor = Editor.BaseColor;
             ScrollHoverColor = Editor.HoverColor;
             ScrollBorderColor = Editor.BorderColor;
-            ScrollXPosition = XPosition;
-            ScrollYPosition = YPosition;
             Components.AddRange(components);
+            switch (Type)
+            {
+                case ScrollbarType.Vertical:
+                    NextButton = new Button(Editor, XPosition, YPosition, "+", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
+                    PreviousButton = new Button(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, "-", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
+                    break;
+                case ScrollbarType.Horizontal:
+                    NextButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "+", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
+                    PreviousButton = new Button(Editor, XPosition, YPosition, "-", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
+                    break;
+            }
         }
 
         public void Render()
         {
-            Update();
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
-            Raylib.DrawRectangle(ScrollXPosition, ScrollYPosition, ScrollWidth, ScrollHeight, ScrollColor);
-            Raylib.DrawRectangleLines(ScrollXPosition, ScrollYPosition, ScrollWidth, ScrollHeight, ScrollBorderColor);
+            Update();
         }
 
         public void Update()
         {
             if (IsStatic) return;
-            IsHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(ScrollXPosition, ScrollYPosition, ScrollWidth, ScrollHeight));
-            IsScrolling = IsSelected && IsHover;
-            if (IsHover && Raylib.IsMouseButtonDown(MouseButton.Left))
+            NextButton.Render();
+            PreviousButton.Render();
+        }
+
+        internal void ScrollForward()
+        {
+            switch (Type)
             {
-                IsSelected = true;
+                case ScrollbarType.Vertical:
+                    //if the last element is on the screen, don't scroll
+                    if (Components[^1].YPosition + Editor.SmallButtonHeight < YPosition + Height) return;
+                    for (int i = 0; i < Components.Count; i++)
+                    {
+                        Components[i].YPosition -= Editor.SmallButtonHeight;
+                    }
+                    break;
+                case ScrollbarType.Horizontal:
+                    if (Components[^1].XPosition + Editor.ButtonWidth < XPosition + Width) return;
+                    for (int i = 0; i < Components.Count; i++)
+                    {
+                        Components[i].XPosition -= Editor.ButtonWidth;
+                    }
+                    break;
             }
-            else if (IsHover is false && Raylib.IsMouseButtonUp(MouseButton.Left)) IsSelected = false;
-            if (IsSelected)
+        }
+
+        internal void ScrollBackward()
+        {
+            switch (Type)
             {
-                switch (Type)
-                {
-                    case ScrollbarType.Vertical:
-                        ScrollYPosition = (int)Raylib.GetMousePosition().Y; //Ez egy fos?
-                        if (ScrollYPosition < YPosition) ScrollYPosition = YPosition;
-                        if (ScrollYPosition + ScrollHeight > YPosition + Height) ScrollYPosition = YPosition + Height - ScrollHeight;
-                        for (int i = 0; i < Components.Count; i++)
-                        {
-                            Components[i].YPosition -= ScrollYPosition;
-                        }
-                        break;
-                    case ScrollbarType.Horizontal:
-                        ScrollXPosition = (int)Raylib.GetMousePosition().X;
-                        if (ScrollXPosition < XPosition) ScrollXPosition = XPosition;
-                        if ((ScrollXPosition + ScrollWidth) > (XPosition + Width)) ScrollXPosition = XPosition + Width - ScrollWidth;
-                        for (int i = 0; i < Components.Count; i++)
-                        {
-                            Components[i].XPosition -= ScrollXPosition;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                case ScrollbarType.Vertical:
+                    if (Components[0].YPosition > YPosition) return;
+                    for (int i = 0; i < Components.Count; i++)
+                    {
+                        Components[i].YPosition += Editor.SmallButtonHeight;
+                    }
+                    break;
+                case ScrollbarType.Horizontal:
+                    if (Components[0].XPosition > XPosition) return;
+                    for (int i = 0; i < Components.Count; i++)
+                    {
+                        Components[i].XPosition += Editor.ButtonWidth;
+                    }
+                    break;
             }
+
         }
 
         public void AddComponent(IComponent component)
         {
             Components.Add(component);
-            ScrollWidth = Raylib.GetScreenWidth() / Components.Count;
         }
     }
 }
