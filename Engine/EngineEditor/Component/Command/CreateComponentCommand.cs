@@ -1,7 +1,6 @@
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Raylib_cs;
 using TemplateGame.Component;
-using VisualNovelEngine.Engine.EngineEditor.Component;
 using TemplateGame.Interface;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
@@ -39,6 +38,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             {
                 case RenderingObjectType.Sprite:
                     Component = new Component(id, Editor, null, $"New Sprite({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, new Sprite("NullPath"));
+                    break;
+                case RenderingObjectType.TextField:
+                    Component = new Component(id, Editor, null, $"New TextField({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, new TemplateGame.Component.TextField(new Block(0, 0, null, Editor.IDGenerator.GenerateID()), 0, 0, 100, 100, 0, 0, 0, "New TextField", Raylib.GetFontDefault(), false, true, Color.Black, Color.Black));
                     break;
                 case RenderingObjectType.TextBox:
                     Component = new Component(id, Editor, null, $"New TextBox({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, TextBox.CreateNewTextBox(Editor.Game, 1, Raylib.GetFontDefault(), Color.Black, Color.Black, TextBox.PositionType.defaultPosition, 1, 1, false, "", []));

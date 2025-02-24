@@ -1,11 +1,10 @@
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Raylib_cs;
 using TemplateGame.Component;
-using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 using System.Text.Json;
-using VisualNovelEngine.Engine.PortData;
 using System.Text.RegularExpressions;
 using EngineEditor.Component;
+using System.Numerics;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -16,6 +15,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal const string RelativeEditorPath = currentFolderPath + "Editor.json";
         internal string SaveFilePath { get; set; } = currentFolderPath;
         internal Game Game { get; set; }
+        internal Camera2D Camera { get; set; }
         internal int ComponentWidth { get; set; }
         internal int ComponentHeight { get; set; }
         internal int ComponentBorderWidth { get; set; }
@@ -58,6 +58,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
             EditorConfigImport();
             SaveFilePath += Regex.Replace(ProjectName, @"[^a-zA-Z0-9\s]", "") + ".json";
+            Camera = new Camera2D();
         }
 
         private void EditorConfigImport()
@@ -124,11 +125,26 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.ClearBackground(EditorColor);
             ActiveScene.Update();
             Toolbar.Update();
+            DragCamera();
             for (int i = 0; i < MiniWindow.Count; i++)
             {
                 MiniWindow[i].Show();
             }
             ErrorWindow?.Show();
+        }
+
+        private void DragCamera()
+        {
+            if (Raylib.IsMouseButtonDown(MouseButton.Right))
+            {
+                Vector2 delta = Raylib.GetMouseDelta();
+                delta = Raymath.Vector2Scale(delta, -1.0f / Camera.Zoom);
+                //
+                Camera2D camera = Camera;
+                camera.Offset = Raymath.Vector2Add(camera.Target, delta);
+                //
+                Camera = camera;
+            }
         }
         /// <summary>
         /// Generates a unique number ID.

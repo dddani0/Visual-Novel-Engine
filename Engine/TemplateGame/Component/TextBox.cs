@@ -37,7 +37,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The content of the textbox.
         /// </summary>
-        internal List<String> Content { get; private set; }
+        internal List<String> Content { get; private set; } = [];
         /// <summary>
         /// The current loaded data of the textbox.
         /// </summary>
@@ -58,7 +58,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The title of the textbox.
         /// </summary>
-        private string TextBoxTitle { get; set; }
+        internal string TextBoxTitle { get; set; }
         /// <summary>
         /// The speed of the textbox (Characters per second).
         /// </summary>
@@ -197,9 +197,16 @@ namespace TemplateGame.Component
             MaximumCharacterCount = (int)(Box.Width - 2 * HorizontalTextMargin - CharacterWidth) / CharacterWidth;
             MaximumRowCount = (int)((Box.Height - VerticalTextMargin) / CharacterHeigth);
             //Reference variables and fit the string to the textbox
-            Content[TextCollectionIndex] = ReferenceVariables(Content[TextCollectionIndex]);
-            Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
-            CurrentLoadedData = Content[TextCollectionIndex];
+            if (TextCollectionIndex < TextCollectionCount)
+            {
+                Content[TextCollectionIndex] = ReferenceVariables(Content[TextCollectionIndex]);
+                Content[TextCollectionIndex] = FitLoadedStringToTextBox(Content[TextCollectionIndex]);
+                CurrentLoadedData = Content[TextCollectionIndex];
+            }
+            else
+            {
+                CurrentLoadedData = String.Empty;
+            }
             //
             TextCount = CurrentLoadedData.Length;
             //

@@ -23,9 +23,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal int Width { get; set; }
         internal int Height { get; set; }
         internal int BorderWidth { get; set; }
-        private Color Color { get; set; }
-        private Color BorderColor { get; set; }
-        private Color HoverColor { get; set; }
+        internal Color Color { get; set; }
+        internal Color BorderColor { get; set; }
+        internal Color HoverColor { get; set; }
         internal bool Active { get; set; } = true;
         internal bool Selected { get; set; }
         private bool IsExecuted { get; set; }

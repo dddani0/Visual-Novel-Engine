@@ -8,14 +8,17 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
     public class DeleteAllEventsCommand : ICommand
     {
         internal Editor Editor { get; set; }
+        private CloseShowWindowCommand CloseShowWindowCommand { get; set; }
         public DeleteAllEventsCommand(Editor editor)
         {
             Editor = editor;
+            CloseShowWindowCommand = new CloseShowWindowCommand(editor);
         }
         public void Execute()
         {
             Editor.ActiveScene.Timeline.Events.Clear();
             Editor.ActiveScene.Timeline.EventButtons.Clear();
+            CloseShowWindowCommand.Execute();
         }
     }
 }

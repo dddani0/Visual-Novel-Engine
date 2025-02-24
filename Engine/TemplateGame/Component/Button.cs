@@ -46,19 +46,19 @@ namespace TemplateGame.Component
         /// <summary>
         /// The color of the text.
         /// </summary>
-        private Color TextColor { get; set; }
+        internal Color TextColor { get; set; }
         /// <summary>
         /// The color of the button.
         /// </summary>
-        private Color Color { get; }
+        internal Color Color { get; }
         /// <summary>
         /// The color of the button when hovered.
         /// </summary>
-        private Color HoverColor { get; }
+        internal Color HoverColor { get; }
         /// <summary>
         /// The border color of the button.
         /// </summary>
-        private Color BorderColor { get; }
+        internal Color BorderColor { get; }
         /// <summary>
         /// The event which is attached to the button.
         /// </summary>

@@ -33,7 +33,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderColor = borderColor;
             ComponentList.AddRange(buttons);
             UpdateComponentPosition();
-            Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Height, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
+            Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
         }
 
         private void UpdateComponentPosition()
@@ -42,7 +42,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             for (int i = 0; i < ComponentList.Count; i++)
             {
                 ComponentList[i].XPosition = XPosition;
-                ComponentList[i].YPosition = YPosition + (i * Editor.ComponentHeight);
+                ComponentList[i].YPosition = YPosition + (i * Editor.SmallButtonHeight);
             }
         }
 
@@ -52,7 +52,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
             if (ComponentList == null) return;
-            if (ComponentList.Count * Editor.ComponentHeight > Height) Scrollbar.Render();
+            if (ComponentList.Count * Editor.SmallButtonHeight > Raylib.GetScreenHeight()) Scrollbar.Render();
             for (int i = 0; i < ComponentList.Count; i++)
             {
                 ComponentList[i].Render();

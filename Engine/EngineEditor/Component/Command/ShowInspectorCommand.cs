@@ -42,25 +42,33 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         public void Execute()
         {
             //Set event to active event in the inspector.
-            if (Window != null)
+            switch (Window is not null)
             {
-                Window.Active = true;
-                Window.SetActiveComponent(Action);
-                Editor.ActiveScene.InspectorWindow = Window;
-                return;
+                case true:
+                    if (Action is not null)
+                    {
+                        Window.DropActiveComponent();
+                        Window.Active = true;
+                        Window.SetActiveComponent(Action);
+                        Editor.ActiveScene.InspectorWindow = Window;
+                    }
+                    else
+                    {
+                        //Search for the first selected component and set it as the active component.
+                        //Convert the selected component to a component.
+                        Window.SetActiveComponent((Component)Editor.ActiveScene.ComponentList.FirstOrDefault(x =>
+                        {
+                            Component component = (Component)x;
+                            return component.IsSelected;
+                        }));
+                        Window.Active = true;
+                        Editor.ActiveScene.InspectorWindow = Window;
+                    }
+                    return;
+                case false:
+                    Window.DropActiveComponent();
+                    break;
             }
-            {
-                Window.DropActiveComponent();
-            }
-            //Search for the first selected component and set it as the active component.
-            //Convert the selected component to a component.
-            Window.SetActiveComponent((Component)Editor.ActiveScene.ComponentList.FirstOrDefault(x =>
-            {
-                Component component = (Component)x;
-                return component.IsSelected;
-            }));
-            Window.Active = true;
-            Editor.ActiveScene.InspectorWindow = Window;
         }
     }
 }

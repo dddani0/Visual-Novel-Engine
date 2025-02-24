@@ -71,7 +71,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             NextButton.Render();
             PreviousButton.Render();
         }
-
         internal void ScrollForward()
         {
             switch (Type)
@@ -93,7 +92,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     break;
             }
         }
-
         internal void ScrollBackward()
         {
             switch (Type)
@@ -115,10 +113,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             }
 
         }
-
-        public void AddComponent(IComponent component)
-        {
-            Components.Add(component);
-        }
+        public void AddComponent(IComponent component) => Components.Add(component);
+        public void AddComponents(IComponent[] components) => Components.AddRange(components);
+        public void DropComponents() => Components.Clear();
     }
 }

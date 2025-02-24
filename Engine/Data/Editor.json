@@ -1,5 +1,5 @@
 {
-    "ID": 2,
+    "ID": 0,
     "ProjectName": "Szakdolgozat játék",
     "WindowWidth": 800,
     "WindowHeight": 800,
@@ -25,6 +25,46 @@
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 0
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "TextField",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 1
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "TextBox",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 2
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Menu",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 3
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Block",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 4
                             },
                             "Type": 0
                         }
@@ -57,7 +97,7 @@
                 "Command": {
                     "Type": "ShowErrorCommand",
                     "ErrorType": 0,
-                    "ErrorMessage": "You are about to delete every component and group in the scene. Are you sure you want to continue?",
+                    "ErrorMessage": "Delete every component and group in the scene?",
                     "WarningButtons": [
                         {
                             "XPosition": 0,
