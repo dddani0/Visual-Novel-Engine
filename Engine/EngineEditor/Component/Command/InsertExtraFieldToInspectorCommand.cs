@@ -21,10 +21,19 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             switch (Component)
             {
                 case TextField txtfield:
-                    InspectorWindow.ComponentList.Insert(InspectorWindow.ComponentList.Count - 1 - IndexOffset, new TextField(Editor, txtfield.XPosition, txtfield.YPosition, txtfield.Width, txtfield.Height, txtfield.BorderWidth, txtfield.Text, txtfield.Font, txtfield.IsStatic));
+                    TextField newTextField = new(Editor, InspectorWindow.XPosition, InspectorWindow.YPosition, txtfield.Width, txtfield.Height, txtfield.BorderWidth, txtfield.Text, txtfield.Font, txtfield.IsStatic);
+                    InspectorWindow.ComponentList.Insert(InspectorWindow.ComponentList.Count - (IndexOffset - 1), newTextField);
+                    InspectorWindow.Scrollbar.AddComponent(newTextField, IndexOffset);
                     break;
                 case Button button:
-                    InspectorWindow.ComponentList.Insert(InspectorWindow.ComponentList.Count - 1 - IndexOffset, new Button(Editor, button.XPosition, button.YPosition, button.Text, button.Width, button.Height, button.BorderWidth, button.Color, button.BorderColor, button.HoverColor, button.Command, button.Type));
+                    Button newButton = new(Editor, InspectorWindow.XPosition, InspectorWindow.YPosition, button.Text, button.Width, button.Height, button.BorderWidth, button.Color, button.BorderColor, button.HoverColor, button.Command, button.Type);
+                    InspectorWindow.ComponentList.Insert(InspectorWindow.ComponentList.Count - (IndexOffset - 1), newButton);
+                    InspectorWindow.Scrollbar.AddComponent(newButton, IndexOffset);
+                    break;
+                case DropDown dropDown:
+                    DropDown newDropDown = new(Editor, InspectorWindow.XPosition, InspectorWindow.YPosition, dropDown.Width, dropDown.Height, dropDown.BorderWidth, dropDown.Filter);
+                    InspectorWindow.ComponentList.Insert(InspectorWindow.ComponentList.Count - (IndexOffset - 1), newDropDown);
+                    InspectorWindow.Scrollbar.AddComponent(newDropDown, IndexOffset);
                     break;
             }
             InspectorWindow.UpdateComponentPosition(InspectorWindow.EnabledRowComponentCount);

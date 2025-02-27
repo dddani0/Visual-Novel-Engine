@@ -12,8 +12,8 @@
     "SideButtonHeight": 25,
     "SideButtonBorderWidth": 2,
     "ComponentEnabledCharacterCount": 6,
-    "InspectorWindowWidth": 300,
-    "InspectorWindowHeight": 300,
+    "InspectorWindowWidth": 500,
+    "InspectorWindowHeight": 700,
     "InspectorWindowBorderWidth": 1,
     "BaseColor": [
         239,

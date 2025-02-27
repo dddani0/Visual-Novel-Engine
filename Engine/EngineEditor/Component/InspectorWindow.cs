@@ -1,3 +1,4 @@
+using System.Linq;
 using Namespace;
 using Raylib_cs;
 using TemplateGame.Component;
@@ -42,83 +43,133 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderColor = Editor.BorderColor;
             EnabledRowComponentCount = enabledRowComponentCount;
             CloseButton = new Button(Editor, XPosition + Editor.InspectorWindowWidth - Editor.SmallButtonWidth, YPosition, "X", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseInspectorCommand(Editor, this), Button.ButtonType.Trigger);
-            Scrollbar = new Scrollbar(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
+            Scrollbar = new Scrollbar(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition + editor.SmallButtonHeight, Height - Editor.SmallButtonWidth, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
         }
 
         internal void SetActiveComponent(Component component)
         {
             Scrollbar.DropComponents();
-            //Dinamic Component Editor name
+            //Dinamic Component Editor name and field
+            ComponentList.Add(new Label(Editor, XPosition, YPosition + BorderWidth, "Name"));
             ComponentList.Add(
                 new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, component.Name, Raylib.GetFontDefault(), false));
             //Static ID field value
+            ComponentList.Add(new Label(Editor, XPosition, YPosition, "ID:"));
             ComponentList.Add(
                 new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, component.ID.ToString(), Raylib.GetFontDefault(), true));
             switch (component.RenderingObject)
             {
                 case Sprite sprite:
                     //Dinamic Path name
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Path:"));
                     ComponentList.Add(
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault(), false));
                     //Dinamic Color rgb value
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Color:"));
                     ComponentList.Add(
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Color.ToString(), Raylib.GetFontDefault(), false));
                     break;
                 case TemplateGame.Component.Button button:
                     //Dinamic Button Name
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Button Text:"));
                     ComponentList.Add(
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.Text, Raylib.GetFontDefault(), true));
                     //Dinamic button color rgb value
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Color:"));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Red:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.Color.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.Color.R.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Green:"));
+                    ComponentList.Add(
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.Color.G.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Blue:"));
+                    ComponentList.Add(
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.Color.B.ToString(), Raylib.GetFontDefault(), true));
                     //Dinamic Button Border Color rgb value
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Border Color:"));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Red:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.BorderColor.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.BorderColor.R.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Green:"));
+                    ComponentList.Add(
+                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.BorderColor.G.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Blue:"));
+                    ComponentList.Add(
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.BorderColor.B.ToString(), Raylib.GetFontDefault(), true));
                     //Dinamic button Hover Color rgb value
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Hover color:"));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Red:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.HoverColor.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.HoverColor.R.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Green:"));
+                    ComponentList.Add(
+                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.HoverColor.G.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Blue:"));
+                    ComponentList.Add(
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, button.HoverColor.B.ToString(), Raylib.GetFontDefault(), true));
                     break;
                 case TemplateGame.Component.TextField textField:
                     //Dinamic Text
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Text:"));
                     ComponentList.Add(
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textField.Text, Raylib.GetFontDefault(), true));
                     //Dinamic Wordwrap Toggle 
                     ComponentList.Add(
-                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap"));
+                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:"));
                     break;
                 case TextBox textBox:
                     //Dinamic Wordwrap Toggle 
                     ComponentList.Add(
-                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap"));
+                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:"));
                     //Dinamic Title
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Textbox title:"));
                     ComponentList.Add(
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.TextBoxTitle, Raylib.GetFontDefault(), true));
                     //Dinamic text content
+                    ComponentList.Add(
+                new Label(Editor, XPosition, YPosition, "Text content:")
+                );
                     for (int i = 0; i < textBox.Content.Count; i++)
                     {
                         ComponentList.Add(
                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.Content[i], Raylib.GetFontDefault(), true));
                     }
-                    //Dinamic Button with empty event
                     ComponentList.Add(
                         new Button(Editor, XPosition, YPosition, "Add text", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "New text field", Raylib.GetFontDefault(), false), 1), Button.ButtonType.Trigger));
                     break;
                 case Menu menu:
                     //Dinamic menu color
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Color:"));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Red:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuColor.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuColor.R.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Green:"));
+                    ComponentList.Add(
+                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuColor.G.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Blue:"));
+                    ComponentList.Add(
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuColor.B.ToString(), Raylib.GetFontDefault(), true));
                     //Dinamic menu border color
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Border color:"));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Red:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuBorderColor.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuBorderColor.R.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Green:"));
+                    ComponentList.Add(
+                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuBorderColor.G.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "Blue:"));
+                    ComponentList.Add(
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuBorderColor.B.ToString(), Raylib.GetFontDefault(), true));
                     //Add a dropdown for every block
-                    //for (int i = 0; i < menu.MenuBlocks.Count; i++)
-                    //{
-                    //    ComponentList.Add(
-                    //        new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuBlocks[i].Name, menu.MenuBlocks[i].MenuBlockType.ToString()));
-                    //}
+                    ComponentList.Add(new Label(Editor, XPosition, YPosition, "List of blocks:"));
+                    for (int i = 0; i < menu.BlockList.Count; i++)
+                    {
+                        DropDown blockDropDown = new(Editor, XPosition, YPosition, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Block);
+                        ComponentList.Add(blockDropDown);
+                    }
                     //Dinamic add block insert button
                     ComponentList.Add(
-                        new Button(Editor, XPosition, YPosition, "Add button", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Button(Editor, XPosition, YPosition, "New button", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new EmptyCommand(), Button.ButtonType.Trigger), 1), Button.ButtonType.Trigger));
+                        new Button(Editor, XPosition, YPosition, "Add button", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new DropDown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Block), 2), Button.ButtonType.Trigger));
                     break;
             }
             ActiveComponent = component;
@@ -175,19 +226,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             {
                 if (i % enabledRowComponentCount == 0) rowcount++;
                 //If the component is a button, update the position of the button.
-                ComponentList[i].XPosition = rowcount > 1 ? ComponentList[i % enabledRowComponentCount].XPosition : XPosition + (i * (Editor.ComponentWidth));
+                ComponentList[i].XPosition = rowcount > 1 ? ComponentList[i % enabledRowComponentCount].XPosition : XPosition + (i * Editor.ComponentWidth);
                 ComponentList[i].YPosition = YPosition + ((rowcount - 1) * Editor.ComponentHeight);
             }
-            // if (ComponentList.Count >= enabledRowComponentCount)
-            // {
-            //     Width = XPosition + (enabledRowComponentCount * Editor.ComponentWidth);
-            //     Height = YPosition + (Editor.ComponentHeight * rowcount);
-            // }
-            // else
-            // {
-            //     Width = XPosition + (ComponentList.Count * Editor.ComponentWidth);
-            //     Height = YPosition + (Editor.ComponentHeight * rowcount);
-            // }
         }
 
         public void Show()
@@ -198,7 +239,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             CloseButton.Render();
             if (ComponentList.Count * Editor.ComponentHeight > Height) Scrollbar.Render();
             if (ComponentList.Count < 1) return;
-            for (int i = 0; i < ComponentList.Count; i++) ComponentList[i].Render();
+            for (int i = 0; i < ComponentList.Count; i++)
+            {
+                if (ComponentList[i].YPosition <= YPosition + Height && ComponentList[i].YPosition >= YPosition + BorderWidth) ComponentList[i].Render();
+            }
         }
     }
 }

@@ -48,8 +48,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             switch (Type)
             {
                 case ScrollbarType.Vertical:
-                    NextButton = new Button(Editor, XPosition, YPosition, "+", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
-                    PreviousButton = new Button(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, "-", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
+                    NextButton = new Button(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, "+", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
+                    PreviousButton = new Button(Editor, XPosition, YPosition, "-", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
                     break;
                 case ScrollbarType.Horizontal:
                     NextButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "+", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
@@ -77,14 +77,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             {
                 case ScrollbarType.Vertical:
                     //if the last element is on the screen, don't scroll
-                    if (Components[^1].YPosition + Editor.SmallButtonHeight < YPosition + Height) return;
+                    if (Components[^1].YPosition + Editor.SmallButtonHeight <= YPosition + Height) return;
                     for (int i = 0; i < Components.Count; i++)
                     {
                         Components[i].YPosition -= Editor.SmallButtonHeight;
                     }
                     break;
                 case ScrollbarType.Horizontal:
-                    if (Components[^1].XPosition + Editor.ButtonWidth < XPosition + Width) return;
+                    if (Components[^1].XPosition + Editor.ButtonWidth <= XPosition + Width) return;
                     for (int i = 0; i < Components.Count; i++)
                     {
                         Components[i].XPosition -= Editor.ButtonWidth;
@@ -97,14 +97,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             switch (Type)
             {
                 case ScrollbarType.Vertical:
-                    if (Components[0].YPosition > YPosition) return;
+                    if (Components[0].YPosition >= YPosition) return;
                     for (int i = 0; i < Components.Count; i++)
                     {
                         Components[i].YPosition += Editor.SmallButtonHeight;
                     }
                     break;
                 case ScrollbarType.Horizontal:
-                    if (Components[0].XPosition > XPosition) return;
+                    if (Components[0].XPosition >= XPosition) return;
                     for (int i = 0; i < Components.Count; i++)
                     {
                         Components[i].XPosition += Editor.ButtonWidth;
@@ -114,6 +114,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
 
         }
         public void AddComponent(IComponent component) => Components.Add(component);
+        public void AddComponent(IComponent component, int indexOffset) => Components.Insert(Components.Count - (indexOffset - 1), component);
         public void AddComponents(IComponent[] components) => Components.AddRange(components);
         public void DropComponents() => Components.Clear();
     }

@@ -32,9 +32,24 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         private bool IsHover { get; set; }
         internal Editor Editor { get; set; }
         internal ICommand Command { get; set; }
+        internal IComponent? Component { get; set; }
         internal ButtonType Type { get; set; }
         private Timer Timer { get; set; }
-
+        /// <summary>
+        /// Represents a button inside the editor.
+        /// </summary>
+        /// <param name="editor"></param>
+        /// <param name="xPosition"></param>
+        /// <param name="yPosition"></param>
+        /// <param name="text"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="borderWidth"></param>
+        /// <param name="color"></param>
+        /// <param name="borderColor"></param>
+        /// <param name="hoverColor"></param>
+        /// <param name="command"></param>
+        /// <param name="type"></param>
         public Button(Editor editor, int xPosition, int yPosition, string text, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, ICommand command, ButtonType type)
         {
             Editor = editor;
@@ -51,6 +66,25 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Command = command;
             Type = type;
             Timer = new Timer(0.1f);
+        }
+
+        public Button(Editor editor, DropDown dropDown, string text, Color color, Color borderColor, Color hoverColor, IComponent component)
+        {
+            Editor = editor;
+            XPosition = 0;
+            YPosition = 0;
+            Text = text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..Editor.ComponentEnabledCharacterCount]}..." : text;
+            Width = 0;
+            Height = 0;
+            BorderWidth = 0;
+            Color = color;
+            BorderColor = borderColor;
+            HoverColor = hoverColor;
+            Component = component;
+            Type = ButtonType.Trigger;
+            Timer = new Timer(0.1f);
+            Active = true;
+            Command = new SelectDropDownButtonCommand(dropDown, this);
         }
 
         public void Render()
@@ -87,7 +121,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         Timer.ResetTimer();
                         break;
                     case ButtonType.Hold:
-                        Selected = true;
+                        Selected = !Selected;
                         Command.Execute();
                         break;
                     case ButtonType.Toggle:

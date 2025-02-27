@@ -56,13 +56,15 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                     {
                         //Search for the first selected component and set it as the active component.
                         //Convert the selected component to a component.
-                        Window.SetActiveComponent((Component)Editor.ActiveScene.ComponentList.FirstOrDefault(x =>
+                        Component ccomp = (Component)Editor.ActiveScene.ComponentList.FirstOrDefault(x =>
                         {
                             Component component = (Component)x;
                             return component.IsSelected;
-                        }));
+                        });
+                        Window.SetActiveComponent(ccomp);
                         Window.Active = true;
                         Editor.ActiveScene.InspectorWindow = Window;
+                        ccomp.IsSelected = false;
                     }
                     return;
                 case false:
