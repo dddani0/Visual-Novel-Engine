@@ -124,6 +124,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 buttonImport.XPosition,
                 buttonImport.YPosition,
                 buttonImport.Text,
+                true,
                 Editor.ComponentWidth,
                 Editor.ComponentHeight,
                 Editor.ComponentBorderWidth,

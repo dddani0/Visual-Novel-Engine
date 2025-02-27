@@ -5,7 +5,7 @@
     "WindowHeight": 800,
     "ToolBar": {
         "XPosition": 0,
-        "YPosition": 0,
+        "YPosition": 100,
         "Width": 0,
         "Height": 0,
         "BorderWidth": 1,

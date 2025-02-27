@@ -55,7 +55,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 Editor.ComponentBorderWidth,
                 Editor.BaseColor,
                 Editor.BorderColor,
-                [.. Buttons]
+                MiniWindow.miniWindowType.Vertical
+                , [.. Buttons]
             );
             Editor.MiniWindow.Add(SideWindow);
         }

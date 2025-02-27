@@ -57,11 +57,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Color closeButtonBaseColor = Editor.CloseButtonBaseColor;
             Color closeButtonBorderColor = Editor.CloseButtonBorderColor;
             Color closeButtonHoverColor = Editor.CloseButtonHoverColor;
-            CloseButton = new Button(editor, CloseButtonXPosition, YPosition, "X", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, closeButtonBaseColor, closeButtonBorderColor, closeButtonHoverColor, new DeleteComponentCommand(Editor, this), Button.ButtonType.Trigger);
+            CloseButton = new Button(editor, CloseButtonXPosition, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, closeButtonBaseColor, closeButtonBorderColor, closeButtonHoverColor, new DeleteComponentCommand(Editor, this), Button.ButtonType.Trigger);
             Color inspectorButtonBaseColor = Editor.InspectorButtonBaseColor;
             Color inspectorButtonBorderColor = Editor.InspectorButtonBorderColor;
             Color inspectorButtonHoverColor = Editor.InspectorButtonHoverColor;
-            InspectorButton = new Button(editor, InspectorButtonXPosition, YPosition, "I", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, new ShowInspectorCommand(Editor, 2), Button.ButtonType.Trigger);
+            InspectorButton = new Button(editor, InspectorButtonXPosition, YPosition, "I", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, new ShowInspectorCommand(Editor, 2), Button.ButtonType.Trigger);
             MoveTimer = new Timer(0.1f);
             Group = group;
             RenderingObject = component;

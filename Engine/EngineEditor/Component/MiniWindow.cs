@@ -9,6 +9,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
     /// </summary>
     public class MiniWindow : IWindow
     {
+        public enum miniWindowType
+        {
+            Vertical,
+            Horizontal
+        }
+        internal miniWindowType Type { get; set; }
         private Editor Editor { get; set; }
         internal int XPosition { get; set; }
         internal int YPosition { get; set; }
@@ -21,9 +27,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal List<Button> ComponentList { get; set; } = [];
         internal Scrollbar Scrollbar { get; set; }
 
-        public MiniWindow(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Button[] buttons)
+        public MiniWindow(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, miniWindowType miniWindowType, Button[] buttons)
         {
             Editor = editor;
+            Type = miniWindowType;
             XPosition = xPosition;
             YPosition = yPosition;
             Width = width;
@@ -33,17 +40,38 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderColor = borderColor;
             ComponentList.AddRange(buttons);
             UpdateComponentPosition();
-            Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
+            switch (Type)
+            {
+                case miniWindowType.Vertical:
+                    Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
+                    break;
+                case miniWindowType.Horizontal:
+                    Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
+                    break;
+            }
         }
 
         private void UpdateComponentPosition()
         {
             if (ComponentList.Count < 1) return;
-            for (int i = 0; i < ComponentList.Count; i++)
+            switch (Type)
             {
-                ComponentList[i].XPosition = XPosition;
-                ComponentList[i].YPosition = YPosition + (i * Editor.SmallButtonHeight);
+                case miniWindowType.Vertical:
+                    for (int i = 0; i < ComponentList.Count; i++)
+                    {
+                        ComponentList[i].XPosition = XPosition;
+                        ComponentList[i].YPosition = YPosition + (i * Editor.SmallButtonHeight);
+                    }
+                    break;
+                case miniWindowType.Horizontal:
+                    for (int i = 0; i < ComponentList.Count; i++)
+                    {
+                        ComponentList[i].XPosition = XPosition + (i * Editor.ButtonWidth);
+                        ComponentList[i].YPosition = YPosition;
+                    }
+                    break;
             }
+
         }
 
         public void Show()

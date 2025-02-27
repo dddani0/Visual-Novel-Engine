@@ -38,7 +38,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
-            Button = new Button(Editor, XPosition, YPosition, "New DropDown", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new OpenDropDownCommand(Editor, this), Button.ButtonType.Hold);
+            Button = new Button(Editor, XPosition, YPosition, "New DropDown", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new OpenDropDownCommand(Editor, this), Button.ButtonType.Hold);
             Filter = filter;
         }
 

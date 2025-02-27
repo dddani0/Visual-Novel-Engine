@@ -11,29 +11,86 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
     /// </summary>
     public class Button : IButton, IComponent, ITool
     {
+        /// <summary>
+        /// Represents the type of button.
+        /// </summary>
         public enum ButtonType
         {
             Trigger,
             Hold,
             Toggle
         }
-        public int XPosition { get; set; }
-        public int YPosition { get; set; }
-        internal string Text { get; set; }
-        internal int Width { get; set; }
-        internal int Height { get; set; }
-        internal int BorderWidth { get; set; }
-        internal Color Color { get; set; }
-        internal Color BorderColor { get; set; }
-        internal Color HoverColor { get; set; }
-        internal bool Active { get; set; } = true;
-        internal bool Selected { get; set; }
-        private bool IsExecuted { get; set; }
-        private bool IsHover { get; set; }
+        /// <summary>
+        /// Represents the editor.
+        /// </summary>
         internal Editor Editor { get; set; }
+        /// <summary>
+        /// The x position of the button.
+        /// </summary>
+        public int XPosition { get; set; }
+        /// <summary>
+        /// The y position of the button.
+        /// </summary>
+        public int YPosition { get; set; }
+        /// <summary>
+        /// The text of the button.
+        /// </summary>
+        internal string Text { get; set; }
+        /// <summary>
+        /// The width of the button.
+        /// </summary>
+        internal int Width { get; set; }
+        /// <summary>
+        /// The height of the button.
+        /// </summary>
+        internal int Height { get; set; }
+        /// <summary>
+        /// The border width of the button.
+        /// </summary>
+        internal int BorderWidth { get; set; }
+        /// <summary>
+        /// The color of the button.
+        /// </summary>
+        internal Color Color { get; set; }
+        /// <summary>
+        /// The border color of the button.
+        /// </summary>
+        internal Color BorderColor { get; set; }
+        /// <summary>
+        /// The hover color of the button.
+        /// </summary>
+        internal Color HoverColor { get; set; }
+        /// <summary>
+        /// Represents if the button is active.
+        /// </summary>
+        internal bool Active { get; set; } = true;
+        /// <summary>
+        /// Represents if the button is selected.
+        /// </summary>
+        internal bool Selected { get; set; }
+        /// <summary>
+        /// Represents if the button is executed
+        /// </summary>
+        private bool IsExecuted { get; set; }
+        /// <summary>
+        /// Represents if the button is hovered.
+        /// </summary>
+        private bool IsHover { get; set; }
+        /// <summary>
+        /// Represents the command of the button.
+        /// </summary>
         internal ICommand Command { get; set; }
+        /// <summary>
+        /// Represents the component wihtin the DropDown button
+        /// </summary>
         internal IComponent? Component { get; set; }
+        /// <summary>
+        /// Represents the type of the button.
+        /// </summary>
         internal ButtonType Type { get; set; }
+        /// <summary>
+        /// Represents the timer of the button.
+        /// </summary>
         private Timer Timer { get; set; }
         /// <summary>
         /// Represents a button inside the editor.
@@ -50,13 +107,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// <param name="hoverColor"></param>
         /// <param name="command"></param>
         /// <param name="type"></param>
-        public Button(Editor editor, int xPosition, int yPosition, string text, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, ICommand command, ButtonType type)
+        public Button(Editor editor, int xPosition, int yPosition, string text, bool crampText, int width, int height, int borderWidth, Color color, Color borderColor, Color hoverColor, ICommand command, ButtonType type)
         {
             Editor = editor;
             XPosition = xPosition;
             YPosition = yPosition;
             //If length is greater than 5, set the text to the first 4 and add three dots to the end.
-            Text = text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..Editor.ComponentEnabledCharacterCount]}..." : text;
+            Text = crampText ? text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..Editor.ComponentEnabledCharacterCount]}..." : text : text;
             Width = width;
             Height = height;
             BorderWidth = borderWidth;

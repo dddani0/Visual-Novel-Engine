@@ -26,7 +26,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                     InspectorWindow.Scrollbar.AddComponent(newTextField, IndexOffset);
                     break;
                 case Button button:
-                    Button newButton = new(Editor, InspectorWindow.XPosition, InspectorWindow.YPosition, button.Text, button.Width, button.Height, button.BorderWidth, button.Color, button.BorderColor, button.HoverColor, button.Command, button.Type);
+                    Button newButton = new(Editor, InspectorWindow.XPosition, InspectorWindow.YPosition, button.Text,
+                    true, button.Width, button.Height, button.BorderWidth, button.Color, button.BorderColor, button.HoverColor, button.Command, button.Type);
                     InspectorWindow.ComponentList.Insert(InspectorWindow.ComponentList.Count - (IndexOffset - 1), newButton);
                     InspectorWindow.Scrollbar.AddComponent(newButton, IndexOffset);
                     break;
