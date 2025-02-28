@@ -17,7 +17,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal List<IEvent> Events { get; set; } = [];
         internal List<Button> EventButtons { get; set; } = [];
         internal Button AddGeneralEventButton { get; set; }
-        internal Button AddTimelineIndependentEventButton { get; set; }
+        internal Button ConfigureTimelineButton { get; set; }
         internal Button RemoveEventsButton { get; set; }
         internal Button EditEventButton { get; set; }
         internal Scrollbar Scrollbar { get; set; }
@@ -288,6 +288,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     0
                     )
             ]));
+            ConfigureTimelineButton = new(Editor, XPosition + Editor.ButtonWidth, YPosition, "Configure", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new EmptyCommand(), Button.ButtonType.Trigger);
             RemoveEventsButton = new(
                 Editor,
                 XPosition + Width - Editor.ButtonWidth,
@@ -334,6 +335,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Editor.BaseColor);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, Editor.BorderColor);
             AddGeneralEventButton.Render();
+            ConfigureTimelineButton.Render();
             for (int i = 0; i < Events.Count; i++)
             {
                 EventButtons[i].Render();

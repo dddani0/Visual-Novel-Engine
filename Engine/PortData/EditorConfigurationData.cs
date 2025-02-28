@@ -34,6 +34,12 @@ public class EditorConfigurationImport
     public required int InspectorHeight { get; set; }
     [JsonPropertyName("InspectorWindowBorderWidth")]
     public required int InspectorBorderWidth { get; set; }
+    [JsonPropertyName("MiniWindowWidth")]
+    public required int MiniWindowWidth { get; set; }
+    [JsonPropertyName("MiniWindowHeight")]
+    public required int MiniWindowHeight { get; set; }
+    [JsonPropertyName("MiniWindowBorderWidth")]
+    public required int MiniWindowBorderWidth { get; set; }
     [JsonPropertyName("BaseColor")]
     public required int[] BaseColor { get; set; }
     [JsonPropertyName("BorderColor")]

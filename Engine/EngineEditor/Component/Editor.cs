@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using EngineEditor.Component;
 using System.Numerics;
 using VisualNovelEngine.Engine.EngineEditor.Component.Command;
+using System.Reflection.Emit;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -97,6 +98,18 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         internal int InspectorWindowBorderWidth { get; set; }
         /// <summary>
+        /// The width of the mini window.
+        /// </summary>
+        internal int MiniWindowWidth { get; set; }
+        /// <summary>
+        /// The height of the mini window.
+        /// </summary>
+        internal int MiniWindowHeight { get; set; }
+        /// <summary>
+        /// The border width of the mini window.
+        /// </summary>
+        internal int MiniWindowBorderWidth { get; set; }
+        /// <summary>
         /// The base color of the editor.
         /// </summary>
         internal Color BaseColor { get; set; }
@@ -164,6 +177,17 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// The active scene in the editor.
         /// </summary>
         internal Scene ActiveScene { get; set; }
+        /// <summary>
+        /// The scene configuration button in the editor.
+        /// </summary>
+        internal Button SceneConfigurationButton { get; set; }
+        /// <summary>
+        /// The game configuration button in the editor.
+        /// </summary>
+        internal Button GameConfigurationButton { get; set; }
+        /// <summary>
+        /// The scene bar in the editor
+        /// </summary>
         internal MiniWindow SceneBar { get; set; }
         /// <summary>
         /// The list of mini windows in the editor.
@@ -184,7 +208,22 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             // instance of the editor importer
             EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
             EditorConfigImport();
-            // Create the sceneb
+            //Create scene configuration button
+            Label windowTitle = new Label(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Scene configuration");
+            Label sceneName = new Label(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Name:");
+            TextField sceneNameField = new TextField(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, ComponentWidth, ComponentHeight, ComponentBorderWidth, ActiveScene.Name, Raylib.GetFontDefault(), false);
+            SceneConfigurationButton = new(this, Raylib.GetScreenWidth() - ButtonWidth, 100, "Scene Configuration", false, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ShowMiniWindowComand(this, [windowTitle, sceneName, sceneNameField], EngineEditor.Component.MiniWindow.miniWindowType.Vertical), Button.ButtonType.Trigger);
+            //Create game configuration button
+            Label gameWindowTitle = new Label(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Game configuration");
+            Label gameName = new Label(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Name:");
+            TextField gameNameField = new TextField(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, ComponentWidth, ComponentHeight, ComponentBorderWidth, ProjectName, Raylib.GetFontDefault(), false);
+            Label windowResolutionTitle = new Label(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Window resolution");
+            Label windowResolutionWidth = new Label(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Window width:");
+            TextField windowResolutionWidthField = new TextField(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, ComponentWidth, ComponentHeight, ComponentBorderWidth, Raylib.GetScreenWidth().ToString(), Raylib.GetFontDefault(), false);
+            Label windowResolutionHeigth = new Label(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Window height:");
+            TextField windowResolutionHeigthField = new TextField(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, ComponentWidth, ComponentHeight, ComponentBorderWidth, Raylib.GetScreenHeight().ToString(), Raylib.GetFontDefault(), false);
+            GameConfigurationButton = new(this, Raylib.GetScreenWidth() - 2 * ButtonWidth, 100, "Game Configuration", false, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ShowMiniWindowComand(this, [gameWindowTitle, gameName, gameNameField, windowResolutionTitle, windowResolutionHeigth, windowResolutionHeigthField, windowResolutionWidth, windowResolutionWidth], EngineEditor.Component.MiniWindow.miniWindowType.Vertical), Button.ButtonType.Trigger);
+            // Create the scene
             List<Button> SceneButtonList = [];
             foreach (Scene scene in SceneList)
             {
@@ -195,7 +234,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 else SceneButtonList.Add(button);
             }
             SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
-            SceneBar = new MiniWindow(this, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, EngineEditor.Component.MiniWindow.miniWindowType.Horizontal, [.. SceneButtonList]);
+            SceneBar = new MiniWindow(this, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, EngineEditor.Component.MiniWindow.miniWindowType.Horizontal, [.. SceneButtonList]);
             //
             SaveFilePath += Regex.Replace(ProjectName, @"[^a-zA-Z0-9\s]", "") + ".json";
             //
@@ -228,6 +267,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             InspectorWindowWidth = EditorImporter.EditorButtonConfigurationImport.InspectorWidth;
             InspectorWindowHeight = EditorImporter.EditorButtonConfigurationImport.InspectorHeight;
             InspectorWindowBorderWidth = EditorImporter.EditorButtonConfigurationImport.InspectorBorderWidth;
+            //
+            MiniWindowWidth = EditorImporter.EditorButtonConfigurationImport.MiniWindowWidth;
+            MiniWindowHeight = EditorImporter.EditorButtonConfigurationImport.MiniWindowHeight;
+            MiniWindowBorderWidth = EditorImporter.EditorButtonConfigurationImport.MiniWindowBorderWidth;
             //
             CloseButtonBaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.CloseButtonBaseColor);
             CloseButtonBorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.CloseButtonBorderColor);
@@ -274,6 +317,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.ClearBackground(EditorColor);
             ActiveScene.Update();
             SceneBar.Show();
+            SceneConfigurationButton.Render();
+            GameConfigurationButton.Render();
             Toolbar.Update();
             DragCamera();
             for (int i = 0; i < MiniWindow.Count; i++)

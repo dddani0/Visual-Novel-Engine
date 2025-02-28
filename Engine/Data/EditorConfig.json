@@ -15,6 +15,9 @@
     "InspectorWindowWidth": 500,
     "InspectorWindowHeight": 700,
     "InspectorWindowBorderWidth": 1,
+    "MiniWindowWidth": 500,
+    "MiniWindowHeight": 300,
+    "MiniWindowBorderWidth": 1,
     "BaseColor": [
         239,
         182,
@@ -70,9 +73,9 @@
         255
     ],
     "CloseButtonBorderColor": [
-        255,
-        255,
-        255,
+        0,
+        0,
+        0,
         255
     ],
     "CloseButtonHoverColor": [
