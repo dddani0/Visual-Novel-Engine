@@ -4,15 +4,16 @@ using VisualNovelEngine.Engine.EngineEditor.Component;
 
 class Program
 {
+    internal static bool Exit { get; set; } = false;
     public static void Main()
     {
-        Raylib.InitWindow(800, 800, "Falastini - Editor"); //placeholder data
+        Raylib.InitWindow(800, 800, "Vizuális Novella Motor");
 
         //Game game = new();
         Editor editor = new();
         Raylib.BeginMode2D(editor.Camera);
 
-        while (!Raylib.WindowShouldClose())
+        while (Exit is false)
         {
             Raylib.BeginDrawing();
             //game.UpdateScene();

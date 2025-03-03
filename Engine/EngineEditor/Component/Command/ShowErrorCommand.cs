@@ -8,10 +8,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
     {
         Editor Editor { get; set; }
         ErrorWindow ErrorWindow { get; set; }
-        public ShowErrorCommand(Editor editor, ErrorType errorType, string errorMessage, Button[] button)
+        public ShowErrorCommand(Editor editor, string errorMessage, Button[] button)
         {
             Editor = editor;
-            ErrorWindow = new ErrorWindow(Editor, ErrorType.Quit, errorMessage, button, 400, 200);
+            ErrorWindow = new ErrorWindow(Editor, errorMessage, button, 400, 200);
         }
 
         public void Execute()

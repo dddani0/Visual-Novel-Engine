@@ -301,7 +301,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Editor.BaseColor,
                 Editor.BorderColor,
                 Editor.HoverColor,
-                new ShowErrorCommand(Editor, ErrorWindow.ErrorType.Quit, "Delete all events from timeline?", [
+                new ShowErrorCommand(Editor, "Delete all events from timeline?", [
                     new Button(
                         Editor,
                         0,

@@ -166,7 +166,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     if (commandImport.ErrorMessage == null) throw new Exception("Error message not found!");
                     if (commandImport.WarningButtons == null) throw new Exception("Warning buttons not found!");
                     if (commandImport.ErrorType == null) throw new Exception("Error type not found!");
-                    return new ShowErrorCommand(Editor, (ErrorWindow.ErrorType)commandImport.ErrorType, commandImport.ErrorMessage, [.. commandImport.WarningButtons.Select(FetchButtonFromImport)]);
+                    return new ShowErrorCommand(Editor, commandImport.ErrorMessage, [.. commandImport.WarningButtons.Select(FetchButtonFromImport)]);
                 case "DeleteAllComponentsCommand":
                     return new DeleteAllComponentsCommand(Editor);
                 default:

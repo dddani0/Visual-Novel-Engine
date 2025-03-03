@@ -194,9 +194,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         internal List<MiniWindow> MiniWindow { get; set; } = [];
         /// <summary>
-        /// Instance of the error window.
+        /// Instance of the dynamic error window.
         /// </summary>
         internal ErrorWindow? ErrorWindow { get; set; } = null;
+        private ShowErrorCommand ShowExitErrorCommand { get; set; }
         public bool Busy => ActiveScene.InspectorWindow?.Active is true;
         /// <summary>
         /// The constructor of the editor.
@@ -208,6 +209,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             // instance of the editor importer
             EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
             EditorConfigImport();
+            //
+            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(), Button.ButtonType.Trigger)]);
             //Create scene configuration button
             Label windowTitle = new Label(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Scene configuration");
             Label sceneName = new Label(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Name:");
@@ -317,6 +320,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.ClearBackground(EditorColor);
             ActiveScene.Update();
             SceneBar.Show();
+            ExitWindow();
             SceneConfigurationButton.Render();
             GameConfigurationButton.Render();
             Toolbar.Update();
@@ -326,6 +330,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 MiniWindow[i].Show();
             }
             ErrorWindow?.Show();
+        }
+
+        private void ExitWindow()
+        {
+            if (Raylib.WindowShouldClose())
+            {
+                ShowExitErrorCommand.Execute();
+            }
         }
 
         private void DragCamera()

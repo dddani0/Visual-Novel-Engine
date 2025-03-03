@@ -5,6 +5,7 @@ using TemplateGame.Interface;
 using Timer = TemplateGame.Component.Timer;
 using System.Text.RegularExpressions;
 using VisualNovelEngine.Engine.EngineEditor.Component.Command;
+using System.Linq;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -81,6 +82,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             IsHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, Width, Height));
             if (IsHover && Raylib.IsMouseButtonPressed(MouseButton.Left))
             {
+                //Convert IComponents to Components and if any other components are selected, then return
+                if (Editor.ActiveScene.ComponentList.Cast<Component>().Any(component => component.IsSelected)) return;
                 IsSelected = true;
             }
             else if (IsSelected && IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left))
