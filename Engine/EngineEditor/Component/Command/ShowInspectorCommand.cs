@@ -47,10 +47,16 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 case true:
                     if (Action is not null)
                     {
+                        //Delete active component
                         Window.DropActiveComponent();
+                        //Enable the window
                         Window.Active = true;
+                        //Set the active component to the event.
                         Window.SetActiveComponent(Action);
+                        //Set the inspector window to the active scene.
                         Editor.ActiveScene.InspectorWindow = Window;
+                        //Disable all buttons temporary
+                        Editor.DisableComponents();
                     }
                     else
                     {
@@ -65,6 +71,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                         Window.Active = true;
                         Editor.ActiveScene.InspectorWindow = Window;
                         ccomp.IsSelected = false;
+                        Editor.DisableComponents();
                     }
                     return;
                 case false:

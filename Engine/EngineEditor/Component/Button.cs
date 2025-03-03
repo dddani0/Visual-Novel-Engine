@@ -64,6 +64,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// Represents if the button is active.
         /// </summary>
         internal bool Active { get; set; } = true;
+        internal bool IsLocked { get; set; } = false;
         /// <summary>
         /// Represents if the button is selected.
         /// </summary>
@@ -155,6 +156,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
 
         public void Update()
         {
+            if (IsLocked is true) return;
             IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition, YPosition, Width, Height));
             Click();
             Timer.DecreaseTimer();

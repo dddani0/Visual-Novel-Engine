@@ -177,6 +177,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             }
             InspectorWindow.DropActiveComponent();
             Editor.ActiveScene.InspectorWindow = null;
+            Editor.EnableComponents();
         }
     }
 }

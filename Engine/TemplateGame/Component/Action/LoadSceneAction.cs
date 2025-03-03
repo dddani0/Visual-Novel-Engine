@@ -29,6 +29,7 @@ namespace TemplateGame.Component.Action
         {
             Game = game;
             sceneID = sceneId;
+            TriggerVariableName = triggerVariableName;
         }
         /// <summary>
         /// Load scene with the correct ID if the condition is met.
