@@ -242,7 +242,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Scrollbar.AddComponents([.. ComponentList]);
             UpdateComponentPosition(EnabledRowComponentCount);
         }
-
         internal void DropActiveComponent()
         {
             ComponentList.Clear();
@@ -261,7 +260,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             {
                 if (i % enabledRowComponentCount == 0) rowcount++;
                 //If the component is a button, update the position of the button.
-                ComponentList[i].XPosition = rowcount > 1 ? ComponentList[i % enabledRowComponentCount].XPosition : XPosition + (i * Editor.ComponentWidth);
+                ComponentList[i].XPosition = rowcount > 1 ? ComponentList[i % enabledRowComponentCount].XPosition : XPosition + (Width / 2 - Editor.ComponentWidth / 2);
                 ComponentList[i].YPosition = YPosition + ((rowcount - 1) * Editor.ComponentHeight);
             }
         }

@@ -79,19 +79,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         public void Update()
         {
             if (IsLocked) return;
+            CloseButtonXPosition = XPosition + Width - Editor.SmallButtonWidth;
+            CloseButton.XPosition = CloseButtonXPosition;
+            CloseButton.YPosition = YPosition;
+            InspectorButtonXPosition = XPosition + Width - 2 * Editor.SmallButtonWidth;
+            InspectorButton.XPosition = InspectorButtonXPosition;
+            InspectorButton.YPosition = YPosition;
             IsHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, Width, Height));
-            if (IsHover && Raylib.IsMouseButtonPressed(MouseButton.Left))
-            {
-                //Convert IComponents to Components and if any other components are selected, then return
-                if (Editor.ActiveScene.ComponentList.Cast<Component>().Any(component => component.IsSelected)) return;
-                IsSelected = true;
-            }
-            else if (IsSelected && IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left))
-            {
-                IsSelected = false;
-                IsRenaming = false;
-                MoveTimer.ResetTimer();
-            }
             if (IsSelected) //Selected shows buttons
             {
                 if (Raylib.IsMouseButtonPressed(MouseButton.Right)) IsRenaming = true;
@@ -117,6 +111,17 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Name = Regex.Unescape(Name + ((char)Raylib.GetCharPressed()).ToString()).Replace('\0', ' ');
                 }
             }
+            if (IsHover && Raylib.IsMouseButtonPressed(MouseButton.Left))
+            {
+                //Convert IComponents to Components and if any other components are selected, then return
+                if (!Editor.ActiveScene.ComponentList.Cast<Component>().Any(component => component.IsSelected)) IsSelected = true;
+            }
+            else if (IsSelected && IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left))
+            {
+                IsSelected = false;
+                IsRenaming = false;
+                MoveTimer.ResetTimer();
+            }
         }
         public void Move()
         {
@@ -133,13 +138,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 {
                     IsMoving = true;
                     XPosition = Raylib.GetMouseX();
-                    YPosition = Raylib.GetMouseY();
-                    CloseButtonXPosition = XPosition + Width - Editor.SmallButtonWidth;
-                    CloseButton.XPosition = CloseButtonXPosition;
-                    CloseButton.YPosition = YPosition;
-                    InspectorButtonXPosition = XPosition + Width - 2 * Editor.SmallButtonWidth;
-                    InspectorButton.XPosition = InspectorButtonXPosition;
-                    InspectorButton.YPosition = YPosition;
+                    YPosition = Raylib.GetMouseY() > (Editor.SceneBar.Height + Editor.Toolbar.Height) && Raylib.GetMouseY() < Editor.ActiveScene.Timeline.YPosition - Editor.ComponentHeight ? Raylib.GetMouseY() : YPosition;
                 }
             }
             //Detach this component if it's is dragged outside the group.

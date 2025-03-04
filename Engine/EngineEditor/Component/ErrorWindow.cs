@@ -13,8 +13,8 @@ namespace EngineEditor.Component
         private int YPosition { get; set; }
         internal int Width { get; set; }
         internal int Height { get; set; }
-        private Button? CancelButton { get; set; }
-        private Button[] Buttons { get; set; }
+        internal Button? CancelButton { get; set; }
+        internal Button[] Buttons { get; set; }
         public ErrorWindow(Editor editor, string errorMessage, Button[] buttons, int width, int height)
         {
             Editor = editor;

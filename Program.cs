@@ -11,7 +11,6 @@ class Program
 
         //Game game = new();
         Editor editor = new();
-        Raylib.BeginMode2D(editor.Camera);
 
         while (Exit is false)
         {

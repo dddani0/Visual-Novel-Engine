@@ -210,6 +210,18 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     {
                         Type = "BuildProjectCommand"
                     };
+                case ShowErrorCommand showErrorCommand:
+                    return new()
+                    {
+                        Type = "ShowErrorCommand",
+                        ErrorMessage = showErrorCommand.ErrorMessage,
+                        WarningButtons = [.. showErrorCommand.ErrorWindow.Buttons.Select(ExportButtonData)]
+                    };
+                case DeleteAllComponentsCommand deleteAllComponentsCommand:
+                    return new()
+                    {
+                        Type = "DeleteAllComponentsCommand"
+                    };
                 default:
                     throw new Exception("Command type not found!");
             }

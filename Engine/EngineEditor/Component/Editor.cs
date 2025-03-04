@@ -7,6 +7,7 @@ using EngineEditor.Component;
 using System.Numerics;
 using VisualNovelEngine.Engine.EngineEditor.Component.Command;
 using System.Reflection.Emit;
+using Timer = TemplateGame.Component.Timer;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -32,7 +33,15 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// Instance of a Game
         /// </summary>
         internal Game Game { get; set; }
-        internal Camera2D Camera { get; set; }
+        /// <summary>
+        /// The extent which the screen moves, when decided to
+        /// </summary>
+        internal const int MoveOffset = 150;
+        /// <summary>
+        /// The offset, which the mouse requires to move
+        /// </summary>
+        internal const int MoveMouseOffset = 50;
+        internal int MouseXMoveExtent = 0;
         /// <summary>
         /// The width of the general component type.
         /// </summary>
@@ -198,6 +207,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         internal ErrorWindow? ErrorWindow { get; set; } = null;
         private ShowErrorCommand ShowExitErrorCommand { get; set; }
+        internal Timer MouseMoveTimer { get; set; }
         public bool Busy => ActiveScene.InspectorWindow?.Active is true;
         /// <summary>
         /// The constructor of the editor.
@@ -209,6 +219,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             // instance of the editor importer
             EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
             EditorConfigImport();
+            //
+            MouseMoveTimer = new(0.5f);
             //
             ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(), Button.ButtonType.Trigger)]);
             //Create scene configuration button
@@ -240,8 +252,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             SceneBar = new MiniWindow(this, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, EngineEditor.Component.MiniWindow.miniWindowType.Horizontal, [.. SceneButtonList]);
             //
             SaveFilePath += Regex.Replace(ProjectName, @"[^a-zA-Z0-9\s]", "") + ".json";
-            //
-            Camera = new Camera2D();
         }
         /// <summary>
         /// Imports the editor configuration from external file.
@@ -324,7 +334,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             GameConfigurationButton.Render();
             ActiveScene.Update();
             ExitWindow();
-            DragCamera();
+            MoveCamera();
             for (int i = 0; i < MiniWindow.Count; i++)
             {
                 MiniWindow[i].Show();
@@ -340,19 +350,41 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             }
         }
 
-        private void DragCamera()
+        private void MoveCamera()
         {
-            if (Raylib.IsMouseButtonDown(MouseButton.Right))
+            if (MouseMoveTimer.OnCooldown())
             {
-                Vector2 delta = Raylib.GetMouseDelta();
-                delta = Raymath.Vector2Scale(delta, -1.0f / Camera.Zoom);
-                //
-                Camera2D camera = Camera;
-                camera.Offset = Raymath.Vector2Add(camera.Target, delta);
-                //
-                Camera = camera;
+                MouseMoveTimer.DecreaseTimer();
+                return;
             }
+            if (Raylib.GetMouseX() >= Raylib.GetScreenWidth() - MoveMouseOffset)
+            {
+                foreach (Component item in ActiveScene.ComponentList)
+                {
+                    item.XPosition -= MoveOffset;
+                }
+                foreach (Group item in ActiveScene.ComponentGroupList)
+                {
+                    item.XPosition -= MoveOffset;
+                }
+                MouseXMoveExtent++;
+            }
+            //Move leftway
+            else if (Raylib.GetMouseX() <= MoveMouseOffset)
+            {
+                foreach (Component item in ActiveScene.ComponentList)
+                {
+                    item.XPosition += MoveOffset;
+                }
+                foreach (Group item in ActiveScene.ComponentGroupList)
+                {
+                    item.XPosition += MoveOffset;
+                }
+                MouseXMoveExtent--;
+            }
+            MouseMoveTimer.ResetTimer();
         }
+
         internal void DisableComponents()
         {
             foreach (Button button in Toolbar.ComponentList)

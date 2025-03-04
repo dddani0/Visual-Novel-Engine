@@ -170,7 +170,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     menu.BlockList = blockList;
                                     break;
                             }
-                            return;
                         }
                     }
                     break;
