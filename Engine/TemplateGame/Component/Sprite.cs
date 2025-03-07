@@ -56,8 +56,9 @@ namespace TemplateGame.Component
 
         public Sprite(string path, Block block, int x, int y)
         {
-            Name = path;
-            ImageTexture = Raylib.LoadTexture(path);
+            Path = path;
+            Name = Path;
+            ImageTexture = Raylib.LoadTexture(Path);
             X = block.XPosition + x;
             Y = block.YPosition + y;
             Color = Color.White;

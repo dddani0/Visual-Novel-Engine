@@ -6,7 +6,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// <summary>
     /// Tints a sprite with a color.
     /// </summary>
-    class TintSpriteAction : IEvent, IButtonEvent
+    class TintSpriteAction : IAction, IButtonEvent
     {
         private readonly Game Game;
         private readonly Sprite sprite;
@@ -23,7 +23,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
             this.sprite = sprite;
             this.color = color;
         }
-        public void PerformEvent()
+        public void PerformAction()
         {
             Game.ActiveScene.Timeline.SpriteRenderList.First(theSprite => theSprite.Equals(sprite)).ChangeTint(color);
             Game.ActiveScene.Timeline.NextStep();

@@ -27,7 +27,7 @@ namespace TemplateGame.Component
         /// <param name="rawAction"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        Sprite FetchSpriteFromImport(SpriteExim rawAction)
+        internal Sprite FetchSpriteFromImport(SpriteExim rawAction)
         {
             if (rawAction.Path == null)
             {
@@ -40,13 +40,13 @@ namespace TemplateGame.Component
             return new Sprite(Game.currentFolderPath + rawAction.Path);
         }
         /// <summary>
-        /// Creates a variable from the importer class
+        /// Creates a sprite from the importer class
         /// </summary>
         /// <param name="spriteImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        Sprite FetchSpriteFromImport(SpriteExim spriteImport, Block block)
+        internal Sprite FetchSpriteFromImport(SpriteExim spriteImport, Block block)
         {
             if (spriteImport.Path == null)
             {
@@ -72,7 +72,7 @@ namespace TemplateGame.Component
         /// <param name="variableImport"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        Variable FetchVariableFromImport(ActionExim variableImport)
+        internal Variable FetchVariableFromImport(ActionExim variableImport)
         {
             if (variableImport.VariableName == null)
             {
@@ -94,7 +94,7 @@ namespace TemplateGame.Component
         /// <param name="buttonImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        Button FetchButtonFromImport(ButtonComponentExim buttonImport, Block block)
+        internal Button FetchButtonFromImport(ButtonComponentExIm buttonImport, Block block)
         {
             return new Button(
                 Game,
@@ -134,7 +134,7 @@ namespace TemplateGame.Component
                     B = (byte)buttonImport.HoverColor[2],
                     A = (byte)buttonImport.HoverColor[3]
                 },
-                (IButtonEvent)FetchTimelineDependentActionFromImport(buttonImport.Event)
+                (IButtonEvent)FetchTimelineDependentActionFromImport(buttonImport.Action)
             );
         }
         /// <summary>
@@ -143,7 +143,7 @@ namespace TemplateGame.Component
         /// <param name="staticButtonImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        Button FetchStaticButtonFromImport(ButtonComponentExim staticButtonImport, Block block)
+        internal Button FetchStaticButtonFromImport(ButtonComponentExIm staticButtonImport, Block block)
         {
             return new Button(
                             Game,
@@ -183,7 +183,7 @@ namespace TemplateGame.Component
                                 B = (byte)staticButtonImport.HoverColor[2],
                                 A = (byte)staticButtonImport.HoverColor[3]
                             },
-                            FetchTimelineIndependentActionFromImport(staticButtonImport.Event)
+                            FetchTimelineIndependentActionFromImport(staticButtonImport.Action)
                         );
         }
         /// <summary>
@@ -192,7 +192,7 @@ namespace TemplateGame.Component
         /// <param name="DropBoxOptionImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        Button FetchDropBoxOptionFromImport(DropBoxExim dropBoxImport, DropBoxOptionExim DropBoxOptionImport, Block block)
+        internal Button FetchDropBoxOptionFromImport(DropBoxExim dropBoxImport, DropBoxOptionExim DropBoxOptionImport, Block block)
         {
             //Each dropbox option's Y position is calculated by the height of the dropbox and the index of the option in the DropBox.cs class.
             return DropBox.GetDropBoxOption(
@@ -233,7 +233,7 @@ namespace TemplateGame.Component
                     B = (byte)dropBoxImport.HoverColor[2],
                     A = (byte)dropBoxImport.HoverColor[3]
                 },
-                FetchTimelineIndependentActionFromImport(DropBoxOptionImport.Event)
+                FetchTimelineIndependentActionFromImport(DropBoxOptionImport.Action)
             );
         }
         /// <summary>
@@ -242,7 +242,7 @@ namespace TemplateGame.Component
         /// <param name="dropBoxImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        DropBox FetchDropBoxFromImport(DropBoxExim dropBoxImport, Block block)
+        internal DropBox FetchDropBoxFromImport(DropBoxExim dropBoxImport, Block block)
         {
             return new DropBox(
                                     block,
@@ -279,7 +279,7 @@ namespace TemplateGame.Component
         /// <param name="inputFieldImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        InputField FetchInputFieldFromImport(InputFieldExim inputFieldImport, Block block)
+        internal InputField FetchInputFieldFromImport(InputFieldExim inputFieldImport, Block block)
         {
             return new InputField(
                 Game,
@@ -319,7 +319,7 @@ namespace TemplateGame.Component
                     B = (byte)inputFieldImport.SelectedColor[2],
                     A = (byte)inputFieldImport.SelectedColor[3]
                 },
-                (IButtonEvent)FetchTimelineDependentActionFromImport(inputFieldImport.ButtonEvent)
+                (IButtonEvent)FetchTimelineDependentActionFromImport(inputFieldImport.ButtonAction)
             );
         }
         /// <summary>
@@ -328,7 +328,7 @@ namespace TemplateGame.Component
         /// <param name="staticInputFieldImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        InputField FetchStaticInputFieldFromImport(InputFieldExim staticInputFieldImport, Block block)
+        internal InputField FetchStaticInputFieldFromImport(InputFieldExim staticInputFieldImport, Block block)
         {
             return new InputField(
                 Game,
@@ -368,7 +368,7 @@ namespace TemplateGame.Component
                     B = (byte)staticInputFieldImport.SelectedColor[2],
                     A = (byte)staticInputFieldImport.SelectedColor[3]
                 },
-                FetchTimelineIndependentActionFromImport(staticInputFieldImport.ButtonEvent)
+                FetchTimelineIndependentActionFromImport(staticInputFieldImport.ButtonAction)
             );
         }
         /// <summary>
@@ -377,7 +377,7 @@ namespace TemplateGame.Component
         /// <param name="sliderImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        Slider FetchSliderFromImport(SliderExim sliderImport, Block block)
+        internal Slider FetchSliderFromImport(SliderExim sliderImport, Block block)
         {
             return new Slider(
                 block,
@@ -408,7 +408,7 @@ namespace TemplateGame.Component
                     B = (byte)sliderImport.BorderColor[2],
                     A = (byte)sliderImport.BorderColor[3]
                 },
-                FetchTimelineIndependentActionFromImport(sliderImport.Event)
+                FetchTimelineIndependentActionFromImport(sliderImport.Action)
             );
         }
         /// <summary>
@@ -417,7 +417,7 @@ namespace TemplateGame.Component
         /// <param name="toggleImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        Toggle FetchToggleFromImport(ToggleExim toggleImport, Block block)
+        internal Toggle FetchToggleFromImport(ToggleExim toggleImport, Block block)
         {
             return new Toggle(
                  block,
@@ -448,7 +448,7 @@ namespace TemplateGame.Component
                      B = (byte)toggleImport.ActivatedColor[2],
                      A = (byte)toggleImport.ActivatedColor[3]
                  },
-                 FetchTimelineIndependentActionFromImport(toggleImport.Event)
+                 FetchTimelineIndependentActionFromImport(toggleImport.Action)
              );
         }
         /// <summary>
@@ -457,7 +457,7 @@ namespace TemplateGame.Component
         /// <param name="textFieldImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        TextField FetchTextFieldFromImport(TextFieldExim textFieldImport, Block block)
+        internal TextField FetchTextFieldFromImport(TextFieldExim textFieldImport, Block block)
         {
             return new TextField(
                 block,
@@ -494,7 +494,7 @@ namespace TemplateGame.Component
         /// <param name="blockImport"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        Block FetchBlockFromImport(BlockExim blockImport)
+        internal Block FetchBlockFromImport(BlockExim blockImport)
         {
             var newBlock = new Block(
                 blockImport.XPosition,
@@ -525,7 +525,7 @@ namespace TemplateGame.Component
         /// <param name="staticBlockImport"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        Block FetchStaticBlockFromImport(BlockExim staticBlockImport)
+        internal Block FetchStaticBlockFromImport(BlockExim staticBlockImport)
         {
             var newBlock = new Block(
                     staticBlockImport.XPosition,
@@ -565,7 +565,7 @@ namespace TemplateGame.Component
         /// <param name="menuImport"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        Menu FetchMenuFromImport(MenuExim menuImport)
+        internal Menu FetchMenuFromImport(MenuExim menuImport)
         {
             if (menuImport.XPosition == null)
             {
@@ -637,78 +637,82 @@ namespace TemplateGame.Component
         /// <param name="actionImport"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        internal IEvent FetchTimelineDependentActionFromImport(ActionExim actionImport)
+        internal IAction FetchTimelineDependentActionFromImport(ActionExim actionImport)
         {
             switch (actionImport.Type)
             {
                 case "TextBoxCreateAction":
                     // Add the textbox to the timeline.
-                    if (actionImport.CharactersPerSecond.HasValue is false)
+                    if (actionImport.TextBox == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the textbox is null.");
+                    }
+                    if (actionImport.TextBox.CharactersPerSecond.HasValue is false)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the characters per second is null.");
                     }
-                    if (actionImport.Font == null)
+                    if (actionImport.TextBox.Font == null)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the font is null.");
                     }
-                    if (actionImport.TextBoxColor == null)
+                    if (actionImport.TextBox.Color == null)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the textbox color is null.");
                     }
-                    if (actionImport.TextBoxBorder == null)
+                    if (actionImport.TextBox.BorderColor == null)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the textbox border is null.");
                     }
-                    if (actionImport.PositionType.HasValue is false)
+                    if (actionImport.TextBox.PositionType.HasValue is false)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the position type is null.");
                     }
-                    if (actionImport.HorizontalTextMargin.HasValue is false)
+                    if (actionImport.TextBox.HorizontalTextMargin.HasValue is false)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the horizontal text margin is null.");
                     }
-                    if (actionImport.VerticalTextMargin.HasValue is false)
+                    if (actionImport.TextBox.VerticalTextMargin.HasValue is false)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the vertical text margin is null.");
                     }
-                    if (actionImport.WordWrap.HasValue is false)
+                    if (actionImport.TextBox.WordWrap.HasValue is false)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the word wrap is null.");
                     }
-                    if (actionImport.TextBoxTitle == null)
+                    if (actionImport.TextBox.Title == null)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the textbox title is null.");
                     }
-                    if (actionImport.TextBoxContent == null)
+                    if (actionImport.TextBox.Content == null)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the textbox content is null.");
                     }
-                    var charactersPerSecond = actionImport.CharactersPerSecond.Value;
+                    var charactersPerSecond = actionImport.TextBox.CharactersPerSecond.Value;
                     var font = new Font() { BaseSize = 30, GlyphPadding = 5 };
-                    var textboxcolor = actionImport.TextBoxColor == null || actionImport.TextBoxColor.Length < 4 ?
+                    var textboxcolor = actionImport.TextBox.Color == null || actionImport.TextBox.Color.Length < 4 ?
                     new Color() { R = 0, G = 0, B = 0, A = 255 } :
                     new Color()
                     {
-                        R = (byte)actionImport.TextBoxColor[0],
-                        G = (byte)actionImport.TextBoxColor[1],
-                        B = (byte)actionImport.TextBoxColor[2],
-                        A = (byte)actionImport.TextBoxColor[3]
+                        R = (byte)actionImport.TextBox.Color[0],
+                        G = (byte)actionImport.TextBox.Color[1],
+                        B = (byte)actionImport.TextBox.Color[2],
+                        A = (byte)actionImport.TextBox.Color[3]
                     };
-                    var textboxborder = actionImport.TextBoxBorder == null || actionImport.TextBoxBorder.Length < 4 ?
+                    var textboxborder = actionImport.TextBox.BorderColor == null || actionImport.TextBox.BorderColor.Length < 4 ?
                     new Color() { R = 0, G = 0, B = 0, A = 255 } :
                     new Color()
                     {
-                        R = (byte)actionImport.TextBoxBorder[0],
-                        G = (byte)actionImport.TextBoxBorder[1],
-                        B = (byte)actionImport.TextBoxBorder[2],
-                        A = (byte)actionImport.TextBoxBorder[3]
+                        R = (byte)actionImport.TextBox.BorderColor[0],
+                        G = (byte)actionImport.TextBox.BorderColor[1],
+                        B = (byte)actionImport.TextBox.BorderColor[2],
+                        A = (byte)actionImport.TextBox.BorderColor[3]
                     };
-                    var positionType = (TextBox.PositionType)actionImport.PositionType.Value;
-                    var horizontalTextMargin = actionImport.HorizontalTextMargin.Value;
-                    var verticalTextMargin = actionImport.VerticalTextMargin.Value;
-                    var wordWrap = actionImport.WordWrap.Value;
-                    var textBoxTitle = actionImport.TextBoxTitle;
-                    var textBoxContent = actionImport.TextBoxContent;
+                    var positionType = (TextBox.PositionType)actionImport.TextBox.PositionType.Value;
+                    var horizontalTextMargin = actionImport.TextBox.HorizontalTextMargin.Value;
+                    var verticalTextMargin = actionImport.TextBox.VerticalTextMargin.Value;
+                    var wordWrap = actionImport.TextBox.WordWrap.Value;
+                    var textBoxTitle = actionImport.TextBox.Title;
+                    var textBoxContent = actionImport.TextBox.Content;
                     //
                     var textBox = TextBox.CreateNewTextBox(
                         Game,
@@ -880,7 +884,7 @@ namespace TemplateGame.Component
                         throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
                     }
                     var sceneId = actionImport.SceneID.Value;
-                    IEvent LoadSceneAction = new LoadSceneAction(Game, sceneId, actionImport.TriggerVariableName);
+                    IAction LoadSceneAction = new LoadSceneAction(Game, sceneId, actionImport.TriggerVariableName);
                     return (ISettingsEvent)LoadSceneAction;
                 case "SetVariableValueAction":
                     // Add the set variable value action to the timeline.

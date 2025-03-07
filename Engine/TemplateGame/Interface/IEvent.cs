@@ -3,11 +3,11 @@ namespace TemplateGame.Interface
     /// <summary>
     /// Interface for general events.
     /// </summary>
-    public interface IEvent
+    public interface IAction
     {
         /// <summary>
         /// Performs the event.
         /// </summary>
-        abstract void PerformEvent();
+        abstract void PerformAction();
     }
 }

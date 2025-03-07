@@ -40,7 +40,7 @@
                                 "Height": 50,
                                 "PlaceholderText": "Enter text here",
                                 "ButtonText": "Submit",
-                                "ButtonEvent": {
+                                "ButtonAction": {
                                     "Type": "SetVariableValueAction",
                                     "VariableName": "myVar",
                                     "BlockComponentID": 1

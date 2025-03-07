@@ -6,7 +6,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// <summary>
     /// Changes the sprite texture.
     /// </summary>
-    class ChangeSpriteAction : IEvent
+    class ChangeSpriteAction : IAction
     {
         readonly Game Game;
         readonly Sprite sprite;
@@ -38,7 +38,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
         /// <summary>
         /// Changes the sprite texture.
         /// </summary>
-        public void PerformEvent()
+        public void PerformAction()
         {
             Game.ActiveScene.Timeline.SpriteRenderList.First(theSprite => theSprite.Equals(sprite)).ChangeTexture(replacementTexture);
             Game.ActiveScene.Timeline.NextStep();

@@ -5,7 +5,7 @@ namespace TemplateGame.Component.Action.TimelineIndependent
     /// <summary>
     /// Switches between two menus, by disabling the prior, and enabling the latter.
     /// </summary>
-    public class SwitchStaticMenuAction : IEvent, ISettingsEvent
+    public class SwitchStaticMenuAction : IAction, ISettingsEvent
     {
         private readonly Game Game;
         private readonly GameImporter GameLoader;
@@ -29,7 +29,7 @@ namespace TemplateGame.Component.Action.TimelineIndependent
         /// <summary>
         /// Performs the event.
         /// </summary>
-        public void PerformEvent()
+        public void PerformAction()
         {
             var DisablingMenu = GameLoader.MenuListCache.First(x => x.ID == disableMenuID);
             var EnablingMenu = GameLoader.MenuListCache.First(x => x.ID == enablingMenuID);

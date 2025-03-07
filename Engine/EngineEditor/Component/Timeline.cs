@@ -14,7 +14,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal int Width { get; set; }
         internal int Height { get; set; }
         internal int BorderWidth { get; set; }
-        internal List<IEvent> Events { get; set; } = [];
+        internal List<IAction> Events { get; set; } = [];
         internal List<Button> EventButtons { get; set; } = [];
         internal Button AddGeneralEventButton { get; set; }
         internal Button ConfigureTimelineButton { get; set; }
@@ -349,7 +349,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             Scrollbar.Render();
         }
-        internal void AddEvent(IEvent action)
+        internal void AddEvent(IAction action)
         {
             Events.Add(action);
             //add a slider

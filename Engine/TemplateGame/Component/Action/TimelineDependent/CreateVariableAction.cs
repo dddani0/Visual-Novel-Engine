@@ -9,12 +9,12 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// </summary>
     /// <param name="game">Active game</param>
     /// <param name="variable">To be cerated variable</param>
-    class CreateVariableAction(Game game, Variable variable) : IEvent, IButtonEvent
+    class CreateVariableAction(Game game, Variable variable) : IAction, IButtonEvent
     {
         Variable Variable { get; } = variable;
         Game Game { get; } = game;
 
-        public void PerformEvent()
+        public void PerformAction()
         {
             var variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(Variable.Name));
             if (variable != null)

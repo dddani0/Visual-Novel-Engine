@@ -19,11 +19,11 @@ namespace TemplateGame.Component
         internal bool IsToggled { get; set; }
         internal bool IsLocked { get; set; }
         internal Font Font { get; set; }
-        private Color Color { get; set; }
-        private Color BorderColor { get; set; }
-        private Color ToggledColor { get; set; }
+        internal Color Color { get; set; }
+        internal Color BorderColor { get; set; }
+        internal Color ToggledColor { get; set; }
         public bool Enabled() => IsVisible;
-        internal IEvent SettingsEvent { get; set; }
+        internal IAction SettingsEvent { get; set; }
 
         /// <summary>
         /// Creates a new toggle component.
@@ -48,7 +48,7 @@ namespace TemplateGame.Component
             Color = color;
             BorderColor = borderColor;
             ToggledColor = toggledColor;
-            SettingsEvent = (IEvent)settingsEvent;
+            SettingsEvent = (IAction)settingsEvent;
         }
         /// <summary>
         /// Updates the toggle component.
@@ -59,7 +59,7 @@ namespace TemplateGame.Component
             if (Game.IsLeftMouseButtonPressed() && Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, 20, 20)))
             {
                 IsToggled = !IsToggled;
-                if (IsToggled) SettingsEvent.PerformEvent();
+                if (IsToggled) SettingsEvent.PerformAction();
             }
         }
         /// <summary>

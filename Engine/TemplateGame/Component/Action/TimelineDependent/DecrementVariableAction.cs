@@ -7,7 +7,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// <summary>
     /// Decrements the already declaired integer variable with a value.
     /// </summary>
-    public class DecrementVariableAction : IEvent, IButtonEvent
+    public class DecrementVariableAction : IAction, IButtonEvent
     {
         private Variable Variable { get; set; }
         private Variable DecrementVariable { get; set; }
@@ -33,7 +33,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
         /// Decrements the variable with the constant value or with a variable value.
         /// </summary>
         /// <exception cref="System.Exception"></exception>
-        public void PerformEvent()
+        public void PerformAction()
         {
             Variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             DecrementVariable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(DecrementVariableName)) ?? throw new System.Exception("Variable not found!");

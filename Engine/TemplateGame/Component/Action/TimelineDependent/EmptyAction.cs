@@ -5,14 +5,14 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// <summary>
     /// Empty action.
     /// </summary>
-    class EmptyAction : IEvent
+    class EmptyAction : IAction
     {
         readonly Game Game;
         public EmptyAction(Game game)
         {
             Game = game;
         }
-        public void PerformEvent()
+        public void PerformAction()
         {
             //Empty action
             Game.ActiveScene.Timeline.NextStep();

@@ -2,7 +2,7 @@ using TemplateGame.Interface;
 
 namespace TemplateGame.Component.Action.TimelineDependent
 {
-    class RemoveSpriteAction : IEvent, IButtonEvent
+    class RemoveSpriteAction : IAction, IButtonEvent
     {
         readonly Game Game;
         readonly Sprite sprite;
@@ -11,7 +11,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
             Game = game;
             this.sprite = sprite;
         }
-        public void PerformEvent()
+        public void PerformAction()
         {
             Game.ActiveScene.Timeline.SpriteRenderList.Remove(sprite);
             sprite.Enabled = false;

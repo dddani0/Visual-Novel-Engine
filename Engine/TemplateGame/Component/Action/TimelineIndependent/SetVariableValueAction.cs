@@ -7,7 +7,7 @@ namespace TemplateGame.Component.Action.TimelineIndependent
     /// Slider: Int, Float
     /// Toggle: Boolean
     /// </summary>
-    public class SetVariableValueAction : IEvent, ISettingsEvent
+    public class SetVariableValueAction : IAction, ISettingsEvent
     {
         private readonly Game Game;
         private GameImporter GameLoader { get; set; }
@@ -37,7 +37,7 @@ namespace TemplateGame.Component.Action.TimelineIndependent
         /// Sets the variable with the constant value or with a variable value.
         /// </summary>
         /// <exception cref="System.Exception"></exception>
-        public void PerformEvent()
+        public void PerformAction()
         {
             Variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (IsComponentFound is false)

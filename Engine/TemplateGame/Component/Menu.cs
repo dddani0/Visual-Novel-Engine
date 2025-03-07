@@ -21,11 +21,11 @@ namespace TemplateGame.Component
         /// <summary>
         /// The width of the menu.
         /// </summary>
-        private int Width { get; set; }
+        internal int Width { get; set; }
         /// <summary>
         /// The height of the menu.
         /// </summary>
-        private int Height { get; set; }
+        internal int Height { get; set; }
         /// <summary>
         /// Displays the menu in full screen.
         /// </summary>
@@ -37,11 +37,11 @@ namespace TemplateGame.Component
         /// <summary>
         /// The background color of the menu.
         /// </summary>
-        internal Color MenuColor { get; set; }
+        internal Color Color { get; set; }
         /// <summary>
         /// The border color of the menu.
         /// </summary>
-        internal Color MenuBorderColor { get; set; }
+        internal Color BorderColor { get; set; }
         internal bool IsVisible { get; set; }
         internal Game Game { get; set; }
 
@@ -51,8 +51,8 @@ namespace TemplateGame.Component
             ID = id;
             IsFullScreen = isFullScreen;
             BlockList = blockList;
-            MenuColor = windowColor;
-            MenuBorderColor = windowBorderColor;
+            Color = windowColor;
+            BorderColor = windowBorderColor;
             //
             Width = isFullScreen ? Raylib.GetScreenWidth() : width;
             Height = isFullScreen ? Raylib.GetScreenHeight() : height;
@@ -66,7 +66,7 @@ namespace TemplateGame.Component
         /// </summary>
         public void Render()
         {
-            Raylib.DrawRectangle(XPosition, YPosition, Width, Height, MenuColor);
+            Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
             foreach (Block block in BlockList)
             {
                 block.Render();

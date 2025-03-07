@@ -37,32 +37,14 @@ namespace VisualNovelEngine.Engine.PortData
     /// <summary>
     /// The "ActionExim" class is a helper class to import/export the list of actions to or from a JSON file.
     /// </summary>
-    internal class ActionExim
+    public class ActionExim
     {
         [JsonPropertyName("Type")]
         public required string Type { get; set; }
         [JsonPropertyName("Sprite")]
         public SpriteExim? Sprite { get; set; }
-        [JsonPropertyName("CharactersPerSecond")]
-        public double? CharactersPerSecond { get; set; }
-        [JsonPropertyName("Font")] //Need font importer class
-        public string Font { get; set; }
-        [JsonPropertyName("TextBoxColor")]
-        public int[]? TextBoxColor { get; set; }
-        [JsonPropertyName("TextBoxBorder")]
-        public int[]? TextBoxBorder { get; set; }
-        [JsonPropertyName("PositionType")]
-        public int? PositionType { get; set; }
-        [JsonPropertyName("HorizontalTextMargin")]
-        public int? HorizontalTextMargin { get; set; }
-        [JsonPropertyName("VerticalTextMargin")]
-        public int? VerticalTextMargin { get; set; }
-        [JsonPropertyName("WordWrap")]
-        public bool? WordWrap { get; set; }
-        [JsonPropertyName("TextBoxTitle")]
-        public string? TextBoxTitle { get; set; }
-        [JsonPropertyName("TextBoxContent")]
-        public string[]? TextBoxContent { get; set; }
+        [JsonPropertyName("TextBox")]
+        public TextBoxExIm? TextBox { get; set; }
         [JsonPropertyName("TintColor")]
         public int[]? TintColor { get; set; }
         [JsonPropertyName("SceneID")]
@@ -91,7 +73,7 @@ namespace VisualNovelEngine.Engine.PortData
     /// <summary>
     /// The "VariableExim" class is a helper class to import/export the list of variables to or from a JSON file.
     /// </summary>
-    internal class VariableExim
+    public class VariableExim
     {
         [JsonPropertyName("Name")]
         public required string Name { get; set; }
@@ -103,7 +85,7 @@ namespace VisualNovelEngine.Engine.PortData
     /// <summary>
     /// The "MenuExim" class is a helper class to import/export the list of menus to or from a JSON file.
     /// </summary>
-    internal class MenuExim
+    public class MenuExim
     {
         [JsonPropertyName("ID")]
         public long ID { get; set; }
@@ -129,7 +111,7 @@ namespace VisualNovelEngine.Engine.PortData
     /// <summary>
     /// The "BlockExim" class is a helper class to import/export the list of blocks to or from a JSON file.
     /// </summary>
-    internal class BlockExim
+    public class BlockExim
     {
         [JsonPropertyName("ID")]
         public required long ID { get; set; }
@@ -138,9 +120,9 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("YPosition")]
         public int YPosition { get; set; }
         [JsonPropertyName("Button")]
-        public ButtonComponentExim? Button { get; set; }
+        public ButtonComponentExIm? Button { get; set; }
         [JsonPropertyName("StaticButton")]
-        public ButtonComponentExim? StaticButton { get; set; }
+        public ButtonComponentExIm? StaticButton { get; set; }
         [JsonPropertyName("InputField")]
         public InputFieldExim? InputField { get; set; }
         [JsonPropertyName("StaticInputField")]
@@ -156,10 +138,34 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Sprite")]
         public SpriteExim? Sprite { get; set; }
     }
+    public class TextBoxExIm
+    {
+        [JsonPropertyName("CharactersPerSecond")]
+        public double? CharactersPerSecond { get; set; }
+        [JsonPropertyName("Font")] //Need font importer class
+        public string Font { get; set; }
+        [JsonPropertyName("Color")]
+        public int[]? Color { get; set; }
+        [JsonPropertyName("BorderColor")]
+        public int[]? BorderColor { get; set; }
+        [JsonPropertyName("PositionType")]
+        public int? PositionType { get; set; }
+        [JsonPropertyName("HorizontalTextMargin")]
+        public int? HorizontalTextMargin { get; set; }
+        [JsonPropertyName("VerticalTextMargin")]
+        public int? VerticalTextMargin { get; set; }
+        [JsonPropertyName("WordWrap")]
+        public bool? WordWrap { get; set; }
+        [JsonPropertyName("Title")]
+        public string? Title { get; set; }
+        [JsonPropertyName("Content")]
+        public string[]? Content { get; set; }
+    }
+
     /// <summary>
     /// The "ButtonComponentExim" class is a helper class to import/export the Button component's data to or from a JSON file.
     /// </summary>
-    internal class ButtonComponentExim
+    public class ButtonComponentExIm
     {
         [JsonPropertyName("XPosition")]
         public required int XPosition { get; set; }
@@ -181,13 +187,13 @@ namespace VisualNovelEngine.Engine.PortData
         public required int[] BorderColor { get; set; }
         [JsonPropertyName("HoverColor")]
         public required int[] HoverColor { get; set; }
-        [JsonPropertyName("Event")]
-        public required ActionExim Event { get; set; }
+        [JsonPropertyName("Action")]
+        public required ActionExim Action { get; set; }
     }
     /// <summary>
     /// The "InputFieldExim" class is a helper class to import/export the TextBox component's data to or from a JSON file.
     /// </summary>
-    internal class InputFieldExim
+    public class InputFieldExim
     {
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
@@ -203,8 +209,8 @@ namespace VisualNovelEngine.Engine.PortData
         public required string PlaceholderText { get; set; }
         [JsonPropertyName("ButtonText")]
         public required string ButtonText { get; set; }
-        [JsonPropertyName("ButtonEvent")]
-        public required ActionExim ButtonEvent { get; set; }
+        [JsonPropertyName("ButtonAction")]
+        public required ActionExim ButtonAction { get; set; }
         [JsonPropertyName("BorderWidth")]
         public int BorderWidth { get; set; }
         [JsonPropertyName("Color")]
@@ -219,7 +225,7 @@ namespace VisualNovelEngine.Engine.PortData
     /// <summary>
     /// The "DropBoxExim" class is a helper class to import/export the DropBox component's data to or from a JSON file.
     /// </summary>
-    internal class DropBoxExim
+    public class DropBoxExim
     {
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
@@ -243,17 +249,17 @@ namespace VisualNovelEngine.Engine.PortData
     /// <summary>
     /// The "DropBoxOptionExim" class is a helper class to import/export the DropBoxOption component's data to or from a JSON file.
     /// </summary>
-    internal class DropBoxOptionExim
+    public class DropBoxOptionExim
     {
         [JsonPropertyName("Text")]
         public required string Text { get; set; }
-        [JsonPropertyName("Event")]
-        public required ActionExim Event { get; set; }
+        [JsonPropertyName("Action")]
+        public required ActionExim Action { get; set; }
     }
     /// <summary>
     /// The "SliderExim" class is a helper class to import/export the Slider component's data to or from a JSON file.
     /// </summary>
-    internal class SliderExim
+    public class SliderExim
     {
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
@@ -273,13 +279,13 @@ namespace VisualNovelEngine.Engine.PortData
         public required int[] Color { get; set; }
         [JsonPropertyName("BorderColor")]
         public required int[] BorderColor { get; set; }
-        [JsonPropertyName("Event")]
-        public required ActionExim Event { get; set; }
+        [JsonPropertyName("Action")]
+        public required ActionExim Action { get; set; }
     }
     /// <summary>
     /// The "ToggleExim" class is a helper class to import/export the Toggle component's data to or from a JSON file.
     /// </summary>
-    internal class ToggleExim
+    public class ToggleExim
     {
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
@@ -297,13 +303,13 @@ namespace VisualNovelEngine.Engine.PortData
         public required int[] BorderColor { get; set; }
         [JsonPropertyName("ActivatedColor")]
         public required int[] ActivatedColor { get; set; }
-        [JsonPropertyName("Event")]
-        public required ActionExim Event { get; set; }
+        [JsonPropertyName("Action")]
+        public required ActionExim Action { get; set; }
     }
     /// <summary>
     /// The "TextFieldExim" class is a helper class to import/export the TextField component's data to or from a JSON file.
     /// </summary>
-    internal class TextFieldExim
+    public class TextFieldExim
     {
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
@@ -335,10 +341,12 @@ namespace VisualNovelEngine.Engine.PortData
     /// <summary>
     /// The "SpriteExim" class is a helper class to import/export the Sprite component's data to or from a JSON file.
     /// </summary>
-    internal class SpriteExim
+    public class SpriteExim
     {
         [JsonPropertyName("Path")]
         public required string Path { get; set; }
+        [JsonPropertyName("Block")]
+        public BlockExim? Block { get; set; }
         [JsonPropertyName("XPosition")]
         public int? XPosition { get; set; }
         [JsonPropertyName("YPosition")]

@@ -14,7 +14,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The GameLoader deals with the raw data which is loaded into the game.
         /// </summary>
-        private GameImporter GameImport;
+        internal GameImporter GameImport;
         /// <summary>
         /// The current folder path.
         /// </summary>

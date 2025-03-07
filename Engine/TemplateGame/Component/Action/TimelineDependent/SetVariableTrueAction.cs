@@ -5,7 +5,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// <summary>
     /// Sets the already declaired boolean variable to true.
     /// </summary>
-    public class SetVariableTrueAction : IEvent, IButtonEvent
+    public class SetVariableTrueAction : IAction, IButtonEvent
     {
         readonly string VariableName;
         Game Game { get; set; }
@@ -15,7 +15,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
             VariableName = variableName;
         }
 
-        public void PerformEvent()
+        public void PerformAction()
         {
             var variable = Game.VariableList.First(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (variable.Type == VariableType.Boolean)

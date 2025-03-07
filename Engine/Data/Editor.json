@@ -1,6 +1,7 @@
 {
     "ID": 0,
     "ProjectName": "Szakdolgozat játék",
+    "ProjectPath": "",
     "WindowWidth": 800,
     "WindowHeight": 800,
     "ToolBar": {
@@ -31,7 +32,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "TextField",
+                            "Text": "Static Sprite",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 1
@@ -51,7 +52,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "Menu",
+                            "Text": "TextField",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 3
@@ -61,10 +62,100 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "Block",
+                            "Text": "Menu",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 4
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Block",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 5
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Static block",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 6
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "button",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 7
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Static button",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 8
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Slider",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 9
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "DropBox",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 10
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Inputfield",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 11
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Static Inputfield",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 12
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Toggle",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 13
                             },
                             "Type": 0
                         }
@@ -120,12 +211,41 @@
             "Components": [
                 {
                     "ID": 1,
-                    "Name": "Sprite",
-                    "XPosition": 0,
-                    "YPosition": 0,
+                    "Name": "New TextBox(1)",
+                    "XPosition": 400,
+                    "YPosition": 400,
                     "RenderingObject": {
-                        "Type": "Sprite",
-                        "Path": "null"
+                        "Sprite": null,
+                        "TextField": null,
+                        "Textbox": {
+                            "CharactersPerSecond": 1,
+                            "Font": "Default",
+                            "Color": [
+                                0,
+                                0,
+                                0,
+                                255
+                            ],
+                            "BorderColor": [
+                                0,
+                                0,
+                                0,
+                                255
+                            ],
+                            "PositionType": 0,
+                            "HorizontalTextMargin": 1,
+                            "VerticalTextMargin": 1,
+                            "WordWrap": false,
+                            "Title": "",
+                            "Content": []
+                        },
+                        "Button": null,
+                        "InputField": null,
+                        "DropBox": null,
+                        "Menu": null,
+                        "Block": null,
+                        "Slider": null,
+                        "Variable": null
                     }
                 }
             ],

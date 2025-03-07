@@ -65,11 +65,11 @@ namespace TemplateGame.Component
         /// <summary>
         /// The color of the text.
         /// </summary>
-        private Color TextColor { get; set; }
+        internal Color Color { get; set; }
         /// <summary>
         /// The color of the border.
         /// </summary>
-        private Color BorderColor { get; set; }
+        internal Color BorderColor { get; set; }
         /// <summary>
         /// The maximum character count that can be displayed in a single row.
         /// </summary>
@@ -98,7 +98,7 @@ namespace TemplateGame.Component
             Font = font;
             CharacterWidth = (Font.BaseSize + Font.GlyphPadding) / 2;
             CharacterHeight = Font.BaseSize;
-            TextColor = textColor;
+            Color = textColor;
             BorderColor = borderColor;
             BorderWidth = borderWidth;
             IsVisible = visible;
@@ -156,7 +156,7 @@ namespace TemplateGame.Component
         {
             if (IsVisible is false) return;
             if (Text is null) return;
-            Raylib.DrawTextEx(Font, SanatizedText(), new Vector2(XPosition + HorizontalTextMargin, YPosition + VerticalTextMargin), Font.BaseSize, Font.GlyphPadding, TextColor);
+            Raylib.DrawTextEx(Font, SanatizedText(), new Vector2(XPosition + HorizontalTextMargin, YPosition + VerticalTextMargin), Font.BaseSize, Font.GlyphPadding, Color);
             if (BorderWidth <= 0) return;
             Raylib.DrawRectangleLinesEx(new Rectangle(XPosition, YPosition, Width, Height), BorderWidth, BorderColor);
         }

@@ -1,21 +1,25 @@
 {
-  "ID": 3,
+  "ID": 6,
   "ProjectName": "Szakdolgozat jtk",
+  "ProjectPath": "../../../Engine/Data/Szakdolgozat jtk.json",
   "WindowWidth": 800,
   "WindowHeight": 800,
   "ToolBar": {
     "XPosition": 0,
-    "YPosition": 0,
-    "Width": 316,
+    "YPosition": 100,
+    "Width": 418,
     "Height": 60,
     "BorderWidth": 1,
     "Buttons": [
       {
         "XPosition": 5,
-        "YPosition": 5,
+        "YPosition": 105,
         "Text": "Create",
         "Command": {
           "Type": "ShowSideWindowCommand",
+          "ErrorType": null,
+          "ErrorMessage": null,
+          "WarningButtons": null,
           "RenderingObjectType": 0,
           "EnabledRowComponentCount": 0,
           "XPosition": 0,
@@ -23,12 +27,262 @@
           "ParentButtonName": "Create",
           "Buttons": [
             {
-              "XPosition": 0,
-              "YPosition": 0,
+              "XPosition": 5,
+              "YPosition": 155,
               "Text": "Sprite",
               "Command": {
                 "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
                 "RenderingObjectType": 0,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 175,
+              "Text": "Static...",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 1,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 195,
+              "Text": "TextBo...",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 2,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 215,
+              "Text": "TextFi...",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 3,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 235,
+              "Text": "Menu",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 4,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 255,
+              "Text": "Block",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 5,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 275,
+              "Text": "Static...",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 6,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 295,
+              "Text": "button",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 7,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 315,
+              "Text": "Static...",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 8,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 335,
+              "Text": "Slider",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 9,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 355,
+              "Text": "DropBo...",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 10,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 375,
+              "Text": "Inputf...",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 11,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 395,
+              "Text": "Static...",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 12,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 415,
+              "Text": "Toggle",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 13,
                 "EnabledRowComponentCount": 0,
                 "XPosition": 0,
                 "YPosition": 0,
@@ -41,14 +295,17 @@
           ],
           "ButtonDependency": null
         },
-        "Type": 0
+        "Type": 2
       },
       {
         "XPosition": 110,
-        "YPosition": 5,
+        "YPosition": 105,
         "Text": "Save",
         "Command": {
           "Type": "SaveProjectDataCommand",
+          "ErrorType": null,
+          "ErrorMessage": null,
+          "WarningButtons": null,
           "RenderingObjectType": 0,
           "EnabledRowComponentCount": 0,
           "XPosition": 0,
@@ -61,10 +318,52 @@
       },
       {
         "XPosition": 215,
-        "YPosition": 5,
+        "YPosition": 105,
         "Text": "Build",
         "Command": {
           "Type": "BuildProjectCommand",
+          "ErrorType": null,
+          "ErrorMessage": null,
+          "WarningButtons": null,
+          "RenderingObjectType": 0,
+          "EnabledRowComponentCount": 0,
+          "XPosition": 0,
+          "YPosition": 0,
+          "ParentButtonName": null,
+          "Buttons": null,
+          "ButtonDependency": null
+        },
+        "Type": 0
+      },
+      {
+        "XPosition": 320,
+        "YPosition": 105,
+        "Text": "Trash",
+        "Command": {
+          "Type": "ShowErrorCommand",
+          "ErrorType": null,
+          "ErrorMessage": "Delete every component and group in the scene?",
+          "WarningButtons": [
+            {
+              "XPosition": 300,
+              "YPosition": 550,
+              "Text": "Yes",
+              "Command": {
+                "Type": "DeleteAllComponentsCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 0,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "ButtonDependency": null
+              },
+              "Type": 0
+            }
+          ],
           "RenderingObjectType": 0,
           "EnabledRowComponentCount": 0,
           "XPosition": 0,
@@ -80,25 +379,303 @@
   },
   "Scenes": [
     {
-      "ID": 2,
+      "ID": 0,
       "Name": "Scene1",
-      "Components": [],
+      "Components": [
+        {
+          "ID": 2,
+          "Name": "Button Block(2)",
+          "XPosition": 400,
+          "YPosition": 400,
+          "RenderingObject": {
+            "Static": null,
+            "Sprite": null,
+            "TextField": null,
+            "Textbox": null,
+            "Button": null,
+            "InputField": null,
+            "StaticInputField": null,
+            "DropBox": null,
+            "Menu": null,
+            "Block": {
+              "ID": 1,
+              "XPosition": 0,
+              "YPosition": 0,
+              "Button": {
+                "XPosition": 0,
+                "YPosition": 0,
+                "Width": 250,
+                "Height": 250,
+                "Text": "Text",
+                "BorderWidth": 1,
+                "TextColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "Color": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "BorderColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "HoverColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "Action": {
+                  "Type": "SetVariableValueAction",
+                  "Sprite": null,
+                  "TextBox": null,
+                  "TintColor": null,
+                  "SceneID": null,
+                  "VariableName": null,
+                  "TriggerVariableName": null,
+                  "VariableValue": null,
+                  "VariableType": null,
+                  "ImpendingVariable": null,
+                  "Menu": null,
+                  "StaticMenu": null,
+                  "BlockComponentID": null,
+                  "DisablingMenuID": null,
+                  "EnablingMenuID": null
+                }
+              },
+              "StaticButton": null,
+              "InputField": null,
+              "StaticInputField": null,
+              "DropBox": null,
+              "Slider": null,
+              "Toggle": null,
+              "TextField": null,
+              "Sprite": null
+            },
+            "StaticBlock": null,
+            "Slider": null,
+            "Toggle": null
+          }
+        },
+        {
+          "ID": 2,
+          "Name": "New Button(2)",
+          "XPosition": 400,
+          "YPosition": 400,
+          "RenderingObject": {
+            "Static": null,
+            "Sprite": null,
+            "TextField": null,
+            "Textbox": null,
+            "Button": {
+              "XPosition": 0,
+              "YPosition": 0,
+              "Width": 250,
+              "Height": 250,
+              "Text": "Text",
+              "BorderWidth": 1,
+              "TextColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "Color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "BorderColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "HoverColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "Action": {
+                "Type": "SetVariableValueAction",
+                "Sprite": null,
+                "TextBox": null,
+                "TintColor": null,
+                "SceneID": null,
+                "VariableName": null,
+                "TriggerVariableName": null,
+                "VariableValue": null,
+                "VariableType": null,
+                "ImpendingVariable": null,
+                "Menu": null,
+                "StaticMenu": null,
+                "BlockComponentID": null,
+                "DisablingMenuID": null,
+                "EnablingMenuID": null
+              }
+            },
+            "InputField": null,
+            "StaticInputField": null,
+            "DropBox": null,
+            "Menu": null,
+            "Block": null,
+            "StaticBlock": null,
+            "Slider": null,
+            "Toggle": null
+          }
+        },
+        {
+          "ID": 4,
+          "Name": "Slider Block(4)",
+          "XPosition": 400,
+          "YPosition": 400,
+          "RenderingObject": {
+            "Static": null,
+            "Sprite": null,
+            "TextField": null,
+            "Textbox": null,
+            "Button": null,
+            "InputField": null,
+            "StaticInputField": null,
+            "DropBox": null,
+            "Menu": null,
+            "Block": {
+              "ID": 3,
+              "XPosition": 0,
+              "YPosition": 0,
+              "Button": null,
+              "StaticButton": null,
+              "InputField": null,
+              "StaticInputField": null,
+              "DropBox": null,
+              "Slider": {
+                "XPosition": 0,
+                "YPosition": 0,
+                "Width": 1,
+                "Height": 250,
+                "BorderWidth": 0,
+                "DragRadius": 25,
+                "DragColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "Color": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "BorderColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "Action": {
+                  "Type": "SetVariableValueAction",
+                  "Sprite": null,
+                  "TextBox": null,
+                  "TintColor": null,
+                  "SceneID": null,
+                  "VariableName": null,
+                  "TriggerVariableName": null,
+                  "VariableValue": null,
+                  "VariableType": null,
+                  "ImpendingVariable": null,
+                  "Menu": null,
+                  "StaticMenu": null,
+                  "BlockComponentID": null,
+                  "DisablingMenuID": null,
+                  "EnablingMenuID": null
+                }
+              },
+              "Toggle": null,
+              "TextField": null,
+              "Sprite": null
+            },
+            "StaticBlock": null,
+            "Slider": null,
+            "Toggle": null
+          }
+        },
+        {
+          "ID": 5,
+          "Name": "New Slider(5)",
+          "XPosition": 400,
+          "YPosition": 400,
+          "RenderingObject": {
+            "Static": null,
+            "Sprite": null,
+            "TextField": null,
+            "Textbox": null,
+            "Button": null,
+            "InputField": null,
+            "StaticInputField": null,
+            "DropBox": null,
+            "Menu": null,
+            "Block": null,
+            "StaticBlock": null,
+            "Slider": {
+              "XPosition": 0,
+              "YPosition": 0,
+              "Width": 1,
+              "Height": 250,
+              "BorderWidth": 0,
+              "DragRadius": 25,
+              "DragColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "Color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "BorderColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "Action": {
+                "Type": "SetVariableValueAction",
+                "Sprite": null,
+                "TextBox": null,
+                "TintColor": null,
+                "SceneID": null,
+                "VariableName": null,
+                "TriggerVariableName": null,
+                "VariableValue": null,
+                "VariableType": null,
+                "ImpendingVariable": null,
+                "Menu": null,
+                "StaticMenu": null,
+                "BlockComponentID": null,
+                "DisablingMenuID": null,
+                "EnablingMenuID": null
+              }
+            },
+            "Toggle": null
+          }
+        }
+      ],
       "GroupList": [],
       "Timeline": {
-        "Events": [
-          {
-            "Type": "EmptyAction"
-          },
-          {
-            "Type": "EmptyAction"
-          },
-          {
-            "Type": "EmptyAction"
-          },
-          {
-            "Type": "EmptyAction"
-          }
-        ]
+        "Actions": []
       }
     }
   ]

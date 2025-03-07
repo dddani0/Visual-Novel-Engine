@@ -26,7 +26,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Color BorderColor { get; set; }
         internal bool Active { get; set; } = false;
         internal Component? ActiveComponent { get; set; } = null;
-        internal IEvent? ActiveEvent { get; set; } = null;
+        internal IAction? ActiveEvent { get; set; } = null;
         internal Button CloseButton { get; set; }
         internal List<IComponent> ComponentList { get; set; } = [];
         internal bool IsOverflow { get; set; } = false;
@@ -124,7 +124,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     //Dinamic Title
                     ComponentList.Add(new Label(XPosition, YPosition, "Textbox title:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.TextBoxTitle, Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.Title, Raylib.GetFontDefault(), true));
                     //Dinamic text content
                     ComponentList.Add(
                 new Label(XPosition, YPosition, "Text content:")
@@ -142,24 +142,24 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition, "Color:"));
                     ComponentList.Add(new Label(XPosition, YPosition, "Red:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuColor.R.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.Color.R.ToString(), Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition, "Green:"));
                     ComponentList.Add(
-                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuColor.G.ToString(), Raylib.GetFontDefault(), true));
+                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.Color.G.ToString(), Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition, "Blue:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuColor.B.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.Color.B.ToString(), Raylib.GetFontDefault(), true));
                     //Dinamic menu border color
                     ComponentList.Add(new Label(XPosition, YPosition, "Border color:"));
                     ComponentList.Add(new Label(XPosition, YPosition, "Red:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuBorderColor.R.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.BorderColor.R.ToString(), Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition, "Green:"));
                     ComponentList.Add(
-                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuBorderColor.G.ToString(), Raylib.GetFontDefault(), true));
+                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.BorderColor.G.ToString(), Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition, "Blue:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.MenuBorderColor.B.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.BorderColor.B.ToString(), Raylib.GetFontDefault(), true));
                     //Add a dropdown for every block
                     ComponentList.Add(new Label(XPosition, YPosition, "List of blocks:"));
                     for (int i = 0; i < menu.BlockList.Count; i++)
@@ -176,7 +176,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Scrollbar.AddComponents([.. ComponentList]);
             UpdateComponentPosition(EnabledRowComponentCount);
         }
-        internal void SetActiveComponent(IEvent eventData)
+        internal void SetActiveComponent(IAction eventData)
         {
             Scrollbar.DropComponents();
             switch (eventData)

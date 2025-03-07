@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-public class EditorConfigurationImport
+public class EditorPreferencesIm
 {
     [JsonPropertyName("ComponentWidth")]
     public required int ComponentWidth { get; set; }

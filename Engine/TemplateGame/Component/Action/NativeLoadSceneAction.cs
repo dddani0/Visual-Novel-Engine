@@ -5,7 +5,7 @@ namespace TemplateGame.Component.Action
     /// <summary>
     /// Loads a new scene natively (without trigger).
     /// </summary>
-    class NativeLoadSceneAction : IEvent, ISettingsEvent, IButtonEvent
+    class NativeLoadSceneAction : IAction, ISettingsEvent, IButtonEvent
     {
         /// <summary>
         /// Active game.
@@ -29,7 +29,7 @@ namespace TemplateGame.Component.Action
         /// Load scene with the correct ID.
         /// </summary>
         /// <exception cref="Exception"></exception>
-        public void PerformEvent()
+        public void PerformAction()
         {
             if (!Game.Scenes.Any(scene => scene.Id == sceneID))
             {

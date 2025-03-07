@@ -7,8 +7,9 @@ namespace TemplateGame.Component
     /// <summary>
     /// Represents a Slider.
     /// </summary>
-    class Slider : IPermanentRenderingObject
+    public class Slider : IPermanentRenderingObject
     {
+        internal Block Block { get; set; }
         /// <summary>
         /// The position of the Slider on the X axis.
         /// </summary>
@@ -50,16 +51,16 @@ namespace TemplateGame.Component
         /// <summary>
         /// The color of the Slider's draggable part.
         /// </summary>
-        private Color SliderDragColor { get; set; }
+        internal Color DragColor { get; set; }
         /// <summary>
         /// The color of the Slider.
         /// </summary>
-        private Color SliderColor { get; set; }
+        internal Color Color { get; set; }
         /// <summary>
         /// The border color of the Slider.
         /// </summary>
-        private Color SliderBorderColor { get; set; }
-        private IEvent Event { get; set; }
+        internal Color BorderColor { get; set; }
+        internal IAction Action { get; set; }
         /// <summary>
         /// Creates a new Slider.
         /// </summary>
@@ -76,16 +77,17 @@ namespace TemplateGame.Component
         /// <param name="sliderEvent">The event that is triggered when the slider is interacted with.</param>
         public Slider(Block block, int xPosition, int yPosition, int width, int height, int borderWidth, int sliderDragRadius, Color sliderDragColor, Color sliderColor, Color sliderBorderColor, ISettingsEvent sliderEvent)
         {
+            Block = block;
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
             SliderDragRadius = sliderDragRadius;
-            SliderDragColor = sliderDragColor;
-            SliderColor = sliderColor;
-            SliderBorderColor = sliderBorderColor;
-            Event = (IEvent)sliderEvent;
+            DragColor = sliderDragColor;
+            Color = sliderColor;
+            BorderColor = sliderBorderColor;
+            Action = (IAction)sliderEvent;
         }
         public bool Enabled() => IsVisible;
         /// <summary>
@@ -103,7 +105,7 @@ namespace TemplateGame.Component
                     UnitValue = (int)Raylib.GetMousePosition().X - XPosition;
                     XPosition += (int)UnitValue;
                 }
-                Event.PerformEvent();
+                Action.PerformAction();
             }
             if (UnitValue < 0) UnitValue = 0;
             if (UnitValue > Width) UnitValue = Width;
@@ -115,9 +117,9 @@ namespace TemplateGame.Component
         {
             if (Enabled() is false) return;
             UpdateSlider();
-            Raylib.DrawRectangle(XPosition, YPosition, Width, Height, SliderColor);
-            Raylib.DrawRectangleLinesEx(new Rectangle(XPosition, YPosition, Width, Height), BorderWidth, SliderBorderColor);
-            Raylib.DrawCircle(XPosition, YPosition + Height / 2, SliderDragRadius, SliderDragColor);
+            Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
+            Raylib.DrawRectangleLinesEx(new Rectangle(XPosition, YPosition, Width, Height), BorderWidth, BorderColor);
+            Raylib.DrawCircle(XPosition, YPosition + Height / 2, SliderDragRadius, DragColor);
         }
         /// <summary>
         /// Fetch the value of the Slider.

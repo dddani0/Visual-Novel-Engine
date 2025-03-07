@@ -5,7 +5,7 @@ namespace TemplateGame.Component.Action
     /// <summary>
     /// Loads a new scene with trigger.
     /// </summary>
-    class LoadSceneAction : IEvent, ISettingsEvent, IButtonEvent
+    class LoadSceneAction : IAction, ISettingsEvent, IButtonEvent
     {
         /// <summary>
         /// Active game.
@@ -35,7 +35,7 @@ namespace TemplateGame.Component.Action
         /// Load scene with the correct ID if the condition is met.
         /// </summary>
         /// <exception cref="Exception"></exception>
-        public void PerformEvent()
+        public void PerformAction()
         {
             var variable = Game.VariableList.First(s => s.Name.Equals(TriggerVariableName));
             if (variable.Value.ToString() == "False") return;

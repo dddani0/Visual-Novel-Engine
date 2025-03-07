@@ -56,7 +56,7 @@ namespace TemplateGame.Component
         /// Adds a list of actions to the timeline.
         /// </summary>
         /// <param name="actions">List of actions</param>
-        internal void AddActionsToTimeline(List<IEvent> actions)
+        internal void AddActionsToTimeline(List<IAction> actions)
         {
             Timeline.ActionList.AddRange(actions);
             Timeline.UpdateTimelineFields();
@@ -65,7 +65,7 @@ namespace TemplateGame.Component
         /// Adds an action to the timeline.
         /// </summary>
         /// <param name="action">List of action</param>
-        internal void AddActionToTimeline(IEvent action)
+        internal void AddActionToTimeline(IAction action)
         {
             Timeline.ActionList.Add(action);
             Timeline.UpdateTimelineFields();

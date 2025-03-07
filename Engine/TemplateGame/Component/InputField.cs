@@ -8,7 +8,7 @@ namespace TemplateGame.Component
     /// Represents an input field.
     /// Input data from the player.
     /// </summary>
-    class InputField : IPermanentRenderingObject
+    public class InputField : IPermanentRenderingObject
     {
         /// <summary>
         /// X position of the input field.
@@ -18,6 +18,7 @@ namespace TemplateGame.Component
         /// Y position of the input field.
         /// </summary>
         internal int YPosition { get; set; }
+        internal int ButtonYOffset { get; set; }
         /// <summary>
         /// Width of the input field.
         /// </summary>
@@ -58,23 +59,23 @@ namespace TemplateGame.Component
         /// <summary>
         /// The border width of the input field.
         /// </summary>
-        private int BorderWidth { get; set; }
+        internal int BorderWidth { get; set; }
         /// <summary>
         /// The color of the input field.
         /// </summary>
-        private Color Color { get; set; }
+        internal Color Color { get; set; }
         /// <summary>
         /// The border color of the input field.
         /// </summary>
-        private Color BorderColor { get; set; }
+        internal Color BorderColor { get; set; }
         /// <summary>
         /// The hover color of the input field.
         /// </summary>
-        private Color HoverColor { get; set; }
+        internal Color HoverColor { get; set; }
         /// <summary>
         /// The selected color of the input field.
         /// </summary>
-        private Color SelectedColor { get; set; }
+        internal Color SelectedColor { get; set; }
         /// <summary>
         /// Create a new input field with a button attached.
         /// </summary>

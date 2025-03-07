@@ -34,7 +34,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         internal ActionType Action;
         private Game Game { get; set; }
         private readonly Editor Editor;
-        internal IEvent Event { get; set; }
+        internal IAction Event { get; set; }
 
         public CreateGeneralEventCommand(Editor editor, ActionType actionType)
         {

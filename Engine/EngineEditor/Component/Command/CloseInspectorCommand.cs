@@ -144,7 +144,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                             }
                                         }
                                     }
-                                    menu.MenuColor = new Color()
+                                    menu.Color = new Color()
                                     {
                                         R = menuColorRGB[0],
                                         G = menuColorRGB[1],

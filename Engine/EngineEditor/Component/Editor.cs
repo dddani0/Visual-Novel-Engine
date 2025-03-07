@@ -177,7 +177,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// <summary>
         /// The editor importer object, which is used to editor related data into the project.
         /// </summary>
-        internal EditorImporter EditorImporter { get; set; }
+        internal EditorExImManager EditorImporter { get; set; }
         /// <summary>
         /// The list of scenes in the editor.
         /// </summary>
@@ -258,50 +258,50 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         private void EditorConfigImport()
         {
-            IDGenerator = new(EditorImporter.EditorImport.ID);
+            IDGenerator = new(EditorImporter.EditorExIm.ID);
             //
-            ComponentWidth = EditorImporter.EditorButtonConfigurationImport.ComponentWidth;
-            ComponentHeight = EditorImporter.EditorButtonConfigurationImport.ComponentHeight;
-            ComponentBorderWidth = EditorImporter.EditorButtonConfigurationImport.ComponentBorderWidth;
-            ComponentEnabledCharacterCount = EditorImporter.EditorButtonConfigurationImport.ComponentEnabledCharacterCount;
+            ComponentWidth = EditorImporter.EditorPreferencesImport.ComponentWidth;
+            ComponentHeight = EditorImporter.EditorPreferencesImport.ComponentHeight;
+            ComponentBorderWidth = EditorImporter.EditorPreferencesImport.ComponentBorderWidth;
+            ComponentEnabledCharacterCount = EditorImporter.EditorPreferencesImport.ComponentEnabledCharacterCount;
             //
-            ButtonWidth = EditorImporter.EditorButtonConfigurationImport.ButtonWidth;
-            ButtonHeight = EditorImporter.EditorButtonConfigurationImport.ButtonHeight;
-            ButtonBorderWidth = EditorImporter.EditorButtonConfigurationImport.ButtonBorderWidth;
+            ButtonWidth = EditorImporter.EditorPreferencesImport.ButtonWidth;
+            ButtonHeight = EditorImporter.EditorPreferencesImport.ButtonHeight;
+            ButtonBorderWidth = EditorImporter.EditorPreferencesImport.ButtonBorderWidth;
             //
-            SmallButtonWidth = EditorImporter.EditorButtonConfigurationImport.SmallButtonWidth;
-            SmallButtonHeight = EditorImporter.EditorButtonConfigurationImport.SmallButtonHeight;
-            SmallButtonBorderWidth = EditorImporter.EditorButtonConfigurationImport.SmallButtonBorderWidth;
+            SmallButtonWidth = EditorImporter.EditorPreferencesImport.SmallButtonWidth;
+            SmallButtonHeight = EditorImporter.EditorPreferencesImport.SmallButtonHeight;
+            SmallButtonBorderWidth = EditorImporter.EditorPreferencesImport.SmallButtonBorderWidth;
             //
-            SideButtonWidth = EditorImporter.EditorButtonConfigurationImport.SideButtonWidth;
-            SideButtonHeight = EditorImporter.EditorButtonConfigurationImport.SideButtonHeight;
-            SideButtonBorderWidth = EditorImporter.EditorButtonConfigurationImport.SideButtonBorderWidth;
+            SideButtonWidth = EditorImporter.EditorPreferencesImport.SideButtonWidth;
+            SideButtonHeight = EditorImporter.EditorPreferencesImport.SideButtonHeight;
+            SideButtonBorderWidth = EditorImporter.EditorPreferencesImport.SideButtonBorderWidth;
             //
-            InspectorWindowWidth = EditorImporter.EditorButtonConfigurationImport.InspectorWidth;
-            InspectorWindowHeight = EditorImporter.EditorButtonConfigurationImport.InspectorHeight;
-            InspectorWindowBorderWidth = EditorImporter.EditorButtonConfigurationImport.InspectorBorderWidth;
+            InspectorWindowWidth = EditorImporter.EditorPreferencesImport.InspectorWidth;
+            InspectorWindowHeight = EditorImporter.EditorPreferencesImport.InspectorHeight;
+            InspectorWindowBorderWidth = EditorImporter.EditorPreferencesImport.InspectorBorderWidth;
             //
-            MiniWindowWidth = EditorImporter.EditorButtonConfigurationImport.MiniWindowWidth;
-            MiniWindowHeight = EditorImporter.EditorButtonConfigurationImport.MiniWindowHeight;
-            MiniWindowBorderWidth = EditorImporter.EditorButtonConfigurationImport.MiniWindowBorderWidth;
+            MiniWindowWidth = EditorImporter.EditorPreferencesImport.MiniWindowWidth;
+            MiniWindowHeight = EditorImporter.EditorPreferencesImport.MiniWindowHeight;
+            MiniWindowBorderWidth = EditorImporter.EditorPreferencesImport.MiniWindowBorderWidth;
             //
-            CloseButtonBaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.CloseButtonBaseColor);
-            CloseButtonBorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.CloseButtonBorderColor);
-            CloseButtonHoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.CloseButtonHoverColor);
+            CloseButtonBaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonBaseColor);
+            CloseButtonBorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonBorderColor);
+            CloseButtonHoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonHoverColor);
             //
-            InspectorButtonBaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.InspectorButtonBaseColor);
-            InspectorButtonBorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.InspectorButtonBorderColor);
-            InspectorButtonHoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.InspectorButtonHoverColor);
+            InspectorButtonBaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonBaseColor);
+            InspectorButtonBorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonBorderColor);
+            InspectorButtonHoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonHoverColor);
             //
-            BaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BaseColor);
-            BorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.BorderColor);
-            TextColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.TextColor);
-            HoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.HoverColor);
-            EditorColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorButtonConfigurationImport.EditorColor);
+            BaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.BaseColor);
+            BorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.BorderColor);
+            TextColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.TextColor);
+            HoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.HoverColor);
+            EditorColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.EditorColor);
             //
-            Toolbar = EditorImporter.FetchToolBarFromImport(EditorImporter.EditorImport.ToolBar);
-            ProjectName = EditorImporter.EditorImport.ProjectName;
-            SceneList = [.. EditorImporter.EditorImport.Scenes.Select(EditorImporter.FetchSceneFromImport)];
+            Toolbar = EditorImporter.FetchToolBarFromImport(EditorImporter.EditorExIm.ToolBar);
+            ProjectName = EditorImporter.EditorExIm.ProjectName;
+            SceneList = [.. EditorImporter.EditorExIm.Scenes.Select(EditorImporter.FetchEditorSceneFromImport)];
             ActiveScene = SceneList[0];
         }
         /// <summary>
@@ -352,9 +352,19 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
 
         private void MoveCamera()
         {
+            //Left side 
+            Raylib.DrawRectangleLines(0, SceneBar.Height + Toolbar.Height, MoveMouseOffset, Raylib.GetScreenHeight() - ActiveScene.Timeline.Height - SceneBar.Height - Toolbar.Height, Color.Black);
+            //right side
+            Raylib.DrawRectangleLines(Raylib.GetScreenWidth() - MoveMouseOffset, SceneBar.Height + Toolbar.Height, MoveMouseOffset, Raylib.GetScreenHeight() - ActiveScene.Timeline.Height - SceneBar.Height - Toolbar.Height, Color.Black);
+
             if (MouseMoveTimer.OnCooldown())
             {
                 MouseMoveTimer.DecreaseTimer();
+                return;
+            }
+            if (Raylib.GetMouseY() <= SceneBar.Height + Toolbar.Height || Raylib.GetMouseY() >= Raylib.GetScreenHeight() - ActiveScene.Timeline.Height)
+            {
+                MouseMoveTimer.ResetTimer();
                 return;
             }
             if (Raylib.GetMouseX() >= Raylib.GetScreenWidth() - MoveMouseOffset)

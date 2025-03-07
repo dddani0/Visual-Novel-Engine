@@ -53,25 +53,26 @@ namespace TemplateGame.Component
         /// <summary>
         /// The color of the DropBox.
         /// </summary>
-        private Color DropBoxColor { get; set; }
+        internal Color Color { get; set; }
         /// <summary>
         /// The border color of the DropBox.
         /// </summary>
-        private Color DropBoxBorderColor { get; set; }
+        internal Color BorderColor { get; set; }
         /// <summary>
         /// The hover color of the DropBox.
         /// </summary>
-        private Color DropBoxHoverColor { get; set; }
+        internal Color HoverColor { get; set; }
         public DropBox(Block block, int xPosition, int yPosition, int width, int height, Button[] options, Color dropBoxColor, Color dropBoxBorderColor, Color dropBoxHoverColor)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;
             Width = width;
             Height = height;
-            Text = options[0].Text;
-            DropBoxColor = dropBoxColor;
-            DropBoxBorderColor = dropBoxBorderColor;
-            DropBoxHoverColor = dropBoxHoverColor;
+            if (options.Length > 0) Text = options[0].Text;
+            else Text = "Empty DropBox";
+            Color = dropBoxColor;
+            BorderColor = dropBoxBorderColor;
+            HoverColor = dropBoxHoverColor;
             IsSelected = false;
             // Position options below each other
             Options = [];
@@ -127,8 +128,8 @@ namespace TemplateGame.Component
         {
             if (Enabled() is false) return;
             UpdateDropBox();
-            Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, DropBoxColor);
-            Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition - Height / 2, Width, Height, DropBoxBorderColor);
+            Raylib.DrawRectangle(XPosition - Width / 2, YPosition - Height / 2, Width, Height, Color);
+            Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition - Height / 2, Width, Height, BorderColor);
             Raylib.DrawText(Text, XPosition - Width / 2, YPosition - Height / 2, 20, Color.Black);
         }
         /// <summary>

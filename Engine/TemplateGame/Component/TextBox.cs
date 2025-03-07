@@ -18,14 +18,15 @@ namespace TemplateGame.Component
             defaultPosition,
             upperPosition
         }
+        internal PositionType TextBoxPositionType { get; set; }
         /// <summary>
         /// The horizontal margin of the text.
         /// </summary>
-        int HorizontalTextMargin { get; }
+        internal int HorizontalTextMargin { get; }
         /// <summary>
         /// The vertical margin of the text.
         /// </summary>
-        int VerticalTextMargin { get; }
+        internal int VerticalTextMargin { get; }
         /// <summary>
         /// A timer for the textbox.
         /// </summary>
@@ -54,15 +55,15 @@ namespace TemplateGame.Component
         /// <summary>
         /// The header of the textbox.
         /// </summary>
-        internal string SanatizedHeader => Regex.Unescape(TextBoxTitle);
+        internal string SanatizedHeader => Regex.Unescape(Title);
         /// <summary>
         /// The title of the textbox.
         /// </summary>
-        internal string TextBoxTitle { get; set; }
+        internal string Title { get; set; }
         /// <summary>
         /// The speed of the textbox (Characters per second).
         /// </summary>
-        private double CPSTextSpeed { get; }
+        internal double CPSTextSpeed { get; }
         private const int TextBoxPositionYOffset = 5;
         /// <summary>
         /// The maximum character count of the textbox.
@@ -110,7 +111,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// Should the text wrap when initiating a new line?
         /// </summary>
-        private bool WordWrap { get; set; }
+        internal bool WordWrap { get; set; }
         /// <summary>
         /// Check if the current batch of the textbox is done.
         /// </summary>
@@ -135,11 +136,11 @@ namespace TemplateGame.Component
         /// <summary>
         /// The background and border color of the textbox.
         /// </summary>
-        internal Color TextBoxBackground { get; set; }
+        internal Color Color { get; set; }
         /// <summary>
         /// The border color of the textbox.
         /// </summary>
-        internal Color TextBoxBorder { get; set; }
+        internal Color BorderColor { get; set; }
         internal readonly Game Game;
         private int[] Scale { get; set; }
         /// <summary>
@@ -160,7 +161,7 @@ namespace TemplateGame.Component
         {
             Content = data;
             CPSTextSpeed = cps;
-            TextBoxTitle = title;
+            Title = title;
             HorizontalTextMargin = horizontalTextMargin;
             VerticalTextMargin = verticalTextMargin;
             //  
@@ -177,7 +178,8 @@ namespace TemplateGame.Component
             IsEnabled = true;
             TextBatchDone = false;
             //
-            Position = textBoxPosition switch
+            TextBoxPositionType = textBoxPosition;
+            Position = TextBoxPositionType switch
             {
                 PositionType.upperPosition => [Raylib.GetScreenWidth() / 2 - Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f) / 2,
                                     Raylib.GetScreenHeight() - Convert.ToInt32(Raylib.GetScreenHeight() / 1.5f) - TextBoxPositionYOffset],
@@ -187,8 +189,8 @@ namespace TemplateGame.Component
             Scale = [Convert.ToInt32(Raylib.GetScreenWidth() / 1.6f), Convert.ToInt32(Raylib.GetScreenWidth() / 5.3f)];
             Box = new Rectangle(XPosition, YPosition, XScale, YScale);
             //
-            TextBoxBackground = textBoxBackground;
-            TextBoxBorder = textBoxBorder;
+            Color = textBoxBackground;
+            BorderColor = textBoxBorder;
             //
             CurrentFont = theFont;
             //
@@ -411,14 +413,14 @@ namespace TemplateGame.Component
             if (headerExists())
             {
                 //header textbox frame
-                Raylib.DrawRectangle(XPosition, YPosition - CharacterHeigth - VerticalTextMargin, TextBoxTitle.Length * CharacterWidth + 2 * HorizontalTextMargin + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBackground);
-                Raylib.DrawRectangleLines((int)Box.Position.X, YPosition - CharacterHeigth - VerticalTextMargin, TextBoxTitle.Length * CharacterWidth + 2 * HorizontalTextMargin + CurrentFont.GlyphPadding, CharacterHeigth, TextBoxBorder);
+                Raylib.DrawRectangle(XPosition, YPosition - CharacterHeigth - VerticalTextMargin, Title.Length * CharacterWidth + 2 * HorizontalTextMargin + CurrentFont.GlyphPadding, CharacterHeigth, Color);
+                Raylib.DrawRectangleLines((int)Box.Position.X, YPosition - CharacterHeigth - VerticalTextMargin, Title.Length * CharacterWidth + 2 * HorizontalTextMargin + CurrentFont.GlyphPadding, CharacterHeigth, BorderColor);
                 //Headertext
                 Raylib.DrawTextEx(CurrentFont, SanatizedHeader, new Vector2(XPosition + HorizontalTextMargin, YPosition - CharacterHeigth - VerticalTextMargin), CurrentFont.BaseSize, CurrentFont.GlyphPadding, Color.White);
             }
             //Textbox and Border
-            Raylib.DrawRectangle((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, TextBoxBackground);
-            Raylib.DrawRectangleLines((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, TextBoxBorder);
+            Raylib.DrawRectangle((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, Color);
+            Raylib.DrawRectangleLines((int)Box.Position.X, (int)Box.Position.Y, (int)Box.Width, (int)Box.Height, BorderColor);
             //draw current string data to screen.
             Raylib.DrawTextEx(CurrentFont, SanatizedOutput, new Vector2(XPosition + HorizontalTextMargin, YPosition + VerticalTextMargin),
                 CurrentFont.BaseSize,
@@ -461,7 +463,7 @@ namespace TemplateGame.Component
             return;
             bool isTurnedOff() => IsEnabled is false;
             bool isDone() => TextCollectionIndex >= TextCollectionCount;
-            bool headerExists() => TextBoxTitle.Length > 0;
+            bool headerExists() => Title.Length > 0;
             bool isSkipBatch() => Game.IsLeftMouseButtonPressed();
             bool shouldProceedNextBatch() =>
                 TextCollectionIndex < TextCollectionCount && IsFinished() is true && Game.IsLeftMouseButtonPressed();

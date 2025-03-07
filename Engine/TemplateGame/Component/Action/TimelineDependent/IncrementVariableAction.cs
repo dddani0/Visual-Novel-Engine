@@ -5,7 +5,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// <summary>
     /// Increments the already declaired integer or float variable with a constant value or variable value.
     /// </summary>
-    public class IncrementVariableAction : IEvent, IButtonEvent
+    public class IncrementVariableAction : IAction, IButtonEvent
     {
         private Variable Variable { get; set; }
         private Variable IncrementVariable { get; set; }
@@ -37,7 +37,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
         /// Increments the variable with the constant value or with a variable value.
         /// </summary>
         /// <exception cref="System.Exception"></exception>
-        public void PerformEvent()
+        public void PerformAction()
         {
             Variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             IncrementVariable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(IncrementVariableName)) ?? throw new System.Exception("Variable not found!");

@@ -42,7 +42,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The border width of the button.
         /// </summary>
-        int BorderWidth { get; set; }
+        internal int BorderWidth { get; set; }
         /// <summary>
         /// The color of the text.
         /// </summary>
@@ -62,7 +62,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The event which is attached to the button.
         /// </summary>
-        private IEvent Event { get; }
+        internal IAction Action { get; }
         /// <summary>
         /// The parent block of the button.
         /// </summary>
@@ -111,7 +111,7 @@ namespace TemplateGame.Component
             BorderColor = borderColor;
             HoverColor = hoverColor;
             TextColor = textColor;
-            Event = (IEvent)buttonEvent;
+            Action = (IAction)buttonEvent;
             Game = game;
             Font = font;
             CharacterWidth = (Font.BaseSize / 2) + Font.GlyphPadding;
@@ -148,7 +148,7 @@ namespace TemplateGame.Component
             BorderColor = borderColor;
             HoverColor = hoverColor;
             TextColor = textColor;
-            Event = (IEvent)buttonEvent;
+            Action = (IAction)buttonEvent;
             Game = game;
             Font = font;
             CharacterWidth = (Font.BaseSize / 2) + Font.GlyphPadding;
@@ -163,8 +163,8 @@ namespace TemplateGame.Component
         {
             if (!isHover || !Game.IsLeftMouseButtonPressed()) return;
             isPressed = true;
-            IEvent eventToPerform = (IEvent)Event;
-            eventToPerform.PerformEvent();
+            IAction eventToPerform = (IAction)Action;
+            eventToPerform.PerformAction();
         }
         /// <summary>
         /// Renders the button on the screen.

@@ -5,7 +5,7 @@ namespace TemplateGame.Component.Action
     /// <summary>
     /// Creates a menu.
     /// </summary>
-    class CreateMenuAction : IEvent, ISettingsEvent, IButtonEvent
+    class CreateMenuAction : IAction, ISettingsEvent, IButtonEvent
     {
         private readonly Game Game;
         private readonly Menu Menu;
@@ -25,7 +25,7 @@ namespace TemplateGame.Component.Action
         /// <summary>
         /// Performs the event.
         /// </summary>
-        public void PerformEvent()
+        public void PerformAction()
         {
             Menu.BlockList.AddRange(Blocks);
             Menu.Render();

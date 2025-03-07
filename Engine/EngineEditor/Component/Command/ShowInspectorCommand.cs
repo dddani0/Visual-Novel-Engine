@@ -12,7 +12,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
     {
         internal Editor Editor { get; set; }
         private readonly InspectorWindow Window;
-        private IEvent? Action { get; set; } = null;
+        private IAction? Action { get; set; } = null;
         internal int EnabledRowComponentCount;
         internal int XPosition { get; set; }
         internal int YPosition { get; set; }
@@ -26,7 +26,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             Window = new InspectorWindow(editor, XPosition, YPosition, EnabledRowComponentCount);
         }
 
-        public ShowInspectorCommand(Editor editor, IEvent eventData, int enabledRowComponentCount)
+        public ShowInspectorCommand(Editor editor, IAction eventData, int enabledRowComponentCount)
         {
             Editor = editor;
             Action = eventData;

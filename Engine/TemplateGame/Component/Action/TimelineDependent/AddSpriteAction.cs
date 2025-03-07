@@ -5,7 +5,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// <summary>
     /// Adds a sprite to the scene.
     /// </summary>
-    class AddSpriteAction : IEvent, IButtonEvent
+    class AddSpriteAction : IAction, IButtonEvent
     {
         readonly Game Game;
         readonly Sprite sprite;
@@ -19,7 +19,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
             Game = game;
             this.sprite = sprite;
         }
-        public void PerformEvent()
+        public void PerformAction()
         {
             sprite.Enabled = true; //Enable sprite
             Game.ActiveScene.Timeline.SpriteRenderList.Add(sprite); //Add sprite to rendering list

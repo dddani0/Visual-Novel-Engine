@@ -3,22 +3,27 @@ using System.Text.Json.Serialization;
 
 namespace VisualNovelEngine.Engine.PortData
 {
-    public class EditorEXIM
+    /// <summary>
+    /// Helper class for importing and exporting editor data.
+    /// </summary>
+    public class EditorExIm
     {
         [JsonPropertyName("ID")]
         public int ID { get; set; }
         [JsonPropertyName("ProjectName")]
         public required string ProjectName { get; set; }
+        [JsonPropertyName("ProjectPath")]
+        public required string ProjectPath { get; set; }
         [JsonPropertyName("WindowWidth")]
         public int WindowWidth { get; set; }
         [JsonPropertyName("WindowHeight")]
         public int WindowHeight { get; set; }
         [JsonPropertyName("ToolBar")]
-        public required GroupEXIM ToolBar { get; set; }
+        public required GroupExIm ToolBar { get; set; }
         [JsonPropertyName("Scenes")]
-        public SceneEXIM[] Scenes { get; set; }
+        public SceneExIm[] Scenes { get; set; }
     }
-    public class GroupEXIM
+    public class GroupExIm
     {
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
@@ -31,11 +36,11 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("BorderWidth")]
         public int BorderWidth { get; set; }
         [JsonPropertyName("Buttons")]
-        public ButtonEXIM[]? Buttons { get; set; }
+        public ButtonExIm[]? Buttons { get; set; }
         [JsonPropertyName("Components")]
-        public ComponentEXIM[]? Components { get; set; }
+        public ComponentExIm[]? Components { get; set; }
     }
-    public class ButtonEXIM
+    public class ButtonExIm
     {
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
@@ -44,11 +49,11 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Text")]
         public required string Text { get; set; }
         [JsonPropertyName("Command")]
-        public required CommandImport Command { get; set; }
+        public required CommandExIm Command { get; set; }
         [JsonPropertyName("Type")]
         public int Type { get; set; }
     }
-    public class ComponentEXIM
+    public class ComponentExIm
     {
         [JsonPropertyName("ID")]
         public int ID { get; set; }
@@ -59,16 +64,38 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("YPosition")]
         public int YPosition { get; set; }
         [JsonPropertyName("RenderingObject")]
-        public required RenderingObjectEXIM RenderingObject { get; set; }
+        public required RenderingObjectExIm RenderingObject { get; set; }
     }
-    public class RenderingObjectEXIM
+    public class RenderingObjectExIm
     {
-        [JsonPropertyName("Type")]
-        public required string Type { get; set; }
-        [JsonPropertyName("Path")]
-        public required string Path { get; set; }
+        [JsonPropertyName("Static")]
+        public string? Static { get; set; }
+        [JsonPropertyName("Sprite")]
+        public SpriteExim? Sprite { get; set; }
+        [JsonPropertyName("TextField")]
+        public TextFieldExim? TextField { get; set; }
+        [JsonPropertyName("Textbox")]
+        public TextBoxExIm? Textbox { get; set; }
+        [JsonPropertyName("Button")]
+        public ButtonComponentExIm? Button { get; set; }
+        [JsonPropertyName("InputField")]
+        public InputFieldExim? InputField { get; set; }
+        [JsonPropertyName("StaticInputField")]
+        public InputFieldExim? StaticInputField { get; set; }
+        [JsonPropertyName("DropBox")]
+        public DropBoxExim? DropBox { get; set; }
+        [JsonPropertyName("Menu")]
+        public MenuExim? Menu { get; set; }
+        [JsonPropertyName("Block")]
+        public BlockExim? Block { get; set; }
+        [JsonPropertyName("StaticBlock")]
+        public BlockExim? StaticBlock { get; set; }
+        [JsonPropertyName("Slider")]
+        public SliderExim? Slider { get; set; }
+        [JsonPropertyName("Toggle")]
+        public ToggleExim? Toggle { get; set; }
     }
-    public class CommandImport
+    public class CommandExIm
     {
         [JsonPropertyName("Type")]
         public required string Type { get; set; }
@@ -77,7 +104,7 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("ErrorMessage")]
         public string? ErrorMessage { get; set; }
         [JsonPropertyName("WarningButtons")]
-        public ButtonEXIM[]? WarningButtons { get; set; }
+        public ButtonExIm[]? WarningButtons { get; set; }
         [JsonPropertyName("RenderingObjectType")]
         public int RenderingObjectType { get; set; }
         [JsonPropertyName("EnabledRowComponentCount")]
@@ -89,31 +116,26 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("ParentButtonName")]
         public string? DependentButton { get; set; }
         [JsonPropertyName("Buttons")]
-        public ButtonEXIM[]? Buttons { get; set; }
+        public ButtonExIm[]? Buttons { get; set; }
         [JsonPropertyName("ButtonDependency")]
-        public ButtonEXIM? ButtonDependency { get; set; }
+        public ButtonExIm? ButtonDependency { get; set; }
     }
-    public class SceneEXIM
+    public class SceneExIm
     {
         [JsonPropertyName("ID")]
         public int ID { get; set; }
         [JsonPropertyName("Name")]
         public required string Name { get; set; }
         [JsonPropertyName("Components")]
-        public ComponentEXIM[]? Components { get; set; }
+        public ComponentExIm[]? Components { get; set; }
         [JsonPropertyName("GroupList")]
-        public GroupEXIM[]? GroupList { get; set; }
+        public GroupExIm[]? GroupList { get; set; }
         [JsonPropertyName("Timeline")]
-        public TimelineEXIM Timeline { get; set; }
+        public TimelineExIm Timeline { get; set; }
     }
-    public class TimelineEXIM
+    public class TimelineExIm
     {
-        [JsonPropertyName("Events")]
-        public EventEXIM[]? Events { get; set; }
-    }
-    public class EventEXIM
-    {
-        [JsonPropertyName("Type")]
-        public string Type { get; set; }
+        [JsonPropertyName("Actions")]
+        public ActionExim[]? Actions { get; set; }
     }
 }

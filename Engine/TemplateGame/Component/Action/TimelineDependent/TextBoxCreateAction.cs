@@ -5,14 +5,14 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// <summary>
     /// Initializes a new textbox.
     /// </summary>
-    class TextBoxCreateAction : IEvent, IButtonEvent
+    class TextBoxCreateAction : IAction, IButtonEvent
     {
         readonly TextBox TextBox;
         public TextBoxCreateAction(TextBox textbox)
         {
             TextBox = textbox;
         }
-        public void PerformEvent()
+        public void PerformAction()
         {
             if (TextBox.IsDisabled())
             {

@@ -20,7 +20,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The list of actions in the timeline.
         /// </summary>
-        internal List<IEvent> ActionList { get; set; }
+        internal List<IAction> ActionList { get; set; }
         /// <summary>
         /// The list of sprites that are currently active in the scene.
         /// They are rendered in the scene.
@@ -40,7 +40,7 @@ namespace TemplateGame.Component
         public void ExecuteAction()
         {
             if (StepIndex == StepCount) return; //Load next scene
-            ActionList.ElementAt(StepIndex).PerformEvent();
+            ActionList.ElementAt(StepIndex).PerformAction();
         }
         /// <summary>
         /// Renders the active sprites in the timeline.
