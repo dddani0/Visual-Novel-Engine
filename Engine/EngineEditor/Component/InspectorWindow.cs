@@ -115,12 +115,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textField.Text, Raylib.GetFontDefault(), true));
                     //Dinamic Wordwrap Toggle 
                     ComponentList.Add(
-                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:"));
+                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:", false));
                     break;
                 case TextBox textBox:
                     //Dinamic Wordwrap Toggle 
                     ComponentList.Add(
-                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:"));
+                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:", false));
                     //Dinamic Title
                     ComponentList.Add(new Label(XPosition, YPosition, "Textbox title:"));
                     ComponentList.Add(

@@ -39,6 +39,8 @@ namespace VisualNovelEngine.Engine.PortData
         public ButtonExIm[]? Buttons { get; set; }
         [JsonPropertyName("Components")]
         public ComponentExIm[]? Components { get; set; }
+        [JsonPropertyName("MaximumHorizontalComponentCount")]
+        public int MaximumHorizontalComponentCount { get; set; }
     }
     public class ButtonExIm
     {
@@ -66,6 +68,72 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("RenderingObject")]
         public required RenderingObjectExIm RenderingObject { get; set; }
     }
+    public class RenderingComponentExIm
+    {
+        [JsonPropertyName("Label")]
+        public LabelExIm? Label { get; set; }
+        [JsonPropertyName("TextField")]
+        public EditorTextFieldExim? TextField { get; set; }
+        [JsonPropertyName("EditorToggle")]
+        public EditorToggleExim? Toggle { get; set; }
+        [JsonPropertyName("DropDown")]
+        public DropDownExim? DropDown { get; set; }
+    }
+
+    public class LabelExIm
+    {
+        [JsonPropertyName("Text")]
+        public required string Text { get; set; }
+        [JsonPropertyName("ActiveVariableType")]
+        public string? ActiveVariableType { get; set; }
+        [JsonPropertyName("XPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("YPosition")]
+        public int YPosition { get; set; }
+    }
+
+    public class EditorTextFieldExim
+    {
+        [JsonPropertyName("Text")]
+        public required string Text { get; set; }
+        [JsonPropertyName("ActiveVariableType")]
+        public string? ActiveVariableType { get; set; }
+        [JsonPropertyName("XPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("YPosition")]
+        public int YPosition { get; set; }
+        [JsonPropertyName("Static")]
+        public string Static { get; set; }
+    }
+
+    public class EditorToggleExim
+    {
+        [JsonPropertyName("Text")]
+        public required string Text { get; set; }
+        [JsonPropertyName("XPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("YPosition")]
+        public int YPosition { get; set; }
+        [JsonPropertyName("Value")]
+        public string Value { get; set; }
+    }
+
+    public class DropDownExim
+    {
+        [JsonPropertyName("Text")]
+        public required string Text { get; set; }
+        [JsonPropertyName("XPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("YPosition")]
+        public int YPosition { get; set; }
+        [JsonPropertyName("Filter")]
+        public int Filter { get; set; }
+        [JsonPropertyName("Static")]
+        public string Static { get; set; }
+        [JsonPropertyName("Options")]
+        public ButtonExIm[] Options { get; set; }
+    }
+
     public class RenderingObjectExIm
     {
         [JsonPropertyName("Static")]
@@ -117,6 +185,10 @@ namespace VisualNovelEngine.Engine.PortData
         public string? DependentButton { get; set; }
         [JsonPropertyName("Buttons")]
         public ButtonExIm[]? Buttons { get; set; }
+        [JsonPropertyName("Components")]
+        public ComponentExIm[]? Components { get; set; }
+        [JsonPropertyName("WindowComponents")]
+        public RenderingComponentExIm[]? WindowComponents { get; set; }
         [JsonPropertyName("ButtonDependency")]
         public ButtonExIm? ButtonDependency { get; set; }
     }

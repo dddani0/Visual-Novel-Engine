@@ -33,6 +33,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// Instance of a Game
         /// </summary>
         internal Game Game { get; set; }
+        internal List<Variable> GameVariables { get; set; } = [];
         /// <summary>
         /// The extent which the screen moves, when decided to
         /// </summary>
@@ -187,14 +188,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         internal Scene ActiveScene { get; set; }
         /// <summary>
-        /// The scene configuration button in the editor.
-        /// </summary>
-        internal Button SceneConfigurationButton { get; set; }
-        /// <summary>
-        /// The game configuration button in the editor.
-        /// </summary>
-        internal Button GameConfigurationButton { get; set; }
-        /// <summary>
         /// The scene bar in the editor
         /// </summary>
         internal MiniWindow SceneBar { get; set; }
@@ -223,21 +216,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             MouseMoveTimer = new(0.5f);
             //
             ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(), Button.ButtonType.Trigger)]);
-            //Create scene configuration button
-            Label windowTitle = new Label(Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Scene configuration");
-            Label sceneName = new Label(Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Name:");
-            TextField sceneNameField = new TextField(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, ComponentWidth, ComponentHeight, ComponentBorderWidth, ActiveScene.Name, Raylib.GetFontDefault(), false);
-            SceneConfigurationButton = new(this, Raylib.GetScreenWidth() - ButtonWidth, 100, "Scene Configuration", false, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ShowMiniWindowComand(this, [windowTitle, sceneName, sceneNameField], EngineEditor.Component.MiniWindow.miniWindowType.Vertical), Button.ButtonType.Trigger);
-            //Create game configuration button
-            Label gameWindowTitle = new Label(Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Game configuration");
-            Label gameName = new Label(Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Name:");
-            TextField gameNameField = new TextField(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, ComponentWidth, ComponentHeight, ComponentBorderWidth, ProjectName, Raylib.GetFontDefault(), false);
-            Label windowResolutionTitle = new Label(Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Window resolution");
-            Label windowResolutionWidth = new Label(Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Window width:");
-            TextField windowResolutionWidthField = new TextField(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, ComponentWidth, ComponentHeight, ComponentBorderWidth, Raylib.GetScreenWidth().ToString(), Raylib.GetFontDefault(), false);
-            Label windowResolutionHeigth = new Label(Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, "Window height:");
-            TextField windowResolutionHeigthField = new TextField(this, Raylib.GetScreenWidth() / 2 - MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - MiniWindowHeight / 2, ComponentWidth, ComponentHeight, ComponentBorderWidth, Raylib.GetScreenHeight().ToString(), Raylib.GetFontDefault(), false);
-            GameConfigurationButton = new(this, Raylib.GetScreenWidth() - 2 * ButtonWidth, 100, "Game Configuration", false, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ShowMiniWindowComand(this, [gameWindowTitle, gameName, gameNameField, windowResolutionTitle, windowResolutionHeigth, windowResolutionHeigthField, windowResolutionWidth, windowResolutionWidth], EngineEditor.Component.MiniWindow.miniWindowType.Vertical), Button.ButtonType.Trigger);
             // Create the scene
             List<Button> SceneButtonList = [];
             foreach (Scene scene in SceneList)
@@ -299,8 +277,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             HoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.HoverColor);
             EditorColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.EditorColor);
             //
-            Toolbar = EditorImporter.FetchToolBarFromImport(EditorImporter.EditorExIm.ToolBar);
             ProjectName = EditorImporter.EditorExIm.ProjectName;
+            Toolbar = EditorImporter.FetchToolBarFromImport(EditorImporter.EditorExIm.ToolBar);
             SceneList = [.. EditorImporter.EditorExIm.Scenes.Select(EditorImporter.FetchEditorSceneFromImport)];
             ActiveScene = SceneList[0];
         }
@@ -330,8 +308,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.ClearBackground(EditorColor);
             SceneBar.Show();
             Toolbar.Update();
-            SceneConfigurationButton.Render();
-            GameConfigurationButton.Render();
             ActiveScene.Update();
             ExitWindow();
             MoveCamera();
@@ -412,8 +388,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ActiveScene.Timeline.AddGeneralEventButton.IsLocked = true;
             ActiveScene.Timeline.ConfigureTimelineButton.IsLocked = true;
             ActiveScene.Timeline.RemoveEventsButton.IsLocked = true;
-            GameConfigurationButton.IsLocked = true;
-            SceneConfigurationButton.IsLocked = true;
         }
 
         internal void EnableComponents()
@@ -433,8 +407,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ActiveScene.Timeline.AddGeneralEventButton.IsLocked = false;
             ActiveScene.Timeline.ConfigureTimelineButton.IsLocked = false;
             ActiveScene.Timeline.RemoveEventsButton.IsLocked = false;
-            GameConfigurationButton.IsLocked = false;
-            SceneConfigurationButton.IsLocked = false;
         }
         /// <summary>
         /// Generates a unique number ID.

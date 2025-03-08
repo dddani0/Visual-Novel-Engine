@@ -113,7 +113,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                             for (int i = 0; i < ComponentList.Count; i++)
                             {
                                 ComponentList[i].XPosition = XPosition;
-                                ComponentList[i].YPosition = YPosition + (i * Editor.ComponentHeight);
+                                ComponentList[i].YPosition = YPosition + ((i+1) * Editor.ComponentHeight);
                             }
                             break;
                         case miniWindowType.Horizontal:

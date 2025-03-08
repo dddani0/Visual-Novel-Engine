@@ -11,6 +11,8 @@ using TemplateGame.Component.Action.TimelineDependent;
 using TemplateGame.Component.Action;
 using System.Collections.Concurrent;
 using TemplateGame.Component.Action.TimelineIndependent;
+using VisualNovelEngine.Engine.EngineEditor.Interface;
+using Namespace;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -51,7 +53,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             B = (byte)color[2],
             A = (byte)color[3]
         };
-        //Fetch a scene from an import object.
+        /// <summary>
+        /// Fetch a scene from an import object.
+        /// </summary>
+        /// <param name="sceneImport"></param>
+        /// <returns></returns>
         public Scene FetchEditorSceneFromImport(SceneExIm sceneImport)
         {
             return new Scene(Editor,
@@ -59,12 +65,21 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
              [],//[.. sceneImport.Components.Select(FetchComponentFromImport)],
             []);//[.. sceneImport.GroupList.Select(FetchGroupFromImport)]);
         }
+        /// <summary>
+        /// Fetch a block from an import object.
+        /// </summary>
+        /// <param name="blockImport"></param>
+        /// <returns></returns>
         public Block FetchBlockFromImport(BlockExim blockImport)
         {
             return new Block(blockImport.XPosition, blockImport.YPosition, null, blockImport.ID);
         }
-        //Fetch an event from import.
-        //TIMELINERA LESZ!
+        /// <summary>
+        /// Fetch a Timeline event from an import object.
+        /// </summary>
+        /// <param name="ActionImport"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public IAction FetchEventFromImport(ActionExim ActionImport)
         {
             return ActionImport.Type switch
@@ -100,7 +115,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 FetchColorFromImport(EditorPreferencesImport.BorderColor),
                 FetchColorFromImport(EditorPreferencesImport.HoverColor),
                 GroupType.SolidColor,
-                4,
+                groupImport.MaximumHorizontalComponentCount,
                 [.. groupImport.Buttons.Select(FetchEditorButtonFromImport)]
             );
         }
@@ -128,7 +143,135 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 FetchRenderingObjectFromImport(componentImport.RenderingObject)
             );
         }
-
+        /// <summary>
+        /// Fetch a label from an import object.
+        /// </summary>
+        /// <param name="labelImport"></param>
+        /// <returns></returns>
+        public Label FetchLabelFromImport(LabelExIm labelImport)
+        {
+            return new(labelImport.XPosition, labelImport.YPosition, labelImport.Text);
+        }
+        /// <summary>
+        /// Fetch an editor realted textfield from an import object.
+        /// </summary>
+        /// <param name="textFieldImport"></param>
+        /// <returns></returns>
+        public TextField FetchTextFieldFromImport(EditorTextFieldExim textFieldImport)
+        {
+            if (textFieldImport.ActiveVariableType != null)
+            {
+                var txtField = new TextField(
+                    Editor,
+                    textFieldImport.XPosition,
+                    textFieldImport.YPosition,
+                    Editor.ComponentWidth,
+                    Editor.ComponentHeight,
+                    Editor.ComponentBorderWidth,
+                    textFieldImport.Text,
+                    Raylib.GetFontDefault(),
+                    textFieldImport.Static == "true"
+                )
+                {
+                    IsStatic = textFieldImport.Static == "true",
+                };
+                switch (textFieldImport.ActiveVariableType)
+                {
+                    case "GameName":
+                        txtField.Text = Editor.ProjectName;
+                        break;
+                    case "Resolution":
+                        txtField.Text = $"{Raylib.GetScreenWidth()}x{Raylib.GetScreenHeight()}";
+                        break;
+                }
+                return txtField;
+            }
+            return new TextField(
+                Editor,
+                textFieldImport.XPosition,
+                textFieldImport.YPosition,
+                Editor.ComponentWidth,
+                Editor.ComponentHeight,
+                Editor.ComponentBorderWidth,
+                textFieldImport.Text,
+                Raylib.GetFontDefault(),
+                textFieldImport.Static == "true"
+            )
+            {
+                IsStatic = textFieldImport.Static == "true"
+            };
+        }
+        /// <summary>
+        /// Fetch an editor related toggle from an import object.
+        /// </summary>
+        /// <param name="toggleImport"></param>
+        /// <returns></returns>
+        public ToggleButton FetchToggleFromImport(EditorToggleExim toggleImport)
+        {
+            return new(
+                Editor,
+                toggleImport.XPosition,
+                toggleImport.YPosition,
+                Editor.SmallButtonWidth,
+                Editor.ButtonBorderWidth,
+                toggleImport.Text,
+                toggleImport.Value == "true"
+            );
+        }
+        /// <summary>
+        /// Fetch an editor related dropdown from an import object.
+        /// </summary>
+        /// <param name="dropDownImport"></param>
+        /// <returns></returns>
+        public DropDown FetchDropDownFromImport(DropDownExim dropDownImport)
+        {
+            return new(
+                Editor,
+                dropDownImport.XPosition,
+                dropDownImport.YPosition,
+                Editor.ComponentWidth,
+                Editor.ComponentHeight,
+                Editor.ComponentBorderWidth,
+                (DropDown.FilterType)dropDownImport.Filter
+            )
+            {
+                ButtonList = [.. dropDownImport.Options.Select(FetchEditorButtonFromImport)]
+            };
+        }
+        /// <summary>
+        /// Fetch an editor related component from an import object.
+        /// </summary>
+        /// <param name="renderingComponentImport"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public IComponent FetchEditorComponentFromImport(RenderingComponentExIm renderingComponentImport)
+        {
+            if (renderingComponentImport.Label != null)
+            {
+                return FetchLabelFromImport(renderingComponentImport.Label);
+            }
+            else if (renderingComponentImport.TextField != null)
+            {
+                return FetchTextFieldFromImport(renderingComponentImport.TextField);
+            }
+            else if (renderingComponentImport.Toggle != null)
+            {
+                return FetchToggleFromImport(renderingComponentImport.Toggle);
+            }
+            else if (renderingComponentImport.DropDown != null)
+            {
+                return FetchDropDownFromImport(renderingComponentImport.DropDown);
+            }
+            else
+            {
+                throw new Exception("Rendering component type not found!");
+            }
+        }
+        /// <summary>
+        /// Fetch an editor related rendering object from an import object.
+        /// </summary>
+        /// <param name="textBox"></param>
+        /// <returns></returns>
         public TextBox FetchTextBoxFromImport(TextBoxExIm textBox)
         {
             return TextBox.CreateNewTextBox(
@@ -145,7 +288,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 [.. textBox.Content]
             );
         }
-
         /// <summary>
         /// Imports component's renderingobject data from an import object.
         /// Each object is attached to a component.
@@ -255,6 +397,16 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         button.BorderWidth = EditorPreferencesImport.SideButtonBorderWidth;
                     }
                     return new ShowSideWindowCommand(Editor, parentButtonName, buttons);
+                case "ShowMiniWindowCommand":
+                    if (commandImport.WindowComponents == null && commandImport.Buttons == null) throw new Exception("Window components and buttons are not found!");
+                    if (commandImport.WindowComponents == null)
+                    {
+                        return new ShowMiniWindowComand(Editor, [.. commandImport.Buttons.Select(FetchEditorButtonFromImport)], MiniWindow.miniWindowType.Vertical);
+                    }
+                    else
+                    {
+                        return new ShowMiniWindowComand(Editor, [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindow.miniWindowType.Vertical);
+                    }
                 case "ShowInspectorCommand":
                     return new ShowInspectorCommand(Editor,
                         commandImport.EnabledRowComponentCount);

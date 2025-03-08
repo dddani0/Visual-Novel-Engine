@@ -13,12 +13,12 @@ namespace Namespace
         internal int BorderWidth { get; set; }
         internal string? Text { get; set; }
         internal bool IsHover { get; set; }
-        internal bool IsToggled { get; set; } = false;
+        internal bool IsToggled { get; set; }
         private Color Color { get; set; }
         private Color BorderColor { get; set; }
         private Color HoverColor { get; set; }
 
-        public ToggleButton(Editor editor, int xPosition, int yPosition, int size, int borderWidth, string text)
+        public ToggleButton(Editor editor, int xPosition, int yPosition, int size, int borderWidth, string text, bool toggled)
         {
             Editor = editor;
             XPosition = xPosition;
@@ -29,6 +29,7 @@ namespace Namespace
             Color = Editor.BaseColor;
             BorderColor = Editor.BorderColor;
             HoverColor = Editor.HoverColor;
+            IsToggled = toggled;
         }
 
         public void Update()

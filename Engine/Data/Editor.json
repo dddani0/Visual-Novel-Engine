@@ -184,7 +184,7 @@
             {
                 "XPosition": 200,
                 "YPosition": 0,
-                "Text": "Trash",
+                "Text": "Bin",
                 "Command": {
                     "Type": "ShowErrorCommand",
                     "ErrorType": 0,
@@ -202,8 +202,100 @@
                     ]
                 },
                 "Type": 0
+            },
+            {
+                "XPosition": 200,
+                "YPosition": 0,
+                "Text": "Game config",
+                "Command": {
+                    "Type": "ShowMiniWindowCommand",
+                    "WindowComponents": [
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 100,
+                                "Text": "Game configuration"
+                            }
+                        },
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 200,
+                                "Text": "Name:"
+                            }
+                        },
+                        {
+                            "TextField": {
+                                "XPosition": 0,
+                                "YPosition": 300,
+                                "Text": "[GameName]",
+                                "ActiveVariableType": "GameName",
+                                "Static": "false"
+                            }
+                        },
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 200,
+                                "Text": "Resolution:"
+                            }
+                        },
+                        {
+                            "TextField": {
+                                "XPosition": 0,
+                                "YPosition": 300,
+                                "Text": "[Resolution]",
+                                "ActiveVariableType": "Resolution",
+                                "Static": "false"
+                            }
+                        },
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 200,
+                                "Text": "Variables"
+                            }
+                        }
+                    ]
+                },
+                "Type": 0
+            },
+            {
+                "XPosition": 200,
+                "YPosition": 0,
+                "Text": "Scene config",
+                "Command": {
+                    "Type": "ShowMiniWindowCommand",
+                    "WindowComponents": [
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 100,
+                                "Text": "Scene configuration"
+                            }
+                        },
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 100,
+                                "Text": "Name:"
+                            }
+                        },
+                        {
+                            "TextField": {
+                                "XPosition": 0,
+                                "YPosition": 200,
+                                "Text": "[SceneName]",
+                                "ActiveVariableType": "SceneName",
+                                "Static": "false"
+                            }
+                        }
+                    ]
+                },
+                "Type": 0
             }
-        ]
+        ],
+        "MaximumHorizontalComponentCount": 6
     },
     "Scenes": [
         {
