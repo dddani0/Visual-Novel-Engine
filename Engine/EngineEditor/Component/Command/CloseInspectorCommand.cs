@@ -114,14 +114,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     }
                                     textBox.Content = [.. contentList];
                                     //Save horizontal margin
-                                    textBox.HorizontalTextMargin = int.Parse((InspectorWindow.ComponentList[^9] as TextField).Text);
+                                    textBox.HorizontalTextMargin = int.Parse((InspectorWindow.ComponentList[^11] as TextField).Text);
                                     //Save vertical margin
-                                    textBox.VerticalTextMargin = int.Parse((InspectorWindow.ComponentList[^7] as TextField).Text);
+                                    textBox.VerticalTextMargin = int.Parse((InspectorWindow.ComponentList[^9] as TextField).Text);
                                     //Save CPS
-                                    textBox.CPSTextSpeed = double.Parse((InspectorWindow.ComponentList[^5] as TextField).Text);
+                                    textBox.CPSTextSpeed = double.Parse((InspectorWindow.ComponentList[^7] as TextField).Text);
                                     //save color
                                     byte[] textBoxColorRGB = new byte[3];
-                                    TextField textBoxColorTextField = InspectorWindow.ComponentList[^3] as TextField;
+                                    TextField textBoxColorTextField = InspectorWindow.ComponentList[^5] as TextField;
                                     textBox.Color = new Color()
                                     {
                                         R = byte.Parse(textBoxColorTextField.Text.Split(',')[0]),
@@ -131,7 +131,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     };
                                     //save border color
                                     byte[] textBoxBorderColorRGB = new byte[3];
-                                    TextField textBoxBorderColorTextField = InspectorWindow.ComponentList[^1] as TextField;
+                                    TextField textBoxBorderColorTextField = InspectorWindow.ComponentList[^3] as TextField;
                                     textBox.BorderColor = new Color()
                                     {
                                         R = byte.Parse(textBoxBorderColorTextField.Text.Split(',')[0]),
@@ -140,7 +140,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         A = 255
                                     };
                                     //Save wordwrap
-                                    textBox.WordWrap = (InspectorWindow.ComponentList[^11] as ToggleButton).IsToggled;
+                                    textBox.WordWrap = (InspectorWindow.ComponentList[^2] as ToggleButton).IsToggled;
                                     //Save textbox position type
                                     //textBox.TextBoxPositionType = (TextBox.PositionType)Enum.Parse(typeof(PositionType), (InspectorWindow.ComponentList[^13] as TextField).Text);
                                     break;

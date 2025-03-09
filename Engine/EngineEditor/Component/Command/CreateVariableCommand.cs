@@ -11,8 +11,8 @@ namespace Engine.EngineEditor.Component.Command
     {
         Editor Editor { get; set; }
         internal string Name;
-        readonly string Value;
-        readonly VariableType Type;
+        internal string Value;
+        internal VariableType Type;
         public CreateVariableCommand(Editor editor, string value, VariableType type)
         {
             Editor = editor;

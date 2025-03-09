@@ -1,5 +1,5 @@
 {
-  "ID": 6,
+  "ID": 2,
   "ProjectName": "Szakdolgozat jtk",
   "ProjectPath": "../../../Engine/Data/Szakdolgozat jtk.json",
   "WindowWidth": 800,
@@ -7,7 +7,7 @@
   "ToolBar": {
     "XPosition": 0,
     "YPosition": 100,
-    "Width": 418,
+    "Width": 622,
     "Height": 60,
     "BorderWidth": 1,
     "Buttons": [
@@ -41,7 +41,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -60,7 +65,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -79,7 +89,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -98,7 +113,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -117,7 +137,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -136,7 +161,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -155,7 +185,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -174,7 +209,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -193,7 +233,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -212,7 +257,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -231,7 +281,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -250,7 +305,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -269,7 +329,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             },
@@ -288,12 +353,22 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             }
           ],
-          "ButtonDependency": null
+          "Components": null,
+          "WindowComponents": null,
+          "HasVariable": null,
+          "ButtonDependency": null,
+          "VariableValue": null,
+          "VariableType": null
         },
         "Type": 2
       },
@@ -312,7 +387,12 @@
           "YPosition": 0,
           "ParentButtonName": null,
           "Buttons": null,
-          "ButtonDependency": null
+          "Components": null,
+          "WindowComponents": null,
+          "HasVariable": null,
+          "ButtonDependency": null,
+          "VariableValue": null,
+          "VariableType": null
         },
         "Type": 0
       },
@@ -331,14 +411,19 @@
           "YPosition": 0,
           "ParentButtonName": null,
           "Buttons": null,
-          "ButtonDependency": null
+          "Components": null,
+          "WindowComponents": null,
+          "HasVariable": null,
+          "ButtonDependency": null,
+          "VariableValue": null,
+          "VariableType": null
         },
         "Type": 0
       },
       {
         "XPosition": 320,
         "YPosition": 105,
-        "Text": "Trash",
+        "Text": "Bin",
         "Command": {
           "Type": "ShowErrorCommand",
           "ErrorType": null,
@@ -359,7 +444,12 @@
                 "YPosition": 0,
                 "ParentButtonName": null,
                 "Buttons": null,
-                "ButtonDependency": null
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
               },
               "Type": 0
             }
@@ -370,123 +460,227 @@
           "YPosition": 0,
           "ParentButtonName": null,
           "Buttons": null,
-          "ButtonDependency": null
+          "Components": null,
+          "WindowComponents": null,
+          "HasVariable": null,
+          "ButtonDependency": null,
+          "VariableValue": null,
+          "VariableType": null
+        },
+        "Type": 0
+      },
+      {
+        "XPosition": 425,
+        "YPosition": 105,
+        "Text": "Game c...",
+        "Command": {
+          "Type": "ShowMiniWindowCommand",
+          "ErrorType": null,
+          "ErrorMessage": null,
+          "WarningButtons": null,
+          "RenderingObjectType": 0,
+          "EnabledRowComponentCount": 0,
+          "XPosition": 0,
+          "YPosition": 0,
+          "ParentButtonName": null,
+          "Buttons": null,
+          "Components": null,
+          "WindowComponents": [
+            {
+              "Label": {
+                "Text": "Game configuration",
+                "ActiveVariableType": null,
+                "XPosition": 150,
+                "YPosition": 300
+              },
+              "TextField": null,
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": null
+            },
+            {
+              "Label": {
+                "Text": "Name:",
+                "ActiveVariableType": null,
+                "XPosition": 150,
+                "YPosition": 350
+              },
+              "TextField": null,
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": null
+            },
+            {
+              "Label": null,
+              "TextField": {
+                "Text": "Szakdolgozat j\u00E1t\u00E9k",
+                "ActiveVariableType": null,
+                "XPosition": 150,
+                "YPosition": 400,
+                "Static": "False"
+              },
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": null
+            },
+            {
+              "Label": {
+                "Text": "Resolution:",
+                "ActiveVariableType": null,
+                "XPosition": 150,
+                "YPosition": 450
+              },
+              "TextField": null,
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": null
+            },
+            {
+              "Label": null,
+              "TextField": {
+                "Text": "800x800",
+                "ActiveVariableType": null,
+                "XPosition": 150,
+                "YPosition": 500,
+                "Static": "False"
+              },
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": null
+            },
+            {
+              "Label": {
+                "Text": "Variables",
+                "ActiveVariableType": null,
+                "XPosition": 150,
+                "YPosition": 550
+              },
+              "TextField": null,
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": null
+            },
+            {
+              "Label": null,
+              "TextField": null,
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": {
+                "XPosition": 150,
+                "YPosition": 600,
+                "Text": "Add",
+                "Command": {
+                  "Type": "CreateVariableCommand",
+                  "ErrorType": null,
+                  "ErrorMessage": null,
+                  "WarningButtons": null,
+                  "RenderingObjectType": 0,
+                  "EnabledRowComponentCount": 0,
+                  "XPosition": 0,
+                  "YPosition": 0,
+                  "ParentButtonName": null,
+                  "Buttons": null,
+                  "Components": null,
+                  "WindowComponents": null,
+                  "HasVariable": null,
+                  "ButtonDependency": null,
+                  "VariableValue": "NewVar",
+                  "VariableType": 0
+                },
+                "Type": 0
+              }
+            }
+          ],
+          "HasVariable": "True",
+          "ButtonDependency": null,
+          "VariableValue": null,
+          "VariableType": null
+        },
+        "Type": 0
+      },
+      {
+        "XPosition": 530,
+        "YPosition": 105,
+        "Text": "Scene ...",
+        "Command": {
+          "Type": "ShowMiniWindowCommand",
+          "ErrorType": null,
+          "ErrorMessage": null,
+          "WarningButtons": null,
+          "RenderingObjectType": 0,
+          "EnabledRowComponentCount": 0,
+          "XPosition": 0,
+          "YPosition": 0,
+          "ParentButtonName": null,
+          "Buttons": null,
+          "Components": null,
+          "WindowComponents": [
+            {
+              "Label": {
+                "Text": "Scene configuration",
+                "ActiveVariableType": null,
+                "XPosition": 150,
+                "YPosition": 300
+              },
+              "TextField": null,
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": null
+            },
+            {
+              "Label": {
+                "Text": "Name:",
+                "ActiveVariableType": null,
+                "XPosition": 150,
+                "YPosition": 350
+              },
+              "TextField": null,
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": null
+            },
+            {
+              "Label": null,
+              "TextField": {
+                "Text": "[SceneName]",
+                "ActiveVariableType": null,
+                "XPosition": 150,
+                "YPosition": 400,
+                "Static": "False"
+              },
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": null
+            }
+          ],
+          "HasVariable": "False",
+          "ButtonDependency": null,
+          "VariableValue": null,
+          "VariableType": null
         },
         "Type": 0
       }
     ],
-    "Components": []
+    "Components": [],
+    "MaximumHorizontalComponentCount": 0
   },
   "Scenes": [
     {
       "ID": 0,
-      "Name": "Scene1",
+      "Name": "DefaultScene",
       "Components": [
         {
-          "ID": 2,
-          "Name": "Button Block(2)",
+          "ID": 1,
+          "Name": "New TextBox(1)",
           "XPosition": 400,
           "YPosition": 400,
           "RenderingObject": {
             "Static": null,
             "Sprite": null,
             "TextField": null,
-            "Textbox": null,
-            "Button": null,
-            "InputField": null,
-            "StaticInputField": null,
-            "DropBox": null,
-            "Menu": null,
-            "Block": {
-              "ID": 1,
-              "XPosition": 0,
-              "YPosition": 0,
-              "Button": {
-                "XPosition": 0,
-                "YPosition": 0,
-                "Width": 250,
-                "Height": 250,
-                "Text": "Text",
-                "BorderWidth": 1,
-                "TextColor": [
-                  0,
-                  0,
-                  0,
-                  255
-                ],
-                "Color": [
-                  0,
-                  0,
-                  0,
-                  255
-                ],
-                "BorderColor": [
-                  0,
-                  0,
-                  0,
-                  255
-                ],
-                "HoverColor": [
-                  0,
-                  0,
-                  0,
-                  255
-                ],
-                "Action": {
-                  "Type": "SetVariableValueAction",
-                  "Sprite": null,
-                  "TextBox": null,
-                  "TintColor": null,
-                  "SceneID": null,
-                  "VariableName": null,
-                  "TriggerVariableName": null,
-                  "VariableValue": null,
-                  "VariableType": null,
-                  "ImpendingVariable": null,
-                  "Menu": null,
-                  "StaticMenu": null,
-                  "BlockComponentID": null,
-                  "DisablingMenuID": null,
-                  "EnablingMenuID": null
-                }
-              },
-              "StaticButton": null,
-              "InputField": null,
-              "StaticInputField": null,
-              "DropBox": null,
-              "Slider": null,
-              "Toggle": null,
-              "TextField": null,
-              "Sprite": null
-            },
-            "StaticBlock": null,
-            "Slider": null,
-            "Toggle": null
-          }
-        },
-        {
-          "ID": 2,
-          "Name": "New Button(2)",
-          "XPosition": 400,
-          "YPosition": 400,
-          "RenderingObject": {
-            "Static": null,
-            "Sprite": null,
-            "TextField": null,
-            "Textbox": null,
-            "Button": {
-              "XPosition": 0,
-              "YPosition": 0,
-              "Width": 250,
-              "Height": 250,
-              "Text": "Text",
-              "BorderWidth": 1,
-              "TextColor": [
-                0,
-                0,
-                0,
-                255
-              ],
+            "Textbox": {
+              "CharactersPerSecond": 1,
+              "Font": null,
               "Color": [
                 0,
                 0,
@@ -499,126 +693,18 @@
                 0,
                 255
               ],
-              "HoverColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "Action": {
-                "Type": "SetVariableValueAction",
-                "Sprite": null,
-                "TextBox": null,
-                "TintColor": null,
-                "SceneID": null,
-                "VariableName": null,
-                "TriggerVariableName": null,
-                "VariableValue": null,
-                "VariableType": null,
-                "ImpendingVariable": null,
-                "Menu": null,
-                "StaticMenu": null,
-                "BlockComponentID": null,
-                "DisablingMenuID": null,
-                "EnablingMenuID": null
-              }
+              "PositionType": 0,
+              "HorizontalTextMargin": 1,
+              "VerticalTextMargin": 1,
+              "WordWrap": false,
+              "Title": "",
+              "Content": [
+                "New text field",
+                "New text field",
+                "New text field",
+                "New text field"
+              ]
             },
-            "InputField": null,
-            "StaticInputField": null,
-            "DropBox": null,
-            "Menu": null,
-            "Block": null,
-            "StaticBlock": null,
-            "Slider": null,
-            "Toggle": null
-          }
-        },
-        {
-          "ID": 4,
-          "Name": "Slider Block(4)",
-          "XPosition": 400,
-          "YPosition": 400,
-          "RenderingObject": {
-            "Static": null,
-            "Sprite": null,
-            "TextField": null,
-            "Textbox": null,
-            "Button": null,
-            "InputField": null,
-            "StaticInputField": null,
-            "DropBox": null,
-            "Menu": null,
-            "Block": {
-              "ID": 3,
-              "XPosition": 0,
-              "YPosition": 0,
-              "Button": null,
-              "StaticButton": null,
-              "InputField": null,
-              "StaticInputField": null,
-              "DropBox": null,
-              "Slider": {
-                "XPosition": 0,
-                "YPosition": 0,
-                "Width": 1,
-                "Height": 250,
-                "BorderWidth": 0,
-                "DragRadius": 25,
-                "DragColor": [
-                  0,
-                  0,
-                  0,
-                  255
-                ],
-                "Color": [
-                  0,
-                  0,
-                  0,
-                  255
-                ],
-                "BorderColor": [
-                  0,
-                  0,
-                  0,
-                  255
-                ],
-                "Action": {
-                  "Type": "SetVariableValueAction",
-                  "Sprite": null,
-                  "TextBox": null,
-                  "TintColor": null,
-                  "SceneID": null,
-                  "VariableName": null,
-                  "TriggerVariableName": null,
-                  "VariableValue": null,
-                  "VariableType": null,
-                  "ImpendingVariable": null,
-                  "Menu": null,
-                  "StaticMenu": null,
-                  "BlockComponentID": null,
-                  "DisablingMenuID": null,
-                  "EnablingMenuID": null
-                }
-              },
-              "Toggle": null,
-              "TextField": null,
-              "Sprite": null
-            },
-            "StaticBlock": null,
-            "Slider": null,
-            "Toggle": null
-          }
-        },
-        {
-          "ID": 5,
-          "Name": "New Slider(5)",
-          "XPosition": 400,
-          "YPosition": 400,
-          "RenderingObject": {
-            "Static": null,
-            "Sprite": null,
-            "TextField": null,
-            "Textbox": null,
             "Button": null,
             "InputField": null,
             "StaticInputField": null,
@@ -626,49 +712,7 @@
             "Menu": null,
             "Block": null,
             "StaticBlock": null,
-            "Slider": {
-              "XPosition": 0,
-              "YPosition": 0,
-              "Width": 1,
-              "Height": 250,
-              "BorderWidth": 0,
-              "DragRadius": 25,
-              "DragColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "Color": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "BorderColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "Action": {
-                "Type": "SetVariableValueAction",
-                "Sprite": null,
-                "TextBox": null,
-                "TintColor": null,
-                "SceneID": null,
-                "VariableName": null,
-                "TriggerVariableName": null,
-                "VariableValue": null,
-                "VariableType": null,
-                "ImpendingVariable": null,
-                "Menu": null,
-                "StaticMenu": null,
-                "BlockComponentID": null,
-                "DisablingMenuID": null,
-                "EnablingMenuID": null
-              }
-            },
+            "Slider": null,
             "Toggle": null
           }
         }

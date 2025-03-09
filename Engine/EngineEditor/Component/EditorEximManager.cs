@@ -480,6 +480,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     {
                         Type = "SaveProjectDataCommand"
                     };
+                case CreateVariableCommand createVariableCommand:
+                    return new()
+                    {
+                        Type = "CreateVariableCommand",
+                        VariableValue = createVariableCommand.Value,
+                        VariableType = (int)createVariableCommand.Type
+                    };
                 case BuildProjectCommand buildProjectCommand:
                     return new()
                     {
