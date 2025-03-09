@@ -78,6 +78,8 @@ namespace VisualNovelEngine.Engine.PortData
         public EditorToggleExim? Toggle { get; set; }
         [JsonPropertyName("DropDown")]
         public DropDownExim? DropDown { get; set; }
+        [JsonPropertyName("Button")]
+        public ButtonExIm? Button { get; set; }
     }
 
     public class LabelExIm
@@ -189,8 +191,14 @@ namespace VisualNovelEngine.Engine.PortData
         public ComponentExIm[]? Components { get; set; }
         [JsonPropertyName("WindowComponents")]
         public RenderingComponentExIm[]? WindowComponents { get; set; }
+        [JsonPropertyName("HasVariable")]
+        public string? HasVariable { get; set; }
         [JsonPropertyName("ButtonDependency")]
         public ButtonExIm? ButtonDependency { get; set; }
+        [JsonPropertyName("VariableValue")]
+        public string? VariableValue { get; set; }
+        [JsonPropertyName("VariableType")]
+        public int? VariableType { get; set; }
     }
     public class SceneExIm
     {

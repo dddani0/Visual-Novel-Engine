@@ -10,23 +10,23 @@ namespace Engine.EngineEditor.Component.Command
     class CreateVariableCommand : ICommand
     {
         Editor Editor { get; set; }
-        readonly string Name;
+        internal string Name;
         readonly string Value;
         readonly VariableType Type;
-        public CreateVariableCommand(Editor editor, string name, string value, VariableType type)
+        public CreateVariableCommand(Editor editor, string value, VariableType type)
         {
             Editor = editor;
-            Name = name;
             Value = value;
             Type = type;
         }
         public void Execute()
         {
-            if (Editor.GameVariables.Any(v => v.Name == Name))
-            {
-                throw new System.Exception("Variable with the same name already exists!");
-            }
+            Name = $"New Variable({Editor.GameVariables.Count})";
             Editor.GameVariables.Add(new Variable(Name, Value, Type));
+            foreach (MiniWindow item in Editor.MiniWindow)
+            {
+                if (item.HasVariableComponent is true) item.FetchDinamicComponentList();
+            }
         }
 
     }

@@ -25,12 +25,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Color Color { get; set; }
         internal Color BorderColor { get; set; }
         internal bool IsHover { get; set; } = false;
+        internal bool HasVariableComponent { get; set; }
+        internal List<IComponent> VariableComponentList { get; set; } = [];
         internal List<Button> ButtonComponentList { get; set; } = [];
         internal List<IComponent>? ComponentList { get; set; }
         internal Scrollbar Scrollbar { get; set; }
         internal Button? CloseButton { get; set; }
 
-        public MiniWindow(Editor editor, bool closeButton, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, miniWindowType miniWindowType, Button[] buttons)
+        public MiniWindow(Editor editor, bool closeButton, bool hasVariableComponent, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, miniWindowType miniWindowType, Button[] buttons)
         {
             Editor = editor;
             Type = miniWindowType;
@@ -42,6 +44,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Color = color;
             BorderColor = borderColor;
             ButtonComponentList.AddRange(buttons);
+            HasVariableComponent = hasVariableComponent;
             if (closeButton) CloseButton = new Button(Editor, XPosition + Width, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseMiniWindowCommand(Editor, this), Button.ButtonType.Trigger);
             UpdateComponentPosition();
             switch (Type)
@@ -55,7 +58,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             }
         }
 
-        public MiniWindow(Editor editor, bool closeButton, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, miniWindowType miniWindowType, IComponent[] components)
+        public MiniWindow(Editor editor, bool closeButton, bool hasDinamicComponents, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, miniWindowType miniWindowType, IComponent[] components)
         {
             Editor = editor;
             Type = miniWindowType;
@@ -68,6 +71,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderColor = borderColor;
             ComponentList = [];
             ComponentList.AddRange(components);
+            HasVariableComponent = hasDinamicComponents;
             if (closeButton) CloseButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseMiniWindowCommand(Editor, this), Button.ButtonType.Trigger);
             UpdateComponentPosition();
             switch (Type)
@@ -78,6 +82,24 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 case miniWindowType.Horizontal:
                     Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
                     break;
+            }
+        }
+
+        internal void FetchDinamicComponentList()
+        {
+            for (int i = 0; i < Editor.GameVariables.Count; i++)
+            {
+                TextField VariableNameField = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.GameVariables[i].Name, Raylib.GetFontDefault(), false);
+                TextField VariableValueField = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.GameVariables[i].Value, Raylib.GetFontDefault(), false);
+                TextField VariableTypeField = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.GameVariables[i].Type.ToString(), Raylib.GetFontDefault(), false);
+                //Only add to the list if the variable is not already in the list
+                if (ComponentList.FindIndex(x => x is TextField textField && textField.Text == VariableNameField.Text) == -1)
+                {
+                    ComponentList.AddRange([VariableNameField, VariableValueField, VariableTypeField]);
+                    VariableComponentList.AddRange([VariableNameField, VariableValueField, VariableTypeField]);
+                    Scrollbar.AddComponents([VariableNameField, VariableValueField, VariableTypeField]);
+                    UpdateComponentPosition();
+                }
             }
         }
 
@@ -113,7 +135,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                             for (int i = 0; i < ComponentList.Count; i++)
                             {
                                 ComponentList[i].XPosition = XPosition;
-                                ComponentList[i].YPosition = YPosition + ((i+1) * Editor.ComponentHeight);
+                                ComponentList[i].YPosition = YPosition + ((i + 1) * Editor.ComponentHeight);
                             }
                             break;
                         case miniWindowType.Horizontal:

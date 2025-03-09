@@ -227,7 +227,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 else SceneButtonList.Add(button);
             }
             SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
-            SceneBar = new MiniWindow(this, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, EngineEditor.Component.MiniWindow.miniWindowType.Horizontal, [.. SceneButtonList]);
+            SceneBar = new MiniWindow(this, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, EngineEditor.Component.MiniWindow.miniWindowType.Horizontal, [.. SceneButtonList]);
             //
             SaveFilePath += Regex.Replace(ProjectName, @"[^a-zA-Z0-9\s]", "") + ".json";
         }
@@ -263,19 +263,19 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             MiniWindowHeight = EditorImporter.EditorPreferencesImport.MiniWindowHeight;
             MiniWindowBorderWidth = EditorImporter.EditorPreferencesImport.MiniWindowBorderWidth;
             //
-            CloseButtonBaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonBaseColor);
-            CloseButtonBorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonBorderColor);
-            CloseButtonHoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonHoverColor);
+            CloseButtonBaseColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonBaseColor);
+            CloseButtonBorderColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonBorderColor);
+            CloseButtonHoverColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonHoverColor);
             //
-            InspectorButtonBaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonBaseColor);
-            InspectorButtonBorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonBorderColor);
-            InspectorButtonHoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonHoverColor);
+            InspectorButtonBaseColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonBaseColor);
+            InspectorButtonBorderColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonBorderColor);
+            InspectorButtonHoverColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonHoverColor);
             //
-            BaseColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.BaseColor);
-            BorderColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.BorderColor);
-            TextColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.TextColor);
-            HoverColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.HoverColor);
-            EditorColor = EditorImporter.FetchColorFromImport(EditorImporter.EditorPreferencesImport.EditorColor);
+            BaseColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.BaseColor);
+            BorderColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.BorderColor);
+            TextColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.TextColor);
+            HoverColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.HoverColor);
+            EditorColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.EditorColor);
             //
             ProjectName = EditorImporter.EditorExIm.ProjectName;
             Toolbar = EditorImporter.FetchToolBarFromImport(EditorImporter.EditorExIm.ToolBar);

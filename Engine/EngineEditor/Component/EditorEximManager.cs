@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 using TemplateGame.Component.Action.TimelineIndependent;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Namespace;
+using Engine.EngineEditor.Component.Command;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -46,7 +47,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        public Color FetchColorFromImport(int[] color) => new()
+        public static Color FetchColorFromImport(int[] color) => new()
         {
             R = (byte)color[0],
             G = (byte)color[1],
@@ -62,8 +63,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             return new Scene(Editor,
             sceneImport.Name,
-             [],//[.. sceneImport.Components.Select(FetchComponentFromImport)],
-            []);//[.. sceneImport.GroupList.Select(FetchGroupFromImport)]);
+             [.. sceneImport.Components.Select(FetchComponentFromImport)],
+            [.. sceneImport.GroupList.Select(FetchGroupFromImport)]);
         }
         /// <summary>
         /// Fetch a block from an import object.
@@ -262,6 +263,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             {
                 return FetchDropDownFromImport(renderingComponentImport.DropDown);
             }
+            else if (renderingComponentImport.Button != null)
+            {
+                return FetchEditorButtonFromImport(renderingComponentImport.Button);
+            }
             else
             {
                 throw new Exception("Rendering component type not found!");
@@ -385,6 +390,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     return new EmptyCommand();
                 case "CreateComponentCommand":
                     return new CreateComponentCommand(Editor, (RenderingObjectType)commandImport.RenderingObjectType);
+                case "CreateVariableCommand":
+                    if (commandImport.VariableValue == null) throw new Exception("Value not found!");
+                    if (commandImport.VariableType == null) throw new Exception("Variable type not found!");
+                    return new CreateVariableCommand(Editor, commandImport.VariableValue, (VariableType)commandImport.VariableType);
                 case "ShowSideWindowCommand":
                     if (commandImport.Buttons == null) throw new Exception("Buttons not found!");
                     if (commandImport.DependentButton == null) throw new Exception("Dependent button name not found!");
@@ -401,11 +410,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     if (commandImport.WindowComponents == null && commandImport.Buttons == null) throw new Exception("Window components and buttons are not found!");
                     if (commandImport.WindowComponents == null)
                     {
-                        return new ShowMiniWindowComand(Editor, [.. commandImport.Buttons.Select(FetchEditorButtonFromImport)], MiniWindow.miniWindowType.Vertical);
+                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", [.. commandImport.Buttons.Select(FetchEditorButtonFromImport)], MiniWindow.miniWindowType.Vertical);
                     }
                     else
                     {
-                        return new ShowMiniWindowComand(Editor, [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindow.miniWindowType.Vertical);
+                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindow.miniWindowType.Vertical);
                     }
                 case "ShowInspectorCommand":
                     return new ShowInspectorCommand(Editor,
@@ -451,6 +460,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         DependentButton = showSideWindowCommand.DependentButtonName,
                         Buttons = [.. showSideWindowCommand.Buttons.Select(ExportEditorButtonData)]
                     };
+                case ShowMiniWindowComand showMiniWindowComand:
+                    return new()
+                    {
+                        Type = "ShowMiniWindowCommand",
+                        WindowComponents = [.. showMiniWindowComand.Components.Select(ExportEditorComponentFromImport)],
+                        HasVariable = showMiniWindowComand.HasVariable.ToString()
+                    };
                 case ShowInspectorCommand showInspectorCommand:
                     return new()
                     {
@@ -484,6 +500,65 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 default:
                     throw new Exception("Command type not found!");
             }
+        }
+        public RenderingComponentExIm ExportEditorComponentFromImport(IComponent editorComponent)
+        {
+            switch (editorComponent)
+            {
+                case Label label:
+                    return new() { Label = ExportLabelData(label) };
+                case TextField textField:
+                    return new() { TextField = ExportTextFieldData(textField) };
+                case ToggleButton toggleButton:
+                    return new() { Toggle = ExportToggleData(toggleButton) };
+                case DropDown dropDown:
+                    return new() { DropDown = ExportDropDownData(dropDown) };
+                case Button button:
+                    return new() { Button = ExportEditorButtonData(button) };
+                default:
+                    throw new Exception("Rendering component type not found!");
+            }
+        }
+        public LabelExIm ExportLabelData(Label label)
+        {
+            return new()
+            {
+                XPosition = label.XPosition,
+                YPosition = label.YPosition,
+                Text = label.Text
+            };
+        }
+        public EditorTextFieldExim ExportTextFieldData(TextField textField)
+        {
+            return new()
+            {
+                Text = textField.Text,
+                XPosition = textField.XPosition,
+                YPosition = textField.YPosition,
+                Static = textField.IsStatic.ToString()
+            };
+        }
+
+        public EditorToggleExim ExportToggleData(ToggleButton toggleButton)
+        {
+            return new()
+            {
+                XPosition = toggleButton.XPosition,
+                YPosition = toggleButton.YPosition,
+                Text = toggleButton.Text,
+                Value = toggleButton.IsToggled.ToString()
+            };
+        }
+        public DropDownExim ExportDropDownData(DropDown dropDown)
+        {
+            return new()
+            {
+                XPosition = dropDown.XPosition,
+                YPosition = dropDown.YPosition,
+                Text = dropDown.Text,
+                Filter = (int)dropDown.Filter,
+                Options = [.. dropDown.ButtonList.Select(ExportEditorButtonData)]
+            };
         }
         public SpriteExim ExportSpriteData(Sprite sprite)
         {

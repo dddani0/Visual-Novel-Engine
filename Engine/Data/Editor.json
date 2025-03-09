@@ -255,8 +255,22 @@
                                 "YPosition": 200,
                                 "Text": "Variables"
                             }
+                        },
+                        {
+                            "Button": {
+                                "XPosition": 0,
+                                "YPosition": 0,
+                                "Text": "Add",
+                                "Command": {
+                                    "Type": "CreateVariableCommand",
+                                    "VariableValue": "NewVar",
+                                    "VariableType": 0
+                                },
+                                "Type": 0
+                            }
                         }
-                    ]
+                    ],
+                    "HasVariable": "true"
                 },
                 "Type": 0
             },
@@ -290,7 +304,8 @@
                                 "Static": "false"
                             }
                         }
-                    ]
+                    ],
+                    "HasVariable": "false"
                 },
                 "Type": 0
             }
@@ -299,48 +314,8 @@
     },
     "Scenes": [
         {
-            "Name": "Scene1",
-            "Components": [
-                {
-                    "ID": 1,
-                    "Name": "New TextBox(1)",
-                    "XPosition": 400,
-                    "YPosition": 400,
-                    "RenderingObject": {
-                        "Sprite": null,
-                        "TextField": null,
-                        "Textbox": {
-                            "CharactersPerSecond": 1,
-                            "Font": "Default",
-                            "Color": [
-                                0,
-                                0,
-                                0,
-                                255
-                            ],
-                            "BorderColor": [
-                                0,
-                                0,
-                                0,
-                                255
-                            ],
-                            "PositionType": 0,
-                            "HorizontalTextMargin": 1,
-                            "VerticalTextMargin": 1,
-                            "WordWrap": false,
-                            "Title": "",
-                            "Content": []
-                        },
-                        "Button": null,
-                        "InputField": null,
-                        "DropBox": null,
-                        "Menu": null,
-                        "Block": null,
-                        "Slider": null,
-                        "Variable": null
-                    }
-                }
-            ],
+            "Name": "DefaultScene",
+            "Components": [],
             "GroupList": []
         }
     ]
