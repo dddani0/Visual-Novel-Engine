@@ -22,11 +22,11 @@ namespace TemplateGame.Component
         /// <summary>
         /// The horizontal margin of the text.
         /// </summary>
-        internal int HorizontalTextMargin { get; }
+        internal int HorizontalTextMargin { get; set; }
         /// <summary>
         /// The vertical margin of the text.
         /// </summary>
-        internal int VerticalTextMargin { get; }
+        internal int VerticalTextMargin { get; set; }
         /// <summary>
         /// A timer for the textbox.
         /// </summary>
@@ -38,7 +38,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The content of the textbox.
         /// </summary>
-        internal List<String> Content { get; private set; } = [];
+        internal List<String> Content { get; set; } = [];
         /// <summary>
         /// The current loaded data of the textbox.
         /// </summary>
@@ -63,7 +63,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The speed of the textbox (Characters per second).
         /// </summary>
-        internal double CPSTextSpeed { get; }
+        internal double CPSTextSpeed { get; set; }
         private const int TextBoxPositionYOffset = 5;
         /// <summary>
         /// The maximum character count of the textbox.
