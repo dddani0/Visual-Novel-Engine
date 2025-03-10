@@ -93,6 +93,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// Represents the timer of the button.
         /// </summary>
         private Timer Timer { get; set; }
+        internal TextBox.PositionType PositionType { get; set; }
+        internal TemplateGame.Component.Scene.BackgroundOption SceneBackgroundOption { get; set; }
+        internal VariableType VariableType { get; set; }
         /// <summary>
         /// Represents a button inside the editor.
         /// </summary>

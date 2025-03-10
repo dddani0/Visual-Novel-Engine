@@ -14,10 +14,27 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         public void Execute()
         {
-            //EBBŐL MÉG KÉSÖBB BAJ LEHET?!
-            DropDown.Button.Component = Button.Component;
-            DropDown.Button.Text = Button.Text;
-            DropDown.Button.Command.Execute();
+            if (Button.Component != null)
+            {
+                DropDown.Button.Component = Button.Component;
+                DropDown.Button.Text = Button.Text;
+                DropDown.Button.Command.Execute();
+            }
+            if (Button.PositionType != null)
+            {
+                DropDown.Button.PositionType = Button.PositionType;
+                DropDown.Button.Text = Button.Text;
+            }
+            if (Button.SceneBackgroundOption != null)
+            {
+                DropDown.Button.SceneBackgroundOption = Button.SceneBackgroundOption;
+                DropDown.Button.Text = Button.Text;
+            }
+            if (Button.VariableType != null)
+            {
+                DropDown.Button.VariableType = Button.VariableType;
+                DropDown.Button.Text = Button.Text;
+            }
             DropDown.IsSelected = false;
         }
     }

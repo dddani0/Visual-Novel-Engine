@@ -6,7 +6,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
     public class CreateNewSceneCommand : ICommand
     {
         private Editor Editor { get; set; }
-        private Button DependentButton { get; set; }
         public CreateNewSceneCommand(Editor editor)
         {
             Editor = editor;
@@ -22,7 +21,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Button newSceneButton = new(Editor, Editor.SceneBar.ButtonComponentList.Count * Editor.ComponentWidth, 0, newScene.Name, false, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new ChangeSceneCommand(Editor), Button.ButtonType.Trigger);
             ChangeSceneCommand changeSceneCommand = (ChangeSceneCommand)newSceneButton.Command;
             changeSceneCommand.SceneButton = newSceneButton;
-            Editor.SceneBar.ButtonComponentList.Insert(Editor.SceneBar.ButtonComponentList.Count - 2, newSceneButton);
+            Editor.SceneBar.ButtonComponentList.Insert(Editor.SceneBar.ButtonComponentList.Count - 1, newSceneButton);
+            Editor.SceneBar.Scrollbar.Components.Insert(Editor.SceneBar.Scrollbar.Components.Count - 1, newSceneButton);
+            //Update scene bar
+            Editor.SceneBar.UpdateComponentPosition();
         }
     }
 }

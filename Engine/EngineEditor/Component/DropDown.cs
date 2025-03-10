@@ -20,7 +20,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             InputField,
             StaticInputField,
             Toggle,
-            NoBlock
+            NoBlock,
+            TextBoxPosition,
+            SceneBackground,
+            VariableType
         }
         internal FilterType Filter { get; set; }
         private Editor Editor { get; set; }
@@ -44,7 +47,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
-            Button = new Button(Editor, XPosition, YPosition, "New DropDown", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new OpenDropDownCommand(Editor, this), Button.ButtonType.Hold);
+            Button = new Button(Editor, XPosition, YPosition, "Select", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new OpenDropDownCommand(Editor, this), Button.ButtonType.Hold);
             Filter = filter;
         }
 
@@ -55,43 +58,98 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             FilteredButtonList.Clear();
             //update whole list
             ButtonList.AddRange([.. Editor.ActiveScene.ComponentList.Cast<Component>().Select(component => new Button(Editor, this, $"ID:{component.ID}, Name:{component.Name}", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, component))]);
-            switch (Filter is FilterType.None)
+            switch (Filter)
             {
-                case true:
+                case FilterType.None:
                     FilteredButtonList = ButtonList;
                     break;
-                case false:
+                case FilterType.Sprite:
+                case FilterType.Menu:
+                case FilterType.Button:
+                case FilterType.TextBox:
+                case FilterType.Block:
+                case FilterType.DropBox:
+                case FilterType.Slider:
+                case FilterType.InputField:
+                case FilterType.Toggle:
                     foreach (Button item in ButtonList)
                     {
                         var component = item.Component as Component;
-                        switch (Filter is FilterType.NoBlock)
+                        FilterType filter = component.RenderingObject switch
                         {
-                            case true:
-                                if (component.RenderingObject is Block is false) FilteredButtonList.Add(item);
-                                break;
-                            case false:
-                                FilterType filter = component.RenderingObject switch
-                                {
-                                    Sprite => FilterType.Sprite,
-                                    Menu => FilterType.Menu,
-                                    TemplateGame.Component.Button => FilterType.Button,
-                                    TextBox => FilterType.TextBox,
-                                    Block => FilterType.Block,
-                                    DropBox => FilterType.DropBox,
-                                    Slider => FilterType.Slider,
-                                    InputField => FilterType.InputField,
-                                    Toggle => FilterType.Toggle,
-                                    _ => throw new NotImplementedException()
-                                };
-                                if (filter == Filter) FilteredButtonList.Add(item);
-                                break;
-                        }
+                            Sprite => FilterType.Sprite,
+                            Menu => FilterType.Menu,
+                            TemplateGame.Component.Button => FilterType.Button,
+                            TextBox => FilterType.TextBox,
+                            Block => FilterType.Block,
+                            DropBox => FilterType.DropBox,
+                            Slider => FilterType.Slider,
+                            InputField => FilterType.InputField,
+                            Toggle => FilterType.Toggle,
+                            _ => throw new NotImplementedException()
+                        };
+                        if (filter == Filter) FilteredButtonList.Add(item);
                     }
+                    break;
+                case FilterType.NoBlock:
+                    foreach (Button item in ButtonList)
+                    {
+                        var component = item.Component as Component;
+                        if (component.RenderingObject is Block is false) FilteredButtonList.Add(item);
+                    }
+                    break;
+                case FilterType.TextBoxPosition:
+                    Button textBoxDefaultPositionType = new(Editor, this, TextBox.PositionType.defaultPosition.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        PositionType = TextBox.PositionType.defaultPosition
+                    };
+                    Button textBoxupperPositionPositionType = new(Editor, this, TextBox.PositionType.upperPosition.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        PositionType = TextBox.PositionType.upperPosition
+                    };
+                    FilteredButtonList = [textBoxDefaultPositionType, textBoxupperPositionPositionType];
+                    break;
+                case FilterType.SceneBackground:
+                    Button sceneBackgroundDefaultBackgroundType = new(Editor, this, TemplateGame.Component.Scene.BackgroundOption.SolidColor.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        SceneBackgroundOption = TemplateGame.Component.Scene.BackgroundOption.SolidColor
+                    };
+                    Button sceneBackgroundGradientVerticalBackgroundType = new(Editor, this, TemplateGame.Component.Scene.BackgroundOption.GradientVertical.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        SceneBackgroundOption = TemplateGame.Component.Scene.BackgroundOption.GradientVertical
+                    };
+                    Button sceneBackgroundGradientHorizontalBackgroundType = new(Editor, this, TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        SceneBackgroundOption = TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal
+                    };
+                    Button sceneBackgroundImageBackgroundType = new(Editor, this, TemplateGame.Component.Scene.BackgroundOption.Image.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        SceneBackgroundOption = TemplateGame.Component.Scene.BackgroundOption.Image
+                    };
+                    FilteredButtonList = [sceneBackgroundDefaultBackgroundType, sceneBackgroundGradientVerticalBackgroundType, sceneBackgroundGradientHorizontalBackgroundType, sceneBackgroundImageBackgroundType];
+                    break;
+                case FilterType.VariableType:
+                    Button variableTypeStringType = new(Editor, this, VariableType.String.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        VariableType = VariableType.String
+                    };
+                    Button variableTypeIntType = new(Editor, this, VariableType.Int.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        VariableType = VariableType.Int
+                    };
+                    Button variableTypeFloatType = new(Editor, this, VariableType.Float.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        VariableType = VariableType.Float
+                    };
+                    Button variableTypeBoolType = new(Editor, this, VariableType.Boolean.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        VariableType = VariableType.Boolean
+                    };
+                    FilteredButtonList = [variableTypeStringType, variableTypeIntType, variableTypeFloatType, variableTypeBoolType];
                     break;
             }
             UpdateComponentPosition();
         }
-
         internal void UpdateComponentPosition()
         {
             for (int i = 0; i < FilteredButtonList.Count; i++)
@@ -109,7 +167,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Button.YPosition = YPosition;
             IsSelected = Button.Selected;
         }
-
         public void Render()
         {
             Update();

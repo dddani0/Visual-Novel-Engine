@@ -144,6 +144,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:", textBox.WordWrap));
                     //Textbox position
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
+                    ComponentList.Add(
+                        new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TextBoxPosition));
                     break;
                 case Menu menu:
                     //Position

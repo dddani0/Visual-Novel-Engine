@@ -83,7 +83,6 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Button")]
         public ButtonExIm? Button { get; set; }
     }
-
     public class LabelExIm
     {
         [JsonPropertyName("Text")]
@@ -95,7 +94,6 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("YPosition")]
         public int YPosition { get; set; }
     }
-
     public class EditorTextFieldExim
     {
         [JsonPropertyName("Text")]
@@ -109,7 +107,6 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Static")]
         public string Static { get; set; }
     }
-
     public class EditorToggleExim
     {
         [JsonPropertyName("Text")]
@@ -121,7 +118,6 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Value")]
         public string Value { get; set; }
     }
-
     public class DropDownExim
     {
         [JsonPropertyName("Text")]
@@ -137,7 +133,6 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Options")]
         public ButtonExIm[] Options { get; set; }
     }
-
     public class RenderingObjectExIm
     {
         [JsonPropertyName("Static")]

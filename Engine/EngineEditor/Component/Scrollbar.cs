@@ -25,7 +25,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Color ScrollColor { get; set; }
         internal Color ScrollHoverColor { get; set; }
         internal Color ScrollBorderColor { get; set; }
-        List<IComponent> Components { get; set; } = [];
+        internal List<IComponent> Components { get; set; } = [];
         private Button NextButton { get; set; }
         private Button PreviousButton { get; set; }
         public Scrollbar(Editor editor, int xPosition, int yPosition, int height, int width, ScrollbarType type, bool isStatic, IComponent[] components)
@@ -48,12 +48,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             switch (Type)
             {
                 case ScrollbarType.Vertical:
-                    NextButton = new Button(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, "+",true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
-                    PreviousButton = new Button(Editor, XPosition, YPosition, "-",true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
+                    NextButton = new Button(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, "+", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
+                    PreviousButton = new Button(Editor, XPosition, YPosition, "-", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
                     break;
                 case ScrollbarType.Horizontal:
-                    NextButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "+",true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
-                    PreviousButton = new Button(Editor, XPosition, YPosition, "-",true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
+                    NextButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "+", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
+                    PreviousButton = new Button(Editor, XPosition, YPosition, "-", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
                     break;
             }
         }
@@ -84,7 +84,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     }
                     break;
                 case ScrollbarType.Horizontal:
-                    if (Components[^1].XPosition + Editor.ButtonWidth <= XPosition + Width) return;
+                    if (Components[^1].XPosition + Editor.ButtonWidth <= Width) return;
                     for (int i = 0; i < Components.Count; i++)
                     {
                         Components[i].XPosition -= Editor.ButtonWidth;

@@ -53,7 +53,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ButtonComponentList]);
                     break;
                 case miniWindowType.Horizontal:
-                    Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ButtonComponentList]);
+                    Scrollbar = new Scrollbar(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, Editor.SmallButtonHeight, Width, Scrollbar.ScrollbarType.Horizontal, false, [.. ButtonComponentList]);
                     break;
             }
         }
@@ -77,10 +77,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             switch (Type)
             {
                 case miniWindowType.Vertical:
-                    Scrollbar = new Scrollbar(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition + Editor.SmallButtonHeight, Height - Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
+                    Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ButtonComponentList]);
                     break;
                 case miniWindowType.Horizontal:
-                    Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
+                    Scrollbar = new Scrollbar(Editor, XPosition, YPosition + Height, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Horizontal, false, [.. ButtonComponentList]);
                     break;
             }
         }
@@ -91,19 +91,28 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             {
                 TextField VariableNameField = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.GameVariables[i].Name, Raylib.GetFontDefault(), false);
                 TextField VariableValueField = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.GameVariables[i].Value, Raylib.GetFontDefault(), false);
-                TextField VariableTypeField = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.GameVariables[i].Type.ToString(), Raylib.GetFontDefault(), false);
+                DropDown VariableDropDown = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.VariableType);
+                VariableDropDown.Button.VariableType = Editor.GameVariables[i].Type;
+                VariableDropDown.Button.Text = Editor.GameVariables[i].Type.ToString();
+                //Add button options for all types of variables
+                foreach (VariableType variableType in Enum.GetValues(typeof(VariableType)))
+                {
+                    Button button = new(Editor, VariableDropDown, variableType.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null);
+                    button.VariableType = variableType;
+                    VariableDropDown.ButtonList.Add(button);
+                }
                 //Only add to the list if the variable is not already in the list
                 if (ComponentList.FindIndex(x => x is TextField textField && textField.Text == VariableNameField.Text) == -1)
                 {
-                    ComponentList.AddRange([VariableNameField, VariableValueField, VariableTypeField]);
-                    VariableComponentList.AddRange([VariableNameField, VariableValueField, VariableTypeField]);
-                    Scrollbar.AddComponents([VariableNameField, VariableValueField, VariableTypeField]);
+                    ComponentList.AddRange([VariableNameField, VariableValueField, VariableDropDown]);
+                    VariableComponentList.AddRange([VariableNameField, VariableValueField, VariableDropDown]);
+                    Scrollbar.AddComponents([VariableNameField, VariableValueField, VariableDropDown]);
                     UpdateComponentPosition();
                 }
             }
         }
 
-        private void UpdateComponentPosition()
+        internal void UpdateComponentPosition()
         {
             switch (ComponentList is null)
             {
@@ -172,10 +181,20 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 return;
             }
             if (ButtonComponentList == null) return;
-            if (ButtonComponentList.Count * Editor.SmallButtonHeight > Raylib.GetScreenHeight()) Scrollbar.Render();
             for (int i = 0; i < ButtonComponentList.Count; i++)
             {
                 ButtonComponentList[i].Render();
+            }
+            switch (Type)
+            {
+                case miniWindowType.Vertical:
+                    if (ButtonComponentList.Count * Editor.SmallButtonHeight > Height)
+                        Scrollbar.Render();
+                    break;
+                case miniWindowType.Horizontal:
+                    if (ButtonComponentList.Count * Editor.ButtonWidth >= Width)
+                        Scrollbar.Render();
+                    break;
             }
         }
     }

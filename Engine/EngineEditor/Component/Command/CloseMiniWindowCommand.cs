@@ -27,12 +27,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 for (int i = 0; i < Editor.GameVariables.Count; i++)
                 {
                     Variable variable = Editor.GameVariables[i];
-                    TextField nameTextFiled = (TextField)MiniWindow.VariableComponentList[i * 3];
-                    TextField valueTextFiled = (TextField)MiniWindow.VariableComponentList[i * 3 + 1];
-                    TextField typeTextFiled = (TextField)MiniWindow.VariableComponentList[i * 3 + 2];
-                    variable.Name = nameTextFiled.Text;
-                    variable.Value = valueTextFiled.Text;
-                    variable.Type = (VariableType)Enum.Parse(typeof(VariableType), typeTextFiled.Text);
+                    TextField nameTextField = (TextField)MiniWindow.VariableComponentList[i * 3];
+                    TextField valueTextField = (TextField)MiniWindow.VariableComponentList[i * 3 + 1];
+                    DropDown typeDropDown = (DropDown)MiniWindow.VariableComponentList[i * 3 + 2];
+                    variable.Name = nameTextField.Text;
+                    variable.Value = valueTextField.Text;
+                    variable.Type = typeDropDown.Button.VariableType;
                 }
             }
             Editor.MiniWindow.Remove(MiniWindow);
