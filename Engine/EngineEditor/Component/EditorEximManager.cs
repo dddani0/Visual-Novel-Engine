@@ -67,6 +67,15 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             [.. sceneImport.GroupList.Select(FetchGroupFromImport)]);
         }
         /// <summary>
+        /// Fetch a variable from an import object.
+        /// </summary>
+        /// <param name="variableImport"></param>
+        /// <returns></returns>
+        public Variable FetchVariableFromImport(VariableExim variableImport)
+        {
+            return new Variable(variableImport.Name, variableImport.Value, (VariableType)variableImport.Type);
+        }
+        /// <summary>
         /// Fetch a block from an import object.
         /// </summary>
         /// <param name="blockImport"></param>
@@ -441,6 +450,15 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             return [color.R, color.G, color.B, color.A];
         }
+        public VariableExim ExportVariableData(Variable variable)
+        {
+            return new()
+            {
+                Name = variable.Name,
+                Value = variable.Value,
+                Type = (int)variable.Type
+            };
+        }
         public CommandExIm ExportCommandData(ICommand command)
         {
             switch (command)
@@ -545,7 +563,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Static = textField.IsStatic.ToString()
             };
         }
-
         public EditorToggleExim ExportToggleData(ToggleButton toggleButton)
         {
             return new()
@@ -807,6 +824,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 WindowHeight = 800,
                 ToolBar = ExportGroupData(editor.Toolbar),
                 Scenes = [.. editor.SceneList.Select(ExportEditorSceneData)],
+                Variables = [.. editor.GameVariables.Select(ExportVariableData)]
             };
         }
         public GroupExIm ExportGroupData(Group group)

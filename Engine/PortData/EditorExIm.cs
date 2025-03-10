@@ -22,6 +22,8 @@ namespace VisualNovelEngine.Engine.PortData
         public required GroupExIm ToolBar { get; set; }
         [JsonPropertyName("Scenes")]
         public SceneExIm[] Scenes { get; set; }
+        [JsonPropertyName("Variables")]
+        public VariableExim[] Variables { get; set; }
     }
     public class GroupExIm
     {
