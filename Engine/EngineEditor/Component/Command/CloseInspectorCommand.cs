@@ -91,13 +91,26 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //save textfield text
                                     textField.Text = (InspectorWindow.ComponentList[5] as TextField).Text;
                                     //save textfield color
-                                    byte[] textFieldColorRGB = new byte[3];
                                     TextField textFieldColorTextField = InspectorWindow.ComponentList[7] as TextField;
+                                    textField.Color = new Color()
+                                    {
+                                        R = byte.Parse(textFieldColorTextField.Text.Split(',')[0]),
+                                        G = byte.Parse(textFieldColorTextField.Text.Split(',')[1]),
+                                        B = byte.Parse(textFieldColorTextField.Text.Split(',')[2]),
+                                        A = 255
+                                    };
                                     //save textfield border color
-                                    byte[] textFieldBorderColorRGB = new byte[3];
                                     TextField textFieldBorderColorTextField = InspectorWindow.ComponentList[9] as TextField;
+                                    textField.BorderColor = new Color()
+                                    {
+                                        R = byte.Parse(textFieldBorderColorTextField.Text.Split(',')[0]),
+                                        G = byte.Parse(textFieldBorderColorTextField.Text.Split(',')[1]),
+                                        B = byte.Parse(textFieldBorderColorTextField.Text.Split(',')[2]),
+                                        A = 255
+                                    };
                                     //save textfield wordwrap toggle
-                                    TextField textFieldWordWrapTextField = InspectorWindow.ComponentList[10] as TextField;
+                                    ToggleButton textFieldWordWrapToggle = InspectorWindow.ComponentList[10] as ToggleButton;
+                                    textField.WordWrap = textFieldWordWrapToggle.IsToggled;
                                     break;
                                 case TextBox textBox:
                                     //save textbox title
@@ -153,10 +166,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //Save height
                                     menu.Height = int.Parse((InspectorWindow.ComponentList[12] as TextField).Text);
                                     //Save fullscreen bool
-                                    menu.IsFullScreen = (InspectorWindow.ComponentList[14] as ToggleButton).IsToggled;
+                                    menu.IsFullScreen = (InspectorWindow.ComponentList[13] as ToggleButton).IsToggled;
                                     //Save color
                                     byte[] menuColorRGB = new byte[3];
-                                    TextField ColorTextField = InspectorWindow.ComponentList[16] as TextField;
+                                    TextField ColorTextField = InspectorWindow.ComponentList[15] as TextField;
                                     menuColorRGB[0] = byte.Parse(ColorTextField.Text.Split(',')[0]);
                                     menuColorRGB[1] = byte.Parse(ColorTextField.Text.Split(',')[1]);
                                     menuColorRGB[2] = byte.Parse(ColorTextField.Text.Split(',')[2]);
@@ -169,7 +182,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     };
                                     //Save border color
                                     byte[] menuBorderColorRGB = new byte[3];
-                                    TextField BorderColorTextField = InspectorWindow.ComponentList[18] as TextField;
+                                    TextField BorderColorTextField = InspectorWindow.ComponentList[17] as TextField;
                                     menuBorderColorRGB[0] = byte.Parse(BorderColorTextField.Text.Split(',')[0]);
                                     menuBorderColorRGB[1] = byte.Parse(BorderColorTextField.Text.Split(',')[1]);
                                     menuBorderColorRGB[2] = byte.Parse(BorderColorTextField.Text.Split(',')[2]);
@@ -182,10 +195,15 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     };
                                     //Save blocks
                                     List<Block> blockList = [];
-                                    for (int i = 20; i < InspectorWindow.ComponentList.Count - 2; i++)
+                                    for (int i = 19; i < InspectorWindow.ComponentList.Count - 1; i++)
                                     {
                                         DropDown currentComponent = (DropDown)InspectorWindow.ComponentList[i];
-                                        //string selectedBlockTitle = currentComponent.Button.Text;
+                                        if (((Component)currentComponent.Button.Component) == null) continue;
+                                        blockList.Add(
+                                            new Block(currentComponent.XPosition,
+                                            currentComponent.YPosition,
+                                            ((Component)currentComponent.Button.Component).RenderingObject,
+                                            ((Component)currentComponent.Button.Component).ID));
                                     }
                                     menu.BlockList = blockList;
                                     break;
@@ -195,7 +213,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     block.YPosition = int.Parse((InspectorWindow.ComponentList[8] as TextField).Text);
                                     //Save block component
                                     DropDown selectedComponentDropDown = (DropDown)InspectorWindow.ComponentList[10];
-                                    block.Component = (IPermanentRenderingObject)selectedComponentDropDown.Button.Component;
+                                    if (selectedComponentDropDown.Button == null)
+                                    {
+                                        block.Component = null;
+                                    }
+                                    else
+                                    {
+                                        block.Component = (Component)selectedComponentDropDown.Button.Component == null ? null : (selectedComponentDropDown.Button.Component as Component).RenderingObject;
+                                    }
                                     break;
                                 case DropBox dropBox:
                                     //Save position
@@ -206,7 +231,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //Save height
                                     dropBox.Height = int.Parse((InspectorWindow.ComponentList[12] as TextField).Text);
                                     //Save Color
-                                    byte[] dropBoxColorRGB = new byte[3];
                                     TextField dropBoxColorTextField = InspectorWindow.ComponentList[14] as TextField;
                                     dropBox.Color = new Color()
                                     {
@@ -216,7 +240,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         A = 255
                                     };
                                     //Save border color
-                                    byte[] dropBoxBorderColorRGB = new byte[3];
                                     TextField dropBoxBorderColorTextField = InspectorWindow.ComponentList[16] as TextField;
                                     dropBox.BorderColor = new Color()
                                     {
@@ -243,7 +266,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //Save height
                                     slider.Height = int.Parse((InspectorWindow.ComponentList[12] as TextField).Text);
                                     //Save color
-                                    byte[] sliderColorRGB = new byte[3];
                                     TextField sliderColorTextField = InspectorWindow.ComponentList[14] as TextField;
                                     slider.Color = new Color()
                                     {
@@ -253,7 +275,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         A = 255
                                     };
                                     //Save border color
-                                    byte[] sliderBorderColorRGB = new byte[3];
                                     TextField sliderBorderColorTextField = InspectorWindow.ComponentList[16] as TextField;
                                     slider.BorderColor = new Color()
                                     {
@@ -272,8 +293,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         B = byte.Parse(sliderDragColor.Text.Split(',')[2]),
                                         A = 255
                                     };
+                                    //Save Slider drag radius
+                                    slider.SliderDragRadius = int.Parse((InspectorWindow.ComponentList[20] as TextField).Text);
                                     //Save Slider value
-                                    slider.Value = float.Parse((InspectorWindow.ComponentList[20] as TextField).Text);
+                                    slider.Value = float.Parse((InspectorWindow.ComponentList[22] as TextField).Text);
                                     //Save Action
                                     //slider.Action = (Action)Enum.Parse(typeof(Action), (InspectorWindow.ComponentList[22] as TextField).Text);
                                     break;

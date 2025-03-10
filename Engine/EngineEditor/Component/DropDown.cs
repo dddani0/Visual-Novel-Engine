@@ -14,7 +14,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Menu,
             Button,
             TextBox,
-            Block
+            Block,
+            DropBox,
+            Slider,
+            InputField,
+            StaticInputField,
+            Toggle,
+            NoBlock
         }
         internal FilterType Filter { get; set; }
         private Editor Editor { get; set; }
@@ -58,16 +64,28 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     foreach (Button item in ButtonList)
                     {
                         var component = item.Component as Component;
-                        FilterType filter = component.RenderingObject switch
+                        switch (Filter is FilterType.NoBlock)
                         {
-                            Sprite => FilterType.Sprite,
-                            Menu => FilterType.Menu,
-                            TemplateGame.Component.Button => FilterType.Button,
-                            TextBox => FilterType.TextBox,
-                            Block => FilterType.Block,
-                            _ => throw new NotImplementedException()
-                        };
-                        if (filter == Filter) FilteredButtonList.Add(item);
+                            case true:
+                                if (component.RenderingObject is Block is false) FilteredButtonList.Add(item);
+                                break;
+                            case false:
+                                FilterType filter = component.RenderingObject switch
+                                {
+                                    Sprite => FilterType.Sprite,
+                                    Menu => FilterType.Menu,
+                                    TemplateGame.Component.Button => FilterType.Button,
+                                    TextBox => FilterType.TextBox,
+                                    Block => FilterType.Block,
+                                    DropBox => FilterType.DropBox,
+                                    Slider => FilterType.Slider,
+                                    InputField => FilterType.InputField,
+                                    Toggle => FilterType.Toggle,
+                                    _ => throw new NotImplementedException()
+                                };
+                                if (filter == Filter) FilteredButtonList.Add(item);
+                                break;
+                        }
                     }
                     break;
             }

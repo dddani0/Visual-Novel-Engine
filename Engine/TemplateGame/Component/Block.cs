@@ -8,7 +8,7 @@ namespace TemplateGame.Component
     /// </summary>
     public class Block : IPermanentRenderingObject
     {
-        internal long ID { get; private set; }
+        internal int ID { get; private set; }
 
         /// <summary>
         /// The relative - to the parent - position on the X axis.
@@ -29,7 +29,7 @@ namespace TemplateGame.Component
         /// <param name="x">Position on the X axis.</param>
         /// <param name="y">Position on the Y axis.</param>
         /// <param name="component">Rendering component.</param>
-        public Block(int x, int y, IPermanentRenderingObject component, long id)
+        public Block(int x, int y, IPermanentRenderingObject component, int id)
         {
             ID = id;
             XPosition = x;

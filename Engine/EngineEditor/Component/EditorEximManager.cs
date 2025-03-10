@@ -780,7 +780,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Width = menu.Width,
                 Height = menu.Height,
                 Color = [.. ExportColorData(menu.Color)],
-                BorderColor = [.. ExportColorData(menu.BorderColor)]
+                BorderColor = [.. ExportColorData(menu.BorderColor)],
+                BlockList = [.. menu.BlockList.Select(ExportBlockData)]
             };
         }
         public SliderExim ExportSliderData(Slider slider)
@@ -794,6 +795,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Color = [.. ExportColorData(slider.Color)],
                 BorderColor = [.. ExportColorData(slider.BorderColor)],
                 DragColor = [.. ExportColorData(slider.DragColor)],
+                value = (int)slider.Value,
                 DragRadius = slider.SliderDragRadius,
                 Action = ExportEventData(slider.Action)
             };
@@ -808,6 +810,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 BorderColor = [.. ExportColorData(toggle.BorderColor)],
                 ActivatedColor = [.. ExportColorData(toggle.ToggledColor)],
                 BoxSize = toggle.BoxSize,
+                Toggled = toggle.IsToggled.ToString(),
                 TextXOffset = toggle.TextXOffset,
                 Text = toggle.Text,
                 Action = ExportEventData(toggle.SettingsEvent)
@@ -895,7 +898,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Menu menu => new() { Menu = ExportMenuData(menu) },
                 Slider slider => new() { Slider = ExportSliderData(slider) },
                 Toggle toggle => new() { Toggle = ExportToggleData(toggle) },
-
                 _ => throw new Exception("Rendering object type not found!"),
             };
         }

@@ -92,18 +92,18 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     //Dinamic Text
                     ComponentList.Add(new Label(XPosition, YPosition, "Text:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textField.Text, Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textField.Text, Raylib.GetFontDefault(), false));
                     //Textfield color
                     ComponentList.Add(new Label(XPosition, YPosition, "Color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{textField.Color.R}, {textField.Color.G}, {textField.Color.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{textField.Color.R}, {textField.Color.G}, {textField.Color.B}", Raylib.GetFontDefault(), false));
                     //Textfield border color
                     ComponentList.Add(new Label(XPosition, YPosition, "Border color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{textField.BorderColor.R}, {textField.BorderColor.G}, {textField.BorderColor.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{textField.BorderColor.R}, {textField.BorderColor.G}, {textField.BorderColor.B}", Raylib.GetFontDefault(), false));
                     //Dinamic Wordwrap Toggle 
                     ComponentList.Add(
-                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:", false));
+                        new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:", textField.WordWrap));
                     break;
                 case TextBox textBox:
                     //Dinamic Title
@@ -195,39 +195,55 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, block.YPosition.ToString(), Raylib.GetFontDefault(), true));
                     //Component
                     ComponentList.Add(new Label(XPosition, YPosition, "Component:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.None));
+                    var blockComponentDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.NoBlock);
+                    if (block.Component == null)
+                    {
+                        ComponentList.Add(blockComponentDropDown);
+                    }
+                    else
+                    {
+                        foreach (Component item in Editor.ActiveScene.ComponentList)
+                        {
+                            if (block.Component == item.RenderingObject)
+                            {
+                                blockComponentDropDown.Button.Component = item;
+                                blockComponentDropDown.Button.Text = item.Name;
+                            }
+                        }
+                        ComponentList.Add(blockComponentDropDown);
+                    }
                     break;
                 case DropBox dropBox:
                     //X Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
                     ComponentList.Add(new Label(XPosition, YPosition, "X axis:"));
                     ComponentList.Add(
-                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.XPosition.ToString(), Raylib.GetFontDefault(), true));
+                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.XPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Y Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Y axis:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.YPosition.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.YPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Width
                     ComponentList.Add(new Label(XPosition, YPosition, "Width:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.Width.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.Width.ToString(), Raylib.GetFontDefault(), false));
                     //Height
                     ComponentList.Add(new Label(XPosition, YPosition, "Height:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.Height.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.Height.ToString(), Raylib.GetFontDefault(), false));
                     //Color
                     ComponentList.Add(new Label(XPosition, YPosition, "Color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{dropBox.Color.R}, {dropBox.Color.G}, {dropBox.Color.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{dropBox.Color.R}, {dropBox.Color.G}, {dropBox.Color.B}", Raylib.GetFontDefault(), false));
                     //Border color
                     ComponentList.Add(new Label(XPosition, YPosition, "Border color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{dropBox.BorderColor.R}, {dropBox.BorderColor.G}, {dropBox.BorderColor.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{dropBox.BorderColor.R}, {dropBox.BorderColor.G}, {dropBox.BorderColor.B}", Raylib.GetFontDefault(), false));
                     //Options
                     ComponentList.Add(new Label(XPosition, YPosition, "Options:"));
                     for (int i = 0; i < dropBox.Options.Count; i++)
                     {
-                        ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.Options[i].Text, Raylib.GetFontDefault(), true));
+                        ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, dropBox.Options[i].Text, Raylib.GetFontDefault(), false));
                     }
                     break;
                 case Slider slider:
@@ -243,27 +259,31 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     //Width
                     ComponentList.Add(new Label(XPosition, YPosition, "Width:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.Width.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.Width.ToString(), Raylib.GetFontDefault(), false));
                     //Height
                     ComponentList.Add(new Label(XPosition, YPosition, "Height:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.Height.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.Height.ToString(), Raylib.GetFontDefault(), false));
                     //Color
                     ComponentList.Add(new Label(XPosition, YPosition, "Color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{slider.Color.R}, {slider.Color.G}, {slider.Color.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{slider.Color.R}, {slider.Color.G}, {slider.Color.B}", Raylib.GetFontDefault(), false));
                     //Border color
                     ComponentList.Add(new Label(XPosition, YPosition, "Border color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{slider.BorderColor.R}, {slider.BorderColor.G}, {slider.BorderColor.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{slider.BorderColor.R}, {slider.BorderColor.G}, {slider.BorderColor.B}", Raylib.GetFontDefault(), false));
+                    //Slider drag color
+                    ComponentList.Add(new Label(XPosition, YPosition, "Slider drag color:"));
+                    ComponentList.Add(
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{slider.DragColor.R}, {slider.DragColor.G}, {slider.DragColor.B}", Raylib.GetFontDefault(), false));
                     //Slider drag radius
                     ComponentList.Add(new Label(XPosition, YPosition, "Slider drag radius:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.SliderDragRadius.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.SliderDragRadius.ToString(), Raylib.GetFontDefault(), false));
                     //Slider value
                     ComponentList.Add(new Label(XPosition, YPosition, "Value:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.Value.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.Value.ToString(), Raylib.GetFontDefault(), false));
                     //Action
                     ComponentList.Add(new Label(XPosition, YPosition, "Action:"));
                     break;
@@ -272,27 +292,27 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
                     ComponentList.Add(new Label(XPosition, YPosition, "X axis:"));
                     ComponentList.Add(
-                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggle.XPosition.ToString(), Raylib.GetFontDefault(), true));
+                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggle.XPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Y Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Y axis:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggle.YPosition.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggle.YPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Size
                     ComponentList.Add(new Label(XPosition, YPosition, "Size:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggle.BoxSize.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggle.BoxSize.ToString(), Raylib.GetFontDefault(), false));
                     //Color
                     ComponentList.Add(new Label(XPosition, YPosition, "Color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{toggle.Color.R}, {toggle.Color.G}, {toggle.Color.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{toggle.Color.R}, {toggle.Color.G}, {toggle.Color.B}", Raylib.GetFontDefault(), false));
                     //Border color
                     ComponentList.Add(new Label(XPosition, YPosition, "Border color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{toggle.BorderColor.R}, {toggle.BorderColor.G}, {toggle.BorderColor.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{toggle.BorderColor.R}, {toggle.BorderColor.G}, {toggle.BorderColor.B}", Raylib.GetFontDefault(), false));
                     //Toggle color
                     ComponentList.Add(new Label(XPosition, YPosition, "Toggled color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{toggle.ToggledColor.R}, {toggle.ToggledColor.G}, {toggle.ToggledColor.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{toggle.ToggledColor.R}, {toggle.ToggledColor.G}, {toggle.ToggledColor.B}", Raylib.GetFontDefault(), false));
                     //Toggle state
                     ComponentList.Add(new Label(XPosition, YPosition, "State:"));
                     ComponentList.Add(
@@ -300,7 +320,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     //Toggle text
                     ComponentList.Add(new Label(XPosition, YPosition, "Text:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggle.Text, Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggle.Text, Raylib.GetFontDefault(), false));
                     //Action
                     ComponentList.Add(new Label(XPosition, YPosition, "Action:"));
                     //Action here
@@ -310,43 +330,43 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
                     ComponentList.Add(new Label(XPosition, YPosition, "X axis:"));
                     ComponentList.Add(
-                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.XPosition.ToString(), Raylib.GetFontDefault(), true));
+                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.XPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Y Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Y axis:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.YPosition.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.YPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Button Y offset
                     ComponentList.Add(new Label(XPosition, YPosition, "Button Y offset:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.ButtonYOffset.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.ButtonYOffset.ToString(), Raylib.GetFontDefault(), false));
                     //Width
                     ComponentList.Add(new Label(XPosition, YPosition, "Width:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.Width.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.Width.ToString(), Raylib.GetFontDefault(), false));
                     //Height
                     ComponentList.Add(new Label(XPosition, YPosition, "Height:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.Height.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.Height.ToString(), Raylib.GetFontDefault(), false));
                     //Text
                     ComponentList.Add(new Label(XPosition, YPosition, "Text:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.Text, Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.Text, Raylib.GetFontDefault(), false));
                     //Placeholder
                     ComponentList.Add(new Label(XPosition, YPosition, "Placeholder:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.Placeholder, Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, inputField.Placeholder, Raylib.GetFontDefault(), false));
                     //Color
                     ComponentList.Add(new Label(XPosition, YPosition, "Color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{inputField.Color.R}, {inputField.Color.G}, {inputField.Color.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{inputField.Color.R}, {inputField.Color.G}, {inputField.Color.B}", Raylib.GetFontDefault(), false));
                     //Border color
                     ComponentList.Add(new Label(XPosition, YPosition, "Border color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{inputField.BorderColor.R}, {inputField.BorderColor.G}, {inputField.BorderColor.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{inputField.BorderColor.R}, {inputField.BorderColor.G}, {inputField.BorderColor.B}", Raylib.GetFontDefault(), false));
                     //Hover color
                     ComponentList.Add(new Label(XPosition, YPosition, "Hover color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{inputField.HoverColor.R}, {inputField.HoverColor.G}, {inputField.HoverColor.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{inputField.HoverColor.R}, {inputField.HoverColor.G}, {inputField.HoverColor.B}", Raylib.GetFontDefault(), false));
                     //Action
                     break;
             }

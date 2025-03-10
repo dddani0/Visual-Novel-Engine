@@ -114,7 +114,7 @@ namespace VisualNovelEngine.Engine.PortData
     public class BlockExim
     {
         [JsonPropertyName("ID")]
-        public required long ID { get; set; }
+        public required int ID { get; set; }
         [JsonPropertyName("XPosition")]
         public int XPosition { get; set; }
         [JsonPropertyName("YPosition")]
@@ -273,6 +273,8 @@ namespace VisualNovelEngine.Engine.PortData
         public int BorderWidth { get; set; }
         [JsonPropertyName("DragRadius")]
         public int DragRadius { get; set; }
+        [JsonPropertyName("Value")]
+        public int value { get; set; }
         [JsonPropertyName("DragColor")]
         public required int[] DragColor { get; set; }
         [JsonPropertyName("Color")]
@@ -297,6 +299,8 @@ namespace VisualNovelEngine.Engine.PortData
         public int TextXOffset { get; set; }
         [JsonPropertyName("Text")]
         public required string Text { get; set; }
+        [JsonPropertyName("Toggled")]
+        public required string Toggled { get; set; }
         [JsonPropertyName("Color")]
         public required int[] Color { get; set; }
         [JsonPropertyName("BorderColor")]
