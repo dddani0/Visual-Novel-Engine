@@ -27,7 +27,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Color BorderColor { get; set; }
         internal bool Active { get; set; } = false;
         internal Component? ActiveComponent { get; set; } = null;
-        internal IAction? ActiveEvent { get; set; } = null;
+        internal IAction? ActiveAction { get; set; } = null;
         internal Button CloseButton { get; set; }
         internal List<IComponent> ComponentList { get; set; } = [];
         internal bool IsOverflow { get; set; } = false;
@@ -394,7 +394,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         {
                             if (createMenuAction.Menu == ((Component)item.Component).RenderingObject)
                             {
-                                menuDropDown.Button.Component = item;
+                                menuDropDown.Button.Component = item.Component;
                                 menuDropDown.Button.Text = ((Component)item.Component).Name;
                             }
                         }
@@ -432,7 +432,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         {
                             if (addSpriteAction.sprite == ((Component)item.Component).RenderingObject)
                             {
-                                addSpriteActionDropDown.Button.Component = item;
+                                addSpriteActionDropDown.Button.Component = item.Component;
                                 addSpriteActionDropDown.Button.Text = ((Component)item.Component).Name;
                             }
                         }
@@ -452,7 +452,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         {
                             if (changeSpriteAction.sprite == ((Component)item.Component).RenderingObject)
                             {
-                                changeSpriteDropDown.Button.Component = item;
+                                changeSpriteDropDown.Button.Component = item.Component;
                                 changeSpriteDropDown.Button.Text = ((Component)item.Component).Name;
                             }
                         }
@@ -474,7 +474,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         {
                             if (removeSpriteAction.sprite == ((Component)item.Component).RenderingObject)
                             {
-                                removeSpriteDropDown.Button.Component = item;
+                                removeSpriteDropDown.Button.Component = item.Component;
                                 removeSpriteDropDown.Button.Text = ((Component)item.Component).Name;
                             }
                         }
@@ -489,9 +489,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Decreases the variable by a value. Only supports Integer and float variables", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable name:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, decrementVariableAction.VariableName, Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, decrementVariableAction.VariableName, Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Value:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, decrementVariableAction.DecrementIntegerValue.ToString(), Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, decrementVariableAction.DecrementIntegerValue.ToString(), Raylib.GetFontDefault(), false));
                     break;
                 case IncrementVariableAction incrementVariableAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Increment Variable Action"));
@@ -512,8 +512,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Sets a boolean variable to a value.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, setBoolVariableAction.VariableName, Raylib.GetFontDefault(), false));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Value:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, setBoolVariableAction.Value.ToString(), Raylib.GetFontDefault(), false));
+                    ComponentList.Add(new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.ComponentBorderWidth, "Value", setBoolVariableAction.Value));
                     break;
                 case SetVariableFalseAction setVariableFalseAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Set Variable False Action"));
@@ -533,7 +532,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, setVariableTrueAction.VariableName, Raylib.GetFontDefault(), false));
                     break;
-                case TextBoxCreateAction:
+                case TextBoxCreateAction textBoxCreateAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Create TextBox", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
@@ -544,9 +543,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     {
                         foreach (Button item in textBoxDropDown.FilteredButtonList)
                         {
-                            if (textBoxDropDown.Button.Component == item.Component)
+                            if (textBoxCreateAction.TextBox == ((Component)item.Component).RenderingObject)
                             {
-                                textBoxDropDown.Button.Component = item;
+                                textBoxDropDown.Button.Component = item.Component;
                                 textBoxDropDown.Button.Text = item.Text;
                             }
                         }
@@ -559,8 +558,19 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Tints a sprite to a color.", Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Sprite:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite));
-                    //select dropdowns button with the correct sprite
+                    DropDown tintSpriteDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite);
+                    if (tintSpriteDropDown.FilteredButtonList.Count > 0)
+                    {
+                        foreach (Button item in tintSpriteDropDown.FilteredButtonList)
+                        {
+                            if (tintSpriteAction.sprite == ((Component)item.Component).RenderingObject)
+                            {
+                                tintSpriteDropDown.Button.Component = item.Component;
+                                tintSpriteDropDown.Button.Text = ((Component)item.Component).Name;
+                            }
+                        }
+                    }
+                    ComponentList.Add(tintSpriteDropDown);
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Color:"));
                     ComponentList.Add(
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{tintSpriteAction.color.R}, {tintSpriteAction.color.G}, {tintSpriteAction.color.B}", Raylib.GetFontDefault(), false));
@@ -594,7 +604,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         {
                             if (setVariableValueDropDown.Button.Component == item.Component)
                             {
-                                setVariableValueDropDown.Button.Component = item;
+                                setVariableValueDropDown.Button.Component = item.Component;
                                 setVariableValueDropDown.Button.Text = item.Text;
                             }
                         }
@@ -614,7 +624,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         {
                             if (switchStaticMenuAction.DisablingMenu == ((Component)item.Component).RenderingObject)
                             {
-                                switchStaticMenuOldDropDown.Button.Component = item;
+                                switchStaticMenuOldDropDown.Button.Component = item.Component;
                                 switchStaticMenuOldDropDown.Button.Text = ((Component)item.Component).Name;
                             }
                         }
@@ -628,7 +638,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         {
                             if (switchStaticMenuAction.EnablingMenu == ((Component)item.Component).RenderingObject)
                             {
-                                switchStaticMenuNewDopDown.Button.Component = item;
+                                switchStaticMenuNewDopDown.Button.Component = item.Component;
                                 switchStaticMenuNewDopDown.Button.Text = ((Component)item.Component).Name;
                             }
                         }
@@ -636,7 +646,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(switchStaticMenuNewDopDown);
                     break;
             }
-            ActiveEvent = eventData;
+            ActiveAction = eventData;
             Scrollbar.AddComponents([.. ComponentList]);
             UpdateComponentPosition(EnabledRowComponentCount);
         }
@@ -644,7 +654,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             ComponentList.Clear();
             ActiveComponent = null;
-            ActiveEvent = null;
+            ActiveAction = null;
             Active = false;
         }
 

@@ -1,6 +1,9 @@
 using Namespace;
 using Raylib_cs;
 using TemplateGame.Component;
+using TemplateGame.Component.Action;
+using TemplateGame.Component.Action.TimelineDependent;
+using TemplateGame.Component.Action.TimelineIndependent;
 using TemplateGame.Interface;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 
@@ -17,10 +20,140 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         }
         public void Execute()
         {
-            switch (InspectorWindow.ActiveEvent is not null)
+            switch (InspectorWindow.ActiveAction is not null)
             {
                 case true:
-
+                    foreach (IAction action in Editor.ActiveScene.Timeline.Events.Cast<IAction>())
+                    {
+                        if (action == InspectorWindow.ActiveAction)
+                        {
+                            switch (action)
+                            {
+                                case CreateMenuAction createMenuAction:
+                                    //Save menu
+                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
+                                    createMenuAction.Menu = ((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject as Menu;
+                                    break;
+                                case LoadSceneAction loadSceneAction:
+                                    //Save variable's name
+                                    loadSceneAction.TriggerVariableName = (InspectorWindow.ComponentList[5] as TextField).Text;
+                                    //Save loading scene's id
+                                    loadSceneAction.sceneID = int.Parse((InspectorWindow.ComponentList[7] as TextField).Text);
+                                    break;
+                                case NativeLoadSceneAction nativeLoadSceneAction:
+                                    //Save scene id
+                                    nativeLoadSceneAction.sceneID = int.Parse((InspectorWindow.ComponentList[5] as TextField).Text);
+                                    break;
+                                case AddSpriteAction addSpriteAction:
+                                    //Save sprite
+                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
+                                    addSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    break;
+                                case ChangeSpriteAction changeSpriteAction:
+                                    //Save old sprite
+                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
+                                    changeSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    //Save new sprite
+                                    changeSpriteAction.replacementSprite = new Sprite((InspectorWindow.ComponentList[7] as TextField).Text);
+                                    break;
+                                case RemoveSpriteAction removeSpriteAction:
+                                    //Save removing sprite
+                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
+                                    removeSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    break;
+                                case DecrementVariableAction decrementVariableAction:
+                                    //Save variable's name
+                                    decrementVariableAction.VariableName = (InspectorWindow.ComponentList[6] as TextField).Text;
+                                    //save decrement value
+                                    decrementVariableAction.DecrementIntegerValue = int.Parse((InspectorWindow.ComponentList[8] as TextField).Text);
+                                    break;
+                                case IncrementVariableAction incrementVariableAction:
+                                    //Save variable's name
+                                    incrementVariableAction.VariableName = (InspectorWindow.ComponentList[6] as TextField).Text;
+                                    //Save increment value
+                                    incrementVariableAction.IncrementIntegerValue = int.Parse((InspectorWindow.ComponentList[8] as TextField).Text);
+                                    break;
+                                case SetBoolVariableAction setBoolVariableAction:
+                                    //Save variable's name
+                                    setBoolVariableAction.VariableName = (InspectorWindow.ComponentList[6] as TextField).Text;
+                                    //Save value
+                                    setBoolVariableAction.Value = (InspectorWindow.ComponentList[7] as ToggleButton).IsToggled;
+                                    break;
+                                case SetVariableFalseAction setVariableFalseAction:
+                                    //save variable's name
+                                    setVariableFalseAction.VariableName = (InspectorWindow.ComponentList[6] as TextField).Text;
+                                    break;
+                                case SetVariableTrueAction setVariableTrueAction:
+                                    //save variable's name
+                                    setVariableTrueAction.VariableName = (InspectorWindow.ComponentList[6] as TextField).Text;
+                                    break;
+                                case TextBoxCreateAction textBoxCreateAction:
+                                    //Save textbox
+                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
+                                    textBoxCreateAction.TextBox = (TextBox)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    break;
+                                case TintSpriteAction tintSpriteAction:
+                                    //Save sprite
+                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
+                                    tintSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    //Save color
+                                    TextField tintSpriteColorTextField = InspectorWindow.ComponentList[7] as TextField;
+                                    tintSpriteAction.color = new Color()
+                                    {
+                                        R = byte.Parse(tintSpriteColorTextField.Text.Split(',')[0]),
+                                        G = byte.Parse(tintSpriteColorTextField.Text.Split(',')[1]),
+                                        B = byte.Parse(tintSpriteColorTextField.Text.Split(',')[2]),
+                                        A = 255
+                                    };
+                                    break;
+                                case ToggleVariableAction toggleVariableAction:
+                                    //Save variable's name
+                                    toggleVariableAction.VariableName = (InspectorWindow.ComponentList[5] as TextField).Text;
+                                    break;
+                                case EmptyAction:
+                                    //Save empty action, does nothing
+                                    break;
+                                case SetVariableValueAction setVariableValueAction:
+                                    //Save variable's name
+                                    setVariableValueAction.VariableName = (InspectorWindow.ComponentList[5] as TextField).Text;
+                                    //Save component
+                                    if ((InspectorWindow.ComponentList[7] as DropDown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[7] as DropDown).Button.Component).RenderingObject == null) break;
+                                    switch (((Component)(InspectorWindow.ComponentList[7] as DropDown).Button.Component).RenderingObject)
+                                    {
+                                        case Slider slider:
+                                            //Save slider
+                                            setVariableValueAction.SliderComponent = slider;
+                                            break;
+                                        case Toggle toggle:
+                                            //Save toggle
+                                            setVariableValueAction.ToggleComponent = toggle;
+                                            break;
+                                        case InputField inputField:
+                                            //Save inputfield
+                                            setVariableValueAction.InputField = inputField;
+                                            break;
+                                    }
+                                    break;
+                                case SwitchStaticMenuAction switchStaticMenuAction:
+                                    //Save old menu
+                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
+                                    switchStaticMenuAction.DisablingMenu = (Menu)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    //Save new menu
+                                    if ((InspectorWindow.ComponentList[7] as DropDown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[7] as DropDown).Button.Component).RenderingObject == null) break;
+                                    switchStaticMenuAction.EnablingMenu = (Menu)((Component)(InspectorWindow.ComponentList[7] as DropDown).Button.Component).RenderingObject;
+                                    break;
+                            }
+                        }
+                    }
                     break;
                 case false:
                     foreach (Component component in Editor.ActiveScene.ComponentList.Cast<Component>())

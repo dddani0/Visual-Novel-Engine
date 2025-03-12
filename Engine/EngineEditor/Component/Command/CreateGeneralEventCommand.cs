@@ -54,7 +54,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 ActionType.LoadSceneAction => new LoadSceneAction(Game, 0, "Variable here"),
                 ActionType.NativeLoadSceneAction => new NativeLoadSceneAction(Game, 0),
                 ActionType.AddSpriteAction => new AddSpriteAction(null, Game),
-                ActionType.ChangeSpriteAction => new ChangeSpriteAction(null, null, Game),
+                ActionType.ChangeSpriteAction => new ChangeSpriteAction(null, "", Game)
+                {
+                    replacementSprite = new Sprite("")
+                },
                 ActionType.DecrementVariableAction => new DecrementVariableAction(Game, "", ""),
                 ActionType.EmptyAction => new EmptyAction(Game),
                 ActionType.IncrementVariableAction => new IncrementVariableAction(Game, "", ""),
@@ -66,7 +69,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 ActionType.TintSpriteAction => new TintSpriteAction(null, Color.White, null),
                 ActionType.ToggleVariableAction => new ToggleVariableAction(Game, "")
             };
-            Editor.ActiveScene.Timeline.AddEvent(Event);
+            Editor.ActiveScene.Timeline.AddAction(Event);
         }
     }
 }

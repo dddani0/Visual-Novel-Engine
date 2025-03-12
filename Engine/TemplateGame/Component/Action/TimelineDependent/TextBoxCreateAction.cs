@@ -7,7 +7,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// </summary>
     class TextBoxCreateAction : IAction, IButtonEvent
     {
-        readonly TextBox TextBox;
+        internal TextBox TextBox;
         public TextBoxCreateAction(TextBox textbox)
         {
             TextBox = textbox;

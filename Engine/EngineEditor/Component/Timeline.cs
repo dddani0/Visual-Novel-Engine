@@ -16,7 +16,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal int BorderWidth { get; set; }
         internal List<IAction> Events { get; set; } = [];
         internal List<Button> EventButtons { get; set; } = [];
-        internal Button AddGeneralEventButton { get; set; }
+        internal Button AddGeneralAction { get; set; }
         internal Button ConfigureTimelineButton { get; set; }
         internal Button RemoveEventsButton { get; set; }
         internal Button EditEventButton { get; set; }
@@ -30,11 +30,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Width = Raylib.GetScreenWidth() - XPosition;
             Height = Raylib.GetScreenHeight() - YPosition;
             BorderWidth = Editor.InspectorWindowBorderWidth;
-            AddGeneralEventButton = new(
+            AddGeneralAction = new(
                 Editor,
                 XPosition + BorderWidth,
                 YPosition,
-                "Event",
+                "Action",
                     true,
                 Editor.ButtonWidth,
                 Editor.ButtonHeight,
@@ -44,7 +44,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Editor.HoverColor,
                 null,
                 (Button.ButtonType)2);
-            AddGeneralEventButton.AddCommand(new ShowSideWindowCommand(Editor, AddGeneralEventButton, [
+            AddGeneralAction.AddCommand(new ShowSideWindowCommand(Editor, AddGeneralAction, [
                 new Button(
                     Editor,
                     0,
@@ -319,7 +319,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Editor.BaseColor);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, Editor.BorderColor);
-            AddGeneralEventButton.Render();
+            AddGeneralAction.Render();
             ConfigureTimelineButton.Render();
             for (int i = 0; i < Events.Count; i++)
             {
@@ -334,7 +334,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             Scrollbar.Render();
         }
-        internal void AddEvent(IAction action)
+        internal void AddAction(IAction action)
         {
             Events.Add(action);
             //add a slider
