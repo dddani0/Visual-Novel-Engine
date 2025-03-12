@@ -11,10 +11,10 @@ namespace TemplateGame.Component.Action.TimelineDependent
     {
         private Variable Variable { get; set; }
         private Variable DecrementVariable { get; set; }
-        private string VariableName { get; }
-        private string DecrementVariableName { get; }
+        internal string VariableName { get; }
+        internal string DecrementVariableName { get; }
         public int DecrementIntegerValue { get; set; }
-        private float DecrementFloatValue { get; set; }
+        internal float DecrementFloatValue { get; set; }
         private bool IsIntegerIncrement { get; set; }
         Game Game { get; set; }
         /// <summary>

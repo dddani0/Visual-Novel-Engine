@@ -8,7 +8,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     class AddSpriteAction : IAction, IButtonEvent
     {
         readonly Game Game;
-        readonly Sprite sprite;
+        internal Sprite sprite;
         /// <summary>
         /// Adds a sprite to the scene.
         /// </summary>

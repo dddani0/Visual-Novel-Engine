@@ -11,13 +11,12 @@ namespace TemplateGame.Component.Action.TimelineIndependent
     {
         private readonly Game Game;
         private GameImporter GameLoader { get; set; }
-        private long ComponentID { get; set; }
+        internal int ComponentID { get; set; }
         private Variable Variable;
-        private readonly string VariableName;
-        private string StringValue;
-        private Slider SliderComponent;
-        private Toggle ToggleComponent;
-        private InputField InputField;
+        internal string VariableName;
+        internal Slider SliderComponent;
+        internal Toggle ToggleComponent;
+        internal InputField InputField;
         private bool IsComponentFound = false;
         /// <summary>
         /// Constructor for setting the variable with a constant integer value.
@@ -25,7 +24,7 @@ namespace TemplateGame.Component.Action.TimelineIndependent
         /// <param name="game">Active game.</param>
         /// <param name="variableName">Updating variable name.</param>
         /// <param name="component">Rendering component.</param>
-        public SetVariableValueAction(Game game, string variableName, GameImporter gameLoader, long componentID)
+        public SetVariableValueAction(Game game, string variableName, GameImporter gameLoader, int componentID)
         {
             Game = game;
             VariableName = variableName;

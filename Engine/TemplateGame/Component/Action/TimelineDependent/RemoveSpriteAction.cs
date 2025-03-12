@@ -5,7 +5,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     class RemoveSpriteAction : IAction, IButtonEvent
     {
         readonly Game Game;
-        readonly Sprite sprite;
+        internal Sprite sprite;
         public RemoveSpriteAction(Sprite sprite, Game game)
         {
             Game = game;

@@ -9,8 +9,8 @@ namespace TemplateGame.Component.Action.TimelineDependent
     class TintSpriteAction : IAction, IButtonEvent
     {
         private readonly Game Game;
-        private readonly Sprite sprite;
-        private readonly Color color;
+        internal Sprite sprite;
+        internal Color color;
         /// <summary>
         /// Tints a sprite with a color.
         /// </summary>

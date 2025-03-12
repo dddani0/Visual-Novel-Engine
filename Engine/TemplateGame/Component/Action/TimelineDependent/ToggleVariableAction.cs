@@ -8,7 +8,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     public class ToggleVariableAction : IAction
     {
         private readonly Game Game;
-        readonly string VariableName;
+        internal string VariableName;
         public ToggleVariableAction(Game game, string variableName)
         {
             Game = game;

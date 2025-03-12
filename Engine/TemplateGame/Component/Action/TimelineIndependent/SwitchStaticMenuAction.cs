@@ -9,8 +9,8 @@ namespace TemplateGame.Component.Action.TimelineIndependent
     {
         private readonly Game Game;
         private readonly GameImporter GameLoader;
-        private Menu DisablingMenu { get; set; }
-        private Menu EnablingMenu { get; set; }
+        internal Menu DisablingMenu { get; set; }
+        internal Menu EnablingMenu { get; set; }
         private readonly long disableMenuID;
         private readonly long enablingMenuID;
         /// <summary>

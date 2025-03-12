@@ -23,7 +23,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             NoBlock,
             TextBoxPosition,
             SceneBackground,
-            VariableType
+            VariableType,
+            SliderToggleInputField
         }
         internal FilterType Filter { get; set; }
         private Editor Editor { get; set; }
@@ -49,6 +50,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderWidth = borderWidth;
             Button = new Button(Editor, XPosition, YPosition, "Select", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new OpenDropDownCommand(Editor, this), Button.ButtonType.Hold);
             Filter = filter;
+            UpdateComponentList();
         }
 
         internal void UpdateComponentList()
@@ -89,6 +91,27 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                             _ => throw new NotImplementedException()
                         };
                         if (filter == Filter) FilteredButtonList.Add(item);
+                    }
+                    break;
+                case FilterType.SliderToggleInputField:
+                    foreach (Button item in ButtonList)
+                    {
+                        var component = item.Component as Component;
+                        FilterType filter = component.RenderingObject switch
+                        {
+                            Sprite => FilterType.Sprite,
+                            Menu => FilterType.Menu,
+                            TemplateGame.Component.Button => FilterType.Button,
+                            TextBox => FilterType.TextBox,
+                            Block => FilterType.Block,
+                            DropBox => FilterType.DropBox,
+                            Slider => FilterType.Slider,
+                            InputField => FilterType.InputField,
+                            Toggle => FilterType.Toggle,
+                            _ => throw new NotImplementedException()
+                        };
+                        if (filter == FilterType.Slider || filter == FilterType.Toggle || filter == FilterType.InputField)
+                            FilteredButtonList.Add(item);
                     }
                     break;
                 case FilterType.NoBlock:

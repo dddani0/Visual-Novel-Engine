@@ -381,68 +381,106 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Scrollbar.DropComponents();
             switch (eventData)
             {
-                case CreateMenuAction:
+                case CreateMenuAction createMenuAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Create Menu", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Creates a Menu, which is shown.", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Display a menu.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Menu:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Menu));
+                    DropDown menuDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Menu);
+                    if (menuDropDown.FilteredButtonList.Count > 0)
+                    {
+                        foreach (Button item in menuDropDown.FilteredButtonList)
+                        {
+                            if (createMenuAction.Menu == ((Component)item.Component).RenderingObject)
+                            {
+                                menuDropDown.Button.Component = item;
+                                menuDropDown.Button.Text = ((Component)item.Component).Name;
+                            }
+                        }
+                    }
+                    ComponentList.Add(menuDropDown);
                     break;
-                case LoadSceneAction:
+                case LoadSceneAction loadSceneAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Load Scene", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Loads a scene, if the selected variable's allow it.", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Loads a scene, if the selected variable's condition is true.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Trigger variable's name:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable name here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, loadSceneAction.TriggerVariableName, Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Loading scene's ID:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Scene id here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, loadSceneAction.sceneID.ToString(), Raylib.GetFontDefault(), false));
                     break;
-                case NativeLoadSceneAction:
+                case NativeLoadSceneAction nativeLoadSceneAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Load Scene", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Loads a scene instantly.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Loading scene's ID:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Scene id here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, nativeLoadSceneAction.sceneID.ToString(), Raylib.GetFontDefault(), false));
                     break;
-                case AddSpriteAction:
+                case AddSpriteAction addSpriteAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Add Sprite", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Display a sprite.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Sprite:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite));
+                    DropDown addSpriteActionDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite);
+                    if (addSpriteActionDropDown.FilteredButtonList.Count > 0)
+                    {
+                        foreach (Button item in addSpriteActionDropDown.FilteredButtonList)
+                        {
+                            if (addSpriteAction.sprite == ((Component)item.Component).RenderingObject)
+                            {
+                                addSpriteActionDropDown.Button.Component = item;
+                                addSpriteActionDropDown.Button.Text = ((Component)item.Component).Name;
+                            }
+                        }
+                    }
+                    ComponentList.Add(addSpriteActionDropDown);
                     break;
-                case ChangeSpriteAction:
+                case ChangeSpriteAction changeSpriteAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Change Sprite", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Swap active sprite to a new one.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Active Sprite:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite));
+                    DropDown changeSpriteDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite);
+                    if (changeSpriteDropDown.FilteredButtonList.Count > 0)
+                    {
+                        foreach (Button item in changeSpriteDropDown.FilteredButtonList)
+                        {
+                            if (changeSpriteAction.sprite == ((Component)item.Component).RenderingObject)
+                            {
+                                changeSpriteDropDown.Button.Component = item;
+                                changeSpriteDropDown.Button.Text = ((Component)item.Component).Name;
+                            }
+                        }
+                    }
+                    ComponentList.Add(changeSpriteDropDown);
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "New Sprite:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, changeSpriteAction.replacementSprite.Path, Raylib.GetFontDefault(), false));
                     break;
-                case RemoveSpriteAction:
+                case RemoveSpriteAction removeSpriteAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Remove Sprite", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Removes a sprite from the scene.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Sprite:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite));
-                    break;
-                case CreateVariableAction createVariableAction:
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Create variable Action"));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable name here", Raylib.GetFontDefault(), true));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Create a new variable.", Raylib.GetFontDefault(), true));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Value:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable value here", Raylib.GetFontDefault(), true));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Type:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable type here", Raylib.GetFontDefault(), true));
+                    DropDown removeSpriteDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite);
+                    if (removeSpriteDropDown.FilteredButtonList.Count > 0)
+                    {
+                        foreach (Button item in removeSpriteDropDown.FilteredButtonList)
+                        {
+                            if (removeSpriteAction.sprite == ((Component)item.Component).RenderingObject)
+                            {
+                                removeSpriteDropDown.Button.Component = item;
+                                removeSpriteDropDown.Button.Text = ((Component)item.Component).Name;
+                            }
+                        }
+                    }
+                    ComponentList.Add(removeSpriteDropDown);
+
                     break;
                 case DecrementVariableAction decrementVariableAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Decrement Variable Action"));
@@ -450,8 +488,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Decrement Variable", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Decreases the variable by a value. Only supports Integer and float variables", Raylib.GetFontDefault(), true));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Value here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable name:"));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, decrementVariableAction.VariableName, Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Value:"));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, decrementVariableAction.DecrementIntegerValue.ToString(), Raylib.GetFontDefault(), true));
                     break;
                 case IncrementVariableAction incrementVariableAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Increment Variable Action"));
@@ -460,7 +500,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Increases the variable by a value. Only supports Integer and float variables", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Value here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, incrementVariableAction.VariableName, Raylib.GetFontDefault(), false));
+                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Value:"));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, incrementVariableAction.IncrementIntegerValue.ToString(), Raylib.GetFontDefault(), false));
                     break;
                 case SetBoolVariableAction setBoolVariableAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Set Bool Variable Action"));
@@ -469,9 +511,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Sets a boolean variable to a value.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable name here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, setBoolVariableAction.VariableName, Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Value:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Value here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, setBoolVariableAction.Value.ToString(), Raylib.GetFontDefault(), false));
                     break;
                 case SetVariableFalseAction setVariableFalseAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Set Variable False Action"));
@@ -480,7 +522,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Sets a boolean variable to false.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable name here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, setVariableFalseAction.VariableName, Raylib.GetFontDefault(), false));
                     break;
                 case SetVariableTrueAction setVariableTrueAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Set Variable True Action"));
@@ -489,43 +531,47 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Sets a boolean variable to true.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable name here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, setVariableTrueAction.VariableName, Raylib.GetFontDefault(), false));
                     break;
                 case TextBoxCreateAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Create TextBox", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Loads an instance of a textbox to the screen.", Raylib.GetFontDefault(), true));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Title:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Title here", Raylib.GetFontDefault(), true));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Content:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TextBox));
+                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "TextBox:"));
+                    DropDown textBoxDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TextBox);
+                    if (textBoxDropDown.FilteredButtonList.Count > 0)
+                    {
+                        foreach (Button item in textBoxDropDown.FilteredButtonList)
+                        {
+                            if (textBoxDropDown.Button.Component == item.Component)
+                            {
+                                textBoxDropDown.Button.Component = item;
+                                textBoxDropDown.Button.Text = item.Text;
+                            }
+                        }
+                    }
+                    ComponentList.Add(textBoxDropDown);
                     break;
-                case TintSpriteAction:
+                case TintSpriteAction tintSpriteAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Tint Sprite", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Tint Sprite", Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Tints a sprite to a color.", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Tints a sprite to a color.", Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Sprite:"));
                     ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite));
+                    //select dropdowns button with the correct sprite
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Color:"));
-                    ComponentList.Add(new Label(XPosition, YPosition, "Red:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Red value here", Raylib.GetFontDefault(), true));
-                    ComponentList.Add(new Label(XPosition, YPosition, "Green:"));
-                    ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Green value here", Raylib.GetFontDefault(), true));
-                    ComponentList.Add(new Label(XPosition, YPosition, "Blue:"));
-                    ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Blue value here", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{tintSpriteAction.color.R}, {tintSpriteAction.color.G}, {tintSpriteAction.color.B}", Raylib.GetFontDefault(), false));
                     break;
                 case ToggleVariableAction toggleVariableAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Toggle Variable", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable name", Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Toggles a boolean variable.", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Toggles a boolean variable to it's opposing binary value.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable name here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggleVariableAction.VariableName, Raylib.GetFontDefault(), false));
                     break;
                 case EmptyAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
@@ -537,11 +583,23 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Set Variable Value", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Sets a variable to a value.", Raylib.GetFontDefault(), true));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable name here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Sets a rendering object to a string variable.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable name:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Variable name here", Raylib.GetFontDefault(), true));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, setVariableValueAction.VariableName, Raylib.GetFontDefault(), false));
+                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Set component:"));
+                    DropDown setVariableValueDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.SliderToggleInputField);
+                    if (setVariableValueDropDown.FilteredButtonList.Count > 0)
+                    {
+                        foreach (Button item in setVariableValueDropDown.FilteredButtonList)
+                        {
+                            if (setVariableValueDropDown.Button.Component == item.Component)
+                            {
+                                setVariableValueDropDown.Button.Component = item;
+                                setVariableValueDropDown.Button.Text = item.Text;
+                            }
+                        }
+                    }
+                    ComponentList.Add(setVariableValueDropDown);
                     break;
                 case SwitchStaticMenuAction switchStaticMenuAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
@@ -549,9 +607,33 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Switches the active static menu to another.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Menu:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Menu));
+                    DropDown switchStaticMenuOldDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Menu);
+                    if (switchStaticMenuOldDropDown.FilteredButtonList.Count > 0)
+                    {
+                        foreach (Button item in switchStaticMenuOldDropDown.FilteredButtonList)
+                        {
+                            if (switchStaticMenuAction.DisablingMenu == ((Component)item.Component).RenderingObject)
+                            {
+                                switchStaticMenuOldDropDown.Button.Component = item;
+                                switchStaticMenuOldDropDown.Button.Text = ((Component)item.Component).Name;
+                            }
+                        }
+                    }
+                    ComponentList.Add(switchStaticMenuOldDropDown);
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "New Menu:"));
-                    ComponentList.Add(new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Menu));
+                    DropDown switchStaticMenuNewDopDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Menu);
+                    if (switchStaticMenuNewDopDown.FilteredButtonList.Count > 0)
+                    {
+                        foreach (Button item in switchStaticMenuNewDopDown.FilteredButtonList)
+                        {
+                            if (switchStaticMenuAction.EnablingMenu == ((Component)item.Component).RenderingObject)
+                            {
+                                switchStaticMenuNewDopDown.Button.Component = item;
+                                switchStaticMenuNewDopDown.Button.Text = ((Component)item.Component).Name;
+                            }
+                        }
+                    }
+                    ComponentList.Add(switchStaticMenuNewDopDown);
                     break;
             }
             ActiveEvent = eventData;

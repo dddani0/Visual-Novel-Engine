@@ -12,12 +12,6 @@
         "ImageTexture": "",
         "ActionList": [
             {
-                "Type": "CreateVariableAction",
-                "VariableName": "myVar",
-                "VariableValue": "Ez egy lófasz",
-                "VariableType": 0
-            },
-            {
                 "Type": "CreateMenuAction",
                 "Menu": {
                     "ID": 1,

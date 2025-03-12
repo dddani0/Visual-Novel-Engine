@@ -187,6 +187,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// The active scene in the editor.
         /// </summary>
         internal Scene ActiveScene { get; set; }
+        //
+        internal List<IButton> ButtonList { get; set; } = [];
         /// <summary>
         /// The scene bar in the editor
         /// </summary>

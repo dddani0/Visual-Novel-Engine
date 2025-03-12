@@ -779,10 +779,6 @@ namespace TemplateGame.Component
                     }
                     var nativeSceneId = actionImport.SceneID.Value;
                     return new NativeLoadSceneAction(Game, nativeSceneId);
-                case "CreateVariableAction":
-                    // Add the create variable action to the timeline.
-                    var variable = FetchVariableFromImport(actionImport);
-                    return new CreateVariableAction(Game, variable);
                 case "IncrementVariableAction":
                     // Add the increment variable action to the timeline.
                     if (actionImport.VariableName == null)

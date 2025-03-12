@@ -14,18 +14,18 @@ namespace TemplateGame.Component.Action
         /// <summary>
         /// The name of the trigger variable.
         /// </summary>
-        private string TriggerVariableName { get; set; }
+        internal string TriggerVariableName { get; set; }
         /// <summary>
         /// The ID of the scene, which'll be loaded.
         /// </summary>
-        readonly long sceneID;
+        internal int sceneID;
         /// <summary>
         /// Constructor for the LoadSceneAction.
         /// </summary>
         /// <param name="game">Active Game.</param>
         /// <param name="sceneId">The ID of the scene</param>
         /// <param name="triggerVariableName">The name of the triggering variable.</param>
-        public LoadSceneAction(Game game, long sceneId, string triggerVariableName)
+        public LoadSceneAction(Game game, int sceneId, string triggerVariableName)
         {
             Game = game;
             sceneID = sceneId;

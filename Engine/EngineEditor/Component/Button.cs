@@ -127,6 +127,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Command = command;
             Type = type;
             Timer = new Timer(0.1f);
+            Editor.ButtonList.Add(this);
         }
 
         public Button(Editor editor, DropDown dropDown, string text, Color color, Color borderColor, Color hoverColor, IComponent component)
@@ -146,6 +147,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Timer = new Timer(0.1f);
             Active = true;
             Command = new SelectDropDownButtonCommand(dropDown, this);
+            Editor.ButtonList.Add(this);
         }
 
         public void Render()
@@ -160,7 +162,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         public void Update()
         {
             if (IsLocked is true) return;
-            IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition, YPosition, Width, Height));
+            IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition, YPosition, Width, Height)) && Editor.ButtonList.Any(button => ((Button)button).IsHover is false);
             Click();
             Timer.DecreaseTimer();
         }

@@ -19,7 +19,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             NativeLoadSceneAction,
             AddSpriteAction,
             ChangeSpriteAction,
-            CreateVariableAction,
             DecrementVariableAction,
             EmptyAction,
             IncrementVariableAction,
@@ -48,14 +47,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         /// </summary>
         public void Execute()
         {
+            //switch return
             Event = Action switch
             {
                 ActionType.CreateMenuAction => new CreateMenuAction(Game, null, null),
-                ActionType.LoadSceneAction => new LoadSceneAction(Game, 0, "Empty"),
+                ActionType.LoadSceneAction => new LoadSceneAction(Game, 0, "Variable here"),
                 ActionType.NativeLoadSceneAction => new NativeLoadSceneAction(Game, 0),
                 ActionType.AddSpriteAction => new AddSpriteAction(null, Game),
                 ActionType.ChangeSpriteAction => new ChangeSpriteAction(null, null, Game),
-                ActionType.CreateVariableAction => new CreateVariableAction(Game, null),
                 ActionType.DecrementVariableAction => new DecrementVariableAction(Game, "", ""),
                 ActionType.EmptyAction => new EmptyAction(Game),
                 ActionType.IncrementVariableAction => new IncrementVariableAction(Game, "", ""),
@@ -65,8 +64,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 ActionType.SetVariableTrueAction => new SetVariableTrueAction(Game, ""),
                 ActionType.TextBoxCreateAction => new TextBoxCreateAction(null),
                 ActionType.TintSpriteAction => new TintSpriteAction(null, Color.White, null),
-                ActionType.ToggleVariableAction => new ToggleVariableAction(Game, ""),
-                _ => null
+                ActionType.ToggleVariableAction => new ToggleVariableAction(Game, "")
             };
             Editor.ActiveScene.Timeline.AddEvent(Event);
         }

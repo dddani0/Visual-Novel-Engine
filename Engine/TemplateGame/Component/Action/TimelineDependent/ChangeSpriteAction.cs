@@ -9,8 +9,9 @@ namespace TemplateGame.Component.Action.TimelineDependent
     class ChangeSpriteAction : IAction
     {
         readonly Game Game;
-        readonly Sprite sprite;
-        readonly Texture2D replacementTexture;
+        internal Sprite sprite;
+        internal Texture2D replacementTexture;
+        internal Sprite replacementSprite;
         /// <summary>
         /// Creates a new ChangeSpriteAction with existing texture.
         /// </summary>
@@ -21,7 +22,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
         {
             Game = game;
             this.sprite = sprite;
-            this.replacementTexture = texture;
+            replacementTexture = texture;
         }
         /// <summary>
         /// Creates a new ChangeSpriteAction with path to the texture.
@@ -33,7 +34,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
         {
             Game = game;
             this.sprite = sprite;
-            this.replacementTexture = Raylib.LoadTexture(path);
+            replacementTexture = Raylib.LoadTexture(path);
         }
         /// <summary>
         /// Changes the sprite texture.

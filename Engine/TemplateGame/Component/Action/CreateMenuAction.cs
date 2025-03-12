@@ -8,7 +8,7 @@ namespace TemplateGame.Component.Action
     class CreateMenuAction : IAction, ISettingsEvent, IButtonEvent
     {
         private readonly Game Game;
-        private readonly Menu Menu;
+        internal Menu Menu;
         private Block[] Blocks { get; }
         /// <summary>
         /// Constructor for the CreateMenuAction.

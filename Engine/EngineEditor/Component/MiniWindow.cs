@@ -50,7 +50,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             switch (Type)
             {
                 case miniWindowType.Vertical:
-                    Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ButtonComponentList]);
+                    Scrollbar = new Scrollbar(Editor, XPosition + Width, closeButton ? YPosition + Editor.SmallButtonHeight : YPosition, closeButton ? Width - Editor.SmallButtonHeight : Width, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ButtonComponentList]);
                     break;
                 case miniWindowType.Horizontal:
                     Scrollbar = new Scrollbar(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, Editor.SmallButtonHeight, Width, Scrollbar.ScrollbarType.Horizontal, false, [.. ButtonComponentList]);
@@ -77,14 +77,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             switch (Type)
             {
                 case miniWindowType.Vertical:
-                    Scrollbar = new Scrollbar(Editor, XPosition + Width, YPosition, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ButtonComponentList]);
+                    Scrollbar = new Scrollbar(Editor, XPosition + Width - Editor.SmallButtonWidth, closeButton ? YPosition + Editor.SmallButtonHeight : YPosition, Height - Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
                     break;
                 case miniWindowType.Horizontal:
-                    Scrollbar = new Scrollbar(Editor, XPosition, YPosition + Height, Editor.SmallButtonHeight, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Horizontal, false, [.. ButtonComponentList]);
+                    Scrollbar = new Scrollbar(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, Editor.SmallButtonHeight, Width, Scrollbar.ScrollbarType.Horizontal, false, [.. components]);
                     break;
             }
         }
-
         internal void FetchDinamicComponentList()
         {
             for (int i = 0; i < Editor.GameVariables.Count; i++)
@@ -111,7 +110,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 }
             }
         }
-
         internal void UpdateComponentPosition()
         {
             switch (ComponentList is null)
@@ -158,7 +156,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     break;
             }
         }
-
         public void Show()
         {
             IsHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, Width, Height));

@@ -48,7 +48,7 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("TintColor")]
         public int[]? TintColor { get; set; }
         [JsonPropertyName("SceneID")]
-        public long? SceneID { get; set; }
+        public int? SceneID { get; set; }
         [JsonPropertyName("VariableName")]
         public string? VariableName { get; set; }
         [JsonPropertyName("TriggerVariableName")]
@@ -64,11 +64,11 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("StaticMenu")]
         public MenuExim? StaticMenu { get; set; }
         [JsonPropertyName("BlockComponentID")]
-        public long? BlockComponentID { get; set; }
+        public int? BlockComponentID { get; set; }
         [JsonPropertyName("DisablingMenuID")]
-        public long? DisablingMenuID { get; set; }
+        public int? DisablingMenuID { get; set; }
         [JsonPropertyName("EnablingMenuID")]
-        public long? EnablingMenuID { get; set; }
+        public int? EnablingMenuID { get; set; }
     }
     /// <summary>
     /// The "VariableExim" class is a helper class to import/export the list of variables to or from a JSON file.

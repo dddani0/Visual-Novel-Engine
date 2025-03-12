@@ -14,13 +14,13 @@ namespace TemplateGame.Component.Action
         /// <summary>
         /// The ID of the scene, which'll be loaded.
         /// </summary>
-        private readonly long sceneID;
+        internal int sceneID;
         /// <summary>
         /// Constructor for the LoadSceneAction.
         /// </summary>
         /// <param name="game">Active Game</param>
         /// <param name="sceneId"></param>
-        public NativeLoadSceneAction(Game game, long sceneId)
+        public NativeLoadSceneAction(Game game, int sceneId)
         {
             Game = game;
             sceneID = sceneId;

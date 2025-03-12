@@ -14,6 +14,7 @@ using TemplateGame.Component.Action.TimelineIndependent;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 using Namespace;
 using Engine.EngineEditor.Component.Command;
+using EngineEditor.Component.Command;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -403,6 +404,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     if (commandImport.VariableValue == null) throw new Exception("Value not found!");
                     if (commandImport.VariableType == null) throw new Exception("Variable type not found!");
                     return new CreateVariableCommand(Editor, commandImport.VariableValue, (VariableType)commandImport.VariableType);
+                case "DeleteSceneCommand":
+                    return new DeleteSceneCommand(Editor);
                 case "ShowSideWindowCommand":
                     if (commandImport.Buttons == null) throw new Exception("Buttons not found!");
                     if (commandImport.DependentButton == null) throw new Exception("Dependent button name not found!");
@@ -470,6 +473,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     {
                         Type = "CreateComponentCommand",
                         RenderingObjectType = (int)createComponentCommand.RenderableObjectType
+                    };
+                case DeleteSceneCommand:
+                    return new()
+                    {
+                        Type = "DeleteSceneCommand"
                     };
                 case ShowSideWindowCommand showSideWindowCommand:
                     return new()
@@ -918,7 +926,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 NativeLoadSceneAction nativeLoadSceneAction => new() { Type = "NativeLoadSceneAction" },
                 AddSpriteAction addSpriteAction => new() { Type = "AddSpriteAction" },
                 ChangeSpriteAction changeSpriteAction => new() { Type = "ChangeSpriteAction" },
-                CreateVariableAction createVariableAction => new() { Type = "CreateVariableAction" },
                 DecrementVariableAction decrementVariableAction => new() { Type = "DecrementVariableAction" },
                 IncrementVariableAction incrementVariableAction => new() { Type = "IncrementVariableAction" },
                 RemoveSpriteAction removeSpriteAction => new() { Type = "RemoveSpriteAction" },

@@ -7,7 +7,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// </summary>
     public class SetVariableTrueAction : IAction, IButtonEvent
     {
-        readonly string VariableName;
+        internal string VariableName;
         Game Game { get; set; }
         public SetVariableTrueAction(Game game, string variableName)
         {

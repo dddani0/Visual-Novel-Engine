@@ -303,6 +303,30 @@
                                 "ActiveVariableType": "SceneName",
                                 "Static": "false"
                             }
+                        },
+                        {
+                            "Button": {
+                                "XPosition": 0,
+                                "YPosition": 0,
+                                "Text": "Delete scene",
+                                "Command": {
+                                    "Type": "ShowErrorCommand",
+                                    "ErrorType": 0,
+                                    "ErrorMessage": "Delete current scene?",
+                                    "WarningButtons": [
+                                        {
+                                            "XPosition": 0,
+                                            "YPosition": 0,
+                                            "Text": "Yes",
+                                            "Command": {
+                                                "Type": "DeleteSceneCommand"
+                                            },
+                                            "Type": 0
+                                        }
+                                    ]
+                                },
+                                "Type": 0
+                            }
                         }
                     ],
                     "HasVariable": "false"

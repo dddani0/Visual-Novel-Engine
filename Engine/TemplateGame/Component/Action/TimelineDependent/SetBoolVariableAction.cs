@@ -7,9 +7,9 @@ namespace TemplateGame.Component.Action.TimelineDependent
     /// </summary>
     public class SetBoolVariableAction : IAction, IButtonEvent
     {
-        readonly string VariableName;
+        internal string VariableName;
         Game Game { get; set; }
-        bool Value { get; set; }
+        internal bool Value { get; set; }
         public SetBoolVariableAction(Game game, string variableName, bool value)
         {
             Game = game;
