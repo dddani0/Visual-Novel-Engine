@@ -26,13 +26,14 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Color BorderColor { get; set; }
         internal bool IsHover { get; set; } = false;
         internal bool HasVariableComponent { get; set; }
+        internal bool HasSceneComponent { get; set; }
         internal List<IComponent> VariableComponentList { get; set; } = [];
         internal List<Button> ButtonComponentList { get; set; } = [];
         internal List<IComponent>? ComponentList { get; set; }
         internal Scrollbar Scrollbar { get; set; }
         internal Button? CloseButton { get; set; }
 
-        public MiniWindow(Editor editor, bool closeButton, bool hasVariableComponent, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, miniWindowType miniWindowType, Button[] buttons)
+        public MiniWindow(Editor editor, bool closeButton, bool hasVariableComponent, bool hasScene, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, miniWindowType miniWindowType, Button[] buttons)
         {
             Editor = editor;
             Type = miniWindowType;
@@ -45,6 +46,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderColor = borderColor;
             ButtonComponentList.AddRange(buttons);
             HasVariableComponent = hasVariableComponent;
+            HasSceneComponent = hasScene;
             if (closeButton) CloseButton = new Button(Editor, XPosition + Width, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseMiniWindowCommand(Editor, this), Button.ButtonType.Trigger);
             UpdateComponentPosition();
             switch (Type)
@@ -58,7 +60,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             }
         }
 
-        public MiniWindow(Editor editor, bool closeButton, bool hasDinamicComponents, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, miniWindowType miniWindowType, IComponent[] components)
+        public MiniWindow(Editor editor, bool closeButton, bool hasVariable, bool hasScene, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, miniWindowType miniWindowType, IComponent[] components)
         {
             Editor = editor;
             Type = miniWindowType;
@@ -71,7 +73,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderColor = borderColor;
             ComponentList = [];
             ComponentList.AddRange(components);
-            HasVariableComponent = hasDinamicComponents;
+            HasVariableComponent = hasVariable;
+            HasSceneComponent = hasScene;
             if (closeButton) CloseButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseMiniWindowCommand(Editor, this), Button.ButtonType.Trigger);
             UpdateComponentPosition();
             switch (Type)
@@ -84,7 +87,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     break;
             }
         }
-        internal void FetchDinamicComponentList()
+        internal void FetchActiveSceneName()
+        {
+            TextField sceneNameTextField = ComponentList[2] as TextField;
+            sceneNameTextField.Text = Editor.ActiveScene.Name;
+        }
+        internal void FetchVariables()
         {
             for (int i = 0; i < Editor.GameVariables.Count; i++)
             {

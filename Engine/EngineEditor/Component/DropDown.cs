@@ -24,7 +24,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             TextBoxPosition,
             SceneBackground,
             VariableType,
-            SliderToggleInputField
+            SliderToggleInputField,
+            TimelineIndependentEvent
         }
         internal FilterType Filter { get; set; }
         private Editor Editor { get; set; }
@@ -169,6 +170,20 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         VariableType = VariableType.Boolean
                     };
                     FilteredButtonList = [variableTypeStringType, variableTypeIntType, variableTypeFloatType, variableTypeBoolType];
+                    break;
+                case FilterType.TimelineIndependentEvent:
+                //Options for timeline independent events
+                    Button SetVariableValueAction = new Button(Editor, this, "", Color.Red, Color.Black, Color.Beige, null);
+                    new TemplateGame.Component.Action.TimelineIndependent.SetVariableValueAction(null, "", null, 1);
+                    Button timelineIndependentEventStart = new(Editor, this, "", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+
+                    };
+                    //Button timelineIndependentEventEnd = new(Editor, this, TimelineIndependentEvent.End.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    //{
+                    //    TimelineIndependentEvent = TimelineIndependentEvent.End
+                    //};
+                    //FilteredButtonList = [SetVariableValueAction, timelineIndependentEventStart, timelineIndependentEventEnd];
                     break;
             }
             UpdateComponentPosition();

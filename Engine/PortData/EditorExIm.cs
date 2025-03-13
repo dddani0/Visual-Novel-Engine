@@ -190,6 +190,8 @@ namespace VisualNovelEngine.Engine.PortData
         public RenderingComponentExIm[]? WindowComponents { get; set; }
         [JsonPropertyName("HasVariable")]
         public string? HasVariable { get; set; }
+        [JsonPropertyName("HasSceneRelatedComponent")]
+        public string? HasSceneRelatedComponent { get; set; }
         [JsonPropertyName("ButtonDependency")]
         public ButtonExIm? ButtonDependency { get; set; }
         [JsonPropertyName("VariableValue")]

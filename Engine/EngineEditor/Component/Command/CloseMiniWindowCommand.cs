@@ -35,6 +35,17 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                     variable.Type = typeDropDown.Button.VariableType;
                 }
             }
+            if (MiniWindow.HasSceneComponent)
+            {
+                Scene activeScene = Editor.ActiveScene;
+                String newSceneName = ((TextField)MiniWindow.ComponentList[2]).Text;
+                //Search through the editor's scenebar's button list
+                Editor.SceneBar.ButtonComponentList.First(x => x.Text == activeScene.Name).Text = newSceneName;
+                //change scene name in the scene list
+                Editor.SceneList.First(x => x.Name == activeScene.Name).Name = newSceneName;
+                //change active scene name
+                activeScene.Name = newSceneName;
+            }
             Editor.MiniWindow.Remove(MiniWindow);
         }
     }

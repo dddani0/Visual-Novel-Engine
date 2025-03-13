@@ -501,8 +501,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Increases the variable by a value. Only supports Integer and float variables", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, incrementVariableAction.VariableName, Raylib.GetFontDefault(), false));
-                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Value:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, incrementVariableAction.IncrementIntegerValue.ToString(), Raylib.GetFontDefault(), false));
+                    ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Increment variable Name:"));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, incrementVariableAction.IncrementVariableName, Raylib.GetFontDefault(), false));
                     break;
                 case SetBoolVariableAction setBoolVariableAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Set Bool Variable Action"));

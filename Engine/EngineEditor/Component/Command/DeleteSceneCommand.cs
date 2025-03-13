@@ -22,7 +22,21 @@ namespace EngineEditor.Component.Command
             //delete scene from scene list
             Editor.SceneList.Remove(selectedScene);
             //Remove miniwindow from the rendering list
-            //HOGYAN KELL?
+            foreach (MiniWindow miniWindow in Editor.MiniWindow)
+            {
+                //check if the miniwindow's componentlist's first element is a label
+                if (miniWindow.ComponentList[0] is Label label)
+                {
+                    //check if the label's text is the same as the scene's name
+                    if (label.Text.Contains("configuration"))
+                    {
+                        Editor.MiniWindow.Remove(miniWindow);
+                        break;
+                    }
+                }
+            }
+            //Error window delete
+            Editor.ErrorWindow = null;
             //Change scene to the first scene
             Editor.ActiveScene = Editor.SceneList[0];
             //Update the scenebar

@@ -422,11 +422,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     if (commandImport.WindowComponents == null && commandImport.Buttons == null) throw new Exception("Window components and buttons are not found!");
                     if (commandImport.WindowComponents == null)
                     {
-                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", [.. commandImport.Buttons.Select(FetchEditorButtonFromImport)], MiniWindow.miniWindowType.Vertical);
+                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.Buttons.Select(FetchEditorButtonFromImport)], MiniWindow.miniWindowType.Vertical);
                     }
                     else
                     {
-                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindow.miniWindowType.Vertical);
+                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindow.miniWindowType.Vertical);
                     }
                 case "ShowInspectorCommand":
                     return new ShowInspectorCommand(Editor,
@@ -491,7 +491,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     {
                         Type = "ShowMiniWindowCommand",
                         WindowComponents = [.. showMiniWindowComand.Components.Select(ExportEditorComponentFromImport)],
-                        HasVariable = showMiniWindowComand.HasVariable.ToString()
+                        HasVariable = showMiniWindowComand.HasVariable.ToString(),
+                        HasSceneRelatedComponent = showMiniWindowComand.HasScene.ToString()
                     };
                 case ShowInspectorCommand showInspectorCommand:
                     return new()
@@ -920,22 +921,85 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             return actionData switch
             {
-                EmptyAction emptyAction => new() { Type = "EmptyAction" },
-                CreateMenuAction createMenuAction => new() { Type = "CreateMenuAction" },
-                LoadSceneAction loadSceneAction => new() { Type = "LoadSceneAction" },
-                NativeLoadSceneAction nativeLoadSceneAction => new() { Type = "NativeLoadSceneAction" },
-                AddSpriteAction addSpriteAction => new() { Type = "AddSpriteAction" },
-                ChangeSpriteAction changeSpriteAction => new() { Type = "ChangeSpriteAction" },
-                DecrementVariableAction decrementVariableAction => new() { Type = "DecrementVariableAction" },
-                IncrementVariableAction incrementVariableAction => new() { Type = "IncrementVariableAction" },
-                RemoveSpriteAction removeSpriteAction => new() { Type = "RemoveSpriteAction" },
-                SetBoolVariableAction setBoolVariableAction => new() { Type = "SetBoolVariableAction" },
-                SetVariableFalseAction setVariableFalseAction => new() { Type = "SetVariableFalseAction" },
-                SetVariableTrueAction setVariableTrueAction => new() { Type = "SetVariableTrueAction" },
-                SetVariableValueAction setVariableValueAction => new() { Type = "SetVariableValueAction" },
-                TextBoxCreateAction textBoxCreateAction => new() { Type = "TextBoxCreateAction" },
-                TintSpriteAction tintSpriteAction => new() { Type = "TintSpriteAction" },
-                ToggleVariableAction toggleVariableAction => new() { Type = "ToggleVariableAction" },
+                EmptyAction => new() { Type = "EmptyAction" },
+                CreateMenuAction createMenuAction => new()
+                {
+                    Type = "CreateMenuAction",
+                    Menu = ExportMenuData(createMenuAction.Menu)
+                },
+                LoadSceneAction loadSceneAction => new()
+                {
+                    Type = "LoadSceneAction",
+                    SceneID = loadSceneAction.sceneID,
+                    TriggerVariableName = loadSceneAction.TriggerVariableName
+                },
+                NativeLoadSceneAction nativeLoadSceneAction => new()
+                {
+                    Type = "NativeLoadSceneAction",
+                    SceneID = nativeLoadSceneAction.sceneID
+                },
+                AddSpriteAction addSpriteAction => new()
+                {
+                    Type = "AddSpriteAction",
+                    Sprite = ExportSpriteData(addSpriteAction.sprite)
+                },
+                ChangeSpriteAction changeSpriteAction => new()
+                {
+                    Type = "ChangeSpriteAction"
+                },
+                DecrementVariableAction decrementVariableAction => new()
+                {
+                    Type = "DecrementVariableAction",
+                    VariableName = decrementVariableAction.VariableName,
+                    ImpendingVariableName = decrementVariableAction.DecrementVariableName
+                },
+                IncrementVariableAction incrementVariableAction => new()
+                {
+                    Type = "IncrementVariableAction",
+                    ImpendingVariableName = incrementVariableAction.IncrementVariableName
+                },
+                RemoveSpriteAction removeSpriteAction => new()
+                {
+                    Type = "RemoveSpriteAction",
+                    Sprite = ExportSpriteData(removeSpriteAction.sprite)
+                },
+                SetBoolVariableAction setBoolVariableAction => new()
+                {
+                    Type = "SetBoolVariableAction",
+                    VariableName = setBoolVariableAction.VariableName,
+                    VariableValue = setBoolVariableAction.Value.ToString()
+                },
+                SetVariableFalseAction setVariableFalseAction => new()
+                {
+                    Type = "SetVariableFalseAction",
+                    VariableName = setVariableFalseAction.VariableName
+                },
+                SetVariableTrueAction setVariableTrueAction => new()
+                {
+                    Type = "SetVariableTrueAction",
+                    VariableName = setVariableTrueAction.VariableName
+                },
+                // SetVariableValueAction setVariableValueAction => new()
+                // {
+                //     Type = "SetVariableValueAction",
+                //     VariableName = setVariableValueAction.VariableName
+                // },
+                TextBoxCreateAction textBoxCreateAction => new()
+                {
+                    Type = "TextBoxCreateAction",
+                    TextBox = ExportTextBoxData(textBoxCreateAction.TextBox)
+                },
+                TintSpriteAction tintSpriteAction => new()
+                {
+                    Type = "TintSpriteAction",
+                    Sprite = ExportSpriteData(tintSpriteAction.sprite),
+                    TintColor = ExportColorData(tintSpriteAction.color)
+                },
+                ToggleVariableAction toggleVariableAction => new()
+                {
+                    Type = "ToggleVariableAction",
+                    VariableName = toggleVariableAction.VariableName
+                },
                 _ => throw new Exception("Event type not found!"),
             };
         }

@@ -755,6 +755,9 @@ namespace TemplateGame.Component
                         A = (byte)actionImport.TintColor[3]
                     };
                     return new TintSpriteAction(tintSprite, tintColor, Game);
+                case "ChangeSpriteAction":
+                    //NINCS KÉSZ MÉG, PEDIG AZT HITTEM
+                    return new ChangeSpriteAction(null, null, Game);
                 case "RemoveSpriteAction":
                     // Add the remove action to the timeline.
                     if (actionImport.Sprite == null)

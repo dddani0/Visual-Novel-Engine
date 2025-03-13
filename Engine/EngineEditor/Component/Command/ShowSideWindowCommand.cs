@@ -47,7 +47,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 return;
             }
             SideWindow = new MiniWindow(
-                Editor, false,false,
+                Editor,
+                false,
+                false,
+                 false,
                 DependentButton.XPosition,
                 DependentButton.YPosition + Editor.ComponentHeight,
                 Editor.ComponentWidth,

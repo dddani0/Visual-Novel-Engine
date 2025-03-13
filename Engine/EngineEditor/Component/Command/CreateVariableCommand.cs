@@ -25,7 +25,7 @@ namespace Engine.EngineEditor.Component.Command
             Editor.GameVariables.Add(new Variable(Name, Value, Type));
             foreach (MiniWindow item in Editor.MiniWindow)
             {
-                if (item.HasVariableComponent is true) item.FetchDinamicComponentList();
+                if (item.HasVariableComponent is true) item.FetchVariables();
             }
         }
 

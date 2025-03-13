@@ -69,13 +69,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //Save variable's name
                                     decrementVariableAction.VariableName = (InspectorWindow.ComponentList[6] as TextField).Text;
                                     //save decrement value
-                                    decrementVariableAction.DecrementIntegerValue = int.Parse((InspectorWindow.ComponentList[8] as TextField).Text);
+                                    decrementVariableAction.DecrementVariableName = (InspectorWindow.ComponentList[8] as TextField).Text;
                                     break;
                                 case IncrementVariableAction incrementVariableAction:
                                     //Save variable's name
                                     incrementVariableAction.VariableName = (InspectorWindow.ComponentList[6] as TextField).Text;
                                     //Save increment value
-                                    incrementVariableAction.IncrementIntegerValue = int.Parse((InspectorWindow.ComponentList[8] as TextField).Text);
+                                    incrementVariableAction.IncrementVariableName = (InspectorWindow.ComponentList[8] as TextField).Text;
                                     break;
                                 case SetBoolVariableAction setBoolVariableAction:
                                     //Save variable's name

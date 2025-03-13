@@ -19,6 +19,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ID = Editor.GenerateID();
             Name = sceneName;
             Timeline = new(Editor, 0, 600);
+            if (components != null) ComponentList.AddRange(components);
+            if (groups != null) ComponentGroupList.AddRange(groups);
         }
 
         internal void Update()

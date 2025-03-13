@@ -10,7 +10,7 @@ namespace TemplateGame.Component.Action.TimelineDependent
         private Variable Variable { get; set; }
         private Variable IncrementVariable { get; set; }
         internal string VariableName { get; set; }
-        string IncrementVariableName { get; }
+        internal string IncrementVariableName { get; set; }
         internal int IncrementIntegerValue { get; set; }
         private float IncrementFloatValue { get; set; }
         private bool IsIntegerIncrement { get; set; }
