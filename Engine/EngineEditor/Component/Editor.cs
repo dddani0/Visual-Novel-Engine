@@ -313,10 +313,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ActiveScene.Update();
             ExitWindow();
             MoveCamera();
-            for (int i = 0; i < MiniWindow.Count; i++)
-            {
-                MiniWindow[i].Show();
-            }
+            for (int i = 0; i < MiniWindow.Count; i++) MiniWindow[i].Show();
             ErrorWindow?.Show();
         }
 
@@ -388,7 +385,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 component.IsLocked = true;
             }
             ActiveScene.Timeline.AddGeneralAction.IsLocked = true;
-            ActiveScene.Timeline.ConfigureTimelineButton.IsLocked = true;
             ActiveScene.Timeline.RemoveEventsButton.IsLocked = true;
         }
 
@@ -407,7 +403,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 component.IsLocked = false;
             }
             ActiveScene.Timeline.AddGeneralAction.IsLocked = false;
-            ActiveScene.Timeline.ConfigureTimelineButton.IsLocked = false;
             ActiveScene.Timeline.RemoveEventsButton.IsLocked = false;
         }
         /// <summary>

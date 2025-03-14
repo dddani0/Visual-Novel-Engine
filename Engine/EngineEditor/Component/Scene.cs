@@ -1,3 +1,4 @@
+using Raylib_cs;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
@@ -12,6 +13,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal List<IDinamicComponent> ComponentList { get; set; } = [];
         internal List<Group> ComponentGroupList { get; set; } = [];
         internal InspectorWindow? InspectorWindow { get; set; } = null;
+        internal TemplateGame.Component.Scene.BackgroundOption BackgroundOption { get; set; } = TemplateGame.Component.Scene.BackgroundOption.SolidColor;
+        internal Color? BackgroundColor { get; set; }
+        internal Texture2D? BackgroundImage { get; set; }
+        internal Color[]? BackgroundGradientColor { get; set; }
 
         public Scene(Editor editor, string sceneName, IDinamicComponent[] components, Group[] groups)
         {
@@ -21,6 +26,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Timeline = new(Editor, 0, 600);
             if (components != null) ComponentList.AddRange(components);
             if (groups != null) ComponentGroupList.AddRange(groups);
+            BackgroundColor = Color.Black;
         }
 
         internal void Update()

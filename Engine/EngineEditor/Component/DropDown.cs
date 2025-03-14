@@ -176,16 +176,77 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     //Options for timeline independent events
                     Button SetVariableValueActionButton = new(Editor, this, "Set variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineIndependent.SetVariableValueAction(null, "", null, 1)
+                        Action = new TemplateGame.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "", null, 1)
                     };
                     Button SwitchStaticMenuActionButton = new(Editor, this, "Switch menu action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineIndependent.SwitchStaticMenuAction(null, null, 0, 0)
+                        Action = new TemplateGame.Component.Action.TimelineIndependent.SwitchStaticMenuAction(Editor.Game, null, 0, 0)
                     };
-                    FilteredButtonList = [SetVariableValueActionButton, SwitchStaticMenuActionButton];
+                    Button createMenuActionButton = new(Editor, this, "Create menu action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.CreateMenuAction(Editor.Game, null, null)
+                    };
+                    Button loadSceneActionButton = new(Editor, this, "Load scene action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.LoadSceneAction(Editor.Game, 0, "variable name")
+                    };
+                    Button nativeLoadSceneActionButton = new(Editor, this, "Native load scene action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.NativeLoadSceneAction(Editor.Game, 0)
+                    };
+                    FilteredButtonList = [SetVariableValueActionButton, SwitchStaticMenuActionButton, createMenuActionButton, loadSceneActionButton, nativeLoadSceneActionButton];
                     break;
                 case FilterType.TimelineDependentAction:
-
+                    //Options for timeline dependent events
+                    Button addSpriteActionButton = new(Editor, this, "Add sprite action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.AddSpriteAction(new Sprite("Empty path"), Editor.Game)
+                    };
+                    Button changeSpriteAction = new(Editor, this, "Change sprite action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.ChangeSpriteAction(null, "Change sprite path", Editor.Game)
+                    };
+                    Button decrementVariableActionButton = new(Editor, this, "Decrement variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.DecrementVariableAction(Editor.Game, "variable name 1", "decremen variable name")
+                    };
+                    Button EmptyActionButton = new(Editor, this, "Empty action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.EmptyAction(Editor.Game)
+                    };
+                    Button incrementVariableAction = new(Editor, this, "Increment variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.IncrementVariableAction(Editor.Game, "variable name 1", "increment variable name")
+                    };
+                    Button removeSpriteAction = new(Editor, this, "Remove sprite action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.RemoveSpriteAction(null, Editor.Game)
+                    };
+                    Button setBoolVariableAction = new(Editor, this, "Set bool variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.SetBoolVariableAction(Editor.Game, "variable name", true)
+                    };
+                    Button setVariableFalseAction = new(Editor, this, "Set variable false action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.SetVariableFalseAction(Editor.Game, "variable name")
+                    };
+                    Button setVariableTrueAction = new(Editor, this, "Set variable true action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.SetVariableTrueAction(Editor.Game, "variable name")
+                    };
+                    Button createTextBoxButton = new(Editor, this, "Create textbox action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.TextBoxCreateAction(null)
+                    };
+                    Button tintSpriteActionButton = new(Editor, this, "Tint sprite action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.TintSpriteAction(null, Color.Black, Editor.Game)
+                    };
+                    Button toggleVariableActionButton = new(Editor, this, "Toggle variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineDependent.ToggleVariableAction(Editor.Game, "variable name")
+                    };
+                    FilteredButtonList = [addSpriteActionButton, changeSpriteAction, decrementVariableActionButton, EmptyActionButton, incrementVariableAction, removeSpriteAction, setBoolVariableAction, setVariableFalseAction, setVariableTrueAction, createTextBoxButton, tintSpriteActionButton, toggleVariableActionButton];
                     break;
             }
             UpdateComponentPosition();

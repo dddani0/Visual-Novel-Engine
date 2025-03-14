@@ -55,6 +55,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             B = (byte)color[2],
             A = (byte)color[3]
         };
+
+        public static Color[] FetchGradientColorFromImport(int[] Color)
+        {
+            Color color1 = FetchColorFromImport([.. Color.Take(4)]);
+            Color color2 = FetchColorFromImport([.. Color.Skip(4)]);
+            return [color1, color2];
+        }
         /// <summary>
         /// Fetch a scene from an import object.
         /// </summary>
@@ -62,10 +69,54 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// <returns></returns>
         public Scene FetchEditorSceneFromImport(SceneExIm sceneImport)
         {
-            return new Scene(Editor,
-            sceneImport.Name,
-             [.. sceneImport.Components.Select(FetchComponentFromImport)],
-            [.. sceneImport.GroupList.Select(FetchGroupFromImport)]);
+            TemplateGame.Component.Scene.BackgroundOption backgroundOption = sceneImport.Background switch
+            {
+                "SolidColor" => TemplateGame.Component.Scene.BackgroundOption.SolidColor,
+                "GradientVertical" => TemplateGame.Component.Scene.BackgroundOption.GradientVertical,
+                "GradientHorizontal" => TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal,
+                "Image" => TemplateGame.Component.Scene.BackgroundOption.Image,
+                _ => throw new Exception("Background type not found!")
+            };
+            Texture2D? image;
+            Color[]? gradientColor;
+            Color? solidColor;
+            if (backgroundOption == TemplateGame.Component.Scene.BackgroundOption.Image)
+            {
+                image = Raylib.LoadTexture(sceneImport.ImageTexture);
+                return new Scene(Editor,
+                sceneImport.Name,
+                [.. sceneImport.Components.Select(FetchComponentFromImport)],
+                [.. sceneImport.GroupList.Select(FetchGroupFromImport)])
+                {
+                    BackgroundOption = backgroundOption,
+                    BackgroundImage = image
+                };
+            }
+            else if (backgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal || backgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientVertical)
+            {
+                gradientColor = FetchGradientColorFromImport(sceneImport.GradientColor);
+                return new Scene(Editor,
+                sceneImport.Name,
+                [.. sceneImport.Components.Select(FetchComponentFromImport)],
+                [.. sceneImport.GroupList.Select(FetchGroupFromImport)])
+                {
+                    BackgroundOption = backgroundOption,
+                    BackgroundGradientColor = gradientColor
+                };
+            }
+            else
+            {
+                solidColor = FetchColorFromImport(sceneImport.SolidColor);
+                return new Scene(Editor,
+                sceneImport.Name,
+                [.. sceneImport.Components.Select(FetchComponentFromImport)],
+                [.. sceneImport.GroupList.Select(FetchGroupFromImport)])
+                {
+                    BackgroundOption = backgroundOption,
+                    BackgroundColor = solidColor
+                };
+            }
+
         }
         /// <summary>
         /// Fetch a variable from an import object.
@@ -452,6 +503,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         public int[] ExportColorData(Color color)
         {
             return [color.R, color.G, color.B, color.A];
+        }
+        public int[] ExportGradientColor(Color[] gradientColor)
+        {
+            return [.. gradientColor.SelectMany(ExportColorData)];
         }
         public VariableExim ExportVariableData(Variable variable)
         {
@@ -884,13 +939,48 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         public SceneExIm ExportEditorSceneData(Scene scene)
         {
-            return new()
+            return scene.BackgroundOption switch
             {
-                ID = scene.ID,
-                Name = scene.Name,
-                Components = [.. scene.ComponentList.Select(x => x as Component).Select(ExportComponentData)],
-                GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
-                Timeline = ExportTimelineData(scene.Timeline)
+                TemplateGame.Component.Scene.BackgroundOption.SolidColor => new()
+                {
+                    ID = scene.ID,
+                    Name = scene.Name,
+                    Background = scene.BackgroundOption.ToString(),
+                    SolidColor = ExportColorData(scene.BackgroundColor.Value),
+                    Components = [.. scene.ComponentList.Select(x => x as Component).Select(ExportComponentData)],
+                    GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
+                    Timeline = ExportTimelineData(scene.Timeline)
+                },
+                TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal => new()
+                {
+                    ID = scene.ID,
+                    Name = scene.Name,
+                    Background = scene.BackgroundOption.ToString(),
+                    GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
+                    Components = [.. scene.ComponentList.Select(x => x as Component).Select(ExportComponentData)],
+                    GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
+                    Timeline = ExportTimelineData(scene.Timeline)
+                },
+                TemplateGame.Component.Scene.BackgroundOption.GradientVertical => new()
+                {
+                    ID = scene.ID,
+                    Name = scene.Name,
+                    Background = scene.BackgroundOption.ToString(),
+                    GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
+                    Components = [.. scene.ComponentList.Select(x => x as Component).Select(ExportComponentData)],
+                    GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
+                    Timeline = ExportTimelineData(scene.Timeline)
+                },
+                TemplateGame.Component.Scene.BackgroundOption.Image => new()
+                {
+                    ID = scene.ID,
+                    Name = scene.Name,
+                    Background = scene.BackgroundOption.ToString(),
+                    ImageTexture = scene.BackgroundImage.ToString(),
+                    Components = [.. scene.ComponentList.Select(x => x as Component).Select(ExportComponentData)],
+                    GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
+                    Timeline = ExportTimelineData(scene.Timeline)
+                },
             };
         }
         public RenderingObjectExIm ExportRenderingObjectData(IPermanentRenderingObject permanentRenderingObject)

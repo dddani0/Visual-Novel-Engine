@@ -205,6 +205,14 @@ namespace VisualNovelEngine.Engine.PortData
         public int ID { get; set; }
         [JsonPropertyName("Name")]
         public required string Name { get; set; }
+        [JsonPropertyName("Background")]
+        public required string Background { get; set; }
+        [JsonPropertyName("SolidColor")]
+        public int[]? SolidColor { get; set; }
+        [JsonPropertyName("GradientColor")]
+        public int[]? GradientColor { get; set; }
+        [JsonPropertyName("ImageTexture")]
+        public string? ImageTexture { get; set; }
         [JsonPropertyName("Components")]
         public ComponentExIm[]? Components { get; set; }
         [JsonPropertyName("GroupList")]

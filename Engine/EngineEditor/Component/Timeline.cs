@@ -17,7 +17,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal List<IAction> Events { get; set; } = [];
         internal List<Button> EventButtons { get; set; } = [];
         internal Button AddGeneralAction { get; set; }
-        internal Button ConfigureTimelineButton { get; set; }
         internal Button RemoveEventsButton { get; set; }
         internal Scrollbar Scrollbar { get; set; }
 
@@ -31,8 +30,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             BorderWidth = Editor.InspectorWindowBorderWidth;
             AddGeneralAction = new(
                 Editor,
-                XPosition + BorderWidth,
-                YPosition,
+                5 + XPosition + BorderWidth,
+                YPosition + 5,
                 "Action",
                     true,
                 Editor.ButtonWidth,
@@ -272,11 +271,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     0
                     )
             ]));
-            ConfigureTimelineButton = new(Editor, XPosition + Editor.ButtonWidth, YPosition, "Configure", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new EmptyCommand(), Button.ButtonType.Trigger);
             RemoveEventsButton = new(
                 Editor,
-                XPosition + Width - Editor.ButtonWidth,
-                YPosition,
+                XPosition + Width - Editor.ButtonWidth - 5,
+                YPosition + 5,
                 "Remove",
                     true,
                 Editor.ButtonWidth,
@@ -305,7 +303,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Button.ButtonType.Trigger);
             Scrollbar = new(
                 Editor,
-                XPosition,
+                XPosition - 5,
                 YPosition + Height - Editor.SmallButtonHeight,
                 Editor.SmallButtonHeight,
                 Raylib.GetScreenWidth(),
@@ -319,7 +317,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Editor.BaseColor);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, Editor.BorderColor);
             AddGeneralAction.Render();
-            ConfigureTimelineButton.Render();
             for (int i = 0; i < Events.Count; i++)
             {
                 EventButtons[i].Render();
@@ -339,7 +336,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             //add a slider
             EventButtons.Add(new(
                 Editor,
-                XPosition + BorderWidth + (Events.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
+                XPosition + BorderWidth + 5 + (Events.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
                 YPosition + Height / 2,
                 $"{Events.Count}. action",
                     true,
