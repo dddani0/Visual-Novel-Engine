@@ -19,7 +19,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Button AddGeneralAction { get; set; }
         internal Button ConfigureTimelineButton { get; set; }
         internal Button RemoveEventsButton { get; set; }
-        internal Button EditEventButton { get; set; }
         internal Scrollbar Scrollbar { get; set; }
 
         public Timeline(Editor editor, int xPos, int yPos)

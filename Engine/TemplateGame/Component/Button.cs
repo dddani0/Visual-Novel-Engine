@@ -62,7 +62,7 @@ namespace TemplateGame.Component
         /// <summary>
         /// The event which is attached to the button.
         /// </summary>
-        internal IAction Action { get; }
+        internal IAction Action { get; set; }
         /// <summary>
         /// The parent block of the button.
         /// </summary>

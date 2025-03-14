@@ -25,7 +25,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             SceneBackground,
             VariableType,
             SliderToggleInputField,
-            TimelineIndependentEvent
+            TimelineIndependentAction,
+            TimelineDependentAction
         }
         internal FilterType Filter { get; set; }
         private Editor Editor { get; set; }
@@ -171,19 +172,20 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     };
                     FilteredButtonList = [variableTypeStringType, variableTypeIntType, variableTypeFloatType, variableTypeBoolType];
                     break;
-                case FilterType.TimelineIndependentEvent:
-                //Options for timeline independent events
-                    Button SetVariableValueAction = new Button(Editor, this, "", Color.Red, Color.Black, Color.Beige, null);
-                    new TemplateGame.Component.Action.TimelineIndependent.SetVariableValueAction(null, "", null, 1);
-                    Button timelineIndependentEventStart = new(Editor, this, "", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                case FilterType.TimelineIndependentAction:
+                    //Options for timeline independent events
+                    Button SetVariableValueActionButton = new(Editor, this, "Set variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-
+                        Action = new TemplateGame.Component.Action.TimelineIndependent.SetVariableValueAction(null, "", null, 1)
                     };
-                    //Button timelineIndependentEventEnd = new(Editor, this, TimelineIndependentEvent.End.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
-                    //{
-                    //    TimelineIndependentEvent = TimelineIndependentEvent.End
-                    //};
-                    //FilteredButtonList = [SetVariableValueAction, timelineIndependentEventStart, timelineIndependentEventEnd];
+                    Button SwitchStaticMenuActionButton = new(Editor, this, "Switch menu action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    {
+                        Action = new TemplateGame.Component.Action.TimelineIndependent.SwitchStaticMenuAction(null, null, 0, 0)
+                    };
+                    FilteredButtonList = [SetVariableValueActionButton, SwitchStaticMenuActionButton];
+                    break;
+                case FilterType.TimelineDependentAction:
+
                     break;
             }
             UpdateComponentPosition();

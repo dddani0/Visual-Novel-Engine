@@ -270,7 +270,8 @@
                             }
                         }
                     ],
-                    "HasVariable": "true"
+                    "HasVariable": "true",
+                    "hasScene": "false"
                 },
                 "Type": 0
             },
@@ -329,7 +330,8 @@
                             }
                         }
                     ],
-                    "HasVariable": "false"
+                    "HasVariable": "false",
+                    "HasSceneRelatedComponent": "true"
                 },
                 "Type": 0
             }

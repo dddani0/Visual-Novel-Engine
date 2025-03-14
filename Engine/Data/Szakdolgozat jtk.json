@@ -1,5 +1,5 @@
 {
-  "ID": 2,
+  "ID": 4,
   "ProjectName": "Szakdolgozat jtk",
   "ProjectPath": "../../../Engine/Data/Szakdolgozat jtk.json",
   "WindowWidth": 800,
@@ -44,6 +44,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -68,6 +69,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -92,6 +94,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -116,6 +119,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -140,6 +144,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -164,6 +169,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -188,6 +194,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -212,6 +219,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -236,6 +244,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -260,6 +269,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -284,6 +294,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -308,6 +319,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -332,6 +344,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -356,6 +369,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -366,6 +380,7 @@
           "Components": null,
           "WindowComponents": null,
           "HasVariable": null,
+          "HasSceneRelatedComponent": null,
           "ButtonDependency": null,
           "VariableValue": null,
           "VariableType": null
@@ -390,6 +405,7 @@
           "Components": null,
           "WindowComponents": null,
           "HasVariable": null,
+          "HasSceneRelatedComponent": null,
           "ButtonDependency": null,
           "VariableValue": null,
           "VariableType": null
@@ -414,6 +430,7 @@
           "Components": null,
           "WindowComponents": null,
           "HasVariable": null,
+          "HasSceneRelatedComponent": null,
           "ButtonDependency": null,
           "VariableValue": null,
           "VariableType": null
@@ -447,6 +464,7 @@
                 "Components": null,
                 "WindowComponents": null,
                 "HasVariable": null,
+                "HasSceneRelatedComponent": null,
                 "ButtonDependency": null,
                 "VariableValue": null,
                 "VariableType": null
@@ -463,6 +481,7 @@
           "Components": null,
           "WindowComponents": null,
           "HasVariable": null,
+          "HasSceneRelatedComponent": null,
           "ButtonDependency": null,
           "VariableValue": null,
           "VariableType": null
@@ -583,6 +602,7 @@
                   "Components": null,
                   "WindowComponents": null,
                   "HasVariable": null,
+                  "HasSceneRelatedComponent": null,
                   "ButtonDependency": null,
                   "VariableValue": "NewVar",
                   "VariableType": 0
@@ -592,6 +612,7 @@
             }
           ],
           "HasVariable": "True",
+          "HasSceneRelatedComponent": "False",
           "ButtonDependency": null,
           "VariableValue": null,
           "VariableType": null
@@ -651,9 +672,67 @@
               "EditorToggle": null,
               "DropDown": null,
               "Button": null
+            },
+            {
+              "Label": null,
+              "TextField": null,
+              "EditorToggle": null,
+              "DropDown": null,
+              "Button": {
+                "XPosition": 150,
+                "YPosition": 450,
+                "Text": "Delete...",
+                "Command": {
+                  "Type": "ShowErrorCommand",
+                  "ErrorType": null,
+                  "ErrorMessage": "Delete current scene?",
+                  "WarningButtons": [
+                    {
+                      "XPosition": 300,
+                      "YPosition": 550,
+                      "Text": "Yes",
+                      "Command": {
+                        "Type": "DeleteSceneCommand",
+                        "ErrorType": null,
+                        "ErrorMessage": null,
+                        "WarningButtons": null,
+                        "RenderingObjectType": 0,
+                        "EnabledRowComponentCount": 0,
+                        "XPosition": 0,
+                        "YPosition": 0,
+                        "ParentButtonName": null,
+                        "Buttons": null,
+                        "Components": null,
+                        "WindowComponents": null,
+                        "HasVariable": null,
+                        "HasSceneRelatedComponent": null,
+                        "ButtonDependency": null,
+                        "VariableValue": null,
+                        "VariableType": null
+                      },
+                      "Type": 0
+                    }
+                  ],
+                  "RenderingObjectType": 0,
+                  "EnabledRowComponentCount": 0,
+                  "XPosition": 0,
+                  "YPosition": 0,
+                  "ParentButtonName": null,
+                  "Buttons": null,
+                  "Components": null,
+                  "WindowComponents": null,
+                  "HasVariable": null,
+                  "HasSceneRelatedComponent": null,
+                  "ButtonDependency": null,
+                  "VariableValue": null,
+                  "VariableType": null
+                },
+                "Type": 0
+              }
             }
           ],
           "HasVariable": "False",
+          "HasSceneRelatedComponent": "True",
           "ButtonDependency": null,
           "VariableValue": null,
           "VariableType": null
@@ -670,17 +749,110 @@
       "Name": "DefaultScene",
       "Components": [
         {
-          "ID": 1,
-          "Name": "New TextBox(1)",
+          "ID": 2,
+          "Name": "Button Block(2)",
+          "XPosition": 91,
+          "YPosition": 255,
+          "RenderingObject": {
+            "Static": null,
+            "Sprite": null,
+            "TextField": null,
+            "Textbox": null,
+            "Button": null,
+            "InputField": null,
+            "StaticInputField": null,
+            "DropBox": null,
+            "Menu": null,
+            "Block": {
+              "ID": 1,
+              "XPosition": 0,
+              "YPosition": 0,
+              "Button": {
+                "XPosition": 0,
+                "YPosition": 0,
+                "Width": 250,
+                "Height": 250,
+                "Text": "Text",
+                "BorderWidth": 1,
+                "TextColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "Color": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "BorderColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "HoverColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "Action": {
+                  "Type": "SetVariableValueAction",
+                  "Sprite": null,
+                  "TextBox": null,
+                  "TintColor": null,
+                  "SceneID": null,
+                  "VariableName": "",
+                  "TriggerVariableName": null,
+                  "VariableValue": null,
+                  "VariableType": null,
+                  "ImpendingVariable": null,
+                  "Menu": null,
+                  "StaticMenu": null,
+                  "BlockComponentID": null,
+                  "DisablingMenuID": null,
+                  "EnablingMenuID": null
+                }
+              },
+              "StaticButton": null,
+              "InputField": null,
+              "StaticInputField": null,
+              "DropBox": null,
+              "Slider": null,
+              "Toggle": null,
+              "TextField": null,
+              "Sprite": null
+            },
+            "StaticBlock": null,
+            "Slider": null,
+            "Toggle": null
+          }
+        },
+        {
+          "ID": 3,
+          "Name": "New Button(3)",
           "XPosition": 400,
           "YPosition": 400,
           "RenderingObject": {
             "Static": null,
             "Sprite": null,
             "TextField": null,
-            "Textbox": {
-              "CharactersPerSecond": 1,
-              "Font": null,
+            "Textbox": null,
+            "Button": {
+              "XPosition": 0,
+              "YPosition": 0,
+              "Width": 250,
+              "Height": 250,
+              "Text": "Text",
+              "BorderWidth": 1,
+              "TextColor": [
+                0,
+                0,
+                0,
+                255
+              ],
               "Color": [
                 0,
                 0,
@@ -693,19 +865,30 @@
                 0,
                 255
               ],
-              "PositionType": 0,
-              "HorizontalTextMargin": 1,
-              "VerticalTextMargin": 1,
-              "WordWrap": false,
-              "Title": "",
-              "Content": [
-                "New text field",
-                "New text field",
-                "New text field",
-                "New text field"
-              ]
+              "HoverColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "Action": {
+                "Type": "SetVariableValueAction",
+                "Sprite": null,
+                "TextBox": null,
+                "TintColor": null,
+                "SceneID": null,
+                "VariableName": "",
+                "TriggerVariableName": null,
+                "VariableValue": null,
+                "VariableType": null,
+                "ImpendingVariable": null,
+                "Menu": null,
+                "StaticMenu": null,
+                "BlockComponentID": null,
+                "DisablingMenuID": null,
+                "EnablingMenuID": null
+              }
             },
-            "Button": null,
             "InputField": null,
             "StaticInputField": null,
             "DropBox": null,
@@ -719,8 +902,27 @@
       ],
       "GroupList": [],
       "Timeline": {
-        "Actions": []
+        "Actions": [
+          {
+            "Type": "SetVariableValueAction",
+            "Sprite": null,
+            "TextBox": null,
+            "TintColor": null,
+            "SceneID": null,
+            "VariableName": "",
+            "TriggerVariableName": null,
+            "VariableValue": null,
+            "VariableType": null,
+            "ImpendingVariable": null,
+            "Menu": null,
+            "StaticMenu": null,
+            "BlockComponentID": null,
+            "DisablingMenuID": null,
+            "EnablingMenuID": null
+          }
+        ]
       }
     }
-  ]
+  ],
+  "Variables": []
 }

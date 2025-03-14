@@ -3,6 +3,7 @@ using Raylib_cs;
 using TemplateGame.Component;
 using Timer = TemplateGame.Component.Timer;
 using System.Numerics;
+using TemplateGame.Interface;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component
 {
@@ -85,6 +86,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// Represents the component wihtin the DropDown button
         /// </summary>
         internal IComponent? Component { get; set; }
+
+        internal IAction? Action { get; set; }
         /// <summary>
         /// Represents the type of the button.
         /// </summary>
@@ -146,7 +149,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Type = ButtonType.Trigger;
             Timer = new Timer(0.1f);
             Active = true;
-            Command = new SelectDropDownButtonCommand(dropDown, this);
+            Command = new SelectDropDownButtonCommand(Editor, dropDown, this);
             Editor.ButtonList.Add(this);
         }
 

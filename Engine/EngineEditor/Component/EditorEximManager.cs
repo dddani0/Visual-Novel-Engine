@@ -979,11 +979,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Type = "SetVariableTrueAction",
                     VariableName = setVariableTrueAction.VariableName
                 },
-                // SetVariableValueAction setVariableValueAction => new()
-                // {
-                //     Type = "SetVariableValueAction",
-                //     VariableName = setVariableValueAction.VariableName
-                // },
+                SetVariableValueAction setVariableValueAction => new()
+                {
+                    Type = "SetVariableValueAction",
+                    VariableName = setVariableValueAction.VariableName
+                },
                 TextBoxCreateAction textBoxCreateAction => new()
                 {
                     Type = "TextBoxCreateAction",

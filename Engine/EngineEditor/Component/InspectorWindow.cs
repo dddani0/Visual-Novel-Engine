@@ -87,6 +87,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(new Label(XPosition, YPosition, "Hover color:"));
                     ComponentList.Add(
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{button.HoverColor.R}, {button.HoverColor.G}, {button.HoverColor.B}", Raylib.GetFontDefault(), true));
+                    //Add action
+                    ComponentList.Add(new Label(XPosition, YPosition, "Action:"));
+                    ComponentList.Add(
+                        new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction));
                     break;
                 case TemplateGame.Component.TextField textField:
                     //Dinamic Text
@@ -646,6 +650,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(switchStaticMenuNewDopDown);
                     break;
             }
+            ComponentList.Add(new Button(Editor, XPosition, YPosition, "Delete", false, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger));
             ActiveAction = eventData;
             Scrollbar.AddComponents([.. ComponentList]);
             UpdateComponentPosition(EnabledRowComponentCount);

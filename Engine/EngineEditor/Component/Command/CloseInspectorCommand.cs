@@ -196,9 +196,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //Save border color
                                     byte[] borderColorRGB = new byte[3];
                                     TextField ButtonBorderColorTextField = InspectorWindow.ComponentList[9] as TextField;
-                                    colorRGB[0] = byte.Parse(ButtonColorTextField.Text.Split(',')[0]);
-                                    colorRGB[1] = byte.Parse(ButtonColorTextField.Text.Split(',')[1]);
-                                    colorRGB[2] = byte.Parse(ButtonColorTextField.Text.Split(',')[2]);
+                                    colorRGB[0] = byte.Parse(ButtonBorderColorTextField.Text.Split(',')[0]);
+                                    colorRGB[1] = byte.Parse(ButtonBorderColorTextField.Text.Split(',')[1]);
+                                    colorRGB[2] = byte.Parse(ButtonBorderColorTextField.Text.Split(',')[2]);
                                     button.BorderColor = new Color()
                                     {
                                         R = borderColorRGB[0],
@@ -209,9 +209,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //save hover color
                                     byte[] hoverColorRGB = new byte[3];
                                     TextField ButtonHoverColorTextField = InspectorWindow.ComponentList[11] as TextField;
-                                    colorRGB[0] = byte.Parse(ButtonColorTextField.Text.Split(',')[0]);
-                                    colorRGB[1] = byte.Parse(ButtonColorTextField.Text.Split(',')[1]);
-                                    colorRGB[2] = byte.Parse(ButtonColorTextField.Text.Split(',')[2]);
+                                    colorRGB[0] = byte.Parse(ButtonHoverColorTextField.Text.Split(',')[0]);
+                                    colorRGB[1] = byte.Parse(ButtonHoverColorTextField.Text.Split(',')[1]);
+                                    colorRGB[2] = byte.Parse(ButtonHoverColorTextField.Text.Split(',')[2]);
                                     button.HoverColor = new Color()
                                     {
                                         R = hoverColorRGB[0],
@@ -219,6 +219,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         B = hoverColorRGB[2],
                                         A = 255
                                     };
+                                    //Save action
+                                    if ((InspectorWindow.ComponentList[13] as DropDown).Button.Action == null) break;
+                                    button.Action = (InspectorWindow.ComponentList[13] as DropDown).Button.Action;
+                                    //Add to timeline
+                                    Editor.ActiveScene.Timeline.AddAction(button.Action);
                                     break;
                                 case TemplateGame.Component.TextField textField:
                                     //save textfield text
@@ -491,7 +496,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //Save placeholder
                                     inputField.Placeholder = (InspectorWindow.ComponentList[18] as TextField).Text;
                                     //Save color
-                                    byte[] inputFieldColorRGB = new byte[3];
                                     TextField inputFieldColorTextField = InspectorWindow.ComponentList[20] as TextField;
                                     inputField.Color = new Color()
                                     {
@@ -501,7 +505,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         A = 255
                                     };
                                     //Save border color
-                                    byte[] inputFieldBorderColorRGB = new byte[3];
                                     TextField inputFieldBorderColorTextField = InspectorWindow.ComponentList[22] as TextField;
                                     inputField.BorderColor = new Color()
                                     {
@@ -511,7 +514,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         A = 255
                                     };
                                     //Save hover color
-                                    byte[] inputFieldHoverColorRGB = new byte[3];
                                     TextField inputFieldHoverColorTextField = InspectorWindow.ComponentList[24] as TextField;
                                     inputField.HoverColor = new Color()
                                     {
@@ -520,6 +522,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         B = byte.Parse(inputFieldHoverColorTextField.Text.Split(',')[2]),
                                         A = 255
                                     };
+                                    //Save action
                                     break;
                             }
                         }
