@@ -1004,7 +1004,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             return new()
             {
-                Actions = [.. timeline.Events.Select(ExportEventData)]
+                Actions = [.. timeline.Actions.Select(ExportEventData)]
             };
         }
         public ActionExim ExportEventData(IAction actionData)
@@ -1092,6 +1092,104 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 },
                 _ => throw new Exception("Event type not found!"),
             };
+        }
+        //////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Export the color data.
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <returns></returns>
+        public SceneExim[] ExportBuildSceneData(Scene[] scene)
+        {
+            return [.. scene.Select(ExportBuildSceneData)];
+        }
+        /// <summary>
+        /// Export the build scene data.
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public SceneExim ExportBuildSceneData(Scene scene)
+        {
+            return scene.BackgroundOption switch
+            {
+                TemplateGame.Component.Scene.BackgroundOption.SolidColor => new()
+                {
+                    ID = scene.ID,
+                    Name = scene.Name,
+                    Background = scene.BackgroundOption.ToString(),
+                    SolidColor = ExportColorData(scene.BackgroundColor.Value),
+                    ActionList = ExportTimelineBuildData(scene.Timeline)
+                },
+                TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal => new()
+                {
+                    ID = scene.ID,
+                    Name = scene.Name,
+                    Background = scene.BackgroundOption.ToString(),
+                    GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
+                    ActionList = ExportTimelineBuildData(scene.Timeline)
+                },
+                TemplateGame.Component.Scene.BackgroundOption.GradientVertical => new()
+                {
+                    ID = scene.ID,
+                    Name = scene.Name,
+                    Background = scene.BackgroundOption.ToString(),
+                    GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
+                    ActionList = ExportTimelineBuildData(scene.Timeline)
+                },
+                TemplateGame.Component.Scene.BackgroundOption.Image => new()
+                {
+                    ID = scene.ID,
+                    Name = scene.Name,
+                    Background = scene.BackgroundOption.ToString(),
+                    ImageTexture = scene.BackgroundImage.ToString(),
+                    ActionList = ExportTimelineBuildData(scene.Timeline)
+                },
+                _ => throw new Exception("Background type not found!"),
+            };
+        }
+        /// <summary>
+        /// Export the timeline build data.
+        /// </summary>
+        /// <param name="timeline"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public ActionExim[] ExportTimelineBuildData(Timeline timeline)
+        {
+            List<ActionExim> actions = [];
+            foreach (IAction item in timeline.Actions)
+            {
+                switch (item)
+                {
+                    case AddSpriteAction
+                    or ChangeSpriteAction
+                    or DecrementVariableAction
+                    or IncrementVariableAction
+                    or RemoveSpriteAction
+                    or SetBoolVariableAction
+                    or SetVariableFalseAction
+                    or SetVariableTrueAction
+                    or SetVariableValueAction
+                    or TextBoxCreateAction
+                    or TintSpriteAction
+                    or ToggleVariableAction
+                    or EmptyAction
+                    or CreateMenuAction
+                    or LoadSceneAction
+                    or NativeLoadSceneAction
+                    or AddSpriteAction:
+                        actions.Add(ExportEventData(item));
+                        break;
+                    case SetVariableValueAction
+                    or SwitchStaticMenuAction:
+                        continue;
+                    default:
+                        throw new Exception("Event type not found!");
+                }
+            }
+            return [.. actions];
         }
     }
 }

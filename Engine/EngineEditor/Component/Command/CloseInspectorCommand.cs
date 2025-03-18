@@ -23,7 +23,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             switch (InspectorWindow.ActiveAction is not null)
             {
                 case true:
-                    foreach (IAction action in Editor.ActiveScene.Timeline.Events.Cast<IAction>())
+                    foreach (IAction action in Editor.ActiveScene.Timeline.Actions.Cast<IAction>())
                     {
                         if (action == InspectorWindow.ActiveAction)
                         {

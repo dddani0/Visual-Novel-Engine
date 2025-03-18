@@ -19,9 +19,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             closeInspectorCommand.Execute();
             //Delete the event
             //Get index of the current action
-            int actionIndex = Editor.ActiveScene.Timeline.Events.FindIndex(x => x == impendingAction);
+            int actionIndex = Editor.ActiveScene.Timeline.Actions.FindIndex(x => x == impendingAction);
             //Remove the action from the timeline
-            Editor.ActiveScene.Timeline.Events.RemoveAt(actionIndex);
+            Editor.ActiveScene.Timeline.Actions.RemoveAt(actionIndex);
             //Remove the button from the timeline
             Editor.ActiveScene.Timeline.EventButtons.RemoveAt(actionIndex);
         }

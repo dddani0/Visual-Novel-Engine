@@ -14,7 +14,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal int Width { get; set; }
         internal int Height { get; set; }
         internal int BorderWidth { get; set; }
-        internal List<IAction> Events { get; set; } = [];
+        internal List<IAction> Actions { get; set; } = [];
         internal List<Button> EventButtons { get; set; } = [];
         internal Button AddGeneralAction { get; set; }
         internal Button RemoveEventsButton { get; set; }
@@ -317,12 +317,12 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Editor.BaseColor);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, Editor.BorderColor);
             AddGeneralAction.Render();
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < Actions.Count; i++)
             {
                 EventButtons[i].Render();
             }
             if ((EventButtons.Count * Editor.ButtonWidth) > (XPosition + Width)) ScrollBar();
-            if (Events.Count <= 0) return;
+            if (Actions.Count <= 0) return;
             RemoveEventsButton.Render();
         }
 
@@ -332,13 +332,13 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         internal void AddAction(IAction action)
         {
-            Events.Add(action);
+            Actions.Add(action);
             //add a slider
             EventButtons.Add(new(
                 Editor,
-                XPosition + Editor.ComponentWidth + BorderWidth + 5 + (Events.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
+                XPosition + Editor.ComponentWidth + BorderWidth + 5 + (Actions.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
                 YPosition + Height / 2,
-                $"{Events.Count}. action",
+                $"{Actions.Count}. action",
                     true,
                 Editor.ButtonWidth,
                 Editor.ButtonHeight,

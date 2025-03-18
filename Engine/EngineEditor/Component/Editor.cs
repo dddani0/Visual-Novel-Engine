@@ -29,6 +29,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// The path to the save file.
         /// </summary>
         internal string SaveFilePath { get; set; } = currentFolderPath;
+
+        internal string BuildPath { get; set; } = currentFolderPath;
         /// <summary>
         /// Instance of a Game
         /// </summary>
@@ -289,7 +291,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         public void Build()
         {
-
+            var GameBuildData = JsonSerializer.Serialize(EditorImporter.ExportBuildSceneData([.. SceneList]), new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            File.WriteAllText(BuildPath + ProjectName + "build.json", GameBuildData);
         }
         /// <summary>
         /// Saves the editor data into a file.

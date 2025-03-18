@@ -17,7 +17,7 @@ namespace VisualNovelEngine.Engine.PortData
     /// <summary>
     /// The "SceneExim" class is a helper class to import/export the list of scenes to or from a JSON file.
     /// </summary>
-    internal class SceneExim
+    public class SceneExim
     {
         [JsonPropertyName("Name")]
         public required string Name { get; set; }
