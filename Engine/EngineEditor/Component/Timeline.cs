@@ -336,7 +336,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             //add a slider
             EventButtons.Add(new(
                 Editor,
-                XPosition + BorderWidth + 5 + (Events.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
+                XPosition + Editor.ComponentWidth + BorderWidth + 5 + (Events.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
                 YPosition + Height / 2,
                 $"{Events.Count}. action",
                     true,

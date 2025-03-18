@@ -16,7 +16,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal TemplateGame.Component.Scene.BackgroundOption BackgroundOption { get; set; } = TemplateGame.Component.Scene.BackgroundOption.SolidColor;
         internal Color? BackgroundColor { get; set; }
         internal Texture2D? BackgroundImage { get; set; }
-        internal Color[]? BackgroundGradientColor { get; set; }
+        internal Color[]? BackgroundGradientColor { get; set; } = { Color.Black, Color.Black };
 
         public Scene(Editor editor, string sceneName, IDinamicComponent[] components, Group[] groups)
         {

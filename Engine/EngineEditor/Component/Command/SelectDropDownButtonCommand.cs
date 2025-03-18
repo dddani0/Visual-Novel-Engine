@@ -42,6 +42,33 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 DropDown.Button.Action = Button.Action;
                 DropDown.Button.Text = Button.Text;
             }
+            //Specific dropdown for the scene background option
+            if (Button.Text.ToLower().Contains("solid")
+            || Button.Text.ToLower().Contains("image")
+            || Button.Text.ToLower().Contains("gradi"))
+            {
+                DropDown.Button.SceneBackgroundOption = Button.SceneBackgroundOption;
+                DropDown.Button.Text = Button.Text;
+                foreach (var item in Editor.MiniWindow)
+                {
+                    if (item.HasSceneComponent)
+                    {
+                        //remove attribute
+                        if (Editor.ActiveScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.SolidColor ||
+                            Editor.ActiveScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.Image)
+                        {
+                            item.ComponentList.RemoveRange(4, 2);
+                        }
+                        else
+                        {
+                            item.ComponentList.RemoveRange(4, 3);
+                        }
+                        Editor.ActiveScene.BackgroundOption = Button.SceneBackgroundOption;
+                        item.FetchActiveSceneAttributes();
+                    }
+                }
+            }
+
             DropDown.IsSelected = false;
         }
     }

@@ -34,7 +34,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         {
             if (Editor.MiniWindow.Contains(MiniWindow)) return;
             Editor.MiniWindow.Add(MiniWindow);
-            if (HasScene) MiniWindow.FetchActiveSceneName();
+            if (HasScene) MiniWindow.FetchActiveSceneAttributes();
         }
     }
 }

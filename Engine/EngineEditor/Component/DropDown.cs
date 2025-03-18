@@ -61,6 +61,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             ButtonList.Clear();
             FilteredButtonList.Clear();
             //update whole list
+            if (Editor.ActiveScene == null) return;
             ButtonList.AddRange([.. Editor.ActiveScene.ComponentList.Cast<Component>().Select(component => new Button(Editor, this, $"ID:{component.ID}, Name:{component.Name}", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, component))]);
             switch (Filter)
             {

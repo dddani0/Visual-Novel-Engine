@@ -1,3 +1,4 @@
+using Raylib_cs;
 using TemplateGame.Component;
 using VisualNovelEngine.Engine.EngineEditor.Interface;
 
@@ -45,6 +46,59 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 Editor.SceneList.First(x => x.Name == activeScene.Name).Name = newSceneName;
                 //change active scene name
                 activeScene.Name = newSceneName;
+                //Save background type
+                activeScene.BackgroundOption = ((DropDown)MiniWindow.ComponentList[3]).Button.SceneBackgroundOption;
+                //Save background options cimlet
+                if (activeScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.SolidColor)
+                {
+                    //activeScene.BackgroundColor = (MiniWindow.ComponentList[4]).Button.Color;
+                    TextField colorTextField = (TextField)MiniWindow.ComponentList[5];
+                    activeScene.BackgroundColor = new Color()
+                    {
+                        R = byte.Parse(colorTextField.Text.Split(',')[0]),
+                        G = byte.Parse(colorTextField.Text.Split(',')[1]),
+                        B = byte.Parse(colorTextField.Text.Split(',')[2]),
+                        A = 255
+                    };
+                }
+                else if (activeScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.Image)
+                {
+                    TextField imageTextField = (TextField)MiniWindow.ComponentList[5];
+                    activeScene.BackgroundImage = new Sprite(imageTextField.Text).ImageTexture;
+                }
+                else if (activeScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientVertical ||
+                         activeScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal)
+                {
+                    TextField color1TextField = (TextField)MiniWindow.ComponentList[5];
+                    TextField color2TextField = (TextField)MiniWindow.ComponentList[6];
+                    activeScene.BackgroundGradientColor =
+                    [
+                        new Color()
+                        {
+                            R = byte.Parse(color1TextField.Text.Split(',')[0]),
+                            G = byte.Parse(color1TextField.Text.Split(',')[1]),
+                            B = byte.Parse(color1TextField.Text.Split(',')[2]),
+                            A = 255
+                        },
+                        new Color()
+                        {
+                            R = byte.Parse(color2TextField.Text.Split(',')[0]),
+                            G = byte.Parse(color2TextField.Text.Split(',')[1]),
+                            B = byte.Parse(color2TextField.Text.Split(',')[2]),
+                            A = 255
+                        }
+                    ];
+                }
+                //remove the added buttons
+                if (Editor.ActiveScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.SolidColor ||
+                    Editor.ActiveScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.Image)
+                {
+                    MiniWindow.ComponentList.RemoveRange(4, 2);
+                }
+                else
+                {
+                    MiniWindow.ComponentList.RemoveRange(4, 3);
+                }
             }
             Editor.MiniWindow.Remove(MiniWindow);
         }
