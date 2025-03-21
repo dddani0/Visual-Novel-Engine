@@ -659,6 +659,46 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         public BlockExim ExportBlockData(Block block)
         {
+            return block.Component switch
+            {
+                Sprite sprite => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    Sprite = ExportSpriteData(sprite)
+                },
+                TemplateGame.Component.TextField textField => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    TextField = ExportTextFieldData(textField)
+                },
+                TemplateGame.Component.Button button => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    Button = ExportButtonData(button)
+                },
+                InputField inputField => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    InputField = ExportInputFieldData(inputField)
+                },
+                _ => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID
+                },
+            };
+        }
+        public BlockExim ExportStaticBlockData(Block block)
+        {
             switch (block.Component)
             {
                 case Sprite sprite:
@@ -691,7 +731,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                         XPosition = block.XPosition,
                         YPosition = block.YPosition,
                         ID = block.ID,
-                        InputField = ExportInputFieldData(inputField)
+                        InputField = ExportStaticInputFieldData(inputField)
                     };
                 case DropBox dropBox:
                     return new()
@@ -791,7 +831,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 HoverColor = [.. ExportColorData(button.HoverColor)],
                 BorderColor = [.. ExportColorData(button.BorderColor)],
                 Text = button.Text,
-                Action = ExportEventData(button.Action),
+                Action = BuildTimelineIndependentAction(button.Action),
             };
         }
         public InputFieldExim ExportInputFieldData(InputField inputField)
@@ -810,6 +850,24 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 PlaceholderText = inputField.Placeholder,
                 ButtonText = inputField.Button.Text,
                 ButtonAction = ExportEventData(inputField.Button.Action),
+            };
+        }
+        public InputFieldExim ExportStaticInputFieldData(InputField inputField)
+        {
+            return new()
+            {
+                XPosition = inputField.XPosition,
+                YPosition = inputField.YPosition,
+                Width = inputField.Width,
+                Height = inputField.Height,
+                BorderWidth = inputField.BorderWidth,
+                Color = [.. ExportColorData(inputField.Color)],
+                SelectedColor = [.. ExportColorData(inputField.SelectedColor)],
+                HoverColor = [.. ExportColorData(inputField.HoverColor)],
+                BorderColor = [.. ExportColorData(inputField.BorderColor)],
+                PlaceholderText = inputField.Placeholder,
+                ButtonText = inputField.Button.Text,
+                ButtonAction = BuildTimelineIndependentAction(inputField.Button.Action),
             };
         }
         public DropBoxExim ExportDropBoxData(DropBox dropBox)
@@ -832,20 +890,37 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             return new()
             {
                 Text = dropBoxOption.Text,
-                Action = ExportEventData(dropBoxOption.Action)
+                Action = BuildTimelineIndependentAction(dropBoxOption.Action)
             };
         }
         public MenuExim ExportMenuData(Menu menu)
         {
             return new()
             {
+                ID = menu.ID,
                 XPosition = menu.XPosition,
                 YPosition = menu.YPosition,
                 Width = menu.Width,
                 Height = menu.Height,
                 Color = [.. ExportColorData(menu.Color)],
                 BorderColor = [.. ExportColorData(menu.BorderColor)],
-                BlockList = [.. menu.BlockList.Select(ExportBlockData)]
+                BlockList = [.. menu.BlockList.Select(ExportBlockData)],
+                Static = bool.FalseString
+            };
+        }
+        public MenuExim ExportStaticMenuData(Menu menu)
+        {
+            return new()
+            {
+                ID = menu.ID,
+                XPosition = menu.XPosition,
+                YPosition = menu.YPosition,
+                Width = menu.Width,
+                Height = menu.Height,
+                Color = [.. ExportColorData(menu.Color)],
+                BorderColor = [.. ExportColorData(menu.BorderColor)],
+                BlockList = [.. menu.BlockList.Select(ExportStaticBlockData)],
+                Static = bool.TrueString
             };
         }
         public SliderExim ExportSliderData(Slider slider)
@@ -861,7 +936,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 DragColor = [.. ExportColorData(slider.DragColor)],
                 value = (int)slider.Value,
                 DragRadius = slider.SliderDragRadius,
-                Action = ExportEventData(slider.Action)
+                Action = BuildTimelineIndependentAction(slider.Action)
             };
         }
         public ToggleExim ExportToggleData(Toggle toggle)
@@ -877,7 +952,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 Toggled = toggle.IsToggled.ToString(),
                 TextXOffset = toggle.TextXOffset,
                 Text = toggle.Text,
-                Action = ExportEventData(toggle.SettingsEvent)
+                Action = BuildTimelineIndependentAction(toggle.SettingsAction)
             };
         }
         public EditorExIm ExportEditorData(Editor editor)
@@ -1015,7 +1090,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 CreateMenuAction createMenuAction => new()
                 {
                     Type = "CreateMenuAction",
-                    Menu = ExportMenuData(createMenuAction.Menu)
+                    Menu = createMenuAction.StaticExport is false ? ExportMenuData(createMenuAction.Menu) : null,
+                    StaticMenu = createMenuAction.StaticExport is true ? ExportStaticMenuData(createMenuAction.Menu) : null
                 },
                 LoadSceneAction loadSceneAction => new()
                 {
@@ -1069,11 +1145,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Type = "SetVariableTrueAction",
                     VariableName = setVariableTrueAction.VariableName
                 },
-                SetVariableValueAction setVariableValueAction => new()
-                {
-                    Type = "SetVariableValueAction",
-                    VariableName = setVariableValueAction.VariableName
-                },
                 TextBoxCreateAction textBoxCreateAction => new()
                 {
                     Type = "TextBoxCreateAction",
@@ -1090,7 +1161,16 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Type = "ToggleVariableAction",
                     VariableName = toggleVariableAction.VariableName
                 },
-                _ => throw new Exception("Event type not found!"),
+                SetVariableValueAction setVaraiableValueAction => new()
+                {
+                    Type = "SetVaraiableValueAction",
+                    VariableName = setVaraiableValueAction.VariableName
+                },
+                SwitchStaticMenuAction switchStaticMenuAction => new()
+                {
+                    Type = "SwitchStaticMenuAction"
+                },
+                _ => throw new Exception("Event type is either not Timeline Dependent or is not found!"),
             };
         }
         //////////////////////////////////////////////////////////////////////////////////
@@ -1101,9 +1181,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         /// <param name="scene"></param>
         /// <returns></returns>
-        public SceneExim[] ExportBuildSceneData(Scene[] scene)
+        public SceneExim[] BuildScenesData(Scene[] scene)
         {
-            return [.. scene.Select(ExportBuildSceneData)];
+            return [.. scene.Select(BuildSceneData)];
         }
         /// <summary>
         /// Export the build scene data.
@@ -1111,7 +1191,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// <param name="scene"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public SceneExim ExportBuildSceneData(Scene scene)
+        public SceneExim BuildSceneData(Scene scene)
         {
             return scene.BackgroundOption switch
             {
@@ -1121,7 +1201,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Name = scene.Name,
                     Background = scene.BackgroundOption.ToString(),
                     SolidColor = ExportColorData(scene.BackgroundColor.Value),
-                    ActionList = ExportTimelineBuildData(scene.Timeline)
+                    ActionList = BuildTimelineData(scene.Timeline)
                 },
                 TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal => new()
                 {
@@ -1129,7 +1209,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Name = scene.Name,
                     Background = scene.BackgroundOption.ToString(),
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
-                    ActionList = ExportTimelineBuildData(scene.Timeline)
+                    ActionList = BuildTimelineData(scene.Timeline)
                 },
                 TemplateGame.Component.Scene.BackgroundOption.GradientVertical => new()
                 {
@@ -1137,7 +1217,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Name = scene.Name,
                     Background = scene.BackgroundOption.ToString(),
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
-                    ActionList = ExportTimelineBuildData(scene.Timeline)
+                    ActionList = BuildTimelineData(scene.Timeline)
                 },
                 TemplateGame.Component.Scene.BackgroundOption.Image => new()
                 {
@@ -1145,7 +1225,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     Name = scene.Name,
                     Background = scene.BackgroundOption.ToString(),
                     ImageTexture = scene.BackgroundImage.ToString(),
-                    ActionList = ExportTimelineBuildData(scene.Timeline)
+                    ActionList = BuildTimelineData(scene.Timeline)
                 },
                 _ => throw new Exception("Background type not found!"),
             };
@@ -1156,7 +1236,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// <param name="timeline"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public ActionExim[] ExportTimelineBuildData(Timeline timeline)
+        public ActionExim[] BuildTimelineData(Timeline timeline)
         {
             List<ActionExim> actions = [];
             foreach (IAction item in timeline.Actions)
@@ -1180,7 +1260,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     or LoadSceneAction
                     or NativeLoadSceneAction
                     or AddSpriteAction:
-                        actions.Add(ExportEventData(item));
+                        actions.Add(BuildEventData(item));
                         break;
                     case SetVariableValueAction
                     or SwitchStaticMenuAction:
@@ -1190,6 +1270,138 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 }
             }
             return [.. actions];
+        }
+        /// <summary>
+        /// Export the variable data to build version.
+        /// </summary>
+        /// <param name="variables"></param>
+        /// <returns></returns>
+        public VariableExim[] BuildVariablesData(Variable[] variables)
+        {
+            return [.. variables.Select(BuildVariableData)];
+        }
+        /// <summary>
+        /// Export the variable datum to build version
+        /// </summary>
+        /// <param name="variable"></param>
+        /// <returns></returns>
+        public VariableExim BuildVariableData(Variable variable)
+        {
+            return ExportVariableData(variable);
+        }
+        public ActionExim BuildEventData(IAction action)
+        {
+            return action switch
+            {
+                EmptyAction => new() { Type = "EmptyAction" },
+                CreateMenuAction createMenuAction => new()
+                {
+                    Type = "CreateMenuAction",
+                    Menu = createMenuAction.StaticExport is false ? ExportMenuData(createMenuAction.Menu) : null,
+                    StaticMenu = createMenuAction.StaticExport is true ? ExportStaticMenuData(createMenuAction.Menu) : null
+                },
+                LoadSceneAction loadSceneAction => new()
+                {
+                    Type = "LoadSceneAction",
+                    SceneID = loadSceneAction.sceneID,
+                    TriggerVariableName = loadSceneAction.TriggerVariableName
+                },
+                NativeLoadSceneAction nativeLoadSceneAction => new()
+                {
+                    Type = "NativeLoadSceneAction",
+                    SceneID = nativeLoadSceneAction.sceneID
+                },
+                AddSpriteAction addSpriteAction => new()
+                {
+                    Type = "AddSpriteAction",
+                    Sprite = ExportSpriteData(addSpriteAction.sprite)
+                },
+                ChangeSpriteAction changeSpriteAction => new()
+                {
+                    Type = "ChangeSpriteAction"
+                },
+                DecrementVariableAction decrementVariableAction => new()
+                {
+                    Type = "DecrementVariableAction",
+                    VariableName = decrementVariableAction.VariableName,
+                    ImpendingVariableName = decrementVariableAction.DecrementVariableName
+                },
+                IncrementVariableAction incrementVariableAction => new()
+                {
+                    Type = "IncrementVariableAction",
+                    ImpendingVariableName = incrementVariableAction.IncrementVariableName
+                },
+                RemoveSpriteAction removeSpriteAction => new()
+                {
+                    Type = "RemoveSpriteAction",
+                    Sprite = ExportSpriteData(removeSpriteAction.sprite)
+                },
+                SetBoolVariableAction setBoolVariableAction => new()
+                {
+                    Type = "SetBoolVariableAction",
+                    VariableName = setBoolVariableAction.VariableName,
+                    VariableValue = setBoolVariableAction.Value.ToString()
+                },
+                SetVariableFalseAction setVariableFalseAction => new()
+                {
+                    Type = "SetVariableFalseAction",
+                    VariableName = setVariableFalseAction.VariableName
+                },
+                SetVariableTrueAction setVariableTrueAction => new()
+                {
+                    Type = "SetVariableTrueAction",
+                    VariableName = setVariableTrueAction.VariableName
+                },
+                TextBoxCreateAction textBoxCreateAction => new()
+                {
+                    Type = "TextBoxCreateAction",
+                    TextBox = ExportTextBoxData(textBoxCreateAction.TextBox)
+                },
+                TintSpriteAction tintSpriteAction => new()
+                {
+                    Type = "TintSpriteAction",
+                    Sprite = ExportSpriteData(tintSpriteAction.sprite),
+                    TintColor = ExportColorData(tintSpriteAction.color)
+                },
+                ToggleVariableAction toggleVariableAction => new()
+                {
+                    Type = "ToggleVariableAction",
+                    VariableName = toggleVariableAction.VariableName
+                },
+                _ => throw new Exception("Event type is either not Timeline Dependent or is not found!"),
+            };
+        }
+        public ActionExim BuildTimelineIndependentAction(IAction action)
+        {
+            return action switch
+            {
+                CreateMenuAction createMenuAction => new()
+                {
+                    Type = "CreateMenuAction",
+                    StaticMenu = ExportStaticMenuData(createMenuAction.Menu)
+                },
+                LoadSceneAction loadSceneAction => new()
+                {
+                    Type = "LoadSceneAction",
+                    SceneID = loadSceneAction.sceneID,
+                    TriggerVariableName = loadSceneAction.TriggerVariableName
+                },
+                NativeLoadSceneAction nativeLoadSceneAction => new()
+                {
+                    Type = "NativeLoadSceneAction",
+                    SceneID = nativeLoadSceneAction.sceneID
+                },
+                SetVariableValueAction setVaraiableValueAction => new()
+                {
+                    Type = "SetVaraiableValueAction",
+                    VariableName = setVaraiableValueAction.VariableName
+                },
+                SwitchStaticMenuAction switchStaticMenuAction => new()
+                {
+                    Type = "SwitchStaticMenuAction"
+                },
+                _ => throw new Exception("Event type is either not Timeline independent or is not found!"),
+            };
         }
     }
 }

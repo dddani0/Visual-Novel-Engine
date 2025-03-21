@@ -72,7 +72,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "Block",
+                            "Text": "Static Menu",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 5
@@ -82,7 +82,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "Static block",
+                            "Text": "Block",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 6
@@ -92,7 +92,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "button",
+                            "Text": "Static block",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 7
@@ -102,7 +102,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "Static button",
+                            "Text": "button",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 8
@@ -112,7 +112,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "Slider",
+                            "Text": "Static button",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 9
@@ -122,7 +122,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "DropBox",
+                            "Text": "Slider",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 10
@@ -132,7 +132,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "Inputfield",
+                            "Text": "DropBox",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 11
@@ -142,7 +142,7 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "Static Inputfield",
+                            "Text": "Inputfield",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 12
@@ -152,10 +152,20 @@
                         {
                             "XPosition": 0,
                             "YPosition": 0,
-                            "Text": "Toggle",
+                            "Text": "Static Inputfield",
                             "Command": {
                                 "Type": "CreateComponentCommand",
                                 "RenderingObjectType": 13
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Toggle",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 14
                             },
                             "Type": 0
                         }

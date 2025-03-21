@@ -20,6 +20,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         }
         public void Execute()
         {
+            Editor.MiniWindow.Clear();
             switch (InspectorWindow.ActiveAction is not null)
             {
                 case true:
@@ -156,7 +157,8 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                     }
                     break;
                 case false:
-                    foreach (Component component in Editor.ActiveScene.ComponentList.Cast<Component>())
+                    Component[] componentArray = [.. Editor.ActiveScene.ComponentList.Cast<Component>()];
+                    foreach (Component component in componentArray)
                     {
                         if (component == InspectorWindow.ActiveComponent)
                         {
@@ -223,7 +225,15 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     if ((InspectorWindow.ComponentList[13] as DropDown).Button.Action == null) break;
                                     button.Action = (InspectorWindow.ComponentList[13] as DropDown).Button.Action;
                                     //Add to timeline
-                                    Editor.ActiveScene.Timeline.AddAction(button.Action);
+                                    switch (component.IsObjectStatic)
+                                    {
+                                        case true:
+                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)button.Action);
+                                            break;
+                                        case false:
+                                            Editor.ActiveScene.Timeline.AddAction(button.Action);
+                                            break;
+                                    }
                                     break;
                                 case TemplateGame.Component.TextField textField:
                                     //save textfield text
@@ -386,12 +396,23 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         B = byte.Parse(dropBoxBorderColorTextField.Text.Split(',')[2]),
                                         A = 255
                                     };
-                                    //Save button list
+                                    //Save options list
                                     List<TemplateGame.Component.Button> buttonList = [];
-                                    for (int i = 18; i < InspectorWindow.ComponentList.Count - 2; i++)
+                                    for (int i = 18; i < InspectorWindow.ComponentList.Count - 1; i++)
                                     {
-                                        TemplateGame.Component.Button currentComponent = (TemplateGame.Component.Button)InspectorWindow.ComponentList[i];
-                                        buttonList.Add(currentComponent);
+                                        DropDown currentDropDown = InspectorWindow.ComponentList[i] as DropDown;
+                                        if (currentDropDown.Button.Action == null) continue;
+                                        //Create a new block and a Button then assign the button to the block
+                                        CreateComponentCommand createComponentCommand = new(Editor, CreateComponentCommand.RenderingObjectType.StaticButton);
+                                        createComponentCommand.Execute();
+                                        TemplateGame.Component.Button button = ((Component)Editor.ActiveScene.ComponentList[^1]).RenderingObject as TemplateGame.Component.Button;
+                                        Block block = ((Component)Editor.ActiveScene.ComponentList[^2]).RenderingObject as Block;
+                                        button.Action = currentDropDown.Button.Action;
+                                        buttonList.Add(button);
+                                        if (Editor.ActiveScene.Timeline.TimelineIndepententActions.Contains((ISettingsEvent)currentDropDown.Button.Action) is false)
+                                        {
+                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)button.Action);
+                                        }
                                     }
                                     dropBox.Options = buttonList;
                                     break;
@@ -436,7 +457,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //Save Slider value
                                     slider.Value = float.Parse((InspectorWindow.ComponentList[22] as TextField).Text);
                                     //Save Action
-                                    //slider.Action = (Action)Enum.Parse(typeof(Action), (InspectorWindow.ComponentList[22] as TextField).Text);
+                                    if ((InspectorWindow.ComponentList[24] as DropDown).Button == null) break;
+                                    slider.Action = (InspectorWindow.ComponentList[24] as DropDown).Button.Action;
+                                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)slider.Action);
                                     break;
                                 case Toggle toggle:
                                     //Save position
@@ -479,7 +502,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     //Save toggle text
                                     toggle.Text = (InspectorWindow.ComponentList[20] as TextField).Text;
                                     //Save action
-                                    //toggle.Action = (Action)Enum.Parse(typeof(Action), (InspectorWindow.ComponentList[22] as TextField).Text);
+                                    if ((InspectorWindow.ComponentList[22] as DropDown).Button.Action == null) break;
+                                    toggle.SettingsAction = (InspectorWindow.ComponentList[22] as DropDown).Button.Action;
+                                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)toggle.SettingsAction);
                                     break;
                                 case InputField inputField:
                                     //Save position
@@ -523,6 +548,18 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                         A = 255
                                     };
                                     //Save action
+                                    if ((InspectorWindow.ComponentList[26] as DropDown).Button.Action == null) break;
+                                    switch (component.IsObjectStatic)
+                                    {
+                                        case true:
+                                            inputField.Button.Action = (InspectorWindow.ComponentList[26] as DropDown).Button.Action;
+                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)inputField.Button.Action);
+                                            break;
+                                        case false:
+                                            inputField.Button.Action = (InspectorWindow.ComponentList[26] as DropDown).Button.Action;
+                                            Editor.ActiveScene.Timeline.AddAction(inputField.Button.Action);
+                                            break;
+                                    }
                                     break;
                             }
                         }

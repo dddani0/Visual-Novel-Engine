@@ -9,6 +9,7 @@ namespace TemplateGame.Component.Action
     {
         private readonly Game Game;
         internal Menu Menu;
+        internal bool StaticExport { get; set; }
         private Block[] Blocks { get; }
         /// <summary>
         /// Constructor for the CreateMenuAction.

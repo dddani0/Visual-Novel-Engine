@@ -24,6 +24,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         private int InspectorButtonXPosition { get; set; }
         internal int BorderWidth { get; set; }
         internal IPermanentRenderingObject? RenderingObject { get; set; }
+        internal bool IsObjectStatic { get; set; }
         internal bool IsSelected { get; set; }
         internal bool IsLocked { get; set; }
         internal bool IsHover { get; set; }

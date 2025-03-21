@@ -291,7 +291,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         public void Build()
         {
-            var GameBuildData = JsonSerializer.Serialize(EditorImporter.ExportBuildSceneData([.. SceneList]), new JsonSerializerOptions
+            var GameBuildData = JsonSerializer.Serialize(EditorImporter.BuildScenesData([.. SceneList]), new JsonSerializerOptions
             {
                 WriteIndented = true
             });
@@ -391,7 +391,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 component.IsLocked = true;
             }
             ActiveScene.Timeline.AddGeneralAction.IsLocked = true;
-            ActiveScene.Timeline.RemoveEventsButton.IsLocked = true;
+            ActiveScene.Timeline.RemoveActionsButton.IsLocked = true;
         }
 
         internal void EnableComponents()
@@ -409,7 +409,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                 component.IsLocked = false;
             }
             ActiveScene.Timeline.AddGeneralAction.IsLocked = false;
-            ActiveScene.Timeline.RemoveEventsButton.IsLocked = false;
+            ActiveScene.Timeline.RemoveActionsButton.IsLocked = false;
         }
         /// <summary>
         /// Generates a unique number ID.

@@ -3,10 +3,10 @@ using VisualNovelEngine.Engine.EngineEditor.Interface;
 
 namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
 {
-    public class DeleteActionCommand : ICommand
+    public class DeleteTimelienIndependentEventCommand : ICommand
     {
         Editor Editor { get; set; }
-        public DeleteActionCommand(Editor editor)
+        public DeleteTimelienIndependentEventCommand(Editor editor)
         {
             Editor = editor;
         }
@@ -19,11 +19,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             closeInspectorCommand.Execute();
             //Delete the event
             //Get index of the current action
-            int actionIndex = Editor.ActiveScene.Timeline.Actions.FindIndex(x => x == impendingAction);
+            int actionIndex = Editor.ActiveScene.Timeline.TimelineIndepententActions.FindIndex(x => x == impendingAction);
             //Remove the action from the timeline
-            Editor.ActiveScene.Timeline.Actions.RemoveAt(actionIndex);
+            Editor.ActiveScene.Timeline.TimelineIndepententActions.RemoveAt(actionIndex);
             //Remove the button from the timeline
-            Editor.ActiveScene.Timeline.ActionButtons.RemoveAt(actionIndex);
+            Editor.ActiveScene.Timeline.TimelineIndepententActionButtons.RemoveAt(actionIndex);
         }
     }
 }

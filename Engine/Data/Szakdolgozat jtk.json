@@ -1,5 +1,5 @@
 {
-  "ID": 4,
+  "ID": 6,
   "ProjectName": "Szakdolgozat jtk",
   "ProjectPath": "../../../Engine/Data/Szakdolgozat jtk.json",
   "WindowWidth": 800,
@@ -154,7 +154,7 @@
             {
               "XPosition": 5,
               "YPosition": 255,
-              "Text": "Block",
+              "Text": "Static...",
               "Command": {
                 "Type": "CreateComponentCommand",
                 "ErrorType": null,
@@ -179,7 +179,7 @@
             {
               "XPosition": 5,
               "YPosition": 275,
-              "Text": "Static...",
+              "Text": "Block",
               "Command": {
                 "Type": "CreateComponentCommand",
                 "ErrorType": null,
@@ -204,7 +204,7 @@
             {
               "XPosition": 5,
               "YPosition": 295,
-              "Text": "button",
+              "Text": "Static...",
               "Command": {
                 "Type": "CreateComponentCommand",
                 "ErrorType": null,
@@ -229,7 +229,7 @@
             {
               "XPosition": 5,
               "YPosition": 315,
-              "Text": "Static...",
+              "Text": "button",
               "Command": {
                 "Type": "CreateComponentCommand",
                 "ErrorType": null,
@@ -254,7 +254,7 @@
             {
               "XPosition": 5,
               "YPosition": 335,
-              "Text": "Slider",
+              "Text": "Static...",
               "Command": {
                 "Type": "CreateComponentCommand",
                 "ErrorType": null,
@@ -279,7 +279,7 @@
             {
               "XPosition": 5,
               "YPosition": 355,
-              "Text": "DropBo...",
+              "Text": "Slider",
               "Command": {
                 "Type": "CreateComponentCommand",
                 "ErrorType": null,
@@ -304,7 +304,7 @@
             {
               "XPosition": 5,
               "YPosition": 375,
-              "Text": "Inputf...",
+              "Text": "DropBo...",
               "Command": {
                 "Type": "CreateComponentCommand",
                 "ErrorType": null,
@@ -329,7 +329,7 @@
             {
               "XPosition": 5,
               "YPosition": 395,
-              "Text": "Static...",
+              "Text": "Inputf...",
               "Command": {
                 "Type": "CreateComponentCommand",
                 "ErrorType": null,
@@ -354,13 +354,38 @@
             {
               "XPosition": 5,
               "YPosition": 415,
-              "Text": "Toggle",
+              "Text": "Static...",
               "Command": {
                 "Type": "CreateComponentCommand",
                 "ErrorType": null,
                 "ErrorMessage": null,
                 "WarningButtons": null,
                 "RenderingObjectType": 13,
+                "EnabledRowComponentCount": 0,
+                "XPosition": 0,
+                "YPosition": 0,
+                "ParentButtonName": null,
+                "Buttons": null,
+                "Components": null,
+                "WindowComponents": null,
+                "HasVariable": null,
+                "HasSceneRelatedComponent": null,
+                "ButtonDependency": null,
+                "VariableValue": null,
+                "VariableType": null
+              },
+              "Type": 0
+            },
+            {
+              "XPosition": 5,
+              "YPosition": 435,
+              "Text": "Toggle",
+              "Command": {
+                "Type": "CreateComponentCommand",
+                "ErrorType": null,
+                "ErrorMessage": null,
+                "WarningButtons": null,
+                "RenderingObjectType": 14,
                 "EnabledRowComponentCount": 0,
                 "XPosition": 0,
                 "YPosition": 0,
@@ -677,10 +702,24 @@
               "Label": null,
               "TextField": null,
               "EditorToggle": null,
+              "DropDown": {
+                "Text": null,
+                "XPosition": 150,
+                "YPosition": 450,
+                "Filter": 13,
+                "Static": null,
+                "Options": []
+              },
+              "Button": null
+            },
+            {
+              "Label": null,
+              "TextField": null,
+              "EditorToggle": null,
               "DropDown": null,
               "Button": {
                 "XPosition": 150,
-                "YPosition": 450,
+                "YPosition": 500,
                 "Text": "Delete...",
                 "Command": {
                   "Type": "ShowErrorCommand",
@@ -747,12 +786,21 @@
     {
       "ID": 0,
       "Name": "DefaultScene",
+      "Background": "SolidColor",
+      "SolidColor": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "GradientColor": null,
+      "ImageTexture": null,
       "Components": [
         {
           "ID": 2,
           "Name": "Button Block(2)",
-          "XPosition": 91,
-          "YPosition": 255,
+          "XPosition": 204,
+          "YPosition": 232,
           "RenderingObject": {
             "Static": null,
             "Sprite": null,
@@ -799,7 +847,158 @@
                   255
                 ],
                 "Action": {
-                  "Type": "SetVariableValueAction",
+                  "Type": "DecrementVariableAction",
+                  "Sprite": null,
+                  "TextBox": null,
+                  "TintColor": null,
+                  "SceneID": null,
+                  "VariableName": "variable name 1",
+                  "TriggerVariableName": null,
+                  "VariableValue": null,
+                  "VariableType": null,
+                  "ImpendingVariable": "0",
+                  "Menu": null,
+                  "StaticMenu": null,
+                  "BlockComponentID": null,
+                  "DisablingMenuID": null,
+                  "EnablingMenuID": null
+                }
+              },
+              "StaticButton": null,
+              "InputField": null,
+              "StaticInputField": null,
+              "DropBox": null,
+              "Slider": null,
+              "Toggle": null,
+              "TextField": null,
+              "Sprite": null
+            },
+            "StaticBlock": null,
+            "Slider": null,
+            "Toggle": null
+          }
+        },
+        {
+          "ID": 3,
+          "Name": "New Button(3)",
+          "XPosition": 491,
+          "YPosition": 273,
+          "RenderingObject": {
+            "Static": null,
+            "Sprite": null,
+            "TextField": null,
+            "Textbox": null,
+            "Button": {
+              "XPosition": 0,
+              "YPosition": 0,
+              "Width": 250,
+              "Height": 250,
+              "Text": "Text",
+              "BorderWidth": 1,
+              "TextColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "Color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "BorderColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "HoverColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "Action": {
+                "Type": "DecrementVariableAction",
+                "Sprite": null,
+                "TextBox": null,
+                "TintColor": null,
+                "SceneID": null,
+                "VariableName": "variable name 1",
+                "TriggerVariableName": null,
+                "VariableValue": null,
+                "VariableType": null,
+                "ImpendingVariable": "0",
+                "Menu": null,
+                "StaticMenu": null,
+                "BlockComponentID": null,
+                "DisablingMenuID": null,
+                "EnablingMenuID": null
+              }
+            },
+            "InputField": null,
+            "StaticInputField": null,
+            "DropBox": null,
+            "Menu": null,
+            "Block": null,
+            "StaticBlock": null,
+            "Slider": null,
+            "Toggle": null
+          }
+        },
+        {
+          "ID": 5,
+          "Name": "Button Block(5)",
+          "XPosition": 222,
+          "YPosition": 369,
+          "RenderingObject": {
+            "Static": null,
+            "Sprite": null,
+            "TextField": null,
+            "Textbox": null,
+            "Button": null,
+            "InputField": null,
+            "StaticInputField": null,
+            "DropBox": null,
+            "Menu": null,
+            "Block": {
+              "ID": 4,
+              "XPosition": 0,
+              "YPosition": 0,
+              "Button": {
+                "XPosition": 0,
+                "YPosition": 0,
+                "Width": 250,
+                "Height": 250,
+                "Text": "Text",
+                "BorderWidth": 1,
+                "TextColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "Color": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "BorderColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "HoverColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "Action": {
+                  "Type": "SetVaraiableValueAction",
                   "Sprite": null,
                   "TextBox": null,
                   "TintColor": null,
@@ -831,8 +1030,8 @@
           }
         },
         {
-          "ID": 3,
-          "Name": "New Button(3)",
+          "ID": 5,
+          "Name": "New Button(5)",
           "XPosition": 400,
           "YPosition": 400,
           "RenderingObject": {
@@ -872,7 +1071,7 @@
                 255
               ],
               "Action": {
-                "Type": "SetVariableValueAction",
+                "Type": "SetVaraiableValueAction",
                 "Sprite": null,
                 "TextBox": null,
                 "TintColor": null,
@@ -904,16 +1103,16 @@
       "Timeline": {
         "Actions": [
           {
-            "Type": "SetVariableValueAction",
+            "Type": "DecrementVariableAction",
             "Sprite": null,
             "TextBox": null,
             "TintColor": null,
             "SceneID": null,
-            "VariableName": "",
+            "VariableName": "variable name 1",
             "TriggerVariableName": null,
             "VariableValue": null,
             "VariableType": null,
-            "ImpendingVariable": null,
+            "ImpendingVariable": "0",
             "Menu": null,
             "StaticMenu": null,
             "BlockComponentID": null,

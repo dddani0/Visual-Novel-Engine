@@ -18,6 +18,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
             TextBox,
             TextField,
             Menu,
+            StaticMenu,
             Block,
             StaticBlock,
             Button,
@@ -63,7 +64,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                     Component staticSpriteBlockComponent = new(id, Editor, null, $"New Block({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticSpriteBlock);
                     //Create sprite component
                     id = Editor.GenerateID();
-                    Component = new Component(id, Editor, null, $"New Sprite({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticSprite);
+                    Component = new Component(id, Editor, null, $"New Sprite({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticSprite)
+                    {
+                        IsObjectStatic = true
+                    };
                     //Add block component to scene
                     Editor.ActiveScene.ComponentList.Add(staticSpriteBlockComponent);
                     break;
@@ -100,7 +104,18 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                 case RenderingObjectType.StaticBlock:
                     Block staticBlock = new(0, 0, null, id);
                     id = Editor.GenerateID();
-                    Component = new Component(id, Editor, null, $"New Static Block({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticBlock);
+                    Component = new Component(id, Editor, null, $"New Static Block({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticBlock)
+                    {
+                        IsObjectStatic = true
+                    };
+                    break;
+                case RenderingObjectType.StaticMenu:
+                    Menu staticMenu = new(Editor.Game, id, 0, 0, 10, 10, false, [], Color.Black, Color.Black);
+                    id = Editor.GenerateID();
+                    Component = new Component(id, Editor, null, $"New static Menu({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticMenu)
+                    {
+                        IsObjectStatic = true
+                    };
                     break;
                 case RenderingObjectType.Button:
                     //Create block for button
@@ -122,14 +137,17 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                     //Create block for static button
                     Block staticButtonBlock = new(0, 0, null, id);
                     //Create static button
-                    TemplateGame.Component.Button staticButton = new(Editor.Game, staticButtonBlock, Raylib.GetFontDefault(), 0, 0, 1, 250, 250, "Text", Color.Black, Color.Black, Color.Black, Color.Black, (ISettingsEvent)new TemplateGame.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0));
+                    TemplateGame.Component.Button staticButton = new(Editor.Game, staticButtonBlock, Raylib.GetFontDefault(), 0, 0, 1, 250, 250, "Text", Color.Black, Color.Black, Color.Black, Color.Black, new TemplateGame.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0));
                     //Assign block to static button
                     staticButtonBlock.Component = staticButton;
                     //Create block component
                     id = Editor.GenerateID();
                     Component staticButtonBlockComponent = new(id, Editor, null, $"Button Block({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticButtonBlock);
                     //Create button component
-                    Component = new Component(id, Editor, null, $"New Button({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticButton);
+                    Component = new Component(id, Editor, null, $"New Button({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticButton)
+                    {
+                        IsObjectStatic = true
+                    };
                     //Add block component to scene
                     Editor.ActiveScene.ComponentList.Add(staticButtonBlockComponent);
                     break;
@@ -193,7 +211,10 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                     Component staticInputFieldBlockComponent = new(id, Editor, null, $"InputField Block({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticInputFieldBlock);
                     //Create inputfield component
                     id = Editor.GenerateID();
-                    Component = new Component(id, Editor, null, $"New InputField({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticInputField);
+                    Component = new Component(id, Editor, null, $"New InputField({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, staticInputField)
+                    {
+                        IsObjectStatic = true
+                    };
                     //Add block component to scene
                     Editor.ActiveScene.ComponentList.Add(staticInputFieldBlockComponent);
                     break;
