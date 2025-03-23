@@ -1,0 +1,34 @@
+[
+  {
+    "Name": "DefaultScene",
+    "ID": 0,
+    "Background": "SolidColor",
+    "SolidColor": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "GradientColor": null,
+    "ImageTexture": null,
+    "ActionList": [
+      {
+        "Type": "DecrementVariableAction",
+        "Sprite": null,
+        "TextBox": null,
+        "TintColor": null,
+        "SceneID": null,
+        "VariableName": "variable name 1",
+        "TriggerVariableName": null,
+        "VariableValue": null,
+        "VariableType": null,
+        "ImpendingVariable": "0",
+        "Menu": null,
+        "StaticMenu": null,
+        "BlockComponentID": null,
+        "DisablingMenuID": null,
+        "EnablingMenuID": null
+      }
+    ]
+  }
+]
