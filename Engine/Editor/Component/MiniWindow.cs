@@ -1,5 +1,5 @@
 using Raylib_cs;
-using TemplateGame.Component;
+using VisualNovelEngine.Engine.Game.Component;
 using VisualNovelEngine.Engine.Editor.Component.Command;
 using VisualNovelEngine.Engine.Editor.Interface;
 
@@ -184,7 +184,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             sceneBackgroundDropDown.Button.Text = Editor.ActiveScene.BackgroundOption.ToString();
             switch (Editor.ActiveScene.BackgroundOption)
             {
-                case TemplateGame.Component.Scene.BackgroundOption.SolidColor:
+                case VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor:
                     Label sceneBackgroundColorLabel = new(XPosition, YPosition, "Background Color");
                     TextField sceneBackgroundColor = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{Editor.ActiveScene.BackgroundColor.Value.R}, {Editor.ActiveScene.BackgroundColor.Value.G}, {Editor.ActiveScene.BackgroundColor.Value.B}", Raylib.GetFontDefault(), false);
                     ComponentList.Insert(ComponentList.Count - 1, sceneBackgroundColorLabel);
@@ -192,7 +192,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     Scrollbar.Components.Insert(Scrollbar.Components.Count - 1, sceneBackgroundColorLabel);
                     Scrollbar.Components.Insert(Scrollbar.Components.Count - 1, sceneBackgroundColor);
                     break;
-                case TemplateGame.Component.Scene.BackgroundOption.Image:
+                case VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image:
                     Label sceneBackgroundImageLabel = new(XPosition, YPosition, "Background Image");
                     TextField sceneBackgroundImage = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.ActiveScene.BackgroundImage.ToString(), Raylib.GetFontDefault(), false);
                     ComponentList.Insert(ComponentList.Count - 1, sceneBackgroundImageLabel);
@@ -200,7 +200,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     Scrollbar.Components.Insert(Scrollbar.Components.Count - 1, sceneBackgroundImageLabel);
                     Scrollbar.Components.Insert(Scrollbar.Components.Count - 1, sceneBackgroundImage);
                     break;
-                case TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal:
+                case VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal:
                     Label sceneBackgroundGradientHorizontalLabel = new(XPosition, YPosition, "Background Gradient Horizontal");
                     TextField sceneBackgroundGradientHorizontalColor1 = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{Editor.ActiveScene.BackgroundGradientColor[0].R}, {Editor.ActiveScene.BackgroundGradientColor[0].G}, {Editor.ActiveScene.BackgroundGradientColor[0].B}", Raylib.GetFontDefault(), false);
                     TextField sceneBackgroundGradientHorizontalColor2 = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{Editor.ActiveScene.BackgroundGradientColor[1].R}, {Editor.ActiveScene.BackgroundGradientColor[1].G}, {Editor.ActiveScene.BackgroundGradientColor[1].B}", Raylib.GetFontDefault(), false);
@@ -211,7 +211,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     Scrollbar.Components.Insert(Scrollbar.Components.Count - 1, sceneBackgroundGradientHorizontalColor1);
                     Scrollbar.Components.Insert(Scrollbar.Components.Count - 1, sceneBackgroundGradientHorizontalColor2);
                     break;
-                case TemplateGame.Component.Scene.BackgroundOption.GradientVertical:
+                case VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical:
                     Label sceneBackgroundGradientVerticalLabel = new(XPosition, YPosition, "Background Gradient Vertical");
                     TextField sceneBackgroundGradientVerticalColor1 = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{Editor.ActiveScene.BackgroundGradientColor[0].R}, {Editor.ActiveScene.BackgroundGradientColor[0].G}, {Editor.ActiveScene.BackgroundGradientColor[0].B}", Raylib.GetFontDefault(), false);
                     TextField sceneBackgroundGradientVerticalColor2 = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{Editor.ActiveScene.BackgroundGradientColor[1].R}, {Editor.ActiveScene.BackgroundGradientColor[1].G}, {Editor.ActiveScene.BackgroundGradientColor[1].B}", Raylib.GetFontDefault(), false);

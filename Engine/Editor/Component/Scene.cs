@@ -43,7 +43,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// The background option of the scene.
         /// </summary>
-        internal TemplateGame.Component.Scene.BackgroundOption BackgroundOption { get; set; } = TemplateGame.Component.Scene.BackgroundOption.SolidColor;
+        internal VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption BackgroundOption { get; set; } = VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor;
         /// <summary>
         /// The background color of the scene.
         /// </summary>

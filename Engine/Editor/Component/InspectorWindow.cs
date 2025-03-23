@@ -1,10 +1,10 @@
 using System.Linq;
 using Raylib_cs;
-using TemplateGame.Component;
-using TemplateGame.Component.Action;
-using TemplateGame.Component.Action.TimelineDependent;
-using TemplateGame.Component.Action.TimelineIndependent;
-using TemplateGame.Interface;
+using VisualNovelEngine.Engine.Game.Component;
+using VisualNovelEngine.Engine.Game.Component.Action;
+using VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent;
+using VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent;
+using VisualNovelEngine.Engine.Game.Interface;
 using VisualNovelEngine.Engine.Editor.Component.Command;
 using VisualNovelEngine.Engine.Editor.Interface;
 
@@ -127,7 +127,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{sprite.Color.R}, {sprite.Color.G}, {sprite.Color.B}", Raylib.GetFontDefault(), false));
                     break;
-                case TemplateGame.Component.Button button:
+                case VisualNovelEngine.Engine.Game.Component.Button button:
                     //Dinamic Button Name
                     ComponentList.Add(new Label(XPosition, YPosition, "Button Text:"));
                     ComponentList.Add(
@@ -174,7 +174,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                             break;
                     }
                     break;
-                case TemplateGame.Component.TextField textField:
+                case VisualNovelEngine.Engine.Game.Component.TextField textField:
                     //Dinamic Text
                     ComponentList.Add(new Label(XPosition, YPosition, "Text:"));
                     ComponentList.Add(

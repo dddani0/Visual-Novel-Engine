@@ -1,4 +1,4 @@
-﻿using TemplateGame.Component;
+﻿using VisualNovelEngine.Engine.Game.Component;
 using Raylib_cs;
 using VisualNovelEngine.Engine.Editor.Component;
 

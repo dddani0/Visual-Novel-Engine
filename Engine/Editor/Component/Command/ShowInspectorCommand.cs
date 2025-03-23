@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Raylib_cs;
-using TemplateGame.Interface;
+using VisualNovelEngine.Engine.Game.Interface;
 using VisualNovelEngine.Engine.Editor.Interface;
 
 namespace VisualNovelEngine.Engine.Editor.Component.Command

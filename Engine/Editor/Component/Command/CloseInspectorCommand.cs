@@ -1,9 +1,9 @@
 using Raylib_cs;
-using TemplateGame.Component;
-using TemplateGame.Component.Action;
-using TemplateGame.Component.Action.TimelineDependent;
-using TemplateGame.Component.Action.TimelineIndependent;
-using TemplateGame.Interface;
+using VisualNovelEngine.Engine.Game.Component;
+using VisualNovelEngine.Engine.Game.Component.Action;
+using VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent;
+using VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent;
+using VisualNovelEngine.Engine.Game.Interface;
 using VisualNovelEngine.Engine.Editor.Interface;
 
 namespace VisualNovelEngine.Engine.Editor.Component.Command
@@ -207,7 +207,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         A = 255
                                     };
                                     break;
-                                case TemplateGame.Component.Button button:
+                                case VisualNovelEngine.Engine.Game.Component.Button button:
                                     //fetch fields and read out values.
                                     button.Text = (InspectorWindow.ComponentList[5] as TextField).Text;
                                     //Save color
@@ -263,7 +263,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                             break;
                                     }
                                     break;
-                                case TemplateGame.Component.TextField textField:
+                                case VisualNovelEngine.Engine.Game.Component.TextField textField:
                                     //save textfield text
                                     textField.Text = (InspectorWindow.ComponentList[5] as TextField).Text;
                                     //save textfield color
@@ -425,7 +425,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         A = 255
                                     };
                                     //Save options list
-                                    List<TemplateGame.Component.Button> buttonList = [];
+                                    List<VisualNovelEngine.Engine.Game.Component.Button> buttonList = [];
                                     for (int i = 18; i < InspectorWindow.ComponentList.Count - 1; i++)
                                     {
                                         DropDown currentDropDown = InspectorWindow.ComponentList[i] as DropDown;
@@ -433,7 +433,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         //Create a new block and a Button then assign the button to the block
                                         CreateComponentCommand createComponentCommand = new(Editor, CreateComponentCommand.RenderingObjectType.StaticButton);
                                         createComponentCommand.Execute();
-                                        TemplateGame.Component.Button button = ((Component)Editor.ActiveScene.ComponentList[^1]).RenderingObject as TemplateGame.Component.Button;
+                                        VisualNovelEngine.Engine.Game.Component.Button button = ((Component)Editor.ActiveScene.ComponentList[^1]).RenderingObject as VisualNovelEngine.Engine.Game.Component.Button;
                                         Block block = ((Component)Editor.ActiveScene.ComponentList[^2]).RenderingObject as Block;
                                         button.Action = currentDropDown.Button.Action;
                                         buttonList.Add(button);

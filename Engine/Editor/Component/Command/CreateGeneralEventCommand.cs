@@ -1,8 +1,8 @@
 using Raylib_cs;
-using TemplateGame.Component;
-using TemplateGame.Component.Action;
-using TemplateGame.Component.Action.TimelineDependent;
-using TemplateGame.Interface;
+using VisualNovelEngine.Engine.Game.Component;
+using VisualNovelEngine.Engine.Game.Component.Action;
+using VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent;
+using VisualNovelEngine.Engine.Game.Interface;
 using VisualNovelEngine.Engine.Editor.Interface;
 
 namespace VisualNovelEngine.Engine.Editor.Component.Command
@@ -40,7 +40,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
         /// <summary>
         /// The game.
         /// </summary>
-        private Game Game { get; set; }
+        private VisualNovelEngine.Engine.Game.Component.Game Game { get; set; }
         /// <summary>
         /// The editor.
         /// </summary>

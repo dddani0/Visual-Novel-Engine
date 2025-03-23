@@ -57,8 +57,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     if (item.HasSceneComponent)
                     {
                         //remove attribute
-                        if (Editor.ActiveScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.SolidColor ||
-                            Editor.ActiveScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.Image)
+                        if (Editor.ActiveScene.BackgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor ||
+                            Editor.ActiveScene.BackgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image)
                         {
                             item.ComponentList.RemoveRange(4, 2);
                         }

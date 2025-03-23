@@ -1,6 +1,6 @@
 using EngineEditor.Component;
 using Raylib_cs;
-using TemplateGame.Interface;
+using VisualNovelEngine.Engine.Game.Interface;
 using VisualNovelEngine.Engine.Editor.Component.Command;
 using VisualNovelEngine.Engine.Editor.Interface;
 

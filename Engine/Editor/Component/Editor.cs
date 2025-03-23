@@ -1,13 +1,13 @@
 using VisualNovelEngine.Engine.Editor.Interface;
 using Raylib_cs;
-using TemplateGame.Component;
+using VisualNovelEngine.Engine.Game.Component;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using EngineEditor.Component;
 using System.Numerics;
 using VisualNovelEngine.Engine.Editor.Component.Command;
 using System.Reflection.Emit;
-using Timer = TemplateGame.Component.Timer;
+using Timer = VisualNovelEngine.Engine.Game.Component.Timer;
 
 namespace VisualNovelEngine.Engine.Editor.Component
 {
@@ -34,7 +34,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// Instance of a Game
         /// </summary>
-        internal Game Game { get; set; }
+        internal VisualNovelEngine.Engine.Game.Component.Game Game { get; set; }
         internal List<Variable> GameVariables { get; set; } = [];
         /// <summary>
         /// The extent which the screen moves, when decided to

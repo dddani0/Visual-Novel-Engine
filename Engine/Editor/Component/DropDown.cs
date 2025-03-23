@@ -1,5 +1,5 @@
 using Raylib_cs;
-using TemplateGame.Component;
+using VisualNovelEngine.Engine.Game.Component;
 using VisualNovelEngine.Engine.Editor.Component.Command;
 using VisualNovelEngine.Engine.Editor.Interface;
 
@@ -138,7 +138,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                         {
                             Sprite => FilterType.Sprite,
                             Menu => FilterType.Menu,
-                            TemplateGame.Component.Button => FilterType.Button,
+                            VisualNovelEngine.Engine.Game.Component.Button => FilterType.Button,
                             TextBox => FilterType.TextBox,
                             Block => FilterType.Block,
                             DropBox => FilterType.DropBox,
@@ -158,7 +158,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                         {
                             Sprite => FilterType.Sprite,
                             Menu => FilterType.Menu,
-                            TemplateGame.Component.Button => FilterType.Button,
+                            VisualNovelEngine.Engine.Game.Component.Button => FilterType.Button,
                             TextBox => FilterType.TextBox,
                             Block => FilterType.Block,
                             DropBox => FilterType.DropBox,
@@ -190,21 +190,21 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     FilteredButtonList = [textBoxDefaultPositionType, textBoxupperPositionPositionType];
                     break;
                 case FilterType.SceneBackground:
-                    Button sceneBackgroundDefaultBackgroundType = new(Editor, this, TemplateGame.Component.Scene.BackgroundOption.SolidColor.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    Button sceneBackgroundDefaultBackgroundType = new(Editor, this, VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        SceneBackgroundOption = TemplateGame.Component.Scene.BackgroundOption.SolidColor
+                        SceneBackgroundOption = VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor
                     };
-                    Button sceneBackgroundGradientVerticalBackgroundType = new(Editor, this, TemplateGame.Component.Scene.BackgroundOption.GradientVertical.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    Button sceneBackgroundGradientVerticalBackgroundType = new(Editor, this, VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        SceneBackgroundOption = TemplateGame.Component.Scene.BackgroundOption.GradientVertical
+                        SceneBackgroundOption = VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical
                     };
-                    Button sceneBackgroundGradientHorizontalBackgroundType = new(Editor, this, TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    Button sceneBackgroundGradientHorizontalBackgroundType = new(Editor, this, VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        SceneBackgroundOption = TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal
+                        SceneBackgroundOption = VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal
                     };
-                    Button sceneBackgroundImageBackgroundType = new(Editor, this, TemplateGame.Component.Scene.BackgroundOption.Image.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
+                    Button sceneBackgroundImageBackgroundType = new(Editor, this, VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image.ToString(), Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        SceneBackgroundOption = TemplateGame.Component.Scene.BackgroundOption.Image
+                        SceneBackgroundOption = VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image
                     };
                     FilteredButtonList = [sceneBackgroundDefaultBackgroundType, sceneBackgroundGradientVerticalBackgroundType, sceneBackgroundGradientHorizontalBackgroundType, sceneBackgroundImageBackgroundType];
                     break;
@@ -231,23 +231,23 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     //Options for timeline independent events
                     Button SetVariableValueActionButton = new(Editor, this, "Set variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "", null, 1)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "", null, 1)
                     };
                     Button SwitchStaticMenuActionButton = new(Editor, this, "Switch menu action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineIndependent.SwitchStaticMenuAction(Editor.Game, null, 0, 0)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SwitchStaticMenuAction(Editor.Game, null, 0, 0)
                     };
                     Button createMenuActionButton = new(Editor, this, "Create menu action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.CreateMenuAction(Editor.Game, null, null)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.CreateMenuAction(Editor.Game, null, null)
                     };
                     Button loadSceneActionButton = new(Editor, this, "Load scene action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.LoadSceneAction(Editor.Game, 0, "variable name")
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.LoadSceneAction(Editor.Game, 0, "variable name")
                     };
                     Button nativeLoadSceneActionButton = new(Editor, this, "Native load scene action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.NativeLoadSceneAction(Editor.Game, 0)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.NativeLoadSceneAction(Editor.Game, 0)
                     };
                     FilteredButtonList = [SetVariableValueActionButton, SwitchStaticMenuActionButton, createMenuActionButton, loadSceneActionButton, nativeLoadSceneActionButton];
                     break;
@@ -255,51 +255,51 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     //Options for timeline dependent events
                     Button addSpriteActionButton = new(Editor, this, "Add sprite action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.AddSpriteAction(new Sprite("Empty path"), Editor.Game)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.AddSpriteAction(new Sprite("Empty path"), Editor.Game)
                     };
                     Button changeSpriteAction = new(Editor, this, "Change sprite action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.ChangeSpriteAction(null, "Change sprite path", Editor.Game)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.ChangeSpriteAction(null, "Change sprite path", Editor.Game)
                     };
                     Button decrementVariableActionButton = new(Editor, this, "Decrement variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.DecrementVariableAction(Editor.Game, "variable name 1", "decremen variable name")
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.DecrementVariableAction(Editor.Game, "variable name 1", "decremen variable name")
                     };
                     Button EmptyActionButton = new(Editor, this, "Empty action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.EmptyAction(Editor.Game)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.EmptyAction(Editor.Game)
                     };
                     Button incrementVariableAction = new(Editor, this, "Increment variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.IncrementVariableAction(Editor.Game, "variable name 1", "increment variable name")
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.IncrementVariableAction(Editor.Game, "variable name 1", "increment variable name")
                     };
                     Button removeSpriteAction = new(Editor, this, "Remove sprite action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.RemoveSpriteAction(null, Editor.Game)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.RemoveSpriteAction(null, Editor.Game)
                     };
                     Button setBoolVariableAction = new(Editor, this, "Set bool variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.SetBoolVariableAction(Editor.Game, "variable name", true)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.SetBoolVariableAction(Editor.Game, "variable name", true)
                     };
                     Button setVariableFalseAction = new(Editor, this, "Set variable false action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.SetVariableFalseAction(Editor.Game, "variable name")
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.SetVariableFalseAction(Editor.Game, "variable name")
                     };
                     Button setVariableTrueAction = new(Editor, this, "Set variable true action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.SetVariableTrueAction(Editor.Game, "variable name")
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.SetVariableTrueAction(Editor.Game, "variable name")
                     };
                     Button createTextBoxButton = new(Editor, this, "Create textbox action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.TextBoxCreateAction(null)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.TextBoxCreateAction(null)
                     };
                     Button tintSpriteActionButton = new(Editor, this, "Tint sprite action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.TintSpriteAction(null, Color.Black, Editor.Game)
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.TintSpriteAction(null, Color.Black, Editor.Game)
                     };
                     Button toggleVariableActionButton = new(Editor, this, "Toggle variable action", Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, null)
                     {
-                        Action = new TemplateGame.Component.Action.TimelineDependent.ToggleVariableAction(Editor.Game, "variable name")
+                        Action = new VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent.ToggleVariableAction(Editor.Game, "variable name")
                     };
                     FilteredButtonList = [addSpriteActionButton, changeSpriteAction, decrementVariableActionButton, EmptyActionButton, incrementVariableAction, removeSpriteAction, setBoolVariableAction, setVariableFalseAction, setVariableTrueAction, createTextBoxButton, tintSpriteActionButton, toggleVariableActionButton];
                     break;

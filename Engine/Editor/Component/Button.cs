@@ -1,9 +1,9 @@
 using VisualNovelEngine.Engine.Editor.Interface;
 using Raylib_cs;
-using TemplateGame.Component;
-using Timer = TemplateGame.Component.Timer;
+using VisualNovelEngine.Engine.Game.Component;
+using Timer = VisualNovelEngine.Engine.Game.Component.Timer;
 using System.Numerics;
-using TemplateGame.Interface;
+using VisualNovelEngine.Engine.Game.Interface;
 
 namespace VisualNovelEngine.Engine.Editor.Component
 {
@@ -108,7 +108,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// Represents the scene background option of a button which the button can carry.
         /// </summary>
-        internal TemplateGame.Component.Scene.BackgroundOption SceneBackgroundOption { get; set; }
+        internal VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption SceneBackgroundOption { get; set; }
         /// <summary>
         /// Represents the variable type of a button which the button can carry.
         /// </summary>

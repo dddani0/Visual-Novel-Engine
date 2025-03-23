@@ -2,15 +2,15 @@ using System.Text.Json;
 using Raylib_cs;
 using ICommand = VisualNovelEngine.Engine.Editor.Interface.ICommand;
 using VisualNovelEngine.Engine.Editor.Component.Command;
-using TemplateGame.Component;
+using VisualNovelEngine.Engine.Game.Component;
 using static VisualNovelEngine.Engine.Editor.Component.Command.CreateComponentCommand;
 using VisualNovelEngine.Engine.PortData;
-using TemplateGame.Interface;
+using VisualNovelEngine.Engine.Game.Interface;
 using System.Text.RegularExpressions;
-using TemplateGame.Component.Action.TimelineDependent;
-using TemplateGame.Component.Action;
+using VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent;
+using VisualNovelEngine.Engine.Game.Component.Action;
 using System.Collections.Concurrent;
-using TemplateGame.Component.Action.TimelineIndependent;
+using VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent;
 using VisualNovelEngine.Engine.Editor.Interface;
 using Engine.EngineEditor.Component.Command;
 using EngineEditor.Component.Command;
@@ -94,18 +94,18 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <returns></returns>
         public Scene FetchEditorSceneFromImport(SceneExIm sceneImport)
         {
-            TemplateGame.Component.Scene.BackgroundOption backgroundOption = sceneImport.Background switch
+            VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption backgroundOption = sceneImport.Background switch
             {
-                "SolidColor" => TemplateGame.Component.Scene.BackgroundOption.SolidColor,
-                "GradientVertical" => TemplateGame.Component.Scene.BackgroundOption.GradientVertical,
-                "GradientHorizontal" => TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal,
-                "Image" => TemplateGame.Component.Scene.BackgroundOption.Image,
+                "SolidColor" => VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor,
+                "GradientVertical" => VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical,
+                "GradientHorizontal" => VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal,
+                "Image" => VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image,
                 _ => throw new Exception("Background type not found!")
             };
             Texture2D? image;
             Color[]? gradientColor;
             Color? solidColor;
-            if (backgroundOption == TemplateGame.Component.Scene.BackgroundOption.Image)
+            if (backgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image)
             {
                 image = Raylib.LoadTexture(sceneImport.ImageTexture);
                 return new Scene(Editor,
@@ -117,7 +117,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     BackgroundImage = image
                 };
             }
-            else if (backgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal || backgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientVertical)
+            else if (backgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal || backgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical)
             {
                 gradientColor = FetchGradientColorFromImport(sceneImport.GradientColor);
                 return new Scene(Editor,
@@ -747,14 +747,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ID = block.ID,
                     Sprite = ExportSpriteData(sprite)
                 },
-                TemplateGame.Component.TextField textField => new()
+                VisualNovelEngine.Engine.Game.Component.TextField textField => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
                     ID = block.ID,
                     TextField = ExportTextFieldData(textField)
                 },
-                TemplateGame.Component.Button button => new()
+                VisualNovelEngine.Engine.Game.Component.Button button => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
@@ -793,14 +793,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ID = block.ID,
                     Sprite = ExportSpriteData(sprite)
                 },
-                TemplateGame.Component.TextField textField => new()
+                VisualNovelEngine.Engine.Game.Component.TextField textField => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
                     ID = block.ID,
                     TextField = ExportTextFieldData(textField)
                 },
-                TemplateGame.Component.Button button => new()
+                VisualNovelEngine.Engine.Game.Component.Button button => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
@@ -842,7 +842,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="textField"></param>
         /// <returns></returns>
-        public TextFieldExim ExportTextFieldData(TemplateGame.Component.TextField textField)
+        public TextFieldExim ExportTextFieldData(VisualNovelEngine.Engine.Game.Component.TextField textField)
         {
             return new()
             {
@@ -886,7 +886,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="button"></param>
         /// <returns></returns>
-        public ButtonComponentExIm ExportButtonData(TemplateGame.Component.Button button)
+        public ButtonComponentExIm ExportButtonData(VisualNovelEngine.Engine.Game.Component.Button button)
         {
             return new()
             {
@@ -908,7 +908,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="button"></param>
         /// <returns></returns>
-        public ButtonComponentExIm ExportStaticButtonData(TemplateGame.Component.Button button)
+        public ButtonComponentExIm ExportStaticButtonData(VisualNovelEngine.Engine.Game.Component.Button button)
         {
             return new()
             {
@@ -996,7 +996,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="dropBoxOption"></param>
         /// <returns></returns>
-        public DropBoxOptionExim ExportDropBoxOptionData(TemplateGame.Component.Button dropBoxOption)
+        public DropBoxOptionExim ExportDropBoxOptionData(VisualNovelEngine.Engine.Game.Component.Button dropBoxOption)
         {
             return new()
             {
@@ -1172,7 +1172,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             return scene.BackgroundOption switch
             {
-                TemplateGame.Component.Scene.BackgroundOption.SolidColor => new()
+                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1182,7 +1182,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
                     Timeline = ExportTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal => new()
+                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1192,7 +1192,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
                     Timeline = ExportTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.GradientVertical => new()
+                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1202,7 +1202,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
                     Timeline = ExportTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.Image => new()
+                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1225,10 +1225,10 @@ namespace VisualNovelEngine.Engine.Editor.Component
             return permanentRenderingObject switch
             {
                 Sprite sprite => new() { Sprite = ExportSpriteData(sprite) },
-                TemplateGame.Component.TextField textField => new() { TextField = ExportTextFieldData(textField) },
+                VisualNovelEngine.Engine.Game.Component.TextField textField => new() { TextField = ExportTextFieldData(textField) },
                 TextBox textBox => new() { Textbox = ExportTextBoxData(textBox) },
                 Block block => new() { Block = ExportBlockData(block) },
-                TemplateGame.Component.Button button => new() { Button = ExportButtonData(button) },
+                VisualNovelEngine.Engine.Game.Component.Button button => new() { Button = ExportButtonData(button) },
                 InputField inputField => new() { InputField = ExportInputFieldData(inputField) },
                 DropBox dropBox => new() { DropBox = ExportDropBoxData(dropBox) },
                 Menu menu => new() { Menu = ExportMenuData(menu) },
@@ -1365,7 +1365,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             return scene.BackgroundOption switch
             {
-                TemplateGame.Component.Scene.BackgroundOption.SolidColor => new()
+                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1373,7 +1373,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     SolidColor = ExportColorData(scene.BackgroundColor.Value),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal => new()
+                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1381,7 +1381,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.GradientVertical => new()
+                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1389,7 +1389,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.Image => new()
+                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
