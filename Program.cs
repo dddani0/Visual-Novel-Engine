@@ -1,6 +1,6 @@
 ﻿using TemplateGame.Component;
 using Raylib_cs;
-using VisualNovelEngine.Engine.EngineEditor.Component;
+using VisualNovelEngine.Engine.Editor.Component;
 
 class Program
 {
