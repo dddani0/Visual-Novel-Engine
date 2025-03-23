@@ -166,6 +166,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         {
             if (IsLocked is true) return;
             IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition, YPosition, Width, Height)) && Editor.ButtonList.Any(button => ((Button)button).IsHover is false);
+            if (Editor.ButtonList.Any(button => ((Button)button).IsHover) && IsHover is false) return;
             Click();
             Timer.DecreaseTimer();
         }
