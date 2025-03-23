@@ -1,5 +1,4 @@
 using System.Linq;
-using Namespace;
 using Raylib_cs;
 using TemplateGame.Component;
 using TemplateGame.Component.Action;

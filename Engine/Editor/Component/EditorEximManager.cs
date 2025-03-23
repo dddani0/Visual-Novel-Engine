@@ -12,7 +12,6 @@ using TemplateGame.Component.Action;
 using System.Collections.Concurrent;
 using TemplateGame.Component.Action.TimelineIndependent;
 using VisualNovelEngine.Engine.Editor.Interface;
-using Namespace;
 using Engine.EngineEditor.Component.Command;
 using EngineEditor.Component.Command;
 
