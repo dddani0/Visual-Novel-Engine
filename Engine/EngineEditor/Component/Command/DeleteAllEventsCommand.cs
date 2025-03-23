@@ -18,6 +18,11 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
         {
             Editor.ActiveScene.Timeline.Actions.Clear();
             Editor.ActiveScene.Timeline.ActionButtons.Clear();
+            if (Editor.ActiveScene.Timeline.TimelineIndepententActions.Count() > 0)
+            {
+                Editor.ActiveScene.Timeline.TimelineIndepententActions.Clear();
+                Editor.ActiveScene.Timeline.TimelineIndepententActionButtons.Clear();
+            }
             CloseShowWindowCommand.Execute();
         }
     }

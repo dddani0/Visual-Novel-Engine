@@ -29,6 +29,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         internal Component? ActiveComponent { get; set; } = null;
         internal IAction? ActiveAction { get; set; } = null;
         internal Button CloseButton { get; set; }
+        internal Button? DeleteButton { get; set; } = null;
         internal List<IComponent> ComponentList { get; set; } = [];
         internal bool IsOverflow { get; set; } = false;
         internal Scrollbar Scrollbar { get; set; }
@@ -750,7 +751,9 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(switchStaticMenuNewDopDown);
                     break;
             }
+            //ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Delete action?"));
             //ComponentList.Add(new Button(Editor, XPosition, YPosition, "Delete", false, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger));
+            DeleteButton = new Button(Editor, XPosition, YPosition, "Delete", false, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger);
             ActiveAction = eventData;
             Scrollbar.AddComponents([.. ComponentList]);
             UpdateComponentPosition(EnabledRowComponentCount);
@@ -784,6 +787,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
             CloseButton.Render();
+            DeleteButton?.Render();
             if (ComponentList.Count * Editor.ComponentHeight > Height) Scrollbar.Render();
             if (ComponentList.Count < 1) return;
             for (int i = 0; i < ComponentList.Count; i++)

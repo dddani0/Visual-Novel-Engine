@@ -339,7 +339,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
             }
             if (TimelineIndepententActionButtons.Count * Editor.ButtonWidth > XPosition + Width) TimelineIndepententScrollbar.Render();
             if ((ActionButtons.Count * Editor.ButtonWidth) > (XPosition + Width)) Scrollbar.Render();
-            if (Actions.Count <= 0) return;
+            if (Actions.Count <= 0 && TimelineIndepententActions.Count <= 0) return;
             RemoveActionsButton.Render();
         }
         internal void AddAction(IAction action)
