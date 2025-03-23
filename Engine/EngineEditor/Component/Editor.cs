@@ -291,11 +291,18 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         /// </summary>
         public void Build()
         {
+            //Build game data
             var GameBuildData = JsonSerializer.Serialize(EditorImporter.BuildScenesData([.. SceneList]), new JsonSerializerOptions
             {
                 WriteIndented = true
             });
             File.WriteAllText(BuildPath + ProjectName + "build.json", GameBuildData);
+            //Build variables data
+            var GameVariablesData = JsonSerializer.Serialize(EditorImporter.BuildVariablesData([.. GameVariables]), new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            File.WriteAllText(BuildPath + ProjectName + "variables.json", GameVariablesData);
         }
         /// <summary>
         /// Saves the editor data into a file.

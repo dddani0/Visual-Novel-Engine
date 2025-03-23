@@ -699,7 +699,6 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         public BlockExim ExportStaticBlockData(Block block)
         {
-            //Doesnt recognize button!!! WHY
             IPermanentRenderingObject permanentRenderingObject = ((Block)block.Component).Component;
             return permanentRenderingObject switch
             {
