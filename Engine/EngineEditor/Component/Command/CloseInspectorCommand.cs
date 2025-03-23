@@ -35,6 +35,18 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component.Command
                                     if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
                                     if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
                                     createMenuAction.Menu = ((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject as Menu;
+                                    //Search for the component of menu
+                                    int menuId = createMenuAction.Menu.ID;
+                                    Component impendingComponent = null;
+                                    foreach (Component component in Editor.ActiveScene.ComponentList.Cast<Component>())
+                                    {
+                                        if (component.RenderingObject is Menu menu && menu.ID == menuId)
+                                        {
+                                            impendingComponent = component;
+                                            break;
+                                        }
+                                    }
+                                    createMenuAction.StaticExport = impendingComponent.IsObjectStatic;
                                     break;
                                 case LoadSceneAction loadSceneAction:
                                     //Save variable's name

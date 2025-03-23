@@ -699,72 +699,60 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
         }
         public BlockExim ExportStaticBlockData(Block block)
         {
-            switch (block.Component)
+            //Doesnt recognize button!!! WHY
+            IPermanentRenderingObject permanentRenderingObject = ((Block)block.Component).Component;
+            return permanentRenderingObject switch
             {
-                case Sprite sprite:
-                    return new()
-                    {
-                        XPosition = block.XPosition,
-                        YPosition = block.YPosition,
-                        ID = block.ID,
-                        Sprite = ExportSpriteData(sprite)
-                    };
-                case TemplateGame.Component.TextField textField:
-                    return new()
-                    {
-                        XPosition = block.XPosition,
-                        YPosition = block.YPosition,
-                        ID = block.ID,
-                        TextField = ExportTextFieldData(textField)
-                    };
-                case TemplateGame.Component.Button button:
-                    return new()
-                    {
-                        XPosition = block.XPosition,
-                        YPosition = block.YPosition,
-                        ID = block.ID,
-                        Button = ExportStaticButtonData(button)
-                    };
-                case InputField inputField:
-                    return new()
-                    {
-                        XPosition = block.XPosition,
-                        YPosition = block.YPosition,
-                        ID = block.ID,
-                        InputField = ExportStaticInputFieldData(inputField)
-                    };
-                case DropBox dropBox:
-                    return new()
-                    {
-                        XPosition = block.XPosition,
-                        YPosition = block.YPosition,
-                        ID = block.ID,
-                        DropBox = ExportDropBoxData(dropBox)
-                    };
-                case Toggle toggle:
-                    return new()
-                    {
-                        XPosition = block.XPosition,
-                        YPosition = block.YPosition,
-                        ID = block.ID,
-                        Toggle = ExportToggleData(toggle)
-                    };
-                case Slider slider:
-                    return new()
-                    {
-                        XPosition = block.XPosition,
-                        YPosition = block.YPosition,
-                        ID = block.ID,
-                        Slider = ExportSliderData(slider)
-                    };
-                default:
-                    return new()
-                    {
-                        XPosition = block.XPosition,
-                        YPosition = block.YPosition,
-                        ID = block.ID
-                    };
-            }
+                Sprite sprite => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    Sprite = ExportSpriteData(sprite)
+                },
+                TemplateGame.Component.TextField textField => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    TextField = ExportTextFieldData(textField)
+                },
+                TemplateGame.Component.Button button => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    Button = ExportStaticButtonData(button)
+                },
+                InputField inputField => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    InputField = ExportStaticInputFieldData(inputField)
+                },
+                DropBox dropBox => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    DropBox = ExportDropBoxData(dropBox)
+                },
+                Toggle toggle => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    Toggle = ExportToggleData(toggle)
+                },
+                Slider slider => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID,
+                    Slider = ExportSliderData(slider)
+                }
+            };
         }
         public TextFieldExim ExportTextFieldData(TemplateGame.Component.TextField textField)
         {

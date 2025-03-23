@@ -614,7 +614,7 @@ namespace TemplateGame.Component
                 B = (byte)menuImport.BorderColor[2],
                 A = (byte)menuImport.BorderColor[3]
             };
-            var id = menuImport.ID;
+            int id = menuImport.ID;
             var menu = new Menu(
                 Game,
                 id,

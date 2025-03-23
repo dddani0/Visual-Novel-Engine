@@ -88,7 +88,7 @@ namespace VisualNovelEngine.Engine.PortData
     public class MenuExim
     {
         [JsonPropertyName("ID")]
-        public long ID { get; set; }
+        public int ID { get; set; }
         [JsonPropertyName("XPosition")]
         public int? XPosition { get; set; }
         [JsonPropertyName("YPosition")]

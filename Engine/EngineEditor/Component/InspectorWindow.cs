@@ -92,12 +92,28 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     switch (component.IsObjectStatic)
                     {
                         case true:
-                            ComponentList.Add(
-                                new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction));
+                            DropDown staticButtonDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction);
+                            foreach (var item in staticButtonDropDown.FilteredButtonList)
+                            {
+                                if (button.Action.GetType().Equals(item.Action.GetType()))
+                                {
+                                    staticButtonDropDown.Button.Action = item.Action;
+                                    staticButtonDropDown.Button.Text = item.Action.GetType().Name;
+                                }
+                            }
+                            ComponentList.Add(staticButtonDropDown);
                             break;
                         case false:
-                            ComponentList.Add(
-                                new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineDependentAction));
+                            DropDown buttonDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineDependentAction);
+                            foreach (var item in buttonDropDown.FilteredButtonList)
+                            {
+                                if (button.Action.GetType().Equals(item.Action.GetType()))
+                                {
+                                    buttonDropDown.Button.Action = item.Action;
+                                    buttonDropDown.Button.Text = item.Action.GetType().Name;
+                                }
+                            }
+                            ComponentList.Add(buttonDropDown);
                             break;
                     }
                     break;
@@ -734,7 +750,7 @@ namespace VisualNovelEngine.Engine.EngineEditor.Component
                     ComponentList.Add(switchStaticMenuNewDopDown);
                     break;
             }
-            ComponentList.Add(new Button(Editor, XPosition, YPosition, "Delete", false, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger));
+            //ComponentList.Add(new Button(Editor, XPosition, YPosition, "Delete", false, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger));
             ActiveAction = eventData;
             Scrollbar.AddComponents([.. ComponentList]);
             UpdateComponentPosition(EnabledRowComponentCount);
