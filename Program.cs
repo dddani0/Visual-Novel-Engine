@@ -1,24 +1,15 @@
 ﻿using VisualNovelEngine.Engine.Game.Component;
 using Raylib_cs;
 using VisualNovelEngine.Engine.Editor.Component;
+using VisualNovelEngine.Engine.Component;
 
 class Program
 {
-    internal static bool Exit { get; set; } = false;
+    internal static VisualNovelEngine.Engine.Component.Engine Engine { get; set; }
     public static void Main()
     {
-        Raylib.InitWindow(800, 800, "Vizuális Novella Motor");
-
-        //Game game = new();
-        Editor editor = new();
-
-        while (Exit is false)
-        {
-            Raylib.BeginDrawing();
-            //game.UpdateScene();
-            editor.Update();
-            Raylib.EndDrawing();
-        }
-        Raylib.CloseWindow();
+        Engine = new();
+        //
+        Engine.Process();
     }
 }

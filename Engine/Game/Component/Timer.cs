@@ -28,6 +28,6 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <summary>
         /// Resets the timer.
         /// </summary>
-        public void ResetTimer() => CurrentTimerValue = Seconds;
+        public void Reset() => CurrentTimerValue = Seconds;
     }
 }

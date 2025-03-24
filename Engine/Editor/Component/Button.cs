@@ -219,7 +219,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                         Selected = true;
                         Command.Execute();
                         Selected = false;
-                        Timer.ResetTimer();
+                        Timer.Reset();
                         break;
                     case ButtonType.Hold:
                         Selected = !Selected;

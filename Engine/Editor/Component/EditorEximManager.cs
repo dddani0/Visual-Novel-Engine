@@ -498,11 +498,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     if (commandImport.WindowComponents == null && commandImport.Buttons == null) throw new Exception("Window components and buttons are not found!");
                     if (commandImport.WindowComponents == null)
                     {
-                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.Buttons.Select(FetchEditorButtonFromImport)], MiniWindow.miniWindowType.Vertical);
+                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.Buttons.Select(FetchEditorButtonFromImport)], MiniWindowType.Vertical);
                     }
                     else
                     {
-                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindow.miniWindowType.Vertical);
+                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindowType.Vertical);
                     }
                 case "ShowInspectorCommand":
                     return new ShowInspectorCommand(Editor,

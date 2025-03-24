@@ -14,23 +14,26 @@ namespace VisualNovelEngine.Engine.Editor.Component
     public class Editor : IEditor
     {
         /// <summary>
+        /// The engine of the editor.
+        /// </summary>
+        internal Engine.Component.Engine Engine { get; set; }
+        /// <summary>
         /// The path to the data folder.
         /// </summary>
-        internal const string currentFolderPath = "../../../Engine/Data/";
+        internal string CurrentFolderPath { get; set; }
         /// <summary>
         /// The path to the editor configuration file.
         /// </summary>
-        internal const string EditorConfigPath = currentFolderPath + "EditorConfig.json";
+        internal string EditorConfigPath { get; set; }
         /// <summary>
         /// The path to the editor file.
         /// </summary>
-        internal const string RelativeEditorPath = currentFolderPath + "Editor.json";
+        internal string RelativeEditorPath { get; set; }
         /// <summary>
         /// The path to the save file.
         /// </summary>
-        internal string SaveFilePath { get; set; } = currentFolderPath;
-
-        internal string BuildPath { get; set; } = currentFolderPath;
+        internal string SaveFilePath { get; set; }
+        internal string BuildPath { get; set; }
         /// <summary>
         /// Instance of a Game
         /// </summary>
@@ -218,19 +221,29 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         public bool Busy => ActiveScene.InspectorWindow?.Active is true;
         /// <summary>
-        /// The constructor of the editor.
+        /// Create a new editor.
         /// </summary>
-        public Editor()
+        /// <param name="engine"></param>
+        public Editor(Engine.Component.Engine engine)
         {
-            // instance of the game
-            Game = new();
+            Engine = engine;
+            //
+            EditorConfigPath = CurrentFolderPath + "EditorConfig.json";
+            //
+            RelativeEditorPath = CurrentFolderPath + "Editor.json";
+            //Save file path
+            SaveFilePath = CurrentFolderPath;
+            //
+            BuildPath = CurrentFolderPath;
+            //
+            Game = new(Engine.ProjectPath);
             // instance of the editor importer
             EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
             EditorConfigImport();
             //
             MouseMoveTimer = new(0.5f);
             //
-            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(), Button.ButtonType.Trigger)]);
+            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(this), Button.ButtonType.Trigger)]);
             // Create the scene
             List<Button> SceneButtonList = [];
             foreach (Scene scene in SceneList)
@@ -242,7 +255,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 else SceneButtonList.Add(button);
             }
             SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
-            SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, Engine.Editor.Component.MiniWindow.miniWindowType.Horizontal, [.. SceneButtonList]);
+            SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
             //
             SaveFilePath += Regex.Replace(ProjectName, @"[^a-zA-Z0-9\s]", "") + ".json";
         }
@@ -368,7 +381,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             if (Raylib.GetMouseY() <= SceneBar.Height + Toolbar.Height || Raylib.GetMouseY() >= Raylib.GetScreenHeight() - ActiveScene.Timeline.Height)
             {
-                MouseMoveTimer.ResetTimer();
+                MouseMoveTimer.Reset();
                 return;
             }
             if (Raylib.GetMouseX() >= Raylib.GetScreenWidth() - MoveMouseOffset)
@@ -396,7 +409,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 }
                 MouseXMoveExtent--;
             }
-            MouseMoveTimer.ResetTimer();
+            MouseMoveTimer.Reset();
         }
         /// <summary>
         /// Disables all components in the editor.

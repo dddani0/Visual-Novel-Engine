@@ -18,19 +18,19 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <summary>
         /// The current folder path.
         /// </summary>
-        internal const string currentFolderPath = "../../../Engine/Data/";
+        internal string CurrentFolderPath { get; set; }
         /// <summary>
         /// The Game settings path.
         /// </summary>
-        internal const string relativeGameSettingsPath = currentFolderPath + "GameSettings.json";
+        internal string RelativeGameSettingsPath { get; set; }
         /// <summary>
         /// The Scene path.
         /// </summary>
-        internal const string relativeScenePath = currentFolderPath + "Scenes.json";
+        internal string RelativeScenePath { get; set; }
         /// <summary>
         /// The Variable path.
         /// </summary>
-        internal const string relativeVariablePath = currentFolderPath + "Variables.json";
+        internal string RelativeVariablePath { get; set; }
         /// <summary>
         /// Temporary Game settings.
         /// </summary>
@@ -48,8 +48,12 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         public Scene ActiveScene { get; private set; }
 
-        public Game()
+        public Game(string projectPath)
         {
+            CurrentFolderPath = projectPath;
+            RelativeGameSettingsPath = CurrentFolderPath + "GameSettings.json";
+            RelativeScenePath = CurrentFolderPath + "Scenes.json";
+            RelativeVariablePath = CurrentFolderPath + "Variables.json";
             SetupGameSettings();
         }
 
@@ -71,7 +75,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         private void SetupGameWindow()
         {
-            string rawFile = File.ReadAllText(relativeGameSettingsPath);
+            string rawFile = File.ReadAllText(RelativeGameSettingsPath);
             var rawSettings = JsonSerializer.Deserialize<GameExim>(rawFile);
             if (rawSettings != null) GameSettings = rawSettings;
             else
@@ -90,7 +94,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             // Initialize the list of variables.
             VariableList = [];
             //
-            string rawFile = File.ReadAllText(relativeVariablePath);
+            string rawFile = File.ReadAllText(RelativeVariablePath);
             var rawVariables = JsonSerializer.Deserialize<List<VariableExim>>(rawFile);
             if (rawVariables != null)
             {
@@ -126,7 +130,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             // Initialize the game loader.
             GameImport = new(this);
             // Fetch the scene settings.
-            string rawFile = File.ReadAllText(relativeScenePath);
+            string rawFile = File.ReadAllText(RelativeScenePath);
             var rawScenes = JsonSerializer.Deserialize<List<SceneExim>>(rawFile);
             if (rawScenes != null)
             {
@@ -193,7 +197,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <summary>
         /// Updates the scene.
         /// </summary>
-        public void UpdateScene()
+        public void Update()
         {
             switch (ActiveScene.Background)
             {

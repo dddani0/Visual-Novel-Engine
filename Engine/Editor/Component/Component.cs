@@ -191,7 +191,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             {
                 IsSelected = false;
                 IsRenaming = false;
-                MoveTimer.ResetTimer();
+                MoveTimer.Reset();
             }
             if (IsSelected) //Selected shows buttons
             {

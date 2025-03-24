@@ -320,8 +320,8 @@ namespace VisualNovelEngine.Engine.Game.Component
             //nullify the output
             Output = String.Empty;
             //Reseting second timer and blinking cursor timer
-            SecondTimer.ResetTimer();
-            BlinkingCursorTimer.ResetTimer();
+            SecondTimer.Reset();
+            BlinkingCursorTimer.Reset();
             // disable textbatch
             TextBatchDone = false;
         }
@@ -352,7 +352,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             //
             TextBatchDone = false;
             //
-            SecondTimer.ResetTimer();
+            SecondTimer.Reset();
             //
             Output = String.Empty;
         }
@@ -434,7 +434,7 @@ namespace VisualNovelEngine.Engine.Game.Component
                 else
                 {
                     ToggleBlinking();
-                    BlinkingCursorTimer.ResetTimer();
+                    BlinkingCursorTimer.Reset();
                 }
                 if (IsBlinking)
                 {
@@ -459,7 +459,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             if (TextIndex >= TextCount) return;
             Output += CurrentLoadedData[TextIndex];
             IncrementIndex();
-            SecondTimer.ResetTimer();
+            SecondTimer.Reset();
             return;
             bool isTurnedOff() => IsEnabled is false;
             bool isDone() => TextCollectionIndex >= TextCollectionCount;
