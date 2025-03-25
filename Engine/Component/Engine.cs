@@ -62,10 +62,7 @@ namespace VisualNovelEngine.Engine.Component
         /// The button to open the repository.
         /// </summary>
         private Button RepositoryButton { get; set; }
-        /// <summary>
-        /// The path of the project.
-        /// </summary>
-        internal string ProjectPath { get; private set; } = "../../../Engine/Data/";
+        //internal string ProjectPath { get; private set; } = "../../../Engine/Data/";
         /// <summary>
         /// The path of the project data.
         /// </summary>

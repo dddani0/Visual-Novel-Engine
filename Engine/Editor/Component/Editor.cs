@@ -230,19 +230,17 @@ namespace VisualNovelEngine.Engine.Editor.Component
             //
             CurrentFolderPath = projectPath;
             //
-            EditorConfigPath = @"D:\GithubRepository\Visual-Novel-Engine\Engine\Data\EditorConfig.json";
+            EditorConfigPath = @"../../../Engine/Data/EditorConfig.json";
             //
-            RelativeEditorPath = @"D:\GithubRepository\Visual-Novel-Engine\Engine\Data\Editor.json";
+            RelativeEditorPath = @"../../../Engine/Data/Editor.json";
             //Save file path
-            SaveFilePath = CurrentFolderPath;
+            SaveFilePath = CurrentFolderPath.Trim();
             //
             BuildPath = CurrentFolderPath;
             //
-            ProjectName = title;
-            //
             Engine.ChangeTitle($"Editor - {title}");
-            //
-            Game = new(Engine.ProjectPath);
+            // Load null data to Game.
+            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json", @"../../../Engine/Data/PlaceholderEmptyVariables.json");
             // instance of the editor importer
             EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
             EditorConfigImport();
@@ -263,7 +261,50 @@ namespace VisualNovelEngine.Engine.Editor.Component
             SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
             SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
             //
-            SaveFilePath += Regex.Replace(ProjectName, @"[^a-zA-Z0-9\s]", "") + ".json";
+            ProjectName = title;
+            //
+            SaveFilePath += $"{ProjectName}.json";
+            SaveFilePath.Replace(" ", string.Empty);
+        }
+        public Editor(Engine.Component.Engine engine, string projectPath)
+        {
+            Engine = engine;
+            //
+            CurrentFolderPath = projectPath;
+            //
+            EditorConfigPath = @"../../../Engine/Data/EditorConfig.json";
+            //
+            RelativeEditorPath = @"../../../Engine/Data/Editor.json";
+            //Save file path
+            SaveFilePath = CurrentFolderPath.Trim();
+            //
+            BuildPath = CurrentFolderPath;
+            // Load null data to Game.
+            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json", @"../../../Engine/Data/PlaceholderEmptyVariables.json");
+            // instance of the editor importer
+            EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
+            EditorConfigImport();
+            //
+            Engine.ChangeTitle($"Editor - {ProjectName}");
+            //
+            MouseMoveTimer = new(0.5f);
+            //
+            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(this), Button.ButtonType.Trigger)]);
+            // Create the scene
+            List<Button> SceneButtonList = [];
+            foreach (Scene scene in SceneList)
+            {
+                var button = new Button(this, 0, 0, scene.Name, false, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ChangeSceneCommand(this), Button.ButtonType.Trigger);
+                ChangeSceneCommand changeSceneCommand = (ChangeSceneCommand)button.Command;
+                changeSceneCommand.SceneButton = button;
+                if (scene == ActiveScene) SceneButtonList.Insert(0, button);
+                else SceneButtonList.Add(button);
+            }
+            SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
+            SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
+            //
+            SaveFilePath += $"{ProjectName}.json";
+            SaveFilePath.Replace(" ", string.Empty);
         }
         /// <summary>
         /// Imports the editor configuration from external file.

@@ -66,7 +66,7 @@ namespace VisualNovelEngine.Engine.Component
                     }
                 }
                 else if (VisualNovelEngine.Engine.Game.Component.Game.IsKeyPressed(KeyboardKey.Enter)) Active = false;
-                else if (Raylib.GetKeyPressed() > 0)
+                else if (Raylib.GetKeyPressed() > 0 && !Raylib.IsKeyPressed(KeyboardKey.LeftShift) && !Raylib.IsKeyPressed(KeyboardKey.RightShift))
                 {
                     Text = Regex.Unescape(Text + ((char)Raylib.GetCharPressed()).ToString()).Replace('\0', ' ');
                 }
