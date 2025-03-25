@@ -11,15 +11,15 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
         private readonly GameImporter GameLoader;
         internal Menu DisablingMenu { get; set; }
         internal Menu EnablingMenu { get; set; }
-        private readonly long disableMenuID;
-        private readonly long enablingMenuID;
+        private readonly int disableMenuID;
+        private readonly int enablingMenuID;
         /// <summary>
         /// Constructor for the SwitchStaticMenuAction.
         /// </summary>
         /// <param name="game">Active game.</param>
         /// <param name="previousMenu">Menu to be rendered.</param>
         /// <param name="show">Show or hide the menu.</param>
-        public SwitchStaticMenuAction(Game game, GameImporter gameLoader, long disableMenuID, long enalbeMenuID)
+        public SwitchStaticMenuAction(Game game, GameImporter gameLoader, int disableMenuID, int enalbeMenuID)
         {
             Game = game;
             GameLoader = gameLoader;
