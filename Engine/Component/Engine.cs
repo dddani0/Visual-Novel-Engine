@@ -128,12 +128,6 @@ namespace VisualNovelEngine.Engine.Component
             //Enter code
             State = state;
             //Exit code
-            switch (state)
-            {
-                case EngineState.EditorState:
-                    //ChangeTitle(Editor.);
-                    break;
-            }
         }
         public void ChangeTitle(string title)
         {

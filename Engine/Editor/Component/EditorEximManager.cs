@@ -96,16 +96,16 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption backgroundOption = sceneImport.Background switch
             {
-                "SolidColor" => VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor,
-                "GradientVertical" => VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical,
-                "GradientHorizontal" => VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal,
-                "Image" => VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image,
+                "SolidColor" => Game.Component.Scene.BackgroundOption.SolidColor,
+                "GradientVertical" => Game.Component.Scene.BackgroundOption.GradientVertical,
+                "GradientHorizontal" => Game.Component.Scene.BackgroundOption.GradientHorizontal,
+                "Image" => Game.Component.Scene.BackgroundOption.Image,
                 _ => throw new Exception("Background type not found!")
             };
             Texture2D? image;
             Color[]? gradientColor;
             Color? solidColor;
-            if (backgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image)
+            if (backgroundOption == Game.Component.Scene.BackgroundOption.Image)
             {
                 image = Raylib.LoadTexture(sceneImport.ImageTexture);
                 return new Scene(Editor,
@@ -117,7 +117,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     BackgroundImage = image
                 };
             }
-            else if (backgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal || backgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical)
+            else if (backgroundOption == Game.Component.Scene.BackgroundOption.GradientHorizontal || backgroundOption == Game.Component.Scene.BackgroundOption.GradientVertical)
             {
                 gradientColor = FetchGradientColorFromImport(sceneImport.GradientColor);
                 return new Scene(Editor,
@@ -1172,7 +1172,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             return scene.BackgroundOption switch
             {
-                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor => new()
+                Game.Component.Scene.BackgroundOption.SolidColor => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1182,7 +1182,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
                     Timeline = ExportTimelineData(scene.Timeline)
                 },
-                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal => new()
+                Game.Component.Scene.BackgroundOption.GradientHorizontal => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1192,7 +1192,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
                     Timeline = ExportTimelineData(scene.Timeline)
                 },
-                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical => new()
+                Game.Component.Scene.BackgroundOption.GradientVertical => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1202,7 +1202,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
                     Timeline = ExportTimelineData(scene.Timeline)
                 },
-                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image => new()
+                Game.Component.Scene.BackgroundOption.Image => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1365,7 +1365,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             return scene.BackgroundOption switch
             {
-                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor => new()
+                Game.Component.Scene.BackgroundOption.SolidColor => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1373,7 +1373,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     SolidColor = ExportColorData(scene.BackgroundColor.Value),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
-                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal => new()
+                Game.Component.Scene.BackgroundOption.GradientHorizontal => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1381,7 +1381,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
-                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical => new()
+                Game.Component.Scene.BackgroundOption.GradientVertical => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1389,7 +1389,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
-                VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image => new()
+                Game.Component.Scene.BackgroundOption.Image => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,

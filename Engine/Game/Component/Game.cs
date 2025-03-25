@@ -83,7 +83,6 @@ namespace VisualNovelEngine.Engine.Game.Component
                 throw new InvalidOperationException("Failed to load game settings, because the file is null.");
             }
             // Set the window title and size.
-            Raylib.SetWindowTitle(GameSettings.Title);
             Raylib.SetWindowSize(GameSettings.WindowWidth, GameSettings.WindowHeigth);
         }
         /// <summary>
@@ -148,7 +147,7 @@ namespace VisualNovelEngine.Engine.Game.Component
                         }
                     Scenes.Add(new Scene(scene.Name, this)
                     {
-                        Id = scene.ID,
+                        id = scene.ID,
                         Background = Enum.Parse<Scene.BackgroundOption>(scene.Background),
                         solidColor = scene.SolidColor == null ? Color.Black : scene.SolidColor.Length == 0 ? new() : new()
                         {

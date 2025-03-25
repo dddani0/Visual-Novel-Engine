@@ -224,17 +224,23 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// Create a new editor.
         /// </summary>
         /// <param name="engine"></param>
-        public Editor(Engine.Component.Engine engine)
+        public Editor(Engine.Component.Engine engine, string title, string projectPath)
         {
             Engine = engine;
             //
-            EditorConfigPath = CurrentFolderPath + "EditorConfig.json";
+            CurrentFolderPath = projectPath;
             //
-            RelativeEditorPath = CurrentFolderPath + "Editor.json";
+            EditorConfigPath = @"D:\GithubRepository\Visual-Novel-Engine\Engine\Data\EditorConfig.json";
+            //
+            RelativeEditorPath = @"D:\GithubRepository\Visual-Novel-Engine\Engine\Data\Editor.json";
             //Save file path
             SaveFilePath = CurrentFolderPath;
             //
             BuildPath = CurrentFolderPath;
+            //
+            ProjectName = title;
+            //
+            Engine.ChangeTitle($"Editor - {title}");
             //
             Game = new(Engine.ProjectPath);
             // instance of the editor importer

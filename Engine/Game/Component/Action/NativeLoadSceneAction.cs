@@ -31,13 +31,13 @@ namespace VisualNovelEngine.Engine.Game.Component.Action
         /// <exception cref="Exception"></exception>
         public void PerformAction()
         {
-            if (!Game.Scenes.Any(scene => scene.Id == sceneID))
+            if (!Game.Scenes.Any(scene => scene.id == sceneID))
             {
                 throw new Exception($"Scene with {sceneID} ID not found.");
             }
             else
             {
-                var nextScene = Game.Scenes.First(scene => scene.Id == sceneID);
+                var nextScene = Game.Scenes.First(scene => scene.id == sceneID);
                 Game.LoadScene(nextScene);
                 return;
             }

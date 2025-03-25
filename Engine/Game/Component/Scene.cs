@@ -11,7 +11,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <summary>
         /// The unique identifier of the scene.
         /// </summary>
-        internal long Id { get; set; }
+        internal int id { get; set; }
         /// <summary>
         /// The background type of the scene.
         /// </summary>

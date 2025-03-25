@@ -39,13 +39,13 @@ namespace VisualNovelEngine.Engine.Game.Component.Action
         {
             var variable = Game.VariableList.First(s => s.Name.Equals(TriggerVariableName));
             if (variable.Value.ToString() == "False") return;
-            if (!Game.Scenes.Any(scene => scene.Id == sceneID))
+            if (!Game.Scenes.Any(scene => scene.id == sceneID))
             {
                 throw new Exception($"Scene with {sceneID} ID not found.");
             }
             else
             {
-                var nextScene = Game.Scenes.First(scene => scene.Id == sceneID);
+                var nextScene = Game.Scenes.First(scene => scene.id == sceneID);
                 Game.LoadScene(nextScene);
                 return;
             }
