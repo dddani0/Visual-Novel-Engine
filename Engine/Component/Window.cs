@@ -41,7 +41,7 @@ namespace VisualNovelEngine.Engine.Component
                     break;
                 case WindowType.ImportProject:
                     CloseButton = new Button("X", XPosition + Width - 20, YPosition, 20, 20, Color.Red, Color.DarkBrown, new CloseWindowCommand(Engine));
-                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "Útvonal", "Betöltés", 300, 50, Color.White, Color.Black, Color.Gray, new EmptyCommand());
+                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "Útvonal", "Betöltés", 300, 50, Color.White, Color.Black, Color.Gray, new ImportNewProjectCommand(Engine));
                     break;
             }
         }

@@ -514,7 +514,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 case "ShowErrorCommand":
                     if (commandImport.ErrorMessage == null) throw new Exception("Error message not found!");
                     if (commandImport.WarningButtons == null) throw new Exception("Warning buttons not found!");
-                    if (commandImport.ErrorType == null) throw new Exception("Error type not found!");
                     return new ShowErrorCommand(Editor, commandImport.ErrorMessage, [.. commandImport.WarningButtons.Select(FetchEditorButtonFromImport)]);
                 case "DeleteAllComponentsCommand":
                     return new DeleteAllComponentsCommand(Editor);
@@ -1128,6 +1127,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 Height = group.Height,
                 BorderWidth = group.BorderWidth,
                 Buttons = [.. buttons],
+                MaximumHorizontalComponentCount = group.MaximumHorizontalComponentCount,
                 Components = [.. components]
             };
         }

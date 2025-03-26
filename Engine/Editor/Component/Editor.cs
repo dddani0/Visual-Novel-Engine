@@ -28,7 +28,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// The path to the editor file.
         /// </summary>
-        internal string RelativeEditorPath { get; set; }
+        internal string EditorPath { get; set; }
         /// <summary>
         /// The path to the save file.
         /// </summary>
@@ -227,22 +227,17 @@ namespace VisualNovelEngine.Engine.Editor.Component
         public Editor(Engine.Component.Engine engine, string title, string projectPath)
         {
             Engine = engine;
-            //
             CurrentFolderPath = projectPath;
-            //
-            EditorConfigPath = @"../../../Engine/Data/EditorConfig.json";
-            //
-            RelativeEditorPath = @"../../../Engine/Data/Editor.json";
-            //Save file path
+            EditorConfigPath = projectPath + "EditorConfig.json";
+            EditorPath = @"../../../Engine/Data/Editor.json";
+            File.Copy(@"../../../Engine/Data/EditorConfig.json", EditorConfigPath, true);
             SaveFilePath = CurrentFolderPath.Trim();
-            //
             BuildPath = CurrentFolderPath;
-            //
             Engine.ChangeTitle($"Editor - {title}");
             // Load null data to Game.
             Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json", @"../../../Engine/Data/PlaceholderEmptyVariables.json");
             // instance of the editor importer
-            EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
+            EditorImporter = new(this, EditorConfigPath, EditorPath);
             EditorConfigImport();
             //
             MouseMoveTimer = new(0.5f);
@@ -266,23 +261,24 @@ namespace VisualNovelEngine.Engine.Editor.Component
             SaveFilePath += $"{ProjectName}.json";
             SaveFilePath.Replace(" ", string.Empty);
         }
+        /// <summary>
+        /// Create a new Editor, and load existing project.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="projectPath"></param>
         public Editor(Engine.Component.Engine engine, string projectPath)
         {
             Engine = engine;
-            //
-            CurrentFolderPath = projectPath;
-            //
-            EditorConfigPath = @"../../../Engine/Data/EditorConfig.json";
-            //
-            RelativeEditorPath = @"../../../Engine/Data/Editor.json";
-            //Save file path
-            SaveFilePath = CurrentFolderPath.Trim();
-            //
-            BuildPath = CurrentFolderPath;
+            CurrentFolderPath = projectPath[..(projectPath.LastIndexOf('/') + 1)];
+            ProjectName = projectPath.Split('/').Last().Split('.').First();
+            EditorConfigPath = $"{CurrentFolderPath}EditorConfig.json";
+            EditorPath = projectPath;
+            SaveFilePath = EditorPath;
+            BuildPath = $"{CurrentFolderPath}{ProjectName}Build";
             // Load null data to Game.
             Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json", @"../../../Engine/Data/PlaceholderEmptyVariables.json");
             // instance of the editor importer
-            EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
+            EditorImporter = new(this, EditorConfigPath, EditorPath);
             EditorConfigImport();
             //
             Engine.ChangeTitle($"Editor - {ProjectName}");
@@ -302,9 +298,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
             SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
-            //
-            SaveFilePath += $"{ProjectName}.json";
-            SaveFilePath.Replace(" ", string.Empty);
         }
         /// <summary>
         /// Imports the editor configuration from external file.
@@ -368,13 +361,13 @@ namespace VisualNovelEngine.Engine.Editor.Component
             {
                 WriteIndented = true
             });
-            File.WriteAllText(BuildPath + ProjectName + "build.json", GameBuildData);
+            File.WriteAllText(BuildPath + ProjectName + "Build.json", GameBuildData);
             //Build variables data
             var GameVariablesData = JsonSerializer.Serialize(EditorImporter.BuildVariablesData([.. GameVariables]), new JsonSerializerOptions
             {
                 WriteIndented = true
             });
-            File.WriteAllText(BuildPath + ProjectName + "variables.json", GameVariablesData);
+            File.WriteAllText(BuildPath + ProjectName + "Variables.json", GameVariablesData);
         }
         /// <summary>
         /// Saves the editor data into a file.
