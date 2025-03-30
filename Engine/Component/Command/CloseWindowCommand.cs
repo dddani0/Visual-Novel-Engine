@@ -17,9 +17,9 @@ namespace VisualNovelEngine.Engine.Component.Command
         {
             Engine.Window = null;
             //Disable buttons
-            Engine.NewProjectButton.Active = true;
-            Engine.ImportProjectButton.Active = true;
-            Engine.OpenGameProject.Active = true;
+            Engine.NewProject.Active = true;
+            Engine.ImportProject.Active = true;
+            Engine.ImportBuild.Active = true;
         }
     }
 }

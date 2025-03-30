@@ -651,10 +651,6 @@ namespace VisualNovelEngine.Engine.Game.Component
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the characters per second is null.");
                     }
-                    if (actionImport.TextBox.Font == null)
-                    {
-                        throw new InvalidOperationException("Failed to load scene settings, because the font is null.");
-                    }
                     if (actionImport.TextBox.Color == null)
                     {
                         throw new InvalidOperationException("Failed to load scene settings, because the textbox color is null.");

@@ -7,9 +7,10 @@ namespace VisualNovelEngine.Engine.Component
 {
     public enum EngineState
     {
-        PreState,
-        EditorState,
-        GameState
+        Default,
+        Editor,
+        Game,
+        Exit
     }
     /// <summary>
     /// Engine is the base of the Visual Novel Engine.
@@ -49,28 +50,19 @@ namespace VisualNovelEngine.Engine.Component
         /// <summary>
         /// The button to import a project.
         /// </summary>
-        internal Button ImportProjectButton { get; set; }
+        internal Button ImportProject { get; set; }
         /// <summary>
         /// The button to create a new project.
         /// </summary>
-        internal Button NewProjectButton { get; set; }
+        internal Button NewProject { get; set; }
         /// <summary>
         /// The button to open a game project.
         /// </summary>
-        internal Button OpenGameProject { get; set; }
+        internal Button ImportBuild { get; set; }
         /// <summary>
         /// The button to open the repository.
         /// </summary>
-        private Button RepositoryButton { get; set; }
-        //internal string ProjectPath { get; private set; } = "../../../Engine/Data/";
-        /// <summary>
-        /// The path of the project data.
-        /// </summary>
-        internal string ProjectDataPath { get; set; }
-        /// <summary>
-        /// The path of the project build.
-        /// </summary>
-        internal string ProjectBuildPath { get; set; }
+        private Button OpenRepository { get; set; }
         internal Window? Window { get; set; } = null;
 
         /// <summary>
@@ -81,12 +73,12 @@ namespace VisualNovelEngine.Engine.Component
             //Set base window attributes.
             Raylib.InitWindow(Width, Height, Title);
             //Set the state to PreState.
-            ChangeState(EngineState.PreState);
+            ChangeState(EngineState.Default);
             //Prestate buttons
-            NewProjectButton = new Button("Új projekt", Width / 2 - 125, 80, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.NewProject));
-            ImportProjectButton = new Button("Projekt importálás", Width / 2 - 125, 140, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.ImportProject));
-            OpenGameProject = new Button("Játék megnyitása", Width / 2 - 125, 200, 210, 50, Color.RayWhite, Color.Gray, new EmptyCommand());
-            RepositoryButton = new Button("GitHub", 10, Height - 50 - 10, 100, 50, Color.RayWhite, Color.Gray, new OpenLinkCommand("https://github.com/dddani0/Visual-Novel-Engine"));
+            NewProject = new Button("Új projekt", Width / 2 - 125, 80, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.NewProject));
+            ImportProject = new Button("Projekt importálás", Width / 2 - 125, 140, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.ImportProject));
+            ImportBuild = new Button("Játék megnyitása", Width / 2 - 125, 200, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.PlayProject));
+            OpenRepository = new Button("GitHub", 10, Height - 50 - 10, 100, 50, Color.RayWhite, Color.Gray, new OpenLinkCommand("https://github.com/dddani0/Visual-Novel-Engine"));
         }
         /// <summary>
         /// The main loop of the engine.
@@ -98,35 +90,40 @@ namespace VisualNovelEngine.Engine.Component
                 Raylib.BeginDrawing();
                 switch (State)
                 {
-                    case EngineState.PreState:
-                        Exit = Raylib.WindowShouldClose();
+                    case EngineState.Default:
+                        if (Raylib.WindowShouldClose()) ChangeState(EngineState.Exit);
                         Raylib.ClearBackground(Color.Black);
                         Raylib.DrawText(Title, 125, 0, 50, Color.RayWhite);
-                        NewProjectButton.Render();
-                        ImportProjectButton.Render();
-                        OpenGameProject.Render();
-                        RepositoryButton.Render();
+                        NewProject.Render();
+                        ImportProject.Render();
+                        ImportBuild.Render();
+                        OpenRepository.Render();
                         Window?.Show();
                         break;
-                    case EngineState.EditorState:
+                    case EngineState.Editor:
                         Editor.Update();
                         break;
-                    case EngineState.GameState:
+                    case EngineState.Game:
                         Game.Update();
+                        break;
+                    case EngineState.Exit:
+                        Exit = true;
                         break;
                 }
                 Raylib.EndDrawing();
             }
             Raylib.CloseWindow();
         }
-
-        public void ChangeState(EngineState state)
-        {
-            //Enter code
-            State = state;
-            //Exit code
-        }
-        public void ChangeTitle(string title)
+        /// <summary>
+        /// Change the state of the engine automata.
+        /// </summary>
+        /// <param name="state"></param>
+        public void ChangeState(EngineState state) => State = state;
+        /// <summary>
+        /// Set the title of the engine window.
+        /// </summary>
+        /// <param name="title"></param>
+        public void SetWindowTitle(string title)
         {
             Title = title;
             Raylib.SetWindowTitle(title);

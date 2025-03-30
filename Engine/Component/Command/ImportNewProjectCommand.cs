@@ -15,7 +15,7 @@ namespace VisualNovelEngine.Engine.Component.Command
         public void Execute()
         {
             Engine.Editor = new(Engine, Engine.Window.ProjectPathInputField.Text);
-            Engine.ChangeState(EngineState.EditorState);
+            Engine.ChangeState(EngineState.Editor);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
         }
         public void Execute()
         {
-            Editor.Engine.Exit = true;
+            Editor.Engine.ChangeState(Engine.Component.EngineState.Exit);
         }
     }
 }

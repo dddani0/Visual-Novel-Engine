@@ -29,7 +29,7 @@ namespace VisualNovelEngine.Engine.Component
             Color = color;
             HoverColor = hoverColor;
             Command = command;
-            Timer = new(0.1f);
+            Timer = new(1f);
         }
 
         internal void Render()
