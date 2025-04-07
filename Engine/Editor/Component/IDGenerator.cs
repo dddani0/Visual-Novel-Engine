@@ -18,11 +18,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
             ID = startingIndex;
         }
         /// <summary>
-        /// Returns the current ID.
-        /// </summary>
-        /// <returns></returns>
-        public int CurrentID() => ID;
-        /// <summary>
         /// Generates a new ID.
         /// </summary>
         /// <returns></returns>

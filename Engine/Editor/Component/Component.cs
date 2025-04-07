@@ -1,8 +1,8 @@
 using VisualNovelEngine.Engine.Editor.Interface;
 using Raylib_cs;
-using TemplateGame.Component;
-using TemplateGame.Interface;
-using Timer = TemplateGame.Component.Timer;
+using VisualNovelEngine.Engine.Game.Component;
+using VisualNovelEngine.Engine.Game.Interface;
+using Timer = VisualNovelEngine.Engine.Game.Component.Timer;
 using System.Text.RegularExpressions;
 using VisualNovelEngine.Engine.Editor.Component.Command;
 using System.Linq;
@@ -191,7 +191,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             {
                 IsSelected = false;
                 IsRenaming = false;
-                MoveTimer.ResetTimer();
+                MoveTimer.Reset();
             }
             if (IsSelected) //Selected shows buttons
             {
@@ -202,14 +202,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             if (IsRenaming)
             {
-                if (Game.IsKeyPressed(KeyboardKey.Backspace))
+                if (VisualNovelEngine.Engine.Game.Component.Game.IsKeyPressed(KeyboardKey.Backspace))
                 {
                     if (Name.Length > 0)
                     {
                         Name = Name.Remove(Name.Length - 1);
                     }
                 }
-                else if (Game.IsKeyPressed(KeyboardKey.Enter))
+                else if (VisualNovelEngine.Engine.Game.Component.Game.IsKeyPressed(KeyboardKey.Enter))
                 {
                     IsSelected = false;
                 }

@@ -22,7 +22,7 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Name")]
         public required string Name { get; set; }
         [JsonPropertyName("ID")]
-        public required long ID { get; set; } //remove setter!
+        public required int ID { get; set; } //remove setter!
         [JsonPropertyName("Background")]
         public required string Background { get; set; }
         [JsonPropertyName("SolidColor")]

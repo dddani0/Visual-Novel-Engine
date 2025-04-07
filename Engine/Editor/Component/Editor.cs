@@ -1,43 +1,45 @@
 using VisualNovelEngine.Engine.Editor.Interface;
 using Raylib_cs;
-using TemplateGame.Component;
+using VisualNovelEngine.Engine.Game.Component;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using EngineEditor.Component;
 using System.Numerics;
 using VisualNovelEngine.Engine.Editor.Component.Command;
 using System.Reflection.Emit;
-using Timer = TemplateGame.Component.Timer;
+using Timer = VisualNovelEngine.Engine.Game.Component.Timer;
 
 namespace VisualNovelEngine.Engine.Editor.Component
 {
     public class Editor : IEditor
     {
         /// <summary>
+        /// The engine of the editor.
+        /// </summary>
+        internal Engine.Component.Engine Engine { get; set; }
+        /// <summary>
         /// The path to the data folder.
         /// </summary>
-        internal const string currentFolderPath = "../../../Engine/Data/";
+        internal string FolderPath { get; set; }
         /// <summary>
         /// The path to the editor configuration file.
         /// </summary>
-        internal const string EditorConfigPath = currentFolderPath + "EditorConfig.json";
-        /// <summary>
-        /// The path to the editor file.
-        /// </summary>
-        internal const string RelativeEditorPath = currentFolderPath + "Editor.json";
+        internal string EditorConfigPath { get; set; }
         /// <summary>
         /// The path to the save file.
         /// </summary>
-        internal string SaveFilePath { get; set; } = currentFolderPath;
-
-        internal string BuildPath { get; set; } = currentFolderPath;
+        internal string SaveFilePath { get; set; }
+        /// <summary>
+        /// Build path of the project
+        /// </summary>
+        internal string BuildPath { get; set; }
         /// <summary>
         /// Instance of a Game
         /// </summary>
-        internal Game Game { get; set; }
+        internal VisualNovelEngine.Engine.Game.Component.Game Game { get; set; }
         internal List<Variable> GameVariables { get; set; } = [];
         /// <summary>
-        /// The extent which the screen moves, when decided to
+        /// The extent which the screen moves
         /// </summary>
         internal const int MoveOffset = 150;
         /// <summary>
@@ -180,7 +182,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// The editor importer object, which is used to editor related data into the project.
         /// </summary>
-        internal EditorExImManager EditorImporter { get; set; }
+        internal EditorEXIMManager EditorEXIMManager { get; set; }
         /// <summary>
         /// The list of scenes in the editor.
         /// </summary>
@@ -218,19 +220,27 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         public bool Busy => ActiveScene.InspectorWindow?.Active is true;
         /// <summary>
-        /// The constructor of the editor.
+        /// Create a new editor.
         /// </summary>
-        public Editor()
+        /// <param name="engine"></param>
+        public Editor(Engine.Component.Engine engine, string title, string projectPath)
         {
-            // instance of the game
-            Game = new();
+            Engine = engine;
+            FolderPath = projectPath;
+            EditorConfigPath = projectPath + "EditorConfig.json";
+            SaveFilePath = @"../../../Engine/Data/Editor.json";
+            File.Copy(@"../../../Engine/Data/EditorConfig.json", EditorConfigPath, true);
+            BuildPath = $"{FolderPath}/{title}Build.json";
+            Engine.SetWindowTitle($"Editor - {title}");
+            // Load null data to Game.
+            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json", @"../../../Engine/Data/PlaceholderEmptyVariables.json");
             // instance of the editor importer
-            EditorImporter = new(this, EditorConfigPath, RelativeEditorPath);
+            EditorEXIMManager = new(this, EditorConfigPath, SaveFilePath);
             EditorConfigImport();
             //
             MouseMoveTimer = new(0.5f);
             //
-            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(), Button.ButtonType.Trigger)]);
+            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(this), Button.ButtonType.Trigger)]);
             // Create the scene
             List<Button> SceneButtonList = [];
             foreach (Scene scene in SceneList)
@@ -242,59 +252,99 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 else SceneButtonList.Add(button);
             }
             SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
-            SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, Engine.Editor.Component.MiniWindow.miniWindowType.Horizontal, [.. SceneButtonList]);
+            SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
             //
-            SaveFilePath += Regex.Replace(ProjectName, @"[^a-zA-Z0-9\s]", "") + ".json";
+            ProjectName = title;
+            //
+            SaveFilePath = $"{FolderPath}/{ProjectName}.json";
+            SaveFilePath.Replace(" ", string.Empty);
+        }
+        /// <summary>
+        /// Create a new Editor, and load existing project.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="projectPath"></param>
+        public Editor(Engine.Component.Engine engine, string projectPath)
+        {
+            Engine = engine;
+            FolderPath = projectPath[..(projectPath.LastIndexOf('/') + 1)];
+            ProjectName = projectPath.Split('/').Last().Split('.').First();
+            EditorConfigPath = $"{FolderPath}EditorConfig.json";
+            SaveFilePath = projectPath;
+            BuildPath = $"{FolderPath}{ProjectName}Build";
+            // Load null data to Game.
+            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json", @"../../../Engine/Data/PlaceholderEmptyVariables.json");
+            // instance of the editor importer
+            EditorEXIMManager = new(this, EditorConfigPath, SaveFilePath);
+            EditorConfigImport();
+            //
+            Engine.SetWindowTitle($"Editor - {ProjectName}");
+            //
+            MouseMoveTimer = new(0.5f);
+            //
+            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(this), Button.ButtonType.Trigger)]);
+            // Create the scene
+            List<Button> SceneButtonList = [];
+            foreach (Scene scene in SceneList)
+            {
+                var button = new Button(this, 0, 0, scene.Name, false, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ChangeSceneCommand(this), Button.ButtonType.Trigger);
+                ChangeSceneCommand changeSceneCommand = (ChangeSceneCommand)button.Command;
+                changeSceneCommand.SceneButton = button;
+                if (scene == ActiveScene) SceneButtonList.Insert(0, button);
+                else SceneButtonList.Add(button);
+            }
+            SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
+            SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
         }
         /// <summary>
         /// Imports the editor configuration from external file.
         /// </summary>
         private void EditorConfigImport()
         {
-            IDGenerator = new(EditorImporter.EditorExIm.ID);
+            IDGenerator = new(EditorEXIMManager.EditorExIm.ID);
             //
-            ComponentWidth = EditorImporter.EditorPreferencesImport.ComponentWidth;
-            ComponentHeight = EditorImporter.EditorPreferencesImport.ComponentHeight;
-            ComponentBorderWidth = EditorImporter.EditorPreferencesImport.ComponentBorderWidth;
-            ComponentEnabledCharacterCount = EditorImporter.EditorPreferencesImport.ComponentEnabledCharacterCount;
+            ComponentWidth = EditorEXIMManager.EditorPreferencesImport.ComponentWidth;
+            ComponentHeight = EditorEXIMManager.EditorPreferencesImport.ComponentHeight;
+            ComponentBorderWidth = EditorEXIMManager.EditorPreferencesImport.ComponentBorderWidth;
+            ComponentEnabledCharacterCount = EditorEXIMManager.EditorPreferencesImport.ComponentEnabledCharacterCount;
             //
-            ButtonWidth = EditorImporter.EditorPreferencesImport.ButtonWidth;
-            ButtonHeight = EditorImporter.EditorPreferencesImport.ButtonHeight;
-            ButtonBorderWidth = EditorImporter.EditorPreferencesImport.ButtonBorderWidth;
+            ButtonWidth = EditorEXIMManager.EditorPreferencesImport.ButtonWidth;
+            ButtonHeight = EditorEXIMManager.EditorPreferencesImport.ButtonHeight;
+            ButtonBorderWidth = EditorEXIMManager.EditorPreferencesImport.ButtonBorderWidth;
             //
-            SmallButtonWidth = EditorImporter.EditorPreferencesImport.SmallButtonWidth;
-            SmallButtonHeight = EditorImporter.EditorPreferencesImport.SmallButtonHeight;
-            SmallButtonBorderWidth = EditorImporter.EditorPreferencesImport.SmallButtonBorderWidth;
+            SmallButtonWidth = EditorEXIMManager.EditorPreferencesImport.SmallButtonWidth;
+            SmallButtonHeight = EditorEXIMManager.EditorPreferencesImport.SmallButtonHeight;
+            SmallButtonBorderWidth = EditorEXIMManager.EditorPreferencesImport.SmallButtonBorderWidth;
             //
-            SideButtonWidth = EditorImporter.EditorPreferencesImport.SideButtonWidth;
-            SideButtonHeight = EditorImporter.EditorPreferencesImport.SideButtonHeight;
-            SideButtonBorderWidth = EditorImporter.EditorPreferencesImport.SideButtonBorderWidth;
+            SideButtonWidth = EditorEXIMManager.EditorPreferencesImport.SideButtonWidth;
+            SideButtonHeight = EditorEXIMManager.EditorPreferencesImport.SideButtonHeight;
+            SideButtonBorderWidth = EditorEXIMManager.EditorPreferencesImport.SideButtonBorderWidth;
             //
-            InspectorWindowWidth = EditorImporter.EditorPreferencesImport.InspectorWidth;
-            InspectorWindowHeight = EditorImporter.EditorPreferencesImport.InspectorHeight;
-            InspectorWindowBorderWidth = EditorImporter.EditorPreferencesImport.InspectorBorderWidth;
+            InspectorWindowWidth = EditorEXIMManager.EditorPreferencesImport.InspectorWidth;
+            InspectorWindowHeight = EditorEXIMManager.EditorPreferencesImport.InspectorHeight;
+            InspectorWindowBorderWidth = EditorEXIMManager.EditorPreferencesImport.InspectorBorderWidth;
             //
-            MiniWindowWidth = EditorImporter.EditorPreferencesImport.MiniWindowWidth;
-            MiniWindowHeight = EditorImporter.EditorPreferencesImport.MiniWindowHeight;
-            MiniWindowBorderWidth = EditorImporter.EditorPreferencesImport.MiniWindowBorderWidth;
+            MiniWindowWidth = EditorEXIMManager.EditorPreferencesImport.MiniWindowWidth;
+            MiniWindowHeight = EditorEXIMManager.EditorPreferencesImport.MiniWindowHeight;
+            MiniWindowBorderWidth = EditorEXIMManager.EditorPreferencesImport.MiniWindowBorderWidth;
             //
-            CloseButtonBaseColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonBaseColor);
-            CloseButtonBorderColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonBorderColor);
-            CloseButtonHoverColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.CloseButtonHoverColor);
+            CloseButtonBaseColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.CloseButtonBaseColor);
+            CloseButtonBorderColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.CloseButtonBorderColor);
+            CloseButtonHoverColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.CloseButtonHoverColor);
             //
-            InspectorButtonBaseColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonBaseColor);
-            InspectorButtonBorderColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonBorderColor);
-            InspectorButtonHoverColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.InspectorButtonHoverColor);
+            InspectorButtonBaseColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.InspectorButtonBaseColor);
+            InspectorButtonBorderColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.InspectorButtonBorderColor);
+            InspectorButtonHoverColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.InspectorButtonHoverColor);
             //
-            BaseColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.BaseColor);
-            BorderColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.BorderColor);
-            TextColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.TextColor);
-            HoverColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.HoverColor);
-            EditorColor = EditorExImManager.FetchColorFromImport(EditorImporter.EditorPreferencesImport.EditorColor);
+            BaseColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.BaseColor);
+            BorderColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.BorderColor);
+            TextColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.TextColor);
+            HoverColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.HoverColor);
+            EditorColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.EditorColor);
             //
-            ProjectName = EditorImporter.EditorExIm.ProjectName;
-            Toolbar = EditorImporter.FetchToolBarFromImport(EditorImporter.EditorExIm.ToolBar);
-            SceneList = [.. EditorImporter.EditorExIm.Scenes.Select(EditorImporter.FetchEditorSceneFromImport)];
+            ProjectName = EditorEXIMManager.EditorExIm.ProjectName;
+            Toolbar = EditorEXIMManager.FetchToolBarFromImport(EditorEXIMManager.EditorExIm.ToolBar);
+            SceneList = [.. EditorEXIMManager.EditorExIm.Scenes.Select(EditorEXIMManager.FetchEditorSceneFromImport)];
             ActiveScene = SceneList[0];
         }
         /// <summary>
@@ -303,28 +353,17 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         public void Build()
         {
-            //Build game data
-            var GameBuildData = JsonSerializer.Serialize(EditorImporter.BuildScenesData([.. SceneList]), new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
-            File.WriteAllText(BuildPath + ProjectName + "build.json", GameBuildData);
-            //Build variables data
-            var GameVariablesData = JsonSerializer.Serialize(EditorImporter.BuildVariablesData([.. GameVariables]), new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
-            File.WriteAllText(BuildPath + ProjectName + "variables.json", GameVariablesData);
+            var GameBuildData = JsonSerializer.Serialize(EditorEXIMManager.BuildScenesData([.. SceneList]), new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(BuildPath + ProjectName + "Build.json", GameBuildData);
+            var GameVariablesData = JsonSerializer.Serialize(EditorEXIMManager.BuildVariablesData([.. GameVariables]), new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(BuildPath + ProjectName + "Variables.json", GameVariablesData);
         }
         /// <summary>
         /// Saves the editor data into a file.
         /// </summary>
         public void Save()
         {
-            var editorJson = JsonSerializer.Serialize(EditorImporter.ExportEditorData(this), new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
+            var editorJson = JsonSerializer.Serialize(EditorEXIMManager.ExportEditorData(this), new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(SaveFilePath, editorJson);
         }
         /// <summary>
@@ -368,7 +407,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             if (Raylib.GetMouseY() <= SceneBar.Height + Toolbar.Height || Raylib.GetMouseY() >= Raylib.GetScreenHeight() - ActiveScene.Timeline.Height)
             {
-                MouseMoveTimer.ResetTimer();
+                MouseMoveTimer.Reset();
                 return;
             }
             if (Raylib.GetMouseX() >= Raylib.GetScreenWidth() - MoveMouseOffset)
@@ -396,7 +435,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 }
                 MouseXMoveExtent--;
             }
-            MouseMoveTimer.ResetTimer();
+            MouseMoveTimer.Reset();
         }
         /// <summary>
         /// Disables all components in the editor.

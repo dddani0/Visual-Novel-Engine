@@ -8,9 +8,14 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
     /// </summary>
     public class ExitWindowCommand : ICommand
     {
+        Editor Editor { get; set; }
+        public ExitWindowCommand(Editor editor)
+        {
+            Editor = editor;
+        }
         public void Execute()
         {
-            Program.Exit = true;
+            Editor.Engine.ChangeState(Engine.Component.EngineState.Exit);
         }
     }
 }

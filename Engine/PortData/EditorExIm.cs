@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace VisualNovelEngine.Engine.PortData
@@ -166,8 +165,6 @@ namespace VisualNovelEngine.Engine.PortData
     {
         [JsonPropertyName("Type")]
         public required string Type { get; set; }
-        [JsonPropertyName("ErrorType")]
-        public int? ErrorType { get; set; }
         [JsonPropertyName("ErrorMessage")]
         public string? ErrorMessage { get; set; }
         [JsonPropertyName("WarningButtons")]

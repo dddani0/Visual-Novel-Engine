@@ -1,5 +1,5 @@
 using Raylib_cs;
-using TemplateGame.Component;
+using VisualNovelEngine.Engine.Game.Component;
 using VisualNovelEngine.Engine.Editor.Interface;
 
 namespace VisualNovelEngine.Engine.Editor.Component.Command
@@ -41,7 +41,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     Variable variable = Editor.GameVariables[i];
                     TextField nameTextField = (TextField)MiniWindow.VariableComponentList[i * 3];
                     TextField valueTextField = (TextField)MiniWindow.VariableComponentList[i * 3 + 1];
-                    DropDown typeDropDown = (DropDown)MiniWindow.VariableComponentList[i * 3 + 2];
+                    Dropdown typeDropDown = (Dropdown)MiniWindow.VariableComponentList[i * 3 + 2];
                     variable.Name = nameTextField.Text;
                     variable.Value = valueTextField.Text;
                     variable.Type = typeDropDown.Button.VariableType;
@@ -58,9 +58,9 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 //change active scene name
                 activeScene.Name = newSceneName;
                 //Save background type
-                activeScene.BackgroundOption = ((DropDown)MiniWindow.ComponentList[3]).Button.SceneBackgroundOption;
+                activeScene.BackgroundOption = ((Dropdown)MiniWindow.ComponentList[3]).Button.SceneBackgroundOption;
                 //Save background options cimlet
-                if (activeScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.SolidColor)
+                if (activeScene.BackgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor)
                 {
                     //activeScene.BackgroundColor = (MiniWindow.ComponentList[4]).Button.Color;
                     TextField colorTextField = (TextField)MiniWindow.ComponentList[5];
@@ -72,13 +72,13 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                         A = 255
                     };
                 }
-                else if (activeScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.Image)
+                else if (activeScene.BackgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image)
                 {
                     TextField imageTextField = (TextField)MiniWindow.ComponentList[5];
                     activeScene.BackgroundImage = new Sprite(imageTextField.Text).ImageTexture;
                 }
-                else if (activeScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientVertical ||
-                         activeScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal)
+                else if (activeScene.BackgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientVertical ||
+                         activeScene.BackgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.GradientHorizontal)
                 {
                     TextField color1TextField = (TextField)MiniWindow.ComponentList[5];
                     TextField color2TextField = (TextField)MiniWindow.ComponentList[6];
@@ -101,8 +101,8 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     ];
                 }
                 //remove the added buttons
-                if (Editor.ActiveScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.SolidColor ||
-                    Editor.ActiveScene.BackgroundOption == TemplateGame.Component.Scene.BackgroundOption.Image)
+                if (Editor.ActiveScene.BackgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor ||
+                    Editor.ActiveScene.BackgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.Image)
                 {
                     MiniWindow.ComponentList.RemoveRange(4, 2);
                 }

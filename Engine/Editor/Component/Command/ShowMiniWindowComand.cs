@@ -15,7 +15,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
         internal bool HasVariable { get; set; }
         internal bool HasScene { get; set; }
 
-        public ShowMiniWindowComand(Editor editor, bool hasVariable, bool hasScene, Button[] buttons, MiniWindow.miniWindowType type)
+        public ShowMiniWindowComand(Editor editor, bool hasVariable, bool hasScene, Button[] buttons, MiniWindowType type)
         {
             Editor = editor;
             Buttons = buttons;
@@ -24,7 +24,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
             MiniWindow = new MiniWindow(Editor, true, HasVariable, hasScene, Raylib.GetScreenWidth() / 2 - Editor.MiniWindowWidth / 2, Raylib.GetScreenHeight() / 2 - Editor.MiniWindowHeight / 2, Editor.MiniWindowWidth, Editor.MiniWindowHeight, Editor.MiniWindowBorderWidth, Editor.BaseColor, Editor.BorderColor, type, buttons);
         }
 
-        public ShowMiniWindowComand(Editor editor, bool hasVariable, bool hasScene, IComponent[] components, MiniWindow.miniWindowType type)
+        public ShowMiniWindowComand(Editor editor, bool hasVariable, bool hasScene, IComponent[] components, MiniWindowType type)
         {
             Editor = editor;
             Components = components;

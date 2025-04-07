@@ -1,4 +1,4 @@
-using TemplateGame.Component;
+using VisualNovelEngine.Engine.Game.Component;
 using VisualNovelEngine.Engine.Editor.Component;
 using VisualNovelEngine.Engine.Editor.Interface;
 

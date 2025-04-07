@@ -2,17 +2,16 @@ using System.Text.Json;
 using Raylib_cs;
 using ICommand = VisualNovelEngine.Engine.Editor.Interface.ICommand;
 using VisualNovelEngine.Engine.Editor.Component.Command;
-using TemplateGame.Component;
+using VisualNovelEngine.Engine.Game.Component;
 using static VisualNovelEngine.Engine.Editor.Component.Command.CreateComponentCommand;
 using VisualNovelEngine.Engine.PortData;
-using TemplateGame.Interface;
+using VisualNovelEngine.Engine.Game.Interface;
 using System.Text.RegularExpressions;
-using TemplateGame.Component.Action.TimelineDependent;
-using TemplateGame.Component.Action;
+using VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent;
+using VisualNovelEngine.Engine.Game.Component.Action;
 using System.Collections.Concurrent;
-using TemplateGame.Component.Action.TimelineIndependent;
+using VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent;
 using VisualNovelEngine.Engine.Editor.Interface;
-using Namespace;
 using Engine.EngineEditor.Component.Command;
 using EngineEditor.Component.Command;
 
@@ -22,11 +21,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
     /// Imports editor data and preferences from the associated JSON files.
     //  Exports Game related data from the Editor to the associated JSON file.
     /// </summary>
-    public class EditorExImManager
+    public class EditorEXIMManager
     {
-        /// <summary>
-        /// Represents the editor.
-        /// </summary>
         Editor Editor { get; set; }
         /// <summary>
         /// Represents the editor's imported preferences.
@@ -51,7 +47,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="editorConfigPath"></param>
         /// <param name="editorDataPath"></param>
         /// <exception cref="Exception"></exception>
-        public EditorExImManager(Editor editor, string editorConfigPath, string editorDataPath)
+        public EditorEXIMManager(Editor editor, string editorConfigPath, string editorDataPath)
         {
             Editor = editor;
             //Editor config
@@ -95,18 +91,18 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <returns></returns>
         public Scene FetchEditorSceneFromImport(SceneExIm sceneImport)
         {
-            TemplateGame.Component.Scene.BackgroundOption backgroundOption = sceneImport.Background switch
+            VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption backgroundOption = sceneImport.Background switch
             {
-                "SolidColor" => TemplateGame.Component.Scene.BackgroundOption.SolidColor,
-                "GradientVertical" => TemplateGame.Component.Scene.BackgroundOption.GradientVertical,
-                "GradientHorizontal" => TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal,
-                "Image" => TemplateGame.Component.Scene.BackgroundOption.Image,
+                "SolidColor" => Game.Component.Scene.BackgroundOption.SolidColor,
+                "GradientVertical" => Game.Component.Scene.BackgroundOption.GradientVertical,
+                "GradientHorizontal" => Game.Component.Scene.BackgroundOption.GradientHorizontal,
+                "Image" => Game.Component.Scene.BackgroundOption.Image,
                 _ => throw new Exception("Background type not found!")
             };
             Texture2D? image;
             Color[]? gradientColor;
             Color? solidColor;
-            if (backgroundOption == TemplateGame.Component.Scene.BackgroundOption.Image)
+            if (backgroundOption == Game.Component.Scene.BackgroundOption.Image)
             {
                 image = Raylib.LoadTexture(sceneImport.ImageTexture);
                 return new Scene(Editor,
@@ -118,7 +114,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     BackgroundImage = image
                 };
             }
-            else if (backgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal || backgroundOption == TemplateGame.Component.Scene.BackgroundOption.GradientVertical)
+            else if (backgroundOption == Game.Component.Scene.BackgroundOption.GradientHorizontal || backgroundOption == Game.Component.Scene.BackgroundOption.GradientVertical)
             {
                 gradientColor = FetchGradientColorFromImport(sceneImport.GradientColor);
                 return new Scene(Editor,
@@ -311,7 +307,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="dropDownImport"></param>
         /// <returns></returns>
-        public DropDown FetchDropDownFromImport(DropDownExim dropDownImport)
+        public Dropdown FetchDropDownFromImport(DropDownExim dropDownImport)
         {
             return new(
                 Editor,
@@ -320,7 +316,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 Editor.ComponentWidth,
                 Editor.ComponentHeight,
                 Editor.ComponentBorderWidth,
-                (DropDown.FilterType)dropDownImport.Filter
+                (Dropdown.FilterType)dropDownImport.Filter
             )
             {
                 ButtonList = [.. dropDownImport.Options.Select(FetchEditorButtonFromImport)]
@@ -499,11 +495,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     if (commandImport.WindowComponents == null && commandImport.Buttons == null) throw new Exception("Window components and buttons are not found!");
                     if (commandImport.WindowComponents == null)
                     {
-                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.Buttons.Select(FetchEditorButtonFromImport)], MiniWindow.miniWindowType.Vertical);
+                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.Buttons.Select(FetchEditorButtonFromImport)], MiniWindowType.Vertical);
                     }
                     else
                     {
-                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindow.miniWindowType.Vertical);
+                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindowType.Vertical);
                     }
                 case "ShowInspectorCommand":
                     return new ShowInspectorCommand(Editor,
@@ -515,7 +511,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 case "ShowErrorCommand":
                     if (commandImport.ErrorMessage == null) throw new Exception("Error message not found!");
                     if (commandImport.WarningButtons == null) throw new Exception("Warning buttons not found!");
-                    if (commandImport.ErrorType == null) throw new Exception("Error type not found!");
                     return new ShowErrorCommand(Editor, commandImport.ErrorMessage, [.. commandImport.WarningButtons.Select(FetchEditorButtonFromImport)]);
                 case "DeleteAllComponentsCommand":
                     return new DeleteAllComponentsCommand(Editor);
@@ -650,7 +645,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     return new() { TextField = ExportTextFieldData(textField) };
                 case ToggleButton toggleButton:
                     return new() { Toggle = ExportToggleData(toggleButton) };
-                case DropDown dropDown:
+                case Dropdown dropDown:
                     return new() { DropDown = ExportDropDownData(dropDown) };
                 case Button button:
                     return new() { Button = ExportEditorButtonData(button) };
@@ -707,7 +702,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="dropDown"></param>
         /// <returns></returns>
-        public DropDownExim ExportDropDownData(DropDown dropDown)
+        public DropDownExim ExportDropDownData(Dropdown dropDown)
         {
             return new()
             {
@@ -748,14 +743,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ID = block.ID,
                     Sprite = ExportSpriteData(sprite)
                 },
-                TemplateGame.Component.TextField textField => new()
+                VisualNovelEngine.Engine.Game.Component.TextField textField => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
                     ID = block.ID,
                     TextField = ExportTextFieldData(textField)
                 },
-                TemplateGame.Component.Button button => new()
+                VisualNovelEngine.Engine.Game.Component.Button button => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
@@ -794,14 +789,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ID = block.ID,
                     Sprite = ExportSpriteData(sprite)
                 },
-                TemplateGame.Component.TextField textField => new()
+                VisualNovelEngine.Engine.Game.Component.TextField textField => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
                     ID = block.ID,
                     TextField = ExportTextFieldData(textField)
                 },
-                TemplateGame.Component.Button button => new()
+                VisualNovelEngine.Engine.Game.Component.Button button => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
@@ -843,7 +838,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="textField"></param>
         /// <returns></returns>
-        public TextFieldExim ExportTextFieldData(TemplateGame.Component.TextField textField)
+        public TextFieldExim ExportTextFieldData(VisualNovelEngine.Engine.Game.Component.TextField textField)
         {
             return new()
             {
@@ -887,7 +882,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="button"></param>
         /// <returns></returns>
-        public ButtonComponentExIm ExportButtonData(TemplateGame.Component.Button button)
+        public ButtonComponentExIm ExportButtonData(VisualNovelEngine.Engine.Game.Component.Button button)
         {
             return new()
             {
@@ -909,7 +904,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="button"></param>
         /// <returns></returns>
-        public ButtonComponentExIm ExportStaticButtonData(TemplateGame.Component.Button button)
+        public ButtonComponentExIm ExportStaticButtonData(VisualNovelEngine.Engine.Game.Component.Button button)
         {
             return new()
             {
@@ -997,7 +992,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="dropBoxOption"></param>
         /// <returns></returns>
-        public DropBoxOptionExim ExportDropBoxOptionData(TemplateGame.Component.Button dropBoxOption)
+        public DropBoxOptionExim ExportDropBoxOptionData(VisualNovelEngine.Engine.Game.Component.Button dropBoxOption)
         {
             return new()
             {
@@ -1096,7 +1091,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             return new()
             {
-                ID = editor.IDGenerator.CurrentID(),
+                ID = editor.IDGenerator.ID,
                 ProjectName = Regex.Replace(editor.ProjectName, @"[^a-zA-Z0-9\s]", ""),
                 ProjectPath = editor.SaveFilePath,
                 WindowWidth = 800,
@@ -1129,6 +1124,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 Height = group.Height,
                 BorderWidth = group.BorderWidth,
                 Buttons = [.. buttons],
+                MaximumHorizontalComponentCount = group.MaximumHorizontalComponentCount,
                 Components = [.. components]
             };
         }
@@ -1173,7 +1169,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             return scene.BackgroundOption switch
             {
-                TemplateGame.Component.Scene.BackgroundOption.SolidColor => new()
+                Game.Component.Scene.BackgroundOption.SolidColor => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1183,7 +1179,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
                     Timeline = ExportTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal => new()
+                Game.Component.Scene.BackgroundOption.GradientHorizontal => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1193,7 +1189,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
                     Timeline = ExportTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.GradientVertical => new()
+                Game.Component.Scene.BackgroundOption.GradientVertical => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1203,7 +1199,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GroupList = [.. scene.ComponentGroupList.Select(ExportGroupData)],
                     Timeline = ExportTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.Image => new()
+                Game.Component.Scene.BackgroundOption.Image => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1226,10 +1222,10 @@ namespace VisualNovelEngine.Engine.Editor.Component
             return permanentRenderingObject switch
             {
                 Sprite sprite => new() { Sprite = ExportSpriteData(sprite) },
-                TemplateGame.Component.TextField textField => new() { TextField = ExportTextFieldData(textField) },
+                VisualNovelEngine.Engine.Game.Component.TextField textField => new() { TextField = ExportTextFieldData(textField) },
                 TextBox textBox => new() { Textbox = ExportTextBoxData(textBox) },
                 Block block => new() { Block = ExportBlockData(block) },
-                TemplateGame.Component.Button button => new() { Button = ExportButtonData(button) },
+                VisualNovelEngine.Engine.Game.Component.Button button => new() { Button = ExportButtonData(button) },
                 InputField inputField => new() { InputField = ExportInputFieldData(inputField) },
                 DropBox dropBox => new() { DropBox = ExportDropBoxData(dropBox) },
                 Menu menu => new() { Menu = ExportMenuData(menu) },
@@ -1366,7 +1362,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             return scene.BackgroundOption switch
             {
-                TemplateGame.Component.Scene.BackgroundOption.SolidColor => new()
+                Game.Component.Scene.BackgroundOption.SolidColor => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1374,7 +1370,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     SolidColor = ExportColorData(scene.BackgroundColor.Value),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.GradientHorizontal => new()
+                Game.Component.Scene.BackgroundOption.GradientHorizontal => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1382,7 +1378,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.GradientVertical => new()
+                Game.Component.Scene.BackgroundOption.GradientVertical => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
@@ -1390,7 +1386,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
-                TemplateGame.Component.Scene.BackgroundOption.Image => new()
+                Game.Component.Scene.BackgroundOption.Image => new()
                 {
                     ID = scene.ID,
                     Name = scene.Name,
