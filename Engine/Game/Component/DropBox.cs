@@ -62,6 +62,18 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// The hover color of the DropBox.
         /// </summary>
         internal Color HoverColor { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="xPosition"></param>
+        /// <param name="yPosition"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="options"></param>
+        /// <param name="dropBoxColor"></param>
+        /// <param name="dropBoxBorderColor"></param>
+        /// <param name="dropBoxHoverColor"></param>
         public DropBox(Block block, int xPosition, int yPosition, int width, int height, Button[] options, Color dropBoxColor, Color dropBoxBorderColor, Color dropBoxHoverColor)
         {
             XPosition = block.XPosition + xPosition;

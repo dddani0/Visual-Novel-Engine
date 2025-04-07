@@ -21,11 +21,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
     /// Imports editor data and preferences from the associated JSON files.
     //  Exports Game related data from the Editor to the associated JSON file.
     /// </summary>
-    public class EditorExImManager
+    public class EditorEXIMManager
     {
-        /// <summary>
-        /// Represents the editor.
-        /// </summary>
         Editor Editor { get; set; }
         /// <summary>
         /// Represents the editor's imported preferences.
@@ -50,7 +47,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="editorConfigPath"></param>
         /// <param name="editorDataPath"></param>
         /// <exception cref="Exception"></exception>
-        public EditorExImManager(Editor editor, string editorConfigPath, string editorDataPath)
+        public EditorEXIMManager(Editor editor, string editorConfigPath, string editorDataPath)
         {
             Editor = editor;
             //Editor config
@@ -310,7 +307,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="dropDownImport"></param>
         /// <returns></returns>
-        public DropDown FetchDropDownFromImport(DropDownExim dropDownImport)
+        public Dropdown FetchDropDownFromImport(DropDownExim dropDownImport)
         {
             return new(
                 Editor,
@@ -319,7 +316,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 Editor.ComponentWidth,
                 Editor.ComponentHeight,
                 Editor.ComponentBorderWidth,
-                (DropDown.FilterType)dropDownImport.Filter
+                (Dropdown.FilterType)dropDownImport.Filter
             )
             {
                 ButtonList = [.. dropDownImport.Options.Select(FetchEditorButtonFromImport)]
@@ -648,7 +645,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     return new() { TextField = ExportTextFieldData(textField) };
                 case ToggleButton toggleButton:
                     return new() { Toggle = ExportToggleData(toggleButton) };
-                case DropDown dropDown:
+                case Dropdown dropDown:
                     return new() { DropDown = ExportDropDownData(dropDown) };
                 case Button button:
                     return new() { Button = ExportEditorButtonData(button) };
@@ -705,7 +702,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="dropDown"></param>
         /// <returns></returns>
-        public DropDownExim ExportDropDownData(DropDown dropDown)
+        public DropDownExim ExportDropDownData(Dropdown dropDown)
         {
             return new()
             {
@@ -1094,7 +1091,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             return new()
             {
-                ID = editor.IDGenerator.CurrentID(),
+                ID = editor.IDGenerator.ID,
                 ProjectName = Regex.Replace(editor.ProjectName, @"[^a-zA-Z0-9\s]", ""),
                 ProjectPath = editor.SaveFilePath,
                 WindowWidth = 800,

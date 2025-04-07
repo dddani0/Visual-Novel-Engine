@@ -149,7 +149,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     switch (component.IsObjectStatic)
                     {
                         case true:
-                            DropDown staticButtonDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction);
+                            Dropdown staticButtonDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction);
                             foreach (var item in staticButtonDropDown.FilteredButtonList)
                             {
                                 if (button.Action.GetType().Equals(item.Action.GetType()))
@@ -161,7 +161,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                             ComponentList.Add(staticButtonDropDown);
                             break;
                         case false:
-                            DropDown buttonDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineDependentAction);
+                            Dropdown buttonDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineDependentAction);
                             foreach (var item in buttonDropDown.FilteredButtonList)
                             {
                                 if (button.Action.GetType().Equals(item.Action.GetType()))
@@ -231,7 +231,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     //Textbox position
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
                     ComponentList.Add(
-                        new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TextBoxPosition));
+                        new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TextBoxPosition));
                     break;
                 case Menu menu:
                     //Position
@@ -264,7 +264,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition, "List of blocks:"));
                     for (int i = 0; i < menu.BlockList.Count; i++)
                     {
-                        DropDown blockDropDown = new(Editor, XPosition, YPosition, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Block);
+                        Dropdown blockDropDown = new(Editor, XPosition, YPosition, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Block);
                         if (menu.BlockList[i].Component == null)
                         {
                             ComponentList.Add(blockDropDown);
@@ -284,7 +284,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     }
                     //Dinamic add block insert button
                     ComponentList.Add(
-                        new Button(Editor, XPosition, YPosition, "Add button", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new DropDown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Block), 2), Button.ButtonType.Trigger));
+                        new Button(Editor, XPosition, YPosition, "Add button", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Block), 2), Button.ButtonType.Trigger));
                     break;
                 case Block block:
                     //X Position
@@ -298,7 +298,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, block.YPosition.ToString(), Raylib.GetFontDefault(), true));
                     //Component
                     ComponentList.Add(new Label(XPosition, YPosition, "Component:"));
-                    var blockComponentDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.NoBlock);
+                    var blockComponentDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.NoBlock);
                     if (block.Component == null)
                     {
                         ComponentList.Add(blockComponentDropDown);
@@ -346,7 +346,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition, "Options:"));
                     for (int i = 0; i < dropBox.Options.Count; i++)
                     {
-                        DropDown optionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction);
+                        Dropdown optionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction);
                         foreach (var item in optionDropDown.FilteredButtonList)
                         {
                             if (dropBox.Options[i].Action.GetType().Equals(item.Action.GetType()))
@@ -359,7 +359,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     }
                     //Add option button
                     ComponentList.Add(
-                        new Button(Editor, XPosition, YPosition, "Add option", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new DropDown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction), 2), Button.ButtonType.Trigger));
+                        new Button(Editor, XPosition, YPosition, "Add option", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction), 2), Button.ButtonType.Trigger));
                     break;
                 case Slider slider:
                     //X Position
@@ -401,7 +401,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.Value.ToString(), Raylib.GetFontDefault(), false));
                     //Action
                     ComponentList.Add(new Label(XPosition, YPosition, "Action:"));
-                    DropDown SliderActionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction);
+                    Dropdown SliderActionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction);
                     foreach (Button item in SliderActionDropDown.FilteredButtonList)
                     {
                         if (item.Action.GetType().Equals(slider.Action.GetType()))
@@ -449,7 +449,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                         new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, toggle.Text, Raylib.GetFontDefault(), false));
                     //Action
                     ComponentList.Add(new Label(XPosition, YPosition, "Action:"));
-                    DropDown ToggleActionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction);
+                    Dropdown ToggleActionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction);
                     foreach (Button item in ToggleActionDropDown.FilteredButtonList)
                     {
                         if (item.Action.GetType().Equals(toggle.SettingsAction.GetType()))
@@ -507,7 +507,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     switch (component.IsObjectStatic)
                     {
                         case true:
-                            DropDown staticInputFieldActionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction);
+                            Dropdown staticInputFieldActionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction);
                             foreach (Button item in staticInputFieldActionDropDown.FilteredButtonList)
                             {
                                 if (item.Action.GetType().Equals(inputField.Button.Action.GetType()))
@@ -519,7 +519,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                             ComponentList.Add(staticInputFieldActionDropDown);
                             break;
                         case false:
-                            DropDown inputFieldActionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TimelineIndependentAction);
+                            Dropdown inputFieldActionDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction);
                             foreach (Button item in inputFieldActionDropDown.FilteredButtonList)
                             {
                                 if (item.Action.GetType().Equals(inputField.Button.Action.GetType()))
@@ -540,11 +540,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// Updates the inspector window.
         /// </summary>
-        /// <param name="eventData"></param>
-        internal void SetActiveComponent(IAction eventData)
+        /// <param name="actionData"></param>
+        internal void SetActiveComponent(IAction actionData)
         {
             Scrollbar.DropComponents();
-            switch (eventData)
+            switch (actionData)
             {
                 case CreateMenuAction createMenuAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
@@ -552,7 +552,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Display a menu.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Menu:"));
-                    DropDown menuDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Menu);
+                    Dropdown menuDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Menu);
                     if (menuDropDown.FilteredButtonList.Count > 0)
                     {
                         foreach (Button item in menuDropDown.FilteredButtonList)
@@ -590,7 +590,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Display a sprite.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Sprite:"));
-                    DropDown addSpriteActionDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite);
+                    Dropdown addSpriteActionDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Sprite);
                     if (addSpriteActionDropDown.FilteredButtonList.Count > 0)
                     {
                         foreach (Button item in addSpriteActionDropDown.FilteredButtonList)
@@ -610,7 +610,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Swap active sprite to a new one.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Active Sprite:"));
-                    DropDown changeSpriteDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite);
+                    Dropdown changeSpriteDropDown = new(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Sprite);
                     if (changeSpriteDropDown.FilteredButtonList.Count > 0)
                     {
                         foreach (Button item in changeSpriteDropDown.FilteredButtonList)
@@ -632,7 +632,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Removes a sprite from the scene.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Sprite:"));
-                    DropDown removeSpriteDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite);
+                    Dropdown removeSpriteDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Sprite);
                     if (removeSpriteDropDown.FilteredButtonList.Count > 0)
                     {
                         foreach (Button item in removeSpriteDropDown.FilteredButtonList)
@@ -703,7 +703,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Loads an instance of a textbox to the screen.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "TextBox:"));
-                    DropDown textBoxDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.TextBox);
+                    Dropdown textBoxDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TextBox);
                     if (textBoxDropDown.FilteredButtonList.Count > 0)
                     {
                         foreach (Button item in textBoxDropDown.FilteredButtonList)
@@ -723,7 +723,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Tints a sprite to a color.", Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Sprite:"));
-                    DropDown tintSpriteDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Sprite);
+                    Dropdown tintSpriteDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Sprite);
                     if (tintSpriteDropDown.FilteredButtonList.Count > 0)
                     {
                         foreach (Button item in tintSpriteDropDown.FilteredButtonList)
@@ -762,7 +762,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Variable name:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, setVariableValueAction.VariableName, Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Set component:"));
-                    DropDown setVariableValueDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.SliderToggleInputField);
+                    Dropdown setVariableValueDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.SliderToggleInputField);
                     if (setVariableValueDropDown.FilteredButtonList.Count > 0)
                     {
                         foreach (Button item in setVariableValueDropDown.FilteredButtonList)
@@ -782,7 +782,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Description:"));
                     ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "Switches the active static menu to another.", Raylib.GetFontDefault(), true));
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Menu:"));
-                    DropDown switchStaticMenuOldDropDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Menu);
+                    Dropdown switchStaticMenuOldDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Menu);
                     if (switchStaticMenuOldDropDown.FilteredButtonList.Count > 0)
                     {
                         foreach (Button item in switchStaticMenuOldDropDown.FilteredButtonList)
@@ -796,7 +796,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     }
                     ComponentList.Add(switchStaticMenuOldDropDown);
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "New Menu:"));
-                    DropDown switchStaticMenuNewDopDown = new DropDown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.Menu);
+                    Dropdown switchStaticMenuNewDopDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Menu);
                     if (switchStaticMenuNewDopDown.FilteredButtonList.Count > 0)
                     {
                         foreach (Button item in switchStaticMenuNewDopDown.FilteredButtonList)
@@ -812,7 +812,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     break;
             }
             DeleteButton = new Button(Editor, XPosition, YPosition, "Delete", false, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger);
-            ActiveAction = eventData;
+            ActiveAction = actionData;
             Scrollbar.AddComponents([.. ComponentList]);
             UpdateComponentPosition(EnabledRowComponentCount);
         }

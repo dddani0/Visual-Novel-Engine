@@ -5,6 +5,9 @@ using VisualNovelEngine.Engine.Editor.Interface;
 
 namespace VisualNovelEngine.Engine.Editor.Component
 {
+    /// <summary>
+    /// Represents the types which the mini window can have.
+    /// </summary>
     public enum MiniWindowType
     {
         Vertical,
@@ -15,10 +18,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
     /// </summary>
     public class MiniWindow : IWindow
     {
-        /// <summary>
-        /// Represents the types which the mini window can have.
-        /// </summary>
-
         /// <summary>
         /// The type of the mini window.
         /// </summary>
@@ -181,7 +180,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             TextField sceneNameTextField = ComponentList[2] as TextField;
             sceneNameTextField.Text = Editor.ActiveScene.Name;
             //Fetch and set activeComponents
-            DropDown sceneBackgroundDropDown = ComponentList[3] as DropDown;
+            Dropdown sceneBackgroundDropDown = ComponentList[3] as Dropdown;
             sceneBackgroundDropDown.Button.Text = Editor.ActiveScene.BackgroundOption.ToString();
             switch (Editor.ActiveScene.BackgroundOption)
             {
@@ -235,7 +234,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             {
                 TextField VariableNameField = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.GameVariables[i].Name, Raylib.GetFontDefault(), false);
                 TextField VariableValueField = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.GameVariables[i].Value, Raylib.GetFontDefault(), false);
-                DropDown VariableDropDown = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, DropDown.FilterType.VariableType);
+                Dropdown VariableDropDown = new(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.VariableType);
                 VariableDropDown.Button.VariableType = Editor.GameVariables[i].Type;
                 VariableDropDown.Button.Text = Editor.GameVariables[i].Type.ToString();
                 //Add button options for all types of variables

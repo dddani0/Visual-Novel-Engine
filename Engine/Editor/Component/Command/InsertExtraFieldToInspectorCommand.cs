@@ -34,8 +34,8 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     InspectorWindow.ComponentList.Insert(InspectorWindow.ComponentList.Count - (IndexOffset - 1), newButton);
                     InspectorWindow.Scrollbar.AddComponent(newButton, IndexOffset);
                     break;
-                case DropDown dropDown:
-                    DropDown newDropDown = new(Editor, InspectorWindow.XPosition, InspectorWindow.YPosition, dropDown.Width, dropDown.Height, dropDown.BorderWidth, dropDown.Filter);
+                case Dropdown dropDown:
+                    Dropdown newDropDown = new(Editor, InspectorWindow.XPosition, InspectorWindow.YPosition, dropDown.Width, dropDown.Height, dropDown.BorderWidth, dropDown.Filter);
                     InspectorWindow.ComponentList.Insert(InspectorWindow.ComponentList.Count - (IndexOffset - 1), newDropDown);
                     InspectorWindow.Scrollbar.AddComponent(newDropDown, IndexOffset);
                     break;

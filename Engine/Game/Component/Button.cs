@@ -87,17 +87,20 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <summary>
         /// Creates a button.
         /// </summary>
-        /// <param name="game">Active Game</param>
-        /// <param name="parentMenu">Parent menu of the button</param>
-        /// <param name="xPos">Relative position on the X axis.</param>
-        /// <param name="yPos">Relative position on the Y axis</param>
-        /// <param name="width">Width of the Button</param>
-        /// <param name="height">Heigth of the Button</param>
-        /// <param name="text">The text on the button</param>
-        /// <param name="buttonColor">The neutral color of the Button</param>
-        /// <param name="borderColor">The Border color of the Button</param>
-        /// <param name="hoverColor">The color of the button in hovering state.</param>
-        /// <param name="buttonEvent">The event which is attached to the button</param>
+        /// <param name="game"></param>
+        /// <param name="block"></param>
+        /// <param name="font"></param>
+        /// <param name="xPos"></param>
+        /// <param name="yPos"></param>
+        /// <param name="borderWidth"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="text"></param>
+        /// <param name="textColor"></param>
+        /// <param name="buttonColor"></param>
+        /// <param name="borderColor"></param>
+        /// <param name="hoverColor"></param>
+        /// <param name="buttonEvent"></param>
         public Button(Game game, Block block, Font font, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, IButtonEvent buttonEvent)
         {
             ParentBlock = block;

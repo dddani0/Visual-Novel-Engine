@@ -44,7 +44,19 @@ namespace VisualNovelEngine.Engine.Game.Component
         internal Color BorderColor { get; set; }
         internal bool IsVisible { get; set; }
         internal Game Game { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="id"></param>
+        /// <param name="xPos"></param>
+        /// <param name="yPos"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="isFullScreen"></param>
+        /// <param name="blockList"></param>
+        /// <param name="windowColor"></param>
+        /// <param name="windowBorderColor"></param>
         public Menu(Game game, int id, int xPos, int yPos, int width, int height, bool isFullScreen, List<Block> blockList, Color windowColor, Color windowBorderColor)
         {
             Game = game;

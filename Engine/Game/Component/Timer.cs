@@ -5,11 +5,6 @@ namespace VisualNovelEngine.Engine.Game.Component
     public class Timer
     {
         /// <summary>
-        /// Creates a timer.
-        /// </summary>
-        /// <param name="timerValue">Number of seconds</param>
-        public Timer(float timerValue) => Seconds = timerValue;
-        /// <summary>
         /// The number of seconds.
         /// </summary>
         private float Seconds { get; }
@@ -17,6 +12,11 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// The current value of the timer.
         /// </summary>
         public float CurrentTimerValue { get; set; }
+        /// <summary>
+        /// Creates a timer.
+        /// </summary>
+        /// <param name="timerValue">Number of seconds</param>
+        public Timer(float timerValue) => Seconds = timerValue;
         /// <summary>
         /// Checks if the timer is on cooldown.
         /// </summary>

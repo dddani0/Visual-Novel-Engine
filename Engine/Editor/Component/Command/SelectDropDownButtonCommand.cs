@@ -9,9 +9,9 @@ namespace VisualNovelEngine.Engine.Editor.Component
     public class SelectDropDownButtonCommand : ICommand
     {
         Editor Editor { get; set; }
-        internal DropDown DropDown { get; set; }
+        internal Dropdown DropDown { get; set; }
         private Button Button { get; set; }
-        public SelectDropDownButtonCommand(Editor editor, DropDown dropDown, Button button)
+        public SelectDropDownButtonCommand(Editor editor, Dropdown dropDown, Button button)
         {
             Editor = editor;
             DropDown = dropDown;

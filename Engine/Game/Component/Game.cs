@@ -42,7 +42,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <summary>
         /// List of variables.
         /// </summary>
-        public List<Variable> VariableList { get; set; }
+        public List<Variable> Variables { get; set; }
         /// <summary>
         /// The active scene.
         /// </summary>
@@ -69,7 +69,6 @@ namespace VisualNovelEngine.Engine.Game.Component
             //Fetch scenes
             SetupScenes();
         }
-
         /// <summary>
         /// Fetches the game settings from the json file.
         /// </summary>
@@ -91,7 +90,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         private void SetupVariables()
         {
             // Initialize the list of variables.
-            VariableList = [];
+            Variables = [];
             //
             string rawFile = File.ReadAllText(VariablesPath);
             var rawVariables = JsonSerializer.Deserialize<List<VariableExim>>(rawFile);
@@ -102,16 +101,16 @@ namespace VisualNovelEngine.Engine.Game.Component
                     switch (variable.Type)
                     {
                         case 1:
-                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.String));
+                            Variables.Add(new Variable(variable.Name, variable.Value, VariableType.String));
                             break;
                         case 2:
-                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.Int));
+                            Variables.Add(new Variable(variable.Name, variable.Value, VariableType.Int));
                             break;
                         case 3:
-                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.Float));
+                            Variables.Add(new Variable(variable.Name, variable.Value, VariableType.Float));
                             break;
                         case 4:
-                            VariableList.Add(new Variable(variable.Name, variable.Value, VariableType.Boolean));
+                            Variables.Add(new Variable(variable.Name, variable.Value, VariableType.Boolean));
                             break;
                         default:
                             throw new InvalidOperationException("Failed to load variable settings, because the variable type is not recognized.");
@@ -147,7 +146,7 @@ namespace VisualNovelEngine.Engine.Game.Component
                         }
                     Scenes.Add(new Scene(scene.Name, this)
                     {
-                        id = scene.ID,
+                        ID = scene.ID,
                         Background = Enum.Parse<Scene.BackgroundOption>(scene.Background),
                         solidColor = scene.SolidColor == null ? Color.Black : scene.SolidColor.Length == 0 ? new() : new()
                         {

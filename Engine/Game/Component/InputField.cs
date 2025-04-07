@@ -77,7 +77,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         internal Color SelectedColor { get; set; }
         /// <summary>
-        /// Create a new input field with a button attached.
+        /// Create a new input field.
         /// </summary>
         /// <param name="Game"></param>
         /// <param name="block"></param>
@@ -91,6 +91,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="inputFieldColor"></param>
         /// <param name="inputFieldBorderColor"></param>
         /// <param name="inputFieldHoverColor"></param>
+        /// <param name="selectedColor"></param>
         /// <param name="buttonEvent"></param>
         public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, Color inputFieldColor, Color inputFieldBorderColor, Color inputFieldHoverColor, Color selectedColor, IButtonEvent buttonEvent)
         {
@@ -108,7 +109,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             Button = new Button(Game, block, new Font() { BaseSize = 30 }, 0, ButtonYOffset, 0, Width, Height, buttonText, Color.Black, Color, BorderColor, HoverColor, buttonEvent);
         }
         /// <summary>
-        /// Create a new static input field, with a static button attached.
+        /// Create a new static input fiel
         /// </summary>
         /// <param name="Game"></param>
         /// <param name="block"></param>
@@ -122,6 +123,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="color"></param>
         /// <param name="borderColor"></param>
         /// <param name="hoverColor"></param>
+        /// <param name="selectedColor"></param>
         /// <param name="buttonEvent"></param>
         public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, Color color, Color borderColor, Color hoverColor, Color selectedColor, ISettingsEvent buttonEvent)
         {

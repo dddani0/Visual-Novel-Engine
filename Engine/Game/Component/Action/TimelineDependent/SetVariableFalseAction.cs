@@ -17,7 +17,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
 
         public void PerformAction()
         {
-            var variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
+            var variable = Game.Variables.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (variable.Type == VariableType.Boolean)
             {
                 variable.SetValue(false);

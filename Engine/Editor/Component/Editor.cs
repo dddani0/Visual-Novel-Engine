@@ -182,7 +182,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// The editor importer object, which is used to editor related data into the project.
         /// </summary>
-        internal EditorExImManager EditorEXIMManager { get; set; }
+        internal EditorEXIMManager EditorEXIMManager { get; set; }
         /// <summary>
         /// The list of scenes in the editor.
         /// </summary>
@@ -328,19 +328,19 @@ namespace VisualNovelEngine.Engine.Editor.Component
             MiniWindowHeight = EditorEXIMManager.EditorPreferencesImport.MiniWindowHeight;
             MiniWindowBorderWidth = EditorEXIMManager.EditorPreferencesImport.MiniWindowBorderWidth;
             //
-            CloseButtonBaseColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.CloseButtonBaseColor);
-            CloseButtonBorderColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.CloseButtonBorderColor);
-            CloseButtonHoverColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.CloseButtonHoverColor);
+            CloseButtonBaseColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.CloseButtonBaseColor);
+            CloseButtonBorderColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.CloseButtonBorderColor);
+            CloseButtonHoverColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.CloseButtonHoverColor);
             //
-            InspectorButtonBaseColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.InspectorButtonBaseColor);
-            InspectorButtonBorderColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.InspectorButtonBorderColor);
-            InspectorButtonHoverColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.InspectorButtonHoverColor);
+            InspectorButtonBaseColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.InspectorButtonBaseColor);
+            InspectorButtonBorderColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.InspectorButtonBorderColor);
+            InspectorButtonHoverColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.InspectorButtonHoverColor);
             //
-            BaseColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.BaseColor);
-            BorderColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.BorderColor);
-            TextColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.TextColor);
-            HoverColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.HoverColor);
-            EditorColor = EditorExImManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.EditorColor);
+            BaseColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.BaseColor);
+            BorderColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.BorderColor);
+            TextColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.TextColor);
+            HoverColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.HoverColor);
+            EditorColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.EditorColor);
             //
             ProjectName = EditorEXIMManager.EditorExIm.ProjectName;
             Toolbar = EditorEXIMManager.FetchToolBarFromImport(EditorEXIMManager.EditorExIm.ToolBar);

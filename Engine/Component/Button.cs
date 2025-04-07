@@ -18,7 +18,7 @@ namespace VisualNovelEngine.Engine.Component
         internal Color HoverColor { get; set; }
         internal ICommand Command { get; set; }
         private Game.Component.Timer Timer { get; set; }
-
+        
         public Button(string text, int x, int y, int width, int height, Color color, Color hoverColor, ICommand command)
         {
             Text = text;

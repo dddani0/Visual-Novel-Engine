@@ -38,7 +38,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
         /// <exception cref="System.Exception"></exception>
         public void PerformAction()
         {
-            Variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
+            Variable = Game.Variables.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
             if (IsComponentFound is false)
             {
                 foreach (var block in GameLoader.BlockListCache)

@@ -5,7 +5,7 @@ using VisualNovelEngine.Engine.Editor.Interface;
 
 namespace VisualNovelEngine.Engine.Editor.Component
 {
-    public class DropDown : IComponent
+    public class Dropdown : IComponent
     {
         /// <summary>
         /// Dropdown object filter
@@ -93,7 +93,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="height"></param>
         /// <param name="borderWidth"></param>
         /// <param name="filter"></param>
-        public DropDown(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, FilterType filter)
+        public Dropdown(Editor editor, int xPosition, int yPosition, int width, int height, int borderWidth, FilterType filter)
         {
             Editor = editor;
             XPosition = xPosition;

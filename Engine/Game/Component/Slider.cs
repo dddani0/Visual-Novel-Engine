@@ -93,7 +93,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <summary>
         ///Updates slider according to mouse input.
         /// </summary>
-        private void UpdateSlider()
+        private void Update()
         {
             if (IsLocked) return;
             if (Raylib.IsMouseButtonDown(MouseButton.Left) || Raylib.IsMouseButtonPressed(MouseButton.Left))
@@ -116,7 +116,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         public void Render()
         {
             if (Enabled() is false) return;
-            UpdateSlider();
+            Update();
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
             Raylib.DrawRectangleLinesEx(new Rectangle(XPosition, YPosition, Width, Height), BorderWidth, BorderColor);
             Raylib.DrawCircle(XPosition, YPosition + Height / 2, SliderDragRadius, DragColor);
@@ -125,7 +125,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// Fetch the value of the Slider.
         /// </summary>
         /// <returns></returns>
-        public float FetchUnitValue() => UnitValue;
+        public float GetUnitValue() => UnitValue;
         public float GetSliderValue() => UnitValue * Value;
     }
 }

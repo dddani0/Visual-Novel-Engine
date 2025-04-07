@@ -59,8 +59,9 @@ namespace VisualNovelEngine.Engine.Game.Component
             Path = path;
             Name = Path;
             ImageTexture = Raylib.LoadTexture(Path);
-            X = block.XPosition + x;
-            Y = block.YPosition + y;
+            Block = block;
+            X = Block.XPosition + x;
+            Y = Block.YPosition + y;
             Color = Color.White;
         }
         /// <summary>

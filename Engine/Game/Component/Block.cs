@@ -9,7 +9,6 @@ namespace VisualNovelEngine.Engine.Game.Component
     public class Block : IPermanentRenderingObject
     {
         internal int ID { get; private set; }
-
         /// <summary>
         /// The relative - to the parent - position on the X axis.
         /// </summary>

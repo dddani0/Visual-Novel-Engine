@@ -39,8 +39,8 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
         /// <exception cref="System.Exception"></exception>
         public void PerformAction()
         {
-            Variable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
-            IncrementVariable = Game.VariableList.FirstOrDefault(s => s.Name.Equals(IncrementVariableName)) ?? throw new System.Exception("Variable not found!");
+            Variable = Game.Variables.FirstOrDefault(s => s.Name.Equals(VariableName)) ?? throw new System.Exception("Variable not found!");
+            IncrementVariable = Game.Variables.FirstOrDefault(s => s.Name.Equals(IncrementVariableName)) ?? throw new System.Exception("Variable not found!");
             if (IncrementVariable.Type == VariableType.Int)
             {
                 IsIntegerIncrement = true;

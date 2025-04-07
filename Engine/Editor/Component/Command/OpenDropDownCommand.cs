@@ -8,9 +8,9 @@ namespace VisualNovelEngine.Engine.Editor.Component
     /// </summary>
     class OpenDropDownCommand : ICommand
     {
-        private DropDown DropDown { get; set; }
+        private Dropdown DropDown { get; set; }
         internal ShowSideWindowCommand ShowSideWindowCommand { get; set; }
-        public OpenDropDownCommand(Editor editor, DropDown dropDown)
+        public OpenDropDownCommand(Editor editor, Dropdown dropDown)
         {
             DropDown = dropDown;
             ShowSideWindowCommand = new(editor, DropDown.Button, null);

@@ -156,7 +156,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="borderColor"></param>
         /// <param name="hoverColor"></param>
         /// <param name="component"></param>
-        public Button(Editor editor, DropDown dropDown, string text, Color color, Color borderColor, Color hoverColor, IComponent component)
+        public Button(Editor editor, Dropdown dropDown, string text, Color color, Color borderColor, Color hoverColor, IComponent component)
         {
             Editor = editor;
             XPosition = 0;

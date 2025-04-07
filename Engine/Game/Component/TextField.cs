@@ -28,6 +28,9 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// The height of the text field.
         /// </summary>
         internal int Height { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         internal int BorderWidth { get; set; }
         /// <summary>
         /// The horizontal margin of the text.

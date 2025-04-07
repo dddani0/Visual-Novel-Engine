@@ -48,9 +48,9 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                             {
                                 case CreateMenuAction createMenuAction:
                                     //Save menu
-                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
-                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
-                                    createMenuAction.Menu = ((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject as Menu;
+                                    if ((InspectorWindow.ComponentList[5] as Dropdown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject == null) break;
+                                    createMenuAction.Menu = ((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject as Menu;
                                     //Search for the component of menu
                                     int menuId = createMenuAction.Menu.ID;
                                     Component impendingComponent = null;
@@ -76,23 +76,23 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     break;
                                 case AddSpriteAction addSpriteAction:
                                     //Save sprite
-                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
-                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
-                                    addSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    if ((InspectorWindow.ComponentList[5] as Dropdown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject == null) break;
+                                    addSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject;
                                     break;
                                 case ChangeSpriteAction changeSpriteAction:
                                     //Save old sprite
-                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
-                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
-                                    changeSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    if ((InspectorWindow.ComponentList[5] as Dropdown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject == null) break;
+                                    changeSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject;
                                     //Save new sprite
                                     changeSpriteAction.replacementSprite = new Sprite((InspectorWindow.ComponentList[7] as TextField).Text);
                                     break;
                                 case RemoveSpriteAction removeSpriteAction:
                                     //Save removing sprite
-                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
-                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
-                                    removeSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    if ((InspectorWindow.ComponentList[5] as Dropdown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject == null) break;
+                                    removeSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject;
                                     break;
                                 case DecrementVariableAction decrementVariableAction:
                                     //Save variable's name
@@ -122,15 +122,15 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     break;
                                 case TextBoxCreateAction textBoxCreateAction:
                                     //Save textbox
-                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
-                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
-                                    textBoxCreateAction.TextBox = (TextBox)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    if ((InspectorWindow.ComponentList[5] as Dropdown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject == null) break;
+                                    textBoxCreateAction.TextBox = (TextBox)((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject;
                                     break;
                                 case TintSpriteAction tintSpriteAction:
                                     //Save sprite
-                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
-                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
-                                    tintSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    if ((InspectorWindow.ComponentList[5] as Dropdown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject == null) break;
+                                    tintSpriteAction.sprite = (Sprite)((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject;
                                     //Save color
                                     TextField tintSpriteColorTextField = InspectorWindow.ComponentList[7] as TextField;
                                     tintSpriteAction.color = new Color()
@@ -152,9 +152,9 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     //Save variable's name
                                     setVariableValueAction.VariableName = (InspectorWindow.ComponentList[5] as TextField).Text;
                                     //Save component
-                                    if ((InspectorWindow.ComponentList[7] as DropDown).Button.Component == null) break;
-                                    if (((Component)(InspectorWindow.ComponentList[7] as DropDown).Button.Component).RenderingObject == null) break;
-                                    switch (((Component)(InspectorWindow.ComponentList[7] as DropDown).Button.Component).RenderingObject)
+                                    if ((InspectorWindow.ComponentList[7] as Dropdown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[7] as Dropdown).Button.Component).RenderingObject == null) break;
+                                    switch (((Component)(InspectorWindow.ComponentList[7] as Dropdown).Button.Component).RenderingObject)
                                     {
                                         case Slider slider:
                                             //Save slider
@@ -172,13 +172,13 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     break;
                                 case SwitchStaticMenuAction switchStaticMenuAction:
                                     //Save old menu
-                                    if ((InspectorWindow.ComponentList[5] as DropDown).Button.Component == null) break;
-                                    if (((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject == null) break;
-                                    switchStaticMenuAction.DisablingMenu = (Menu)((Component)(InspectorWindow.ComponentList[5] as DropDown).Button.Component).RenderingObject;
+                                    if ((InspectorWindow.ComponentList[5] as Dropdown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject == null) break;
+                                    switchStaticMenuAction.DisablingMenu = (Menu)((Component)(InspectorWindow.ComponentList[5] as Dropdown).Button.Component).RenderingObject;
                                     //Save new menu
-                                    if ((InspectorWindow.ComponentList[7] as DropDown).Button.Component == null) break;
-                                    if (((Component)(InspectorWindow.ComponentList[7] as DropDown).Button.Component).RenderingObject == null) break;
-                                    switchStaticMenuAction.EnablingMenu = (Menu)((Component)(InspectorWindow.ComponentList[7] as DropDown).Button.Component).RenderingObject;
+                                    if ((InspectorWindow.ComponentList[7] as Dropdown).Button.Component == null) break;
+                                    if (((Component)(InspectorWindow.ComponentList[7] as Dropdown).Button.Component).RenderingObject == null) break;
+                                    switchStaticMenuAction.EnablingMenu = (Menu)((Component)(InspectorWindow.ComponentList[7] as Dropdown).Button.Component).RenderingObject;
                                     break;
                             }
                         }
@@ -250,8 +250,8 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         A = 255
                                     };
                                     //Save action
-                                    if ((InspectorWindow.ComponentList[13] as DropDown).Button.Action == null) break;
-                                    button.Action = (InspectorWindow.ComponentList[13] as DropDown).Button.Action;
+                                    if ((InspectorWindow.ComponentList[13] as Dropdown).Button.Action == null) break;
+                                    button.Action = (InspectorWindow.ComponentList[13] as Dropdown).Button.Action;
                                     //Add to timeline
                                     switch (component.IsObjectStatic)
                                     {
@@ -331,7 +331,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     //Save wordwrap
                                     textBox.WordWrap = (InspectorWindow.ComponentList[^3] as ToggleButton).IsToggled;
                                     //Save textbox position type
-                                    textBox.TextBoxPositionType = (InspectorWindow.ComponentList[^1] as DropDown).Button.PositionType;
+                                    textBox.TextBoxPositionType = (InspectorWindow.ComponentList[^1] as Dropdown).Button.PositionType;
                                     break;
                                 case Menu menu:
                                     //Save position
@@ -373,7 +373,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     List<Block> blockList = [];
                                     for (int i = 19; i < InspectorWindow.ComponentList.Count - 1; i++)
                                     {
-                                        DropDown currentComponent = (DropDown)InspectorWindow.ComponentList[i];
+                                        Dropdown currentComponent = (Dropdown)InspectorWindow.ComponentList[i];
                                         if (((Component)currentComponent.Button.Component) == null) continue;
                                         blockList.Add(
                                             new Block(currentComponent.XPosition,
@@ -388,7 +388,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     block.XPosition = int.Parse((InspectorWindow.ComponentList[6] as TextField).Text);
                                     block.YPosition = int.Parse((InspectorWindow.ComponentList[8] as TextField).Text);
                                     //Save block component
-                                    DropDown selectedComponentDropDown = (DropDown)InspectorWindow.ComponentList[10];
+                                    Dropdown selectedComponentDropDown = (Dropdown)InspectorWindow.ComponentList[10];
                                     if (selectedComponentDropDown.Button == null)
                                     {
                                         block.Component = null;
@@ -428,7 +428,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     List<VisualNovelEngine.Engine.Game.Component.Button> buttonList = [];
                                     for (int i = 18; i < InspectorWindow.ComponentList.Count - 1; i++)
                                     {
-                                        DropDown currentDropDown = InspectorWindow.ComponentList[i] as DropDown;
+                                        Dropdown currentDropDown = InspectorWindow.ComponentList[i] as Dropdown;
                                         if (currentDropDown.Button.Action == null) continue;
                                         //Create a new block and a Button then assign the button to the block
                                         CreateComponentCommand createComponentCommand = new(Editor, CreateComponentCommand.RenderingObjectType.StaticButton);
@@ -485,8 +485,8 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     //Save Slider value
                                     slider.Value = float.Parse((InspectorWindow.ComponentList[22] as TextField).Text);
                                     //Save Action
-                                    if ((InspectorWindow.ComponentList[24] as DropDown).Button == null) break;
-                                    slider.Action = (InspectorWindow.ComponentList[24] as DropDown).Button.Action;
+                                    if ((InspectorWindow.ComponentList[24] as Dropdown).Button == null) break;
+                                    slider.Action = (InspectorWindow.ComponentList[24] as Dropdown).Button.Action;
                                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)slider.Action);
                                     break;
                                 case Toggle toggle:
@@ -530,8 +530,8 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     //Save toggle text
                                     toggle.Text = (InspectorWindow.ComponentList[20] as TextField).Text;
                                     //Save action
-                                    if ((InspectorWindow.ComponentList[22] as DropDown).Button.Action == null) break;
-                                    toggle.SettingsAction = (InspectorWindow.ComponentList[22] as DropDown).Button.Action;
+                                    if ((InspectorWindow.ComponentList[22] as Dropdown).Button.Action == null) break;
+                                    toggle.SettingsAction = (InspectorWindow.ComponentList[22] as Dropdown).Button.Action;
                                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)toggle.SettingsAction);
                                     break;
                                 case InputField inputField:
@@ -576,15 +576,15 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         A = 255
                                     };
                                     //Save action
-                                    if ((InspectorWindow.ComponentList[26] as DropDown).Button.Action == null) break;
+                                    if ((InspectorWindow.ComponentList[26] as Dropdown).Button.Action == null) break;
                                     switch (component.IsObjectStatic)
                                     {
                                         case true:
-                                            inputField.Button.Action = (InspectorWindow.ComponentList[26] as DropDown).Button.Action;
+                                            inputField.Button.Action = (InspectorWindow.ComponentList[26] as Dropdown).Button.Action;
                                             Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)inputField.Button.Action);
                                             break;
                                         case false:
-                                            inputField.Button.Action = (InspectorWindow.ComponentList[26] as DropDown).Button.Action;
+                                            inputField.Button.Action = (InspectorWindow.ComponentList[26] as Dropdown).Button.Action;
                                             Editor.ActiveScene.Timeline.AddAction(inputField.Button.Action);
                                             break;
                                     }

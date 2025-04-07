@@ -37,15 +37,15 @@ namespace VisualNovelEngine.Engine.Game.Component.Action
         /// <exception cref="Exception"></exception>
         public void PerformAction()
         {
-            var variable = Game.VariableList.First(s => s.Name.Equals(TriggerVariableName));
+            var variable = Game.Variables.First(s => s.Name.Equals(TriggerVariableName));
             if (variable.Value.ToString() == "False") return;
-            if (!Game.Scenes.Any(scene => scene.id == sceneID))
+            if (!Game.Scenes.Any(scene => scene.ID == sceneID))
             {
                 throw new Exception($"Scene with {sceneID} ID not found.");
             }
             else
             {
-                var nextScene = Game.Scenes.First(scene => scene.id == sceneID);
+                var nextScene = Game.Scenes.First(scene => scene.ID == sceneID);
                 Game.LoadScene(nextScene);
                 return;
             }

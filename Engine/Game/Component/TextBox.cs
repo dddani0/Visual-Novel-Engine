@@ -107,7 +107,6 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// Check if the textbox is enabled.
         /// </summary>
         private bool IsEnabled { get; set; }
-        internal bool IsDisabled() => IsEnabled is false;
         /// <summary>
         /// Should the text wrap when initiating a new line?
         /// </summary>
@@ -273,7 +272,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <returns></returns>
         string ReferenceVariables(string data)
         {
-            var variables = Game.VariableList;
+            var variables = Game.Variables;
             if (variables.Count == 0) return data;
             foreach (var variable in variables)
             {
@@ -469,9 +468,6 @@ namespace VisualNovelEngine.Engine.Game.Component
                 TextCollectionIndex < TextCollectionCount && IsFinished() is true && Game.IsLeftMouseButtonPressed();
         }
 
-        public bool Enabled()
-        {
-            throw new NotImplementedException();
-        }
+        public bool Enabled() => IsEnabled;
     }
 }

@@ -41,7 +41,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     Variable variable = Editor.GameVariables[i];
                     TextField nameTextField = (TextField)MiniWindow.VariableComponentList[i * 3];
                     TextField valueTextField = (TextField)MiniWindow.VariableComponentList[i * 3 + 1];
-                    DropDown typeDropDown = (DropDown)MiniWindow.VariableComponentList[i * 3 + 2];
+                    Dropdown typeDropDown = (Dropdown)MiniWindow.VariableComponentList[i * 3 + 2];
                     variable.Name = nameTextField.Text;
                     variable.Value = valueTextField.Text;
                     variable.Type = typeDropDown.Button.VariableType;
@@ -58,7 +58,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 //change active scene name
                 activeScene.Name = newSceneName;
                 //Save background type
-                activeScene.BackgroundOption = ((DropDown)MiniWindow.ComponentList[3]).Button.SceneBackgroundOption;
+                activeScene.BackgroundOption = ((Dropdown)MiniWindow.ComponentList[3]).Button.SceneBackgroundOption;
                 //Save background options cimlet
                 if (activeScene.BackgroundOption == VisualNovelEngine.Engine.Game.Component.Scene.BackgroundOption.SolidColor)
                 {

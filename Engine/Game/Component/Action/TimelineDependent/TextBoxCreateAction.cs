@@ -14,7 +14,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
         }
         public void PerformAction()
         {
-            if (TextBox.IsDisabled())
+            if (TextBox.Enabled() is false)
             {
                 TextBox.ToggleEnability();
             }
