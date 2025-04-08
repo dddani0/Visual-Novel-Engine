@@ -6,17 +6,17 @@ namespace VisualNovelEngine.Engine.Component
 {
     public class Button : IButton
     {
-        internal string Text { get; set; }
-        internal int X { get; set; }
-        internal int Y { get; set; }
-        internal int Width { get; set; }
-        internal int Height { get; set; }
+        public string Text { get; set; }
+        public int Y { get; set; }
+        public int X { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
         internal bool Hover { get; set; }
         internal bool Visible { get; set; } = true;
         internal bool Active { get; set; } = true;
-        internal Color Color { get; set; }
-        internal Color HoverColor { get; set; }
-        internal ICommand Command { get; set; }
+        public Color Color { get; set; }
+        public Color HoverColor { get; set; }
+        public ICommand Command { get; set; }
         private Game.Component.Timer Timer { get; set; }
         
         public Button(string text, int x, int y, int width, int height, Color color, Color hoverColor, ICommand command)

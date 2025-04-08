@@ -8,17 +8,17 @@ namespace VisualNovelEngine.Engine.Component
     /// <summary>
     /// Represents a command to open the path window.
     /// </summary>
-    class InputField : IComponent
+    public class InputField : IComponent
     {
         public int XPosition { get; set; }
         public int YPosition { get; set; }
-        internal int Width { get; set; }
-        internal int Height { get; set; }
-        internal Button? Button { get; set; }
-        internal string Text { get; set; }
-        internal Color Color { get; set; }
-        internal Color TextColor { get; set; }
-        internal Color HoverColor { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public Button? Button { get; set; }
+        public string Text { get; internal set; }
+        public Color Color { get; set; }
+        public Color TextColor { get; set; }
+        public Color HoverColor { get; set; }
         internal bool Hover { get; set; }
         internal bool Active { get; set; }
         public InputField(int x, int y, string text, string buttonText, int width, int height, Color color, Color textColor, Color hoverColor, ICommand command)

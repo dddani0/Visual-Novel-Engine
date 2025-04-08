@@ -134,7 +134,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
             XPosition = xPosition;
             YPosition = yPosition;
             //If length is greater than 5, set the text to the first 4 and add three dots to the end.
-            Text = crampText ? text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..Editor.ComponentEnabledCharacterCount]}..." : text : text;
+            //Text = crampText ? text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..Editor.ComponentEnabledCharacterCount]}..." : text : text;
+            Text = text;
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
@@ -161,7 +162,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Editor = editor;
             XPosition = 0;
             YPosition = 0;
-            Text = text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..Editor.ComponentEnabledCharacterCount]}..." : text;
+           // Text = text.Length > Editor.ComponentEnabledCharacterCount ? $"{text[..Editor.ComponentEnabledCharacterCount]}..." : text;
+            Text = text;
             Width = 0;
             Height = 0;
             BorderWidth = 0;

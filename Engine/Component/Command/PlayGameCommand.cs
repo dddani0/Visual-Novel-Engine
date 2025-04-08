@@ -16,7 +16,7 @@ namespace VisualNovelEngine.Engine.Component.Command
 
         public void Execute()
         {
-            Engine.Game = new Game.Component.Game(Engine.Window.ProjectPathInputField.Text, Engine.Window.VariableInputField.Text);
+            Engine.Game = new Game.Component.Game(Engine.Window.ProjectPathInputField.Text);
             Engine.ChangeState(EngineState.Game);
         }
     }

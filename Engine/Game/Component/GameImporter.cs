@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Raylib_cs;
 using VisualNovelEngine.Engine.Game.Component.Action;
 using VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent;
@@ -10,17 +11,85 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// <summary>
     /// The "GameImporter" class is the class that fetches raw data into objects, which the templategame can use.
     /// </summary>
-    public class GameImporter(Game game)
+    public class GameImporter
     {
         /// <summary>
         /// The Game object.
         /// </summary>
-        Game Game { get; set; } = game;
+        Game Game { get; set; }
+        internal GameExim GameExim { get; set; }
         /// <summary>
         /// The cache of created blocks.
         /// </summary>
         internal List<Block> BlockListCache { get; set; } = [];
         internal List<Menu> MenuListCache { get; set; } = [];
+        public GameImporter(Game game, string BuildPath)
+        {
+            Game = game;
+            GameExim = FetchGameEximFromImport(BuildPath);
+        }
+        /// <summary>
+        /// Fetches the game settings from the json file.
+        /// </summary>
+        /// <param name="BuildPath"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>/
+        internal GameExim FetchGameEximFromImport(string BuildPath)
+        {
+            string rawFile = File.ReadAllText(BuildPath);
+            var rawGame = JsonSerializer.Deserialize<GameExim>(rawFile);
+            if (rawGame != null) return rawGame;
+            else throw new InvalidOperationException("Failed to load game settings, because the file is null.");
+        }
+        internal Scene FetchSceneFromImport(SceneExim sceneImport)
+        {
+            Timeline timeline = new();
+            timeline.ActionList.AddRange([.. sceneImport.ActionList.Select(FetchTimelineDependentActionFromImport)]);
+            return (Scene.BackgroundOption)sceneImport.BackgroundType switch
+            {
+                Scene.BackgroundOption.Image => new(sceneImport.Name, Game)
+                {
+                    ID = sceneImport.ID,
+                    Background = (Scene.BackgroundOption)sceneImport.BackgroundType,
+                    imageTexture = Raylib.LoadTexture(sceneImport.ImageTexture),
+                    Timeline = timeline
+                },
+                Scene.BackgroundOption.GradientVertical or Scene.BackgroundOption.GradientHorizontal => new(sceneImport.Name, Game)
+                {
+                    ID = sceneImport.ID,
+                    Background = (Scene.BackgroundOption)sceneImport.BackgroundType,
+                    gradientColor = sceneImport.GradientColor == null ? [] : sceneImport.GradientColor.Length == 0 ? [] : [new()
+                        {
+                            R = (byte)sceneImport.GradientColor[0],
+                            G = (byte)sceneImport.GradientColor[1],
+                            B = (byte)sceneImport.GradientColor[2],
+                            A = (byte)sceneImport.GradientColor[3]
+                        },
+                        new()
+                        {
+                            R = (byte)sceneImport.GradientColor[4],
+                            G = (byte)sceneImport.GradientColor[5],
+                            B = (byte)sceneImport.GradientColor[6],
+                            A = (byte)sceneImport.GradientColor[7]
+                        }],
+                    Timeline = timeline
+                },
+                Scene.BackgroundOption.SolidColor => new(sceneImport.Name, Game)
+                {
+                    ID = sceneImport.ID,
+                    Background = (Scene.BackgroundOption)sceneImport.BackgroundType,
+                    solidColor = sceneImport.SolidColor == null ? Color.Black : sceneImport.SolidColor.Length == 0 ? new() : new()
+                    {
+                        R = (byte)sceneImport.SolidColor[0],
+                        G = (byte)sceneImport.SolidColor[1],
+                        B = (byte)sceneImport.SolidColor[2],
+                        A = (byte)sceneImport.SolidColor[3]
+                    },
+                    Timeline = timeline
+                },
+                _ => throw new InvalidOperationException("Failed to load scene settings, because the background type is not recognized."),
+            };
+        }
         /// <summary>
         /// Creates a sprite from the importer class
         /// </summary>
@@ -87,6 +156,18 @@ namespace VisualNovelEngine.Engine.Game.Component
                 throw new InvalidOperationException("Failed to load scene settings, because the variable type is null.");
             }
             return new Variable(variableImport.VariableName, variableImport.VariableValue, (VariableType)variableImport.VariableType);
+        }
+
+        internal Variable FetchVariableFromImport(VariableExim variableImport)
+        {
+            return variableImport.Type switch
+            {
+                1 => new Variable(variableImport.Name, variableImport.Value, VariableType.String),
+                2 => new Variable(variableImport.Name, variableImport.Value, VariableType.Int),
+                3 => new Variable(variableImport.Name, variableImport.Value, VariableType.Float),
+                4 => new Variable(variableImport.Name, variableImport.Value, VariableType.Boolean),
+                _ => throw new InvalidOperationException("Failed to load variable settings, because the variable type is not recognized."),
+            };
         }
         /// <summary>
         /// Creates a button with a Timeline dependent or a general event attached to it from the importer class

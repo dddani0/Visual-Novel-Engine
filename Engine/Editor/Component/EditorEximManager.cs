@@ -56,10 +56,10 @@ namespace VisualNovelEngine.Engine.Editor.Component
             //Editor data
             rawFile = File.ReadAllText(editorDataPath) ?? throw new Exception("Editor data file not found!");
             EditorExIm = JsonSerializer.Deserialize<EditorExIm>(rawFile) ?? throw new Exception("Editor data file not found!");
-            //Game data
-            GameExim = Editor.Game.GameSettings;
             //Game importer
             GameImporter = Editor.Game.GameImport;
+            //Game data
+            GameExim = GameImporter.GameExim;
         }
         /// <summary>
         /// Fetches a color from an import object.
@@ -1343,6 +1343,16 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 _ => throw new Exception("Event type is either not Timeline Dependent or is not found!"),
             };
         }
+
+        public GameExim BuildGameData(Editor editor)
+        {
+            return new()
+            {
+                Title = editor.ProjectName,
+                Scenes = BuildScenesData([.. editor.SceneList]),
+                Variables = BuildVariablesData([.. Editor.GameVariables])
+            };
+        }
         /// <summary>
         /// Build the scenes data
         /// </summary>
@@ -1366,7 +1376,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 {
                     ID = scene.ID,
                     Name = scene.Name,
-                    Background = scene.BackgroundOption.ToString(),
+                    BackgroundType = (int)scene.BackgroundOption,
                     SolidColor = ExportColorData(scene.BackgroundColor.Value),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
@@ -1374,7 +1384,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 {
                     ID = scene.ID,
                     Name = scene.Name,
-                    Background = scene.BackgroundOption.ToString(),
+                    BackgroundType = (int)scene.BackgroundOption,
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
@@ -1382,7 +1392,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 {
                     ID = scene.ID,
                     Name = scene.Name,
-                    Background = scene.BackgroundOption.ToString(),
+                    BackgroundType = (int)scene.BackgroundOption,
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
@@ -1390,7 +1400,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 {
                     ID = scene.ID,
                     Name = scene.Name,
-                    Background = scene.BackgroundOption.ToString(),
+                    BackgroundType = (int)scene.BackgroundOption,
                     ImageTexture = scene.BackgroundImage.ToString(),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },

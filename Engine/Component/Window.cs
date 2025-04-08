@@ -17,7 +17,7 @@ namespace VisualNovelEngine.Engine.Component
     class Window : IWindow
     {
         Engine Engine { get; set; }
-        WindowType Type { get; set; }
+        internal WindowType Type { get; set; }
         internal int XPosition { get; set; }
         internal int YPosition { get; set; }
         internal int Width { get; set; }

@@ -13,7 +13,12 @@ namespace VisualNovelEngine.Engine.PortData
         public int WindowWidth { get; set; }
         [JsonPropertyName("WindowHeight")]
         public int WindowHeigth { get; set; }
+        [JsonPropertyName("Variables")]
+        public VariableExim[]? Variables { get; set; }
+        [JsonPropertyName("Scenes")]
+        public SceneExim[]? Scenes { get; set; }
     }
+    
     /// <summary>
     /// The "SceneExim" class is a helper class to import/export the list of scenes to or from a JSON file.
     /// </summary>
@@ -24,7 +29,7 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("ID")]
         public required int ID { get; set; } //remove setter!
         [JsonPropertyName("Background")]
-        public required string Background { get; set; }
+        public required int BackgroundType { get; set; }
         [JsonPropertyName("SolidColor")]
         public int[]? SolidColor { get; set; }
         [JsonPropertyName("GradientColor")]
