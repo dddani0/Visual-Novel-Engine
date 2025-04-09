@@ -58,7 +58,7 @@ namespace VisualNovelEngine.Engine.Component
         {
             if (Active)
             {
-                if (VisualNovelEngine.Engine.Game.Component.Game.IsKeyPressed(KeyboardKey.Backspace))
+                if (Game.Component.Game.IsKeyPressed(KeyboardKey.Backspace))
                 {
                     if (Text.Length > 0)
                     {

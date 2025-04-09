@@ -25,7 +25,6 @@ namespace VisualNovelEngine.Engine.Component
         internal Button CloseButton { get; set; }
         internal InputField ProjectPathInputField { get; set; }
         internal InputField? NameInputField { get; set; }
-        internal InputField? VariableInputField { get; set; }
         public Window(Engine engine, int x, int y, int width, int height, WindowType type)
         {
             Engine = engine;
@@ -37,9 +36,9 @@ namespace VisualNovelEngine.Engine.Component
             switch (Type)
             {
                 case WindowType.NewProject:
-                    NameInputField = new(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 2 * 50), "Projekt név", 300, 50, Color.White, Color.Black, Color.Gray);
+                    NameInputField = new(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 2 * 50), "Name", 300, 50, Color.White, Color.Black, Color.Gray);
                     CloseButton = new Button("X", XPosition + Width - 20, YPosition, 20, 20, Color.Red, Color.DarkBrown, new CloseWindowCommand(Engine));
-                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "D:/", "Kész", 300, 50, Color.White, Color.Black, Color.Gray, new CreateNewProjectCommand(Engine));
+                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "D:/", "Létrehoz", 300, 50, Color.White, Color.Black, Color.Gray, new CreateNewProjectCommand(Engine));
                     break;
                 case WindowType.ImportProject:
                     CloseButton = new Button("X", XPosition + Width - 20, YPosition, 20, 20, Color.Red, Color.DarkBrown, new CloseWindowCommand(Engine));
@@ -47,7 +46,6 @@ namespace VisualNovelEngine.Engine.Component
                     break;
                 case WindowType.PlayProject:
                     CloseButton = new Button("X", XPosition + Width - 20, YPosition, 20, 20, Color.Red, Color.DarkBrown, new CloseWindowCommand(Engine));
-                    VariableInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 2 * 50), "Változó név", 300, 50, Color.White, Color.Black, Color.Gray);
                     ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "D:/", "Betöltés", 300, 50, Color.White, Color.Black, Color.Gray, new PlayGameCommand(Engine));
                     break;
             }
@@ -60,7 +58,6 @@ namespace VisualNovelEngine.Engine.Component
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, Color.White);
             CloseButton.Render();
             NameInputField?.Render();
-            VariableInputField?.Render();
             ProjectPathInputField.Render();
         }
     }
