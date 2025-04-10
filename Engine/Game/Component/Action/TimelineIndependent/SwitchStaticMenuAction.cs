@@ -8,7 +8,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
     public class SwitchStaticMenuAction : IAction, ISettingsEvent
     {
         private readonly Game Game;
-        private readonly GameImporter GameLoader;
+        private readonly GameEximManager GameLoader;
         internal Menu DisablingMenu { get; set; }
         internal Menu EnablingMenu { get; set; }
         private readonly int disableMenuID;
@@ -19,7 +19,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
         /// <param name="game">Active game.</param>
         /// <param name="previousMenu">Menu to be rendered.</param>
         /// <param name="show">Show or hide the menu.</param>
-        public SwitchStaticMenuAction(Game game, GameImporter gameLoader, int disableMenuID, int enalbeMenuID)
+        public SwitchStaticMenuAction(Game game, GameEximManager gameLoader, int disableMenuID, int enalbeMenuID)
         {
             Game = game;
             GameLoader = gameLoader;

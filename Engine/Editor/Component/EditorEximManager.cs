@@ -39,7 +39,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// Represents the game's importer.
         /// </summary>
-        internal GameImporter GameImporter { get; set; }
+        internal GameEximManager GameImporter { get; set; }
         /// <summary>
         /// Represents the editor's imported data.
         /// </summary>

@@ -17,6 +17,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Menu,
             Button,
             TextBox,
+            TextField,
             Block,
             DropBox,
             Slider,
@@ -129,6 +130,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 case FilterType.Block:
                 case FilterType.DropBox:
                 case FilterType.Slider:
+                case FilterType.TextField:
                 case FilterType.InputField:
                 case FilterType.Toggle:
                     foreach (Button item in ButtonList)
@@ -140,6 +142,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                             Menu => FilterType.Menu,
                             VisualNovelEngine.Engine.Game.Component.Button => FilterType.Button,
                             TextBox => FilterType.TextBox,
+                            TextField => FilterType.TextField,
                             Block => FilterType.Block,
                             DropBox => FilterType.DropBox,
                             Slider => FilterType.Slider,

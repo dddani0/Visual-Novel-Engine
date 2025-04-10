@@ -19,7 +19,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         public Timer(float timerValue)
         {
             Seconds = timerValue;
-            CurrentTimerValue = Seconds;
+            Reset();
         }
         /// <summary>
         /// Checks if the timer is on cooldown.

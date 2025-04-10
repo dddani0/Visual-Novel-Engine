@@ -226,9 +226,10 @@ namespace VisualNovelEngine.Engine.Editor.Component
         public Editor(Engine.Component.Engine engine, string title, string projectPath)
         {
             Engine = engine;
+            ProjectName = title;
             FolderPath = projectPath;
             EditorConfigPath = projectPath + "EditorConfig.json";
-            SaveFilePath = @"../../../Engine/Data/Editor.json";
+            SaveFilePath = @"../../../Engine/Data/PlaceholderEditor.json";
             File.Copy(@"../../../Engine/Data/EditorConfig.json", EditorConfigPath, true);
             BuildPath = $"{FolderPath}{title}Build.json";
             Engine.SetWindowTitle($"Editor - {title}");
@@ -254,9 +255,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
             SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
             //
-            ProjectName = title;
-            //
-            SaveFilePath = $"{FolderPath}/{ProjectName}.json".Replace(" ", string.Empty);
+            SaveFilePath = $"{FolderPath}{ProjectName}.json".Replace(" ", string.Empty);
         }
         /// <summary>
         /// Create a new Editor, and load existing project.
@@ -341,7 +340,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             HoverColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.HoverColor);
             EditorColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.EditorColor);
             //
-            ProjectName = EditorEXIMManager.EditorExIm.ProjectName;
+            ProjectName = ProjectName;
             Toolbar = EditorEXIMManager.FetchToolBarFromImport(EditorEXIMManager.EditorExIm.ToolBar);
             SceneList = [.. EditorEXIMManager.EditorExIm.Scenes.Select(EditorEXIMManager.FetchEditorSceneFromImport)];
             ActiveScene = SceneList[0];

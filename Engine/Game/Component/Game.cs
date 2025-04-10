@@ -14,7 +14,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <summary>
         /// The GameLoader deals with the raw data which is loaded into the game.
         /// </summary>
-        internal GameImporter GameImport;
+        internal GameEximManager GameImport;
         /// <summary>
         /// The current folder path.
         /// </summary>

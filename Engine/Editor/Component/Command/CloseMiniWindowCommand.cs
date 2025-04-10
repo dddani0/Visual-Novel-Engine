@@ -111,6 +111,21 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     MiniWindow.ComponentList.RemoveRange(4, 3);
                 }
             }
+            if (MiniWindow.ComponentList.Any(x => (x is Label) && (x as Label).Text == "Game configuration"))
+            {
+                //Save game name
+                TextField gameNameTextField = (TextField)MiniWindow.ComponentList[2];
+                var newName = gameNameTextField.Text;
+                //Rename the save file path
+                Editor.SaveFilePath = Editor.SaveFilePath.Replace(Editor.ProjectName, $"{newName}");
+                //Rename build path
+                Editor.BuildPath = Editor.BuildPath.Replace(Editor.ProjectName, $"{newName}");
+                //Rename project name
+                Editor.ProjectName = newName;
+                //Rename window
+                Editor.Engine.SetWindowTitle($"Editor - {Editor.ProjectName}");
+                //rename file and dispose of previous one
+            }
             Editor.MiniWindow.Remove(MiniWindow);
         }
     }

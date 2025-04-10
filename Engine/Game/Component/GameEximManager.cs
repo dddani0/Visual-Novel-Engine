@@ -11,7 +11,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// <summary>
     /// The "GameImporter" class is the class that fetches raw data into objects, which the templategame can use.
     /// </summary>
-    public class GameImporter
+    public class GameEximManager
     {
         /// <summary>
         /// The Game object.
@@ -23,7 +23,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         internal List<Block> BlockListCache { get; set; } = [];
         internal List<Menu> MenuListCache { get; set; } = [];
-        public GameImporter(Game game, string BuildPath)
+        public GameEximManager(Game game, string BuildPath)
         {
             Game = game;
             GameExim = FetchGameEximFromImport(BuildPath);
