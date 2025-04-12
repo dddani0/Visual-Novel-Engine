@@ -5,7 +5,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action
     /// <summary>
     /// Creates a menu.
     /// </summary>
-    class CreateMenuAction : IAction, ISettingsEvent, IButtonEvent
+    class CreateMenuAction : IAction, ISettingsAction, IButtonAction
     {
         private readonly Game Game;
         internal Menu Menu;

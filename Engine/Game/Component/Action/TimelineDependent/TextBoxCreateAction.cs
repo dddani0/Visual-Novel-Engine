@@ -5,7 +5,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
     /// <summary>
     /// Initializes a new textbox.
     /// </summary>
-    class TextBoxCreateAction : IAction, IButtonEvent
+    class TextBoxCreateAction : IAction, IButtonAction
     {
         internal TextBox TextBox;
         public TextBoxCreateAction(TextBox textbox)

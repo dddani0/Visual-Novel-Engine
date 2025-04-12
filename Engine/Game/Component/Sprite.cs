@@ -6,7 +6,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// <summary>
     /// A sprite that can be rendered on the screen.
     /// </summary>
-    public class Sprite : IPermanentRenderingObject
+    public class Sprite : IRenderingObject
     {
         /// <summary>
         /// The name of the sprite.
@@ -100,6 +100,6 @@ namespace VisualNovelEngine.Engine.Game.Component
             if (Enabled is false) return;
             Raylib.DrawTexture(ImageTexture, X, Y, Color);
         }
-        bool IPermanentRenderingObject.Enabled() => Enabled;
+        bool IRenderingObject.Enabled() => Enabled;
     }
 }

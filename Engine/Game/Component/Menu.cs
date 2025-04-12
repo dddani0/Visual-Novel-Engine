@@ -7,7 +7,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// Represents a menu, which is a collection of blocks.
     /// A Block is a component with coordinates.
     /// </summary>
-    public class Menu : IPermanentRenderingObject
+    public class Menu : IRenderingObject
     {
         internal int ID { get; set; }
         /// <summary>

@@ -256,7 +256,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     switch (component.IsObjectStatic)
                                     {
                                         case true:
-                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)button.Action);
+                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsAction)button.Action);
                                             break;
                                         case false:
                                             Editor.ActiveScene.Timeline.AddAction(button.Action);
@@ -437,9 +437,9 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         Block block = ((Component)Editor.ActiveScene.ComponentList[^2]).RenderingObject as Block;
                                         button.Action = currentDropDown.Button.Action;
                                         buttonList.Add(button);
-                                        if (Editor.ActiveScene.Timeline.TimelineIndepententActions.Contains((ISettingsEvent)currentDropDown.Button.Action) is false)
+                                        if (Editor.ActiveScene.Timeline.TimelineIndepententActions.Contains((ISettingsAction)currentDropDown.Button.Action) is false)
                                         {
-                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)button.Action);
+                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsAction)button.Action);
                                         }
                                     }
                                     dropBox.Options = buttonList;
@@ -487,7 +487,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     //Save Action
                                     if ((InspectorWindow.ComponentList[24] as Dropdown).Button == null) break;
                                     slider.Action = (InspectorWindow.ComponentList[24] as Dropdown).Button.Action;
-                                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)slider.Action);
+                                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsAction)slider.Action);
                                     break;
                                 case Toggle toggle:
                                     //Save position
@@ -532,7 +532,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     //Save action
                                     if ((InspectorWindow.ComponentList[22] as Dropdown).Button.Action == null) break;
                                     toggle.SettingsAction = (InspectorWindow.ComponentList[22] as Dropdown).Button.Action;
-                                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)toggle.SettingsAction);
+                                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsAction)toggle.SettingsAction);
                                     break;
                                 case InputField inputField:
                                     //Save position
@@ -581,7 +581,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     {
                                         case true:
                                             inputField.Button.Action = (InspectorWindow.ComponentList[26] as Dropdown).Button.Action;
-                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)inputField.Button.Action);
+                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsAction)inputField.Button.Action);
                                             break;
                                         case false:
                                             inputField.Button.Action = (InspectorWindow.ComponentList[26] as Dropdown).Button.Action;

@@ -1,5 +1,6 @@
 using Raylib_cs;
 using VisualNovelEngine.Engine.Editor.Interface;
+using VisualNovelEngine.Engine.Game.Interface;
 
 namespace VisualNovelEngine.Engine.Editor.Component
 {
@@ -63,12 +64,13 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="sceneName"></param>
         /// <param name="components"></param>
         /// <param name="groups"></param>
-        public Scene(Editor editor, string sceneName, IDinamicComponent[] components, Group[] groups)
+        public Scene(Editor editor, Timeline timeline, string sceneName, IDinamicComponent[] components, Group[] groups)
         {
             Editor = editor;
             ID = Editor.GenerateID();
             Name = sceneName;
-            Timeline = new(Editor, 0, 600);
+            Timeline = timeline;
+            //Timeline = new(Editor, 0, 600,actions, settingsActions);
             if (components != null) ComponentList.AddRange(components);
             if (groups != null) ComponentGroupList.AddRange(groups);
             BackgroundColor = Color.Black;

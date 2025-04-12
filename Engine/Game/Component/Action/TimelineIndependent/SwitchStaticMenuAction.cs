@@ -5,7 +5,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
     /// <summary>
     /// Switches between two menus, by disabling the prior, and enabling the latter.
     /// </summary>
-    public class SwitchStaticMenuAction : IAction, ISettingsEvent
+    public class SwitchStaticMenuAction : IAction, ISettingsAction
     {
         private readonly Game Game;
         private readonly GameEximManager GameLoader;

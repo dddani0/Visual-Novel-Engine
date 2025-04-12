@@ -5,7 +5,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
     /// <summary>
     /// Sets the already declaired boolean variable to true.
     /// </summary>
-    public class SetBoolVariableAction : IAction, IButtonEvent
+    public class SetBoolVariableAction : IAction, IButtonAction
     {
         internal string VariableName;
         Game Game { get; set; }

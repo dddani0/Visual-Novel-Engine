@@ -143,6 +143,9 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Sprite")]
         public SpriteExim? Sprite { get; set; }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public class TextBoxExIm
     {
         [JsonPropertyName("CharactersPerSecond")]
@@ -166,7 +169,6 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Content")]
         public string[]? Content { get; set; }
     }
-
     /// <summary>
     /// The "ButtonComponentExim" class is a helper class to import/export the Button component's data to or from a JSON file.
     /// </summary>

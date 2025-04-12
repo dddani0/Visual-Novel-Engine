@@ -42,7 +42,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// The timeline independent actions
         /// </summary>
-        internal List<ISettingsEvent> TimelineIndepententActions { get; set; } = [];
+        internal List<ISettingsAction> TimelineIndepententActions { get; set; } = [];
         /// <summary>
         /// The button representation of the actions.
         /// </summary>
@@ -73,7 +73,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="editor"></param>
         /// <param name="xPos"></param>
         /// <param name="yPos"></param>
-        public Timeline(Editor editor, int xPos, int yPos)
+        public Timeline(Editor editor, int xPos, int yPos, IAction[] actions, ISettingsAction[] timelineIndependentActions)
         {
             Editor = editor;
             XPosition = xPos;
@@ -372,6 +372,15 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 Scrollbar.ScrollbarType.Horizontal,
                 false,
                 [.. TimelineIndepententActionButtons]);
+            if (actions.Length == 0 && timelineIndependentActions.Length == 0) return;
+            foreach (var action in actions)
+            {
+                AddAction(action);
+            }
+            foreach (var action in timelineIndependentActions)
+            {
+                AddTimelineIndependentAction(action);
+            }
         }
         /// <summary>
         /// Renders the timeline on the screen.
@@ -422,7 +431,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// Adds a timeline independent action.
         /// </summary>
         /// <param name="action"></param>
-        internal void AddTimelineIndependentAction(ISettingsEvent action)
+        internal void AddTimelineIndependentAction(ISettingsAction action)
         {
             TimelineIndepententActions.Add(action);
             TimelineIndepententActionButtons.Add(new(

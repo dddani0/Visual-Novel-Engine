@@ -7,7 +7,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// <summary>
     /// Represents a Slider.
     /// </summary>
-    public class Slider : IPermanentRenderingObject
+    public class Slider : IRenderingObject
     {
         internal Block Block { get; set; }
         /// <summary>
@@ -75,7 +75,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="sliderColor">The color of the slider's drag component</param>
         /// <param name="sliderBorderColor">The color of the border of the slider.</param>
         /// <param name="sliderEvent">The event that is triggered when the slider is interacted with.</param>
-        public Slider(Block block, int xPosition, int yPosition, int width, int height, int borderWidth, int sliderDragRadius, Color sliderDragColor, Color sliderColor, Color sliderBorderColor, ISettingsEvent sliderEvent)
+        public Slider(Block block, int xPosition, int yPosition, int width, int height, int borderWidth, int sliderDragRadius, Color sliderDragColor, Color sliderColor, Color sliderBorderColor, ISettingsAction sliderEvent)
         {
             Block = block;
             XPosition = block.XPosition + xPosition;

@@ -7,6 +7,7 @@
     "ToolBar": {
         "XPosition": 0,
         "YPosition": 100,
+        "Static": "true",
         "Width": 0,
         "Height": 0,
         "BorderWidth": 1,
@@ -369,7 +370,13 @@
                 255
             ],
             "Components": [],
-            "GroupList": []
+            "GroupList": [],
+            "Timeline": {
+                "XPosition": 0,
+                "YPosition": 600,
+                "Actions": [],
+                "TimelineIndependentActions": []
+            }
         }
     ]
 }

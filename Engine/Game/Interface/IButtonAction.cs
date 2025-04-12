@@ -4,7 +4,7 @@ namespace VisualNovelEngine.Engine.Game.Interface
     /// Interface for button events.
     /// Timeline dependent button events.
     /// </summary>
-    public interface IButtonEvent
+    public interface IButtonAction
     {
         //Empty interface
     }

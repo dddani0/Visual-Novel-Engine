@@ -10,7 +10,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// A text field can display a single instance of text.
     /// No limit to the row count.
     /// </summary>
-    public class TextField : IPermanentRenderingObject
+    public class TextField : IRenderingObject
     {
         /// <summary>
         /// The position of the text field according to the parenting block.

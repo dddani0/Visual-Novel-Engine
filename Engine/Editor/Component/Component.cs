@@ -109,11 +109,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// The group of the component.
         /// </summary>
-        private Group? Group { get; set; }
+        internal Group? Group { get; set; }
         /// <summary>
         /// The rendering object associated with the component.
         /// </summary>
-        internal IPermanentRenderingObject? RenderingObject { get; set; }
+        internal IRenderingObject? RenderingObject { get; set; }
         /// <summary>
         /// Creates a new instance of the component.
         /// </summary>
@@ -131,7 +131,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="selectedColor"></param>
         /// <param name="hoverColor"></param>
         /// <param name="component"></param>
-        public Component(int id, Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor, IPermanentRenderingObject component)
+        public Component(int id, Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor, IRenderingObject component)
         {
             Editor = editor;
             ID = id;
@@ -218,6 +218,29 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     Name = Regex.Unescape(Name + ((char)Raylib.GetCharPressed()).ToString()).Replace('\0', ' ');
                 }
             }
+            if (IsInGroup()) return;
+            //check if overlaps any other components
+            foreach (Component component in Editor.ActiveScene.ComponentList.Cast<Component>())
+            {
+                if (component == this) continue;
+                if (component.IsInGroup() && component.Group.IsSelected) continue;
+                if (Raylib.CheckCollisionRecs(new Rectangle(XPosition, YPosition, Width, Height), new Rectangle(component.XPosition, component.YPosition, component.Width, component.Height)))
+                {
+                    switch (component.IsInGroup())
+                    {
+                        case true:
+                            component.Group.AddComponent(this);
+                            Group = component.Group;
+                            break;
+                        case false:
+                            //create a group
+                            Group = new Group(Editor, component.XPosition, component.YPosition, component.Width, component.Height, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, [this as IDinamicComponent, component as IDinamicComponent]);
+                            //
+                            Editor.ActiveScene.ComponentGroupList.Add(Group);
+                            break;
+                    }
+                }
+            }
         }
         /// <summary>
         /// Moves the component.
@@ -241,7 +264,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 }
             }
             //Detach this component if it's is dragged outside the group.
-            if (Group is null)
+            if (IsInGroup() is false)
             {
                 if (IsMoving is false) return;
                 foreach (var group in Editor.ActiveScene.ComponentGroupList)
@@ -261,6 +284,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 if (Raylib.IsMouseButtonReleased(MouseButton.Left) && IsDraggedOutsideGroup())
                 {
                     Group.RemoveComponent(this);
+                    if (Group.ComponentList.Count == 0) Editor.ActiveScene.ComponentGroupList.Remove(Group);
                     Group = null;
                     Editor.ActiveScene.ComponentList.Add(this);
                     IsMoving = false;

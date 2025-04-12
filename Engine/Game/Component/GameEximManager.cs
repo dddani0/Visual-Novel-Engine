@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text.Json;
 using Raylib_cs;
 using VisualNovelEngine.Engine.Game.Component.Action;
@@ -131,7 +132,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             }
             if (File.Exists(Game.ProjectPath + spriteImport.Path) is false)
             {
-                throw new InvalidOperationException("Failed to load scene settings, because the sprite path is invalid.");
+                //Throw a warning
             }
             return new Sprite(Game.ProjectPath + spriteImport.Path, block, spriteImport.XPosition.Value, spriteImport.YPosition.Value);
         }
@@ -215,7 +216,7 @@ namespace VisualNovelEngine.Engine.Game.Component
                     B = (byte)buttonImport.HoverColor[2],
                     A = (byte)buttonImport.HoverColor[3]
                 },
-                (IButtonEvent)FetchTimelineDependentActionFromImport(buttonImport.Action)
+                (IButtonAction)FetchTimelineDependentActionFromImport(buttonImport.Action)
             );
         }
         /// <summary>
@@ -400,7 +401,7 @@ namespace VisualNovelEngine.Engine.Game.Component
                     B = (byte)inputFieldImport.SelectedColor[2],
                     A = (byte)inputFieldImport.SelectedColor[3]
                 },
-                (IButtonEvent)FetchTimelineDependentActionFromImport(inputFieldImport.ButtonAction)
+                (IButtonAction)FetchTimelineDependentActionFromImport(inputFieldImport.ButtonAction)
             );
         }
         /// <summary>
@@ -940,7 +941,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="actionImport"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private ISettingsEvent FetchTimelineIndependentActionFromImport(ActionExim actionImport)
+        internal ISettingsAction FetchTimelineIndependentActionFromImport(ActionExim actionImport)
         {
             switch (actionImport.Type)
             {
@@ -951,7 +952,7 @@ namespace VisualNovelEngine.Engine.Game.Component
                         throw new InvalidOperationException("Failed to load scene settings, because the scene id is null.");
                     }
                     var nativeSceneId = actionImport.SceneID.Value;
-                    ISettingsEvent NativeLoadSceneAction = (ISettingsEvent)new NativeLoadSceneAction(Game, nativeSceneId);
+                    ISettingsAction NativeLoadSceneAction = (ISettingsAction)new NativeLoadSceneAction(Game, nativeSceneId);
                     return NativeLoadSceneAction;
                 case "LoadSceneAction":
                     // Add the load scene action to the timeline.
@@ -961,18 +962,19 @@ namespace VisualNovelEngine.Engine.Game.Component
                     }
                     var sceneId = actionImport.SceneID.Value;
                     IAction LoadSceneAction = new LoadSceneAction(Game, sceneId, actionImport.TriggerVariableName);
-                    return (ISettingsEvent)LoadSceneAction;
+                    return (ISettingsAction)LoadSceneAction;
                 case "SetVariableValueAction":
                     // Add the set variable value action to the timeline.
-                    if (actionImport.VariableName == null)
-                    {
-                        throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
-                    }
-                    if (actionImport.BlockComponentID == null)
-                    {
-                        throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
-                    }
-                    ISettingsEvent SetVariableValueAction = new SetVariableValueAction(Game, actionImport.VariableName, this, actionImport.BlockComponentID.Value);
+                    // if (actionImport.VariableName == null)
+                    // {
+                    //     throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                    // }
+                    // if (actionImport.BlockComponentID == null)
+                    // {
+                    //     throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
+                    // }
+                    //ISettingsAction SetVariableValueAction = new SetVariableValueAction(Game, actionImport.VariableName, this, actionImport.BlockComponentID.Value);
+                    ISettingsAction SetVariableValueAction = new SetVariableValueAction(Game, actionImport.VariableName, this, 1);
                     return SetVariableValueAction;
                 case "CreateMenuAction":
                     // Add the create menu action to the timeline.

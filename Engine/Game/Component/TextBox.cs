@@ -8,7 +8,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// <summary>
     /// Store, Write, Edit and Delete text according to need.
     /// </summary>
-    public class TextBox : IPermanentRenderingObject
+    public class TextBox : IRenderingObject
     {
         /// <summary>
         /// The position type of the textbox.

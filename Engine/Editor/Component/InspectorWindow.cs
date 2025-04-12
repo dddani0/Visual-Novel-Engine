@@ -195,36 +195,36 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     //Dinamic Title
                     ComponentList.Add(new Label(XPosition, YPosition, "title:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.Title, Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.Title, Raylib.GetFontDefault(), false));
                     //Text content
                     ComponentList.Add(new Label(XPosition, YPosition, "Text content:"));
                     for (int i = 0; i < textBox.Content.Count; i++)
                     {
                         ComponentList.Add(
-                            new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.Content[i], Raylib.GetFontDefault(), true));
+                            new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.Content[i], Raylib.GetFontDefault(), false));
                     }
                     ComponentList.Add(
                         new Button(Editor, XPosition, YPosition, "Add text", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "New text field", Raylib.GetFontDefault(), false), 14), Button.ButtonType.Trigger));
                     //Horizontal text margin
                     ComponentList.Add(new Label(XPosition, YPosition, "Horizontal margin:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.HorizontalTextMargin.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.HorizontalTextMargin.ToString(), Raylib.GetFontDefault(), false));
                     //Vertical text margin
                     ComponentList.Add(new Label(XPosition, YPosition, "Vertical margin:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.VerticalTextMargin.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.VerticalTextMargin.ToString(), Raylib.GetFontDefault(), false));
                     //Characters per second
                     ComponentList.Add(new Label(XPosition, YPosition, "Characters per second:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.CPSTextSpeed.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.CPSTextSpeed.ToString(), Raylib.GetFontDefault(), false));
                     //Color
                     ComponentList.Add(new Label(XPosition, YPosition, "Color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{textBox.Color.R}, {textBox.Color.G}, {textBox.Color.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{textBox.Color.R}, {textBox.Color.G}, {textBox.Color.B}", Raylib.GetFontDefault(), false));
                     //Border color
                     ComponentList.Add(new Label(XPosition, YPosition, "Border color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{textBox.BorderColor.R}, {textBox.BorderColor.G}, {textBox.BorderColor.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{textBox.BorderColor.R}, {textBox.BorderColor.G}, {textBox.BorderColor.B}", Raylib.GetFontDefault(), false));
                     //Wordwrap
                     ComponentList.Add(
                         new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Wordwrap:", textBox.WordWrap));

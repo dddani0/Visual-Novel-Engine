@@ -7,7 +7,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
     /// Slider: Int, Float
     /// Toggle: Boolean
     /// </summary>
-    public class SetVariableValueAction : IAction, ISettingsEvent
+    public class SetVariableValueAction : IAction, ISettingsAction
     {
         private readonly Game Game;
         private GameEximManager GameLoader { get; set; }
@@ -31,7 +31,6 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
             GameLoader = gameLoader;
             ComponentID = componentID;
         }
-
         /// <summary>
         /// Sets the variable with the constant value or with a variable value.
         /// </summary>

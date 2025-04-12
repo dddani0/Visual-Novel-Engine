@@ -5,7 +5,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action
     /// <summary>
     /// Loads a new scene natively (without trigger).
     /// </summary>
-    class NativeLoadSceneAction : IAction, ISettingsEvent, IButtonEvent
+    class NativeLoadSceneAction : IAction, ISettingsAction, IButtonAction
     {
         /// <summary>
         /// Active game.

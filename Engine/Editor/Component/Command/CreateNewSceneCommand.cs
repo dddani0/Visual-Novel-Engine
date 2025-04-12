@@ -16,7 +16,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         public void Execute()
         {
             //Create new scene
-            Scene newScene = new Scene(Editor, $"({Editor.SceneBar.ButtonComponentList.Count})New Scene", null, null);
+            Scene newScene = new(Editor, new Timeline(Editor, 0, 600, [], []), $"({Editor.SceneBar.ButtonComponentList.Count})New Scene", null, null);
             //Jump to new scene
             Editor.ActiveScene = newScene;
             Editor.SceneList.Add(newScene);

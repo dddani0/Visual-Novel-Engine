@@ -8,7 +8,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// Represents an input field.
     /// Input data from the player.
     /// </summary>
-    public class InputField : IPermanentRenderingObject
+    public class InputField : IRenderingObject
     {
         /// <summary>
         /// X position of the input field.
@@ -93,7 +93,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="inputFieldHoverColor"></param>
         /// <param name="selectedColor"></param>
         /// <param name="buttonEvent"></param>
-        public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, Color inputFieldColor, Color inputFieldBorderColor, Color inputFieldHoverColor, Color selectedColor, IButtonEvent buttonEvent)
+        public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, Color inputFieldColor, Color inputFieldBorderColor, Color inputFieldHoverColor, Color selectedColor, IButtonAction buttonEvent)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;
@@ -125,7 +125,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="hoverColor"></param>
         /// <param name="selectedColor"></param>
         /// <param name="buttonEvent"></param>
-        public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, Color color, Color borderColor, Color hoverColor, Color selectedColor, ISettingsEvent buttonEvent)
+        public InputField(Game Game, Block block, int xPosition, int yPosition, int ButtonYOffset, int width, int height, string placeholder, string buttonText, Color color, Color borderColor, Color hoverColor, Color selectedColor, ISettingsAction buttonEvent)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;

@@ -117,9 +117,9 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 TextField gameNameTextField = (TextField)MiniWindow.ComponentList[2];
                 var newName = gameNameTextField.Text;
                 //Rename the save file path
-                Editor.SaveFilePath = Editor.SaveFilePath.Replace(Editor.ProjectName, $"{newName}");
+                Editor.SaveFilePath = Editor.SaveFilePath.Replace(Editor.ProjectName, $"{newName}").Replace(" ", string.Empty);
                 //Rename build path
-                Editor.BuildPath = Editor.BuildPath.Replace(Editor.ProjectName, $"{newName}");
+                Editor.BuildPath = Editor.BuildPath.Replace(Editor.ProjectName, $"{newName}").Replace(" ", string.Empty);
                 //Rename project name
                 Editor.ProjectName = newName;
                 //Rename window

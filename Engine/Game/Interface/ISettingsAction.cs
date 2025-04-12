@@ -4,7 +4,7 @@ namespace VisualNovelEngine.Engine.Game.Interface
     /// Interface for general events.
     /// Timeline independent events for buttons and other menu components.
     /// </summary>
-    public interface ISettingsEvent
+    public interface ISettingsAction
     {
         //Empty interface
     }

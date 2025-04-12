@@ -5,7 +5,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
     /// <summary>
     /// Increments the already declaired integer or float variable with a constant value or variable value.
     /// </summary>
-    public class IncrementVariableAction : IAction, IButtonEvent
+    public class IncrementVariableAction : IAction, IButtonAction
     {
         private Variable Variable { get; set; }
         private Variable IncrementVariable { get; set; }
