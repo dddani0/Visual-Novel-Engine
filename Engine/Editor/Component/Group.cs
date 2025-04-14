@@ -238,7 +238,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             if (IsSelected)
             {
                 XPosition = Raylib.GetMouseX();
-                YPosition = Raylib.GetMouseY();
+                YPosition = Raylib.GetMouseY() > (Editor.SceneBar.Height + Editor.Toolbar.Height) && Raylib.GetMouseY() < Editor.ActiveScene.Timeline.YPosition - Height ? Raylib.GetMouseY() : YPosition;
             }
         }
         /// <summary>

@@ -176,6 +176,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         internal string ProjectName { get; set; }
         /// <summary>
+        /// Screen width
+        /// </summary>
+        internal int ScreenWidth { get; set; }
+        /// <summary>
+        /// Screen height
+        /// </summary>
+        internal int ScreenHeight { get; set; }
+        /// <summary>
         /// The ID generator.
         /// </summary>
         internal IDGenerator IDGenerator { get; set; }
@@ -340,7 +348,9 @@ namespace VisualNovelEngine.Engine.Editor.Component
             HoverColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.HoverColor);
             EditorColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.EditorColor);
             //
-            ProjectName = ProjectName;
+            ProjectName = EditorEXIMManager.EditorExIm.ProjectName;
+            ScreenWidth = EditorEXIMManager.EditorExIm.WindowWidth;
+            ScreenHeight = EditorEXIMManager.EditorExIm.WindowHeight;
             Toolbar = EditorEXIMManager.FetchToolBarFromImport(EditorEXIMManager.EditorExIm.ToolBar);
             SceneList = [.. EditorEXIMManager.EditorExIm.Scenes.Select(EditorEXIMManager.FetchEditorSceneFromImport)];
             ActiveScene = SceneList[0];

@@ -263,7 +263,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     YPosition = Raylib.GetMouseY() > (Editor.SceneBar.Height + Editor.Toolbar.Height) && Raylib.GetMouseY() < Editor.ActiveScene.Timeline.YPosition - Editor.ComponentHeight ? Raylib.GetMouseY() : YPosition;
                 }
             }
-            //Detach this component if it's is dragged outside the group.
+            //Create a group for objects.
             if (IsInGroup() is false)
             {
                 if (IsMoving is false) return;

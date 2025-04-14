@@ -61,7 +61,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         private void SetupGameWindow()
         {
-            Raylib.SetWindowSize(GameImport.GameExim.WindowWidth, GameImport.GameExim.WindowHeigth);
+            Raylib.SetWindowSize(GameImport.GameExim.WindowWidth, GameImport.GameExim.WindowHeight);
         }
         /// <summary>
         /// Fetches the saved variables from the json file.

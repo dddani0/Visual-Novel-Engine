@@ -158,6 +158,8 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="game">Active Game object</param>
         private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, int horizontalTextMargin, int verticalTextMargin, bool wordWrapEnabled, Game game)
         {
+            Game = game;
+            //
             Content = data;
             CPSTextSpeed = cps;
             Title = title;
@@ -212,8 +214,6 @@ namespace VisualNovelEngine.Engine.Game.Component
             TextCount = CurrentLoadedData.Length;
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
-            //
-            Game = game;
             //
             ToggleEnability(); //Disabled by default
         }

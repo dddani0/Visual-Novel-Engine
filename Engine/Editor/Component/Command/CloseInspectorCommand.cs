@@ -249,6 +249,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         B = hoverColorRGB[2],
                                         A = 255
                                     };
+                                    
                                     //Save action
                                     if ((InspectorWindow.ComponentList[13] as Dropdown).Button.Action == null) break;
                                     button.Action = (InspectorWindow.ComponentList[13] as Dropdown).Button.Action;

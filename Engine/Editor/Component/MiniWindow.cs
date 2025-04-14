@@ -317,7 +317,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 switch (Type)
                 {
                     case MiniWindowType.Vertical:
-                        if (YPosition + ComponentList.Count * Editor.ComponentHeight > Raylib.GetScreenHeight() / 2 + Height / 2) Scrollbar.Render();
+                        if ((YPosition + ComponentList.Count * Editor.ComponentHeight) > Raylib.GetScreenHeight() / 2 + Height / 2) Scrollbar.Render();
                         for (int i = 0; i < ComponentList.Count; i++) if (ComponentList[i].YPosition < Raylib.GetScreenHeight() / 2 + Height / 2 && ComponentList[i].YPosition > YPosition) ComponentList[i].Render();
                         break;
                     case MiniWindowType.Horizontal:

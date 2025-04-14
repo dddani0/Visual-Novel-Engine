@@ -127,8 +127,12 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 case RenderingObjectType.Button:
                     //Create block for button
                     Block buttonBlock = new(0, 0, null, id);
+                    //Create button action
+                    IButtonAction buttonAction = new VisualNovelEngine.Engine.Game.Component.Action.NativeLoadSceneAction(Editor.Game, 0);
+                    //Add to timeline
+                    Editor.ActiveScene.Timeline.AddAction((IAction)buttonAction);
                     //Create button
-                    VisualNovelEngine.Engine.Game.Component.Button button = new(Editor.Game, buttonBlock, Raylib.GetFontDefault(), 0, 0, 1, 250, 250, "Text", Color.Black, Color.Black, Color.Black, Color.Black, (IButtonAction)new VisualNovelEngine.Engine.Game.Component.Action.NativeLoadSceneAction(Editor.Game, 0));
+                    VisualNovelEngine.Engine.Game.Component.Button button = new(Editor.Game, buttonBlock, Raylib.GetFontDefault(), 0, 0, 1, 250, 250, "Text", Color.Black, Color.Black, Color.Black, Color.Black, buttonAction);
                     //Assign block to button
                     buttonBlock.Component = button;
                     //Create Component for button's block
@@ -143,8 +147,12 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 case RenderingObjectType.StaticButton:
                     //Create block for static button
                     Block staticButtonBlock = new(0, 0, null, id);
+                    //Create static Button action
+                    var staticButtonAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0);
+                    //Add to timeline
+                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction(staticButtonAction);
                     //Create static button
-                    VisualNovelEngine.Engine.Game.Component.Button staticButton = new(Editor.Game, staticButtonBlock, Raylib.GetFontDefault(), 0, 0, 1, 250, 250, "Text", Color.Black, Color.Black, Color.Black, Color.Black, new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0));
+                    VisualNovelEngine.Engine.Game.Component.Button staticButton = new(Editor.Game, staticButtonBlock, Raylib.GetFontDefault(), 0, 0, 1, 250, 250, "Text", Color.Black, Color.Black, Color.Black, Color.Black, staticButtonAction);
                     //Assign block to static button
                     staticButtonBlock.Component = staticButton;
                     //Create block component
@@ -164,8 +172,12 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 case RenderingObjectType.Slider:
                     //Create block for slider
                     Block sliderBlock = new(0, 0, null, id);
+                    //Create slider action
+                    ISettingsAction sliderAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameImport, 0);
+                    //Add to timeline
+                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction(sliderAction);
                     //Create slider
-                    Slider slider = new(sliderBlock, 0, 0, 1, 250, 250, 25, Color.Black, Color.Black, Color.Black, new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameImport, 0));
+                    Slider slider = new(sliderBlock, 0, 0, 1, 250, 250, 25, Color.Black, Color.Black, Color.Black, sliderAction);
                     //Assign Slider to block component
                     sliderBlock.Component = slider;
                     //Create block component
@@ -208,8 +220,12 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 case RenderingObjectType.InputField:
                     //Create block for inputfield
                     Block inputFieldBlock = new(0, 0, null, id);
+                    //Create inputfield action
+                    IButtonAction inputFieldAction = new VisualNovelEngine.Engine.Game.Component.Action.NativeLoadSceneAction(Editor.Game, 0);
+                    //Add to timeline
+                    Editor.ActiveScene.Timeline.AddAction((IAction)inputFieldAction);
                     //Create inputfield
-                    InputField inputField = new(Editor.Game, inputFieldBlock, 0, 0, 250, 200, 250, "Placeholder", "Ok", Color.Black, Color.Black, Color.Black, Color.Black, (IButtonAction)new VisualNovelEngine.Engine.Game.Component.Action.NativeLoadSceneAction(Editor.Game, 0));
+                    InputField inputField = new(Editor.Game, inputFieldBlock, 0, 0, 250, 200, 250, "Placeholder", "Ok", Color.Black, Color.Black, Color.Black, Color.Black, inputFieldAction);
                     //Assign InputField to block component
                     inputFieldBlock.Component = inputField;
                     //Create block component
@@ -224,8 +240,12 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 case RenderingObjectType.StaticInputField:
                     //Create block for static inputfield
                     Block staticInputFieldBlock = new(0, 0, null, id);
+                    //Create static inputfield action
+                    ISettingsAction staticInputFieldAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0);
+                    //Add to timeline
+                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction(staticInputFieldAction);
                     //Create inputfield
-                    InputField staticInputField = new(Editor.Game, staticInputFieldBlock, 0, 0, 250, 200, 250, "Placeholder", "Ok", Color.Black, Color.Black, Color.Black, Color.Black, new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0));
+                    InputField staticInputField = new(Editor.Game, staticInputFieldBlock, 0, 0, 250, 200, 250, "Placeholder", "Ok", Color.Black, Color.Black, Color.Black, Color.Black, staticInputFieldAction);
                     //Assign InputField to block component
                     staticInputFieldBlock.Component = staticInputField;
                     //Create block component
@@ -246,8 +266,12 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 case RenderingObjectType.Toggle:
                     //Create block for toggle
                     Block toggleBlock = new(0, 0, null, id);
+                    //Create toggle action
+                    ISettingsAction toggleAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameImport, 0);
+                    //Add to timeline
+                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction(toggleAction);
                     //Create toggle
-                    Toggle toggle = new(toggleBlock, 0, 0, 50, 55, "Toggled", false, Color.Black, Color.Black, Color.White, new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameImport, 0));
+                    Toggle toggle = new(toggleBlock, 0, 0, 50, 55, "Toggled", false, Color.Black, Color.Black, Color.White, toggleAction);
                     //Assign toggle to block component
                     toggleBlock.Component = toggle;
                     //Create block component

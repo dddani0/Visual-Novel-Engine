@@ -12,7 +12,7 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("WindowWidth")]
         public int WindowWidth { get; set; }
         [JsonPropertyName("WindowHeight")]
-        public int WindowHeigth { get; set; }
+        public int WindowHeight { get; set; }
         [JsonPropertyName("Variables")]
         public VariableExim[]? Variables { get; set; }
         [JsonPropertyName("Scenes")]

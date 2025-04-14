@@ -14,6 +14,7 @@ using VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent;
 using VisualNovelEngine.Engine.Editor.Interface;
 using Engine.EngineEditor.Component.Command;
 using EngineEditor.Component.Command;
+using System.Collections.Generic;
 
 namespace VisualNovelEngine.Engine.Editor.Component
 {
@@ -40,6 +41,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// Represents the game's importer.
         /// </summary>
         internal GameEximManager GameEximManager { get; set; }
+        /// <summary>
+        /// Cache the block for static components.
+        /// Because of the way the editor works, when loading static data, the block always comes first.
+        /// </summary>
+        internal Block BlockCache { get; set; }
         /// <summary>
         /// Represents the editor's imported data.
         /// </summary>
@@ -450,10 +456,12 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             else if (renderingObjectImport.Block != null)
             {
+                BlockCache = GameEximManager.FetchBlockFromImport(renderingObjectImport.Block);
                 return GameEximManager.FetchBlockFromImport(renderingObjectImport.Block);
             }
             else if (renderingObjectImport.StaticBlock != null)
             {
+                BlockCache = GameEximManager.FetchStaticBlockFromImport(renderingObjectImport.StaticBlock);
                 return GameEximManager.FetchStaticBlockFromImport(renderingObjectImport.StaticBlock);
             }
             else if (renderingObjectImport.Textbox != null)
@@ -462,25 +470,25 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             else if (renderingObjectImport.Button != null)
             {
-                return GameEximManager.FetchButtonFromImport(renderingObjectImport.Button, null);
+                return GameEximManager.FetchButtonFromImport(renderingObjectImport.Button, BlockCache);
             }
             else if (renderingObjectImport.StaticButton != null)
             {
                 //When working with separate components, the autonomous button does not have a reference to a block.
                 //Either create a new method to fetch the connecting block, or feign a block.
-                return GameEximManager.FetchStaticButtonFromImport(renderingObjectImport.StaticButton, null);
+                return GameEximManager.FetchStaticButtonFromImport(renderingObjectImport.StaticButton, BlockCache);
             }
             else if (renderingObjectImport.InputField != null)
             {
-                return GameEximManager.FetchInputFieldFromImport(renderingObjectImport.InputField, null);
+                return GameEximManager.FetchInputFieldFromImport(renderingObjectImport.InputField, BlockCache);
             }
             else if (renderingObjectImport.StaticInputField != null)
             {
-                return GameEximManager.FetchInputFieldFromImport(renderingObjectImport.StaticInputField, null);
+                return GameEximManager.FetchInputFieldFromImport(renderingObjectImport.StaticInputField, BlockCache);
             }
             else if (renderingObjectImport.DropBox != null)
             {
-                return GameEximManager.FetchDropBoxFromImport(renderingObjectImport.DropBox, null);
+                return GameEximManager.FetchDropBoxFromImport(renderingObjectImport.DropBox, BlockCache);
             }
             else if (renderingObjectImport.Menu != null)
             {
@@ -488,19 +496,19 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             else if (renderingObjectImport.Slider != null)
             {
-                return GameEximManager.FetchSliderFromImport(renderingObjectImport.Slider, null);
+                return GameEximManager.FetchSliderFromImport(renderingObjectImport.Slider, BlockCache);
             }
             else if (renderingObjectImport.TextField != null)
             {
-                return GameEximManager.FetchTextFieldFromImport(renderingObjectImport.TextField, null);
+                return GameEximManager.FetchTextFieldFromImport(renderingObjectImport.TextField, BlockCache);
             }
             else if (renderingObjectImport.StaticInputField != null)
             {
-                return GameEximManager.FetchInputFieldFromImport(renderingObjectImport.StaticInputField, null);
+                return GameEximManager.FetchInputFieldFromImport(renderingObjectImport.StaticInputField, BlockCache);
             }
             else if (renderingObjectImport.Toggle != null)
             {
-                return GameEximManager.FetchToggleFromImport(renderingObjectImport.Toggle, null);
+                return GameEximManager.FetchToggleFromImport(renderingObjectImport.Toggle, BlockCache);
             }
             else
             {
@@ -1392,6 +1400,12 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 _ => throw new Exception("Rendering object type not found!"),
             };
         }
+        /// <summary>
+        /// Export a static rendering object from an object.
+        /// </summary>
+        /// <param name="permanentRenderingObject"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public RenderingObjectExIm ExportStaticRenderingObjectData(IRenderingObject permanentRenderingObject)
         {
             return permanentRenderingObject switch
@@ -1591,6 +1605,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
             return new()
             {
                 Title = editor.ProjectName,
+                WindowWidth = editor.ScreenWidth,
+                WindowHeight = editor.ScreenHeight,
                 Scenes = BuildScenesData([.. editor.SceneList]),
                 Variables = BuildVariablesData([.. Editor.GameVariables])
             };
