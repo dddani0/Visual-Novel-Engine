@@ -1,14 +1,9 @@
+using VisualNovelEngine.Engine.Game.Component;
+
 namespace VisualNovelEngine.Engine.Tests.Game.Component
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Raylib_cs;
-    using VisualNovelEngine.Engine.Component;
-    using VisualNovelEngine.Engine.Editor.Component.Command;
-    using VisualNovelEngine.Engine.Editor.Interface;
-    using VisualNovelEngine.Engine.Game.Component;
-
     [TestClass]
-    public class GameVariableTest
+    public class VariableTest
     {
         /// <summary>
         /// Test method to check if the game variable is created correctly.

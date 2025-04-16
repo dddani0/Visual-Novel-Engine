@@ -100,6 +100,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             Width = width;
             Height = height;
             Placeholder = placeholder;
+            Text = placeholder;
             IsVisible = true;
             IsSelected = false;
             Color = inputFieldColor;
@@ -132,6 +133,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             Width = width;
             Height = height;
             Placeholder = placeholder;
+            Text = placeholder;
             IsVisible = true;
             IsSelected = false;
             Color = color;

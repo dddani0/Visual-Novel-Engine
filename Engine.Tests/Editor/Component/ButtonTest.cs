@@ -9,6 +9,9 @@ namespace VisualNovelEngine.Engine.Tests.Engine.Component
     [TestClass]
     public class ButtonTest
     {
+        /// <summary>
+        /// Test the creation of a Button object.
+        /// </summary>
         [TestMethod]
         public void ButtonCreationTest()
         {
@@ -38,6 +41,9 @@ namespace VisualNovelEngine.Engine.Tests.Engine.Component
             Assert.AreEqual(command, button.Command);
             Assert.AreEqual(Button.ButtonType.Trigger, button.Type);
         }
+        /// <summary>
+        /// Test the AddCommand method of a Button object.
+        /// </summary>
         [TestMethod]
         public void ButtonAddCommandTest() {
             VisualNovelEngine.Engine.Component.Engine engine = new();
