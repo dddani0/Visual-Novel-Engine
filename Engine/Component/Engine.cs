@@ -30,11 +30,11 @@ namespace VisualNovelEngine.Engine.Component
         /// <summary>
         /// The current state of the Engine.
         /// </summary>
-        internal EngineState State { get; private set; }
+        public EngineState State { get; private set; }
         /// <summary>
         /// The title of the Engine.
         /// </summary>
-        internal string Title { get; set; } = "Vizuális Novella Motor";
+        public string Title { get; private set; } = "Vizuális Novella Motor";
         /// <summary>
         /// The width of the Engine.
         /// </summary>
@@ -46,7 +46,7 @@ namespace VisualNovelEngine.Engine.Component
         /// <summary>
         /// The exit flag of the Engine.
         /// </summary>
-        internal bool Exit { get; set; } = false;
+        public bool Exit { get; private set; } = false;
         /// <summary>
         /// The button to import a project.
         /// </summary>

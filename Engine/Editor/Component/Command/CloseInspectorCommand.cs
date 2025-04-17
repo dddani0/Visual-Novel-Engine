@@ -198,7 +198,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                             {
                                 case Sprite sprite:
                                     //save sprite path
-                                    sprite.Path = (InspectorWindow.ComponentList[5] as TextField).Text;
+                                    sprite.Path = $"{Editor.FolderPath}{(InspectorWindow.ComponentList[5] as TextField).Text}";
                                     //save sprite color
                                     TextField spriteColorTextField = InspectorWindow.ComponentList[7] as TextField;
                                     sprite.Color = new Color()

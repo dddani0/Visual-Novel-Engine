@@ -89,7 +89,7 @@ namespace VisualNovelEngine.Engine.Tests.Engine.Component
         {
             Engine engine = new();
             string expectedTitle = "New Title";
-            engine.Title = expectedTitle;
+            engine.SetWindowTitle(expectedTitle);
             Assert.AreEqual(expectedTitle, engine.Title);
         }
     }

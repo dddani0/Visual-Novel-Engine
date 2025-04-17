@@ -52,7 +52,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
             switch (RenderableObjectType)
             {
                 case RenderingObjectType.Sprite:
-                    Sprite sprite = new("Empty path");
+                    Sprite sprite = new($"{Editor.FolderPath}/newSprite{id}.png");
                     Component = new Component(id, Editor, null, $"New Sprite({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, sprite);
                     break;
                 case RenderingObjectType.staticSprite:
@@ -60,7 +60,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     Block staticSpriteBlock = new(0, 0, null, id);
                     //Create sprite with no block attached
                     id = Editor.GenerateID();
-                    Sprite staticSprite = new($"Empty path({id})", staticSpriteBlock, 0, 0);
+                    Sprite staticSprite = new($"{Editor.FolderPath}/newSprite{id}.png", staticSpriteBlock, 0, 0);
                     //Assign block to sprite
                     staticSpriteBlock.Component = staticSprite;
                     //Create block component

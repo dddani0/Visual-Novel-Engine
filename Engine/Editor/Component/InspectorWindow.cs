@@ -121,7 +121,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     //Dinamic Path name
                     ComponentList.Add(new Label(XPosition, YPosition, "Path:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Name, Raylib.GetFontDefault(), false));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, sprite.Path.Split("/")[^1], Raylib.GetFontDefault(), false));
                     //Dinamic Color rgb value
                     ComponentList.Add(new Label(XPosition, YPosition, "Color:"));
                     ComponentList.Add(

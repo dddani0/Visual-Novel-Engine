@@ -9,10 +9,6 @@ namespace VisualNovelEngine.Engine.Game.Component
     public class Sprite : IRenderingObject
     {
         /// <summary>
-        /// The name of the sprite.
-        /// </summary>
-        internal string Name { get; set; }
-        /// <summary>
         /// The path to the sprite.
         /// </summary>
         internal string Path;
@@ -45,7 +41,6 @@ namespace VisualNovelEngine.Engine.Game.Component
         public Sprite(string path)
         {
             Path = path;
-            Name = Path;
             ImageTexture = Raylib.LoadTexture(path);
             //default position
             Y = Raylib.GetScreenHeight() / 2 - ImageTexture.Width / 2;
@@ -57,7 +52,6 @@ namespace VisualNovelEngine.Engine.Game.Component
         public Sprite(string path, Block block, int x, int y)
         {
             Path = path;
-            Name = Path;
             ImageTexture = Raylib.LoadTexture(Path);
             Block = block;
             X = Block.XPosition + x;
