@@ -7,7 +7,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// <summary>
     /// A toggle is a button that can be toggled on and off.
     /// </summary>
-    public class Toggle : IPermanentRenderingObject
+    public class Toggle : IRenderingObject
     {
         internal int XPosition { get; set; }
         internal int YPosition { get; set; }
@@ -37,7 +37,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="borderColor"></param>
         /// <param name="toggledColor"></param>
         /// <param name="settingsEvent"></param>
-        public Toggle(Block block, int xPosition, int yPosition, int boxSize, int textXOffset, string text, bool isLocked, Color color, Color borderColor, Color toggledColor, ISettingsEvent settingsEvent)
+        public Toggle(Block block, int xPosition, int yPosition, int boxSize, int textXOffset, string text, bool isLocked, Color color, Color borderColor, Color toggledColor, ISettingsAction settingsEvent)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;

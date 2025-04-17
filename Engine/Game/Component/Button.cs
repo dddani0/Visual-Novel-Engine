@@ -8,7 +8,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// Represent a Button.
     /// Allows to perform an action when clicked.
     /// </summary>
-    public class Button : IPermanentRenderingObject
+    public class Button : IRenderingObject
     {
         /// <summary>
         /// The absolute position on the X axis.
@@ -101,7 +101,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="borderColor"></param>
         /// <param name="hoverColor"></param>
         /// <param name="buttonEvent"></param>
-        public Button(Game game, Block block, Font font, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, IButtonEvent buttonEvent)
+        public Button(Game game, Block block, Font font, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, IButtonAction buttonEvent)
         {
             ParentBlock = block;
             XPosition = block.XPosition + xPos;
@@ -138,7 +138,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="borderColor"></param>
         /// <param name="hoverColor"></param>
         /// <param name="buttonEvent"></param>
-        public Button(Game game, Block block, Font font, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, ISettingsEvent buttonEvent)
+        public Button(Game game, Block block, Font font, int xPos, int yPos, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, ISettingsAction buttonEvent)
         {
             ParentBlock = block;
             XPosition = block.XPosition + xPos;

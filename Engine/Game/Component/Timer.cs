@@ -16,7 +16,11 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// Creates a timer.
         /// </summary>
         /// <param name="timerValue">Number of seconds</param>
-        public Timer(float timerValue) => Seconds = timerValue;
+        public Timer(float timerValue)
+        {
+            Seconds = timerValue;
+            Reset();
+        }
         /// <summary>
         /// Checks if the timer is on cooldown.
         /// </summary>

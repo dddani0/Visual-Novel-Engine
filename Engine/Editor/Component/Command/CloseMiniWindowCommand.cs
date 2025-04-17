@@ -46,11 +46,15 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     variable.Value = valueTextField.Text;
                     variable.Type = typeDropDown.Button.VariableType;
                 }
+                //Save resolution
+                TextField resolutionText = (TextField)MiniWindow.ComponentList[2];
+                Editor.ScreenWidth = int.Parse(resolutionText.Text.Split('x')[0]);
+                Editor.ScreenHeight = int.Parse(resolutionText.Text.Split('x')[1]);
             }
             if (MiniWindow.HasSceneComponent)
             {
                 Scene activeScene = Editor.ActiveScene;
-                String newSceneName = ((TextField)MiniWindow.ComponentList[2]).Text;
+                string newSceneName = ((TextField)MiniWindow.ComponentList[2]).Text;
                 //Search through the editor's scenebar's button list
                 Editor.SceneBar.ButtonComponentList.First(x => x.Text == activeScene.Name).Text = newSceneName;
                 //change scene name in the scene list
@@ -110,6 +114,21 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 {
                     MiniWindow.ComponentList.RemoveRange(4, 3);
                 }
+            }
+            if (MiniWindow.ComponentList.Any(x => (x is Label) && (x as Label).Text == "Game configuration"))
+            {
+                //Save game name
+                TextField gameNameTextField = (TextField)MiniWindow.ComponentList[2];
+                var newName = gameNameTextField.Text;
+                //Rename the save file path
+                Editor.SaveFilePath = Editor.SaveFilePath.Replace(Editor.ProjectName, $"{newName}").Replace(" ", string.Empty);
+                //Rename build path
+                Editor.BuildPath = Editor.BuildPath.Replace(Editor.ProjectName, $"{newName}").Replace(" ", string.Empty);
+                //Rename project name
+                Editor.ProjectName = newName;
+                //Rename window
+                Editor.Engine.SetWindowTitle($"Editor - {Editor.ProjectName}");
+                //rename file and dispose of previous one
             }
             Editor.MiniWindow.Remove(MiniWindow);
         }

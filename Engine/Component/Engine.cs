@@ -128,5 +128,40 @@ namespace VisualNovelEngine.Engine.Component
             Title = title;
             Raylib.SetWindowTitle(title);
         }
+        /// <summary>
+        /// Create a new editor.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public Editor.Component.Editor CreateEditor(string path, string title)
+        {
+            Editor = new Editor.Component.Editor(this, title, path);
+            ChangeState(EngineState.Editor);
+            return Editor;
+        }
+        /// <summary>
+        /// Create instance of an existing editor.
+        /// This is used when the user imports a project.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public VisualNovelEngine.Engine.Editor.Component.Editor CreateEditor(string path)
+        {
+            Editor = new Editor.Component.Editor(this, path);
+            ChangeState(EngineState.Editor);
+            return Editor;
+        }
+        /// <summary>
+        /// Create a new game instance.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public VisualNovelEngine.Engine.Game.Component.Game CreateGame(string path)
+        {
+            Game = new Game.Component.Game(path);
+            ChangeState(EngineState.Game);
+            return Game;
+        }
     }
 }

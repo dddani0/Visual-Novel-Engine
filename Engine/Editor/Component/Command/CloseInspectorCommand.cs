@@ -192,6 +192,8 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                         {
                             var txtfield = (TextField)InspectorWindow.ComponentList[1];
                             component.Name = txtfield.Text;
+                            IAction[] actions = [.. Editor.ActiveScene.Timeline.Actions];
+                            ISettingsAction[] timelineIndependentActions = [.. Editor.ActiveScene.Timeline.TimelineIndepententActions];
                             switch (component.RenderingObject)
                             {
                                 case Sprite sprite:
@@ -207,7 +209,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         A = 255
                                     };
                                     break;
-                                case VisualNovelEngine.Engine.Game.Component.Button button:
+                                case Game.Component.Button button:
                                     //fetch fields and read out values.
                                     button.Text = (InspectorWindow.ComponentList[5] as TextField).Text;
                                     //Save color
@@ -249,21 +251,43 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         B = hoverColorRGB[2],
                                         A = 255
                                     };
+
                                     //Save action
                                     if ((InspectorWindow.ComponentList[13] as Dropdown).Button.Action == null) break;
-                                    button.Action = (InspectorWindow.ComponentList[13] as Dropdown).Button.Action;
-                                    //Add to timeline
+                                    var newAction = (InspectorWindow.ComponentList[13] as Dropdown).Button.Action;
+                                    var oldAction = button.Action;
+                                    if (oldAction == newAction) break;
                                     switch (component.IsObjectStatic)
                                     {
                                         case true:
-                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)button.Action);
+                                            //Change out old action in the list with the new one.
+                                            for (int i = 0; i < Editor.ActiveScene.Timeline.TimelineIndepententActions.Count; i++)
+                                            {
+                                                if (Editor.ActiveScene.Timeline.TimelineIndepententActions[i] == oldAction)
+                                                {
+                                                    Editor.ActiveScene.Timeline.TimelineIndepententActions[i] = (ISettingsAction)newAction;
+                                                    (Editor.ActiveScene.Timeline.TimelineIndepententActionButtons.First(x => (x.Command as ShowInspectorCommand).Action == oldAction).Command as ShowInspectorCommand).Action = newAction;
+                                                    break;
+                                                }
+                                            }
+                                            button.Action = newAction;
                                             break;
                                         case false:
-                                            Editor.ActiveScene.Timeline.AddAction(button.Action);
+                                            //Change old action in the list with the new one.
+                                            for (int i = 0; i < actions.Length; i++)
+                                            {
+                                                if (Editor.ActiveScene.Timeline.AutonomousActions[i] == oldAction)
+                                                {
+                                                    Editor.ActiveScene.Timeline.AutonomousActions[i] = newAction;
+                                                    (Editor.ActiveScene.Timeline.ActionButtons.First(x => (x.Command as ShowInspectorCommand).Action == oldAction).Command as ShowInspectorCommand).Action = newAction;
+                                                    break;
+                                                }
+                                            }
+                                            button.Action = newAction;
                                             break;
                                     }
                                     break;
-                                case VisualNovelEngine.Engine.Game.Component.TextField textField:
+                                case Game.Component.TextField textField:
                                     //save textfield text
                                     textField.Text = (InspectorWindow.ComponentList[5] as TextField).Text;
                                     //save textfield color
@@ -425,7 +449,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         A = 255
                                     };
                                     //Save options list
-                                    List<VisualNovelEngine.Engine.Game.Component.Button> buttonList = [];
+                                    List<Game.Component.Button> buttonList = [];
                                     for (int i = 18; i < InspectorWindow.ComponentList.Count - 1; i++)
                                     {
                                         Dropdown currentDropDown = InspectorWindow.ComponentList[i] as Dropdown;
@@ -437,9 +461,9 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         Block block = ((Component)Editor.ActiveScene.ComponentList[^2]).RenderingObject as Block;
                                         button.Action = currentDropDown.Button.Action;
                                         buttonList.Add(button);
-                                        if (Editor.ActiveScene.Timeline.TimelineIndepententActions.Contains((ISettingsEvent)currentDropDown.Button.Action) is false)
+                                        if (Editor.ActiveScene.Timeline.TimelineIndepententActions.Contains((ISettingsAction)currentDropDown.Button.Action) is false)
                                         {
-                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)button.Action);
+                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsAction)button.Action);
                                         }
                                     }
                                     dropBox.Options = buttonList;
@@ -486,8 +510,20 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     slider.Value = float.Parse((InspectorWindow.ComponentList[22] as TextField).Text);
                                     //Save Action
                                     if ((InspectorWindow.ComponentList[24] as Dropdown).Button == null) break;
-                                    slider.Action = (InspectorWindow.ComponentList[24] as Dropdown).Button.Action;
-                                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)slider.Action);
+                                    var newSliderAction = (InspectorWindow.ComponentList[24] as Dropdown).Button.Action;
+                                    var oldSliderAction = slider.Action;
+                                    //Change out old action in the list with the new one.
+                                    for (int i = 0; i < actions.Length; i++)
+                                    {
+                                        if (Editor.ActiveScene.Timeline.TimelineIndepententActions[i] == oldSliderAction)
+                                        {
+                                            Editor.ActiveScene.Timeline.TimelineIndepententActions[i] = (ISettingsAction)newSliderAction;
+                                            (Editor.ActiveScene.Timeline.ActionButtons.First(x => (x.Command as ShowInspectorCommand).Action == oldSliderAction).Command as ShowInspectorCommand).Action = newSliderAction;
+                                            break;
+                                        }
+                                    }
+                                    //Save slider action
+                                    slider.Action = newSliderAction;
                                     break;
                                 case Toggle toggle:
                                     //Save position
@@ -531,8 +567,20 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     toggle.Text = (InspectorWindow.ComponentList[20] as TextField).Text;
                                     //Save action
                                     if ((InspectorWindow.ComponentList[22] as Dropdown).Button.Action == null) break;
-                                    toggle.SettingsAction = (InspectorWindow.ComponentList[22] as Dropdown).Button.Action;
-                                    Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)toggle.SettingsAction);
+                                    //Change out old action in the list with the new one.
+                                    var newToggleAction = (InspectorWindow.ComponentList[22] as Dropdown).Button.Action;
+                                    var oldToggleAction = toggle.SettingsAction;
+                                    for (int i = 0; i < actions.Length; i++)
+                                    {
+                                        if (Editor.ActiveScene.Timeline.TimelineIndepententActions[i] == oldToggleAction)
+                                        {
+                                            Editor.ActiveScene.Timeline.TimelineIndepententActions[i] = (ISettingsAction)newToggleAction;
+                                            (Editor.ActiveScene.Timeline.TimelineIndepententActionButtons.First(x => (x.Command as ShowInspectorCommand).Action == oldToggleAction).Command as ShowInspectorCommand).Action = newToggleAction;
+                                            break;
+                                        }
+                                    }
+                                    //Save toggle action
+                                    toggle.SettingsAction = newToggleAction;
                                     break;
                                 case InputField inputField:
                                     //Save position
@@ -577,15 +625,36 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                     };
                                     //Save action
                                     if ((InspectorWindow.ComponentList[26] as Dropdown).Button.Action == null) break;
+                                    //Change out old action in the list with the new one.
+                                    var newInputFieldAction = (InspectorWindow.ComponentList[26] as Dropdown).Button.Action;
+                                    var oldInputFieldAction = inputField.Button.Action;
                                     switch (component.IsObjectStatic)
                                     {
                                         case true:
-                                            inputField.Button.Action = (InspectorWindow.ComponentList[26] as Dropdown).Button.Action;
-                                            Editor.ActiveScene.Timeline.AddTimelineIndependentAction((ISettingsEvent)inputField.Button.Action);
+                                            //Change out old action in the list with the new one.
+                                            for (int i = 0; i < Editor.ActiveScene.Timeline.TimelineIndepententActions.Count; i++)
+                                            {
+                                                if (Editor.ActiveScene.Timeline.TimelineIndepententActions[i] == oldInputFieldAction)
+                                                {
+                                                    Editor.ActiveScene.Timeline.TimelineIndepententActions[i] = (ISettingsAction)newInputFieldAction;
+                                                    (Editor.ActiveScene.Timeline.TimelineIndepententActionButtons.First(x => (x.Command as ShowInspectorCommand).Action == oldInputFieldAction).Command as ShowInspectorCommand).Action = newInputFieldAction;
+                                                    break;
+                                                }
+                                            }
+                                            inputField.Button.Action = newInputFieldAction;
                                             break;
                                         case false:
-                                            inputField.Button.Action = (InspectorWindow.ComponentList[26] as Dropdown).Button.Action;
-                                            Editor.ActiveScene.Timeline.AddAction(inputField.Button.Action);
+                                            //Change out old action in the list with the new one.
+                                            for (int i = 0; i < actions.Length; i++)
+                                            {
+                                                if (Editor.ActiveScene.Timeline.AutonomousActions[i] == oldInputFieldAction)
+                                                {
+                                                    Editor.ActiveScene.Timeline.AutonomousActions[i] = newInputFieldAction;
+                                                    (Editor.ActiveScene.Timeline.ActionButtons.First(x => (x.Command as ShowInspectorCommand).Action == oldInputFieldAction).Command as ShowInspectorCommand).Action = newInputFieldAction;
+                                                    break;
+                                                }
+                                            }
+                                            inputField.Button.Action = newInputFieldAction;
                                             break;
                                     }
                                     break;

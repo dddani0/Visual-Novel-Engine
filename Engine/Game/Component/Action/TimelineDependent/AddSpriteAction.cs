@@ -5,7 +5,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
     /// <summary>
     /// Adds a sprite to the scene.
     /// </summary>
-    class AddSpriteAction : IAction, IButtonEvent
+    class AddSpriteAction : IAction, IButtonAction
     {
         readonly Game Game;
         internal Sprite sprite;

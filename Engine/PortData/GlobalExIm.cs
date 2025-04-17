@@ -12,8 +12,13 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("WindowWidth")]
         public int WindowWidth { get; set; }
         [JsonPropertyName("WindowHeight")]
-        public int WindowHeigth { get; set; }
+        public int WindowHeight { get; set; }
+        [JsonPropertyName("Variables")]
+        public VariableExim[]? Variables { get; set; }
+        [JsonPropertyName("Scenes")]
+        public SceneExim[]? Scenes { get; set; }
     }
+    
     /// <summary>
     /// The "SceneExim" class is a helper class to import/export the list of scenes to or from a JSON file.
     /// </summary>
@@ -24,7 +29,7 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("ID")]
         public required int ID { get; set; } //remove setter!
         [JsonPropertyName("Background")]
-        public required string Background { get; set; }
+        public required int BackgroundType { get; set; }
         [JsonPropertyName("SolidColor")]
         public int[]? SolidColor { get; set; }
         [JsonPropertyName("GradientColor")]
@@ -138,6 +143,9 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Sprite")]
         public SpriteExim? Sprite { get; set; }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public class TextBoxExIm
     {
         [JsonPropertyName("CharactersPerSecond")]
@@ -161,7 +169,6 @@ namespace VisualNovelEngine.Engine.PortData
         [JsonPropertyName("Content")]
         public string[]? Content { get; set; }
     }
-
     /// <summary>
     /// The "ButtonComponentExim" class is a helper class to import/export the Button component's data to or from a JSON file.
     /// </summary>

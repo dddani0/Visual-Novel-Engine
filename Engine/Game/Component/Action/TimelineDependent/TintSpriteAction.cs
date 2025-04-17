@@ -6,7 +6,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
     /// <summary>
     /// Tints a sprite with a color.
     /// </summary>
-    class TintSpriteAction : IAction, IButtonEvent
+    class TintSpriteAction : IAction, IButtonAction
     {
         private readonly Game Game;
         internal Sprite sprite;

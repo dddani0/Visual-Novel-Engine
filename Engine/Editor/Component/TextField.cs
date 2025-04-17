@@ -83,7 +83,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             YPosition = yPosition;
             Width = width;
             Height = height;
-            BorderWidth = Editor.ComponentBorderWidth;
+            BorderWidth = borderWidth;
             Text = text;
             Font = font;
             Color = Editor.BaseColor;

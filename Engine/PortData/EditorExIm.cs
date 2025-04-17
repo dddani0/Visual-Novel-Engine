@@ -30,6 +30,8 @@ namespace VisualNovelEngine.Engine.PortData
         public int XPosition { get; set; }
         [JsonPropertyName("YPosition")]
         public int YPosition { get; set; }
+        [JsonPropertyName("Static")]
+        public string Static { get; set; }
         [JsonPropertyName("Width")]
         public int Width { get; set; }
         [JsonPropertyName("Height")]
@@ -135,7 +137,7 @@ namespace VisualNovelEngine.Engine.PortData
     public class RenderingObjectExIm
     {
         [JsonPropertyName("Static")]
-        public string? Static { get; set; }
+        public required string Static { get; set; }
         [JsonPropertyName("Sprite")]
         public SpriteExim? Sprite { get; set; }
         [JsonPropertyName("TextField")]
@@ -144,6 +146,8 @@ namespace VisualNovelEngine.Engine.PortData
         public TextBoxExIm? Textbox { get; set; }
         [JsonPropertyName("Button")]
         public ButtonComponentExIm? Button { get; set; }
+        [JsonPropertyName("StaticButton")]
+        public ButtonComponentExIm? StaticButton { get; set; }
         [JsonPropertyName("InputField")]
         public InputFieldExim? InputField { get; set; }
         [JsonPropertyName("StaticInputField")]
@@ -187,6 +191,8 @@ namespace VisualNovelEngine.Engine.PortData
         public RenderingComponentExIm[]? WindowComponents { get; set; }
         [JsonPropertyName("HasVariable")]
         public string? HasVariable { get; set; }
+        [JsonPropertyName("HasGameRelatedComponent")]
+        public string? HasGameRelatedComponent { get; set; }
         [JsonPropertyName("HasSceneRelatedComponent")]
         public string? HasSceneRelatedComponent { get; set; }
         [JsonPropertyName("ButtonDependency")]
@@ -219,7 +225,13 @@ namespace VisualNovelEngine.Engine.PortData
     }
     public class TimelineExIm
     {
+        [JsonPropertyName("XPosition")]
+        public int XPosition { get; set; }
+        [JsonPropertyName("YPosition")]
+        public int YPosition { get; set; }
         [JsonPropertyName("Actions")]
-        public ActionExim[]? Actions { get; set; }
+        public ActionExim[] Actions { get; set; }
+        [JsonPropertyName("TimelineIndependentActions")]
+        public ActionExim[] TimelineIndependentActions { get; set; }
     }
 }

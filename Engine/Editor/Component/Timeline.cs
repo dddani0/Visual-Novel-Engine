@@ -39,10 +39,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// The actions that the timeline will execute.
         /// </summary>
         internal List<IAction> Actions { get; set; } = [];
+        internal List<IAction> AutonomousActions { get; set; } = [];
         /// <summary>
         /// The timeline independent actions
         /// </summary>
-        internal List<ISettingsEvent> TimelineIndepententActions { get; set; } = [];
+        internal List<ISettingsAction> TimelineIndepententActions { get; set; } = [];
         /// <summary>
         /// The button representation of the actions.
         /// </summary>
@@ -73,7 +74,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="editor"></param>
         /// <param name="xPos"></param>
         /// <param name="yPos"></param>
-        public Timeline(Editor editor, int xPos, int yPos)
+        public Timeline(Editor editor, int xPos, int yPos, IAction[] actions, ISettingsAction[] timelineIndependentActions)
         {
             Editor = editor;
             XPosition = xPos;
@@ -372,6 +373,15 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 Scrollbar.ScrollbarType.Horizontal,
                 false,
                 [.. TimelineIndepententActionButtons]);
+            if (actions.Length == 0 && timelineIndependentActions.Length == 0) return;
+            foreach (var action in actions)
+            {
+                AddAction(action);
+            }
+            foreach (var action in timelineIndependentActions)
+            {
+                AddTimelineIndependentAction(action);
+            }
         }
         /// <summary>
         /// Renders the timeline on the screen.
@@ -406,7 +416,30 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 Editor,
                 XPosition + Editor.ComponentWidth + BorderWidth + 5 + (Actions.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
                 YPosition + Height / 2 - 2 * Editor.SmallButtonWidth,
-                $"{Actions.Count}. action",
+                $"{Actions.Count}. {action.GetType().Name}",
+                    true,
+                Editor.ButtonWidth,
+                Editor.ButtonHeight,
+                Editor.ButtonBorderWidth,
+                Editor.BaseColor,
+                Editor.BorderColor,
+                Editor.HoverColor,
+                new ShowInspectorCommand(Editor, action, 1),
+                Button.ButtonType.Trigger));
+            Scrollbar.AddComponent(ActionButtons[^1]);
+        }
+        /// <summary>
+        /// Adds a component action to the timeline.
+        /// </summary>
+        /// <param name="action"></param>
+        internal void AddComponentAction(IAction action)
+        {
+            AutonomousActions.Add(action);
+            ActionButtons.Add(new(
+                Editor,
+                XPosition + Editor.ComponentWidth + BorderWidth + 5 + (Actions.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
+                YPosition + Height / 2 - 2 * Editor.SmallButtonWidth,
+                $"{Actions.Count}. {action.GetType().Name}",
                     true,
                 Editor.ButtonWidth,
                 Editor.ButtonHeight,
@@ -422,7 +455,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// Adds a timeline independent action.
         /// </summary>
         /// <param name="action"></param>
-        internal void AddTimelineIndependentAction(ISettingsEvent action)
+        internal void AddTimelineIndependentAction(ISettingsAction action)
         {
             TimelineIndepententActions.Add(action);
             TimelineIndepententActionButtons.Add(new(

@@ -8,7 +8,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// Gives selectable option from a list of options.
     /// An option is a button.
     /// </summary>
-    public class DropBox : IPermanentRenderingObject
+    public class DropBox : IRenderingObject
     {
         /// <summary>
         /// The position of the DropBox on the X axis.
@@ -162,8 +162,8 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="borderColor"></param>
         /// <param name="hoverColor"></param>
         /// <returns></returns>
-        public static Button GetDropBoxOption(Game game, Block block, Font font, int xPosition, int yPosition, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, ISettingsEvent buttonEvent)
-            => new(game, block, font, xPosition, yPosition, borderWidth, width, height, text, textColor, buttonColor, borderColor, hoverColor, (IButtonEvent)buttonEvent);
+        public static Button GetDropBoxOption(Game game, Block block, Font font, int xPosition, int yPosition, int borderWidth, int width, int height, string text, Color textColor, Color buttonColor, Color borderColor, Color hoverColor, ISettingsAction buttonEvent)
+            => new(game, block, font, xPosition, yPosition, borderWidth, width, height, text, textColor, buttonColor, borderColor, hoverColor, (IButtonAction)buttonEvent);
 
     }
 }

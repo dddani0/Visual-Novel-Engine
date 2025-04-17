@@ -14,27 +14,15 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <summary>
         /// The GameLoader deals with the raw data which is loaded into the game.
         /// </summary>
-        internal GameImporter GameImport;
+        internal GameEximManager GameImport;
         /// <summary>
         /// The current folder path.
         /// </summary>
         internal string ProjectPath { get; set; }
         /// <summary>
-        /// The Game settings path.
-        /// </summary>
-        internal string RelativeGameSettingsPath { get; set; }
-        /// <summary>
         /// The Scene path.
         /// </summary>
-        internal string GameBuildPath { get; set; }
-        /// <summary>
-        /// The Variable path.
-        /// </summary>
-        internal string VariablesPath { get; set; }
-        /// <summary>
-        /// Temporary Game settings.
-        /// </summary>
-        internal GameExim GameSettings { get; private set; }
+        internal string BuildPath { get; set; }
         /// <summary>
         /// List of scenes.
         /// </summary>
@@ -48,12 +36,11 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         public Scene ActiveScene { get; private set; }
 
-        public Game(string projectPath, string variablePath)
+        public Game(string projectPath)
         {
             ProjectPath = projectPath;
-            RelativeGameSettingsPath = @"../../../Engine/Data/GameSettings.json";
-            GameBuildPath = ProjectPath;
-            VariablesPath = variablePath;
+            BuildPath = ProjectPath;
+            GameImport = new(this, BuildPath);
             SetupGameSettings();
         }
 
@@ -74,15 +61,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         private void SetupGameWindow()
         {
-            string rawFile = File.ReadAllText(RelativeGameSettingsPath);
-            var rawSettings = JsonSerializer.Deserialize<GameExim>(rawFile);
-            if (rawSettings != null) GameSettings = rawSettings;
-            else
-            {
-                throw new InvalidOperationException("Failed to load game settings, because the file is null.");
-            }
-            // Set the window title and size.
-            Raylib.SetWindowSize(GameSettings.WindowWidth, GameSettings.WindowHeigth);
+            Raylib.SetWindowSize(GameImport.GameExim.WindowWidth, GameImport.GameExim.WindowHeight);
         }
         /// <summary>
         /// Fetches the saved variables from the json file.
@@ -90,96 +69,19 @@ namespace VisualNovelEngine.Engine.Game.Component
         private void SetupVariables()
         {
             // Initialize the list of variables.
-            Variables = [];
-            //
-            string rawFile = File.ReadAllText(VariablesPath);
-            var rawVariables = JsonSerializer.Deserialize<List<VariableExim>>(rawFile);
-            if (rawVariables != null)
-            {
-                foreach (var variable in rawVariables)
-                {
-                    switch (variable.Type)
-                    {
-                        case 1:
-                            Variables.Add(new Variable(variable.Name, variable.Value, VariableType.String));
-                            break;
-                        case 2:
-                            Variables.Add(new Variable(variable.Name, variable.Value, VariableType.Int));
-                            break;
-                        case 3:
-                            Variables.Add(new Variable(variable.Name, variable.Value, VariableType.Float));
-                            break;
-                        case 4:
-                            Variables.Add(new Variable(variable.Name, variable.Value, VariableType.Boolean));
-                            break;
-                        default:
-                            throw new InvalidOperationException("Failed to load variable settings, because the variable type is not recognized.");
-                    }
-                }
-            }
+            Variables = [.. GameImport.GameExim.Variables.Select(GameImport.FetchVariableFromImport)];
         }
         /// <summary>
         /// Fetches the scene configuration from the json file.
         /// </summary>
         private void SetupScenes()
         {
-            // Initialize the list of scenes.
-            Scenes = [];
             // Initialize the game loader.
-            GameImport = new(this);
-            // Fetch the scene settings.
-            string rawFile = File.ReadAllText(GameBuildPath);
-            var rawScenes = JsonSerializer.Deserialize<List<SceneExim>>(rawFile);
-            if (rawScenes != null)
-            {
-                foreach (var scene in rawScenes)
-                {
-                    Timeline timeline = new();
-                    if (scene.ActionList == null)
-                    {
-                        throw new InvalidOperationException("Failed to load scene settings, because the action list is null.");
-                    }
-                    else
-                        for (int i = 0; i < scene.ActionList.Length; i++)
-                        {
-                            timeline.ActionList.Add(GameImport.FetchTimelineDependentActionFromImport(scene.ActionList[i]));
-                        }
-                    Scenes.Add(new Scene(scene.Name, this)
-                    {
-                        ID = scene.ID,
-                        Background = Enum.Parse<Scene.BackgroundOption>(scene.Background),
-                        solidColor = scene.SolidColor == null ? Color.Black : scene.SolidColor.Length == 0 ? new() : new()
-                        {
-                            R = (byte)scene.SolidColor[0],
-                            G = (byte)scene.SolidColor[1],
-                            B = (byte)scene.SolidColor[2],
-                            A = (byte)scene.SolidColor[3]
-                        },
-                        gradientColor = scene.GradientColor == null ? [] : scene.GradientColor.Length == 0 ? [] : [new()
-                        {
-                                                                        R = (byte)scene.GradientColor[0],
-                                                                        G = (byte)scene.GradientColor[1],
-                                                                        B = (byte)scene.GradientColor[2],
-                                                                        A = (byte)scene.GradientColor[3]
-                                                                        },
-                                                                        new()
-                                                                        {
-                                                                        R = (byte)scene.GradientColor[4],
-                                                                        G = (byte)scene.GradientColor[5],
-                                                                        B = (byte)scene.GradientColor[6],
-                                                                        A = (byte)scene.GradientColor[7]
-                                                                        }],
-                        imageTexture = scene.ImageTexture == null ? Raylib.LoadTexture("") : Raylib.LoadTexture(scene.ImageTexture),
-                        Timeline = timeline
-                    });
-                }
-            }
-            else
-            {
-                // If the file is null, throw an exception.
-                // A file with empty project will always generate a file. This exception will never be thrown in normal use.
-                throw new InvalidOperationException("Failed to load scene settings, because the file is null.");
-            }
+            GameImport = new(this, BuildPath);
+            // Initialize the list of scenes.
+            Scenes = [.. GameImport.GameExim.Scenes.Select(GameImport.FetchSceneFromImport)];
+            // Initialize the list of variables.
+            if (Scenes.Count <= 0) return;
             ActiveScene = Scenes[0];
             ActiveScene.Timeline.StartTimeline();
         }

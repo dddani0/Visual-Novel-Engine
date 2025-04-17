@@ -7,10 +7,10 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
     /// Slider: Int, Float
     /// Toggle: Boolean
     /// </summary>
-    public class SetVariableValueAction : IAction, ISettingsEvent
+    public class SetVariableValueAction : IAction, ISettingsAction
     {
         private readonly Game Game;
-        private GameImporter GameLoader { get; set; }
+        private GameEximManager GameLoader { get; set; }
         internal int ComponentID { get; set; }
         private Variable Variable;
         internal string VariableName;
@@ -24,14 +24,13 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
         /// <param name="game">Active game.</param>
         /// <param name="variableName">Updating variable name.</param>
         /// <param name="component">Rendering component.</param>
-        public SetVariableValueAction(Game game, string variableName, GameImporter gameLoader, int componentID)
+        public SetVariableValueAction(Game game, string variableName, GameEximManager gameLoader, int componentID)
         {
             Game = game;
             VariableName = variableName;
             GameLoader = gameLoader;
             ComponentID = componentID;
         }
-
         /// <summary>
         /// Sets the variable with the constant value or with a variable value.
         /// </summary>

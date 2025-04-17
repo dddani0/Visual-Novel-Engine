@@ -1,0 +1,382 @@
+{
+    "ID": 0,
+    "ProjectName": "PlaceholderName",
+    "ProjectPath": "PlaceholderPath",
+    "WindowWidth": 800,
+    "WindowHeight": 800,
+    "ToolBar": {
+        "XPosition": 0,
+        "YPosition": 100,
+        "Static": "true",
+        "Width": 0,
+        "Height": 0,
+        "BorderWidth": 1,
+        "Buttons": [
+            {
+                "XPosition": 0,
+                "YPosition": 0,
+                "Text": "Create",
+                "Command": {
+                    "Type": "ShowSideWindowCommand",
+                    "ParentButtonName": "Create",
+                    "Buttons": [
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Sprite",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 0
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Static Sprite",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 1
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "TextBox",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 2
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "TextField",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 3
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Menu",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 4
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Static Menu",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 5
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Block",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 6
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Static block",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 7
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "button",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 8
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Static button",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 9
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Slider",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 10
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "DropBox",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 11
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Inputfield",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 12
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Static Inputfield",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 13
+                            },
+                            "Type": 0
+                        },
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Toggle",
+                            "Command": {
+                                "Type": "CreateComponentCommand",
+                                "RenderingObjectType": 14
+                            },
+                            "Type": 0
+                        }
+                    ]
+                },
+                "Type": 2
+            },
+            {
+                "XPosition": 100,
+                "YPosition": 0,
+                "Text": "Save",
+                "Command": {
+                    "Type": "SaveProjectDataCommand"
+                },
+                "Type": 0
+            },
+            {
+                "XPosition": 200,
+                "YPosition": 0,
+                "Text": "Build",
+                "Command": {
+                    "Type": "BuildProjectCommand"
+                },
+                "Type": 0
+            },
+            {
+                "XPosition": 200,
+                "YPosition": 0,
+                "Text": "Bin",
+                "Command": {
+                    "Type": "ShowErrorCommand",
+                    "ErrorType": 0,
+                    "ErrorMessage": "Delete every component and group in the scene?",
+                    "WarningButtons": [
+                        {
+                            "XPosition": 0,
+                            "YPosition": 0,
+                            "Text": "Yes",
+                            "Command": {
+                                "Type": "DeleteAllComponentsCommand"
+                            },
+                            "Type": 0
+                        }
+                    ]
+                },
+                "Type": 0
+            },
+            {
+                "XPosition": 200,
+                "YPosition": 0,
+                "Text": "Game config",
+                "Command": {
+                    "Type": "ShowMiniWindowCommand",
+                    "WindowComponents": [
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 100,
+                                "Text": "Game configuration"
+                            }
+                        },
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 200,
+                                "Text": "Name:"
+                            }
+                        },
+                        {
+                            "TextField": {
+                                "XPosition": 0,
+                                "YPosition": 300,
+                                "Text": "[GameName]",
+                                "ActiveVariableType": "GameName",
+                                "Static": "false"
+                            }
+                        },
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 200,
+                                "Text": "Resolution:"
+                            }
+                        },
+                        {
+                            "TextField": {
+                                "XPosition": 0,
+                                "YPosition": 300,
+                                "Text": "[Resolution]",
+                                "ActiveVariableType": "Resolution",
+                                "Static": "false"
+                            }
+                        },
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 200,
+                                "Text": "Variables"
+                            }
+                        },
+                        {
+                            "Button": {
+                                "XPosition": 0,
+                                "YPosition": 0,
+                                "Text": "Add",
+                                "Command": {
+                                    "Type": "CreateVariableCommand",
+                                    "VariableValue": "NewVar",
+                                    "VariableType": 0
+                                },
+                                "Type": 0
+                            }
+                        }
+                    ],
+                    "HasVariable": "true",
+                    "hasScene": "false"
+                },
+                "Type": 0
+            },
+            {
+                "XPosition": 200,
+                "YPosition": 0,
+                "Text": "Scene config",
+                "Command": {
+                    "Type": "ShowMiniWindowCommand",
+                    "WindowComponents": [
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 100,
+                                "Text": "Scene configuration"
+                            }
+                        },
+                        {
+                            "Label": {
+                                "XPosition": 0,
+                                "YPosition": 100,
+                                "Text": "Name:"
+                            }
+                        },
+                        {
+                            "TextField": {
+                                "XPosition": 0,
+                                "YPosition": 200,
+                                "Text": "[SceneName]",
+                                "ActiveVariableType": "SceneName",
+                                "Static": "false"
+                            }
+                        },
+                        {
+                            "DropDown": {
+                                "XPosition": 0,
+                                "YPosition": 0,
+                                "Text": "Background",
+                                "Options": [],
+                                "Filter": 13,
+                                "Static": "false"
+                            }
+                        },
+                        {
+                            "Button": {
+                                "XPosition": 0,
+                                "YPosition": 0,
+                                "Text": "Delete scene",
+                                "Command": {
+                                    "Type": "ShowErrorCommand",
+                                    "ErrorType": 0,
+                                    "ErrorMessage": "Delete current scene?",
+                                    "WarningButtons": [
+                                        {
+                                            "XPosition": 0,
+                                            "YPosition": 0,
+                                            "Text": "Yes",
+                                            "Command": {
+                                                "Type": "DeleteSceneCommand"
+                                            },
+                                            "Type": 0
+                                        }
+                                    ]
+                                },
+                                "Type": 0
+                            }
+                        }
+                    ],
+                    "HasVariable": "false",
+                    "HasSceneRelatedComponent": "true"
+                },
+                "Type": 0
+            }
+        ],
+        "MaximumHorizontalComponentCount": 6
+    },
+    "Scenes": [
+        {
+            "Name": "DefaultScene",
+            "Background": "SolidColor",
+            "SolidColor": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "Components": [],
+            "GroupList": [],
+            "Timeline": {
+                "XPosition": 0,
+                "YPosition": 600,
+                "Actions": [],
+                "TimelineIndependentActions": []
+            }
+        }
+    ]
+}

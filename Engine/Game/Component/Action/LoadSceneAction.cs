@@ -5,7 +5,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action
     /// <summary>
     /// Loads a new scene with trigger.
     /// </summary>
-    class LoadSceneAction : IAction, ISettingsEvent, IButtonEvent
+    class LoadSceneAction : IAction, ISettingsAction, IButtonAction
     {
         /// <summary>
         /// Active game.

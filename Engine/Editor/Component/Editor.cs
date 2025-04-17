@@ -176,6 +176,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         internal string ProjectName { get; set; }
         /// <summary>
+        /// Screen width
+        /// </summary>
+        internal int ScreenWidth { get; set; }
+        /// <summary>
+        /// Screen height
+        /// </summary>
+        internal int ScreenHeight { get; set; }
+        /// <summary>
         /// The ID generator.
         /// </summary>
         internal IDGenerator IDGenerator { get; set; }
@@ -226,17 +234,19 @@ namespace VisualNovelEngine.Engine.Editor.Component
         public Editor(Engine.Component.Engine engine, string title, string projectPath)
         {
             Engine = engine;
+            ProjectName = title;
             FolderPath = projectPath;
             EditorConfigPath = projectPath + "EditorConfig.json";
-            SaveFilePath = @"../../../Engine/Data/Editor.json";
+            SaveFilePath = @"../../../Engine/Data/PlaceholderEditor.json";
             File.Copy(@"../../../Engine/Data/EditorConfig.json", EditorConfigPath, true);
-            BuildPath = $"{FolderPath}/{title}Build.json";
+            BuildPath = $"{FolderPath}{title}Build.json";
             Engine.SetWindowTitle($"Editor - {title}");
             // Load null data to Game.
-            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json", @"../../../Engine/Data/PlaceholderEmptyVariables.json");
+            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json");
             // instance of the editor importer
             EditorEXIMManager = new(this, EditorConfigPath, SaveFilePath);
             EditorConfigImport();
+            ProjectName = title;
             //
             MouseMoveTimer = new(0.5f);
             //
@@ -254,10 +264,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
             SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
             //
-            ProjectName = title;
-            //
-            SaveFilePath = $"{FolderPath}/{ProjectName}.json";
-            SaveFilePath.Replace(" ", string.Empty);
+            SaveFilePath = $"{FolderPath}{ProjectName}.json".Replace(" ", string.Empty);
         }
         /// <summary>
         /// Create a new Editor, and load existing project.
@@ -271,9 +278,9 @@ namespace VisualNovelEngine.Engine.Editor.Component
             ProjectName = projectPath.Split('/').Last().Split('.').First();
             EditorConfigPath = $"{FolderPath}EditorConfig.json";
             SaveFilePath = projectPath;
-            BuildPath = $"{FolderPath}{ProjectName}Build";
+            BuildPath = $"{FolderPath}{ProjectName}Build.json";
             // Load null data to Game.
-            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json", @"../../../Engine/Data/PlaceholderEmptyVariables.json");
+            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json");
             // instance of the editor importer
             EditorEXIMManager = new(this, EditorConfigPath, SaveFilePath);
             EditorConfigImport();
@@ -343,6 +350,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
             EditorColor = EditorEXIMManager.FetchColorFromImport(EditorEXIMManager.EditorPreferencesImport.EditorColor);
             //
             ProjectName = EditorEXIMManager.EditorExIm.ProjectName;
+            ScreenWidth = EditorEXIMManager.EditorExIm.WindowWidth;
+            ScreenHeight = EditorEXIMManager.EditorExIm.WindowHeight;
             Toolbar = EditorEXIMManager.FetchToolBarFromImport(EditorEXIMManager.EditorExIm.ToolBar);
             SceneList = [.. EditorEXIMManager.EditorExIm.Scenes.Select(EditorEXIMManager.FetchEditorSceneFromImport)];
             ActiveScene = SceneList[0];
@@ -353,10 +362,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         public void Build()
         {
-            var GameBuildData = JsonSerializer.Serialize(EditorEXIMManager.BuildScenesData([.. SceneList]), new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(BuildPath + ProjectName + "Build.json", GameBuildData);
-            var GameVariablesData = JsonSerializer.Serialize(EditorEXIMManager.BuildVariablesData([.. GameVariables]), new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(BuildPath + ProjectName + "Variables.json", GameVariablesData);
+            var GameBuildData = JsonSerializer.Serialize(EditorEXIMManager.BuildGameData(this), new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(BuildPath, GameBuildData);
         }
         /// <summary>
         /// Saves the editor data into a file.

@@ -5,10 +5,10 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
     /// <summary>
     /// Switches between two menus, by disabling the prior, and enabling the latter.
     /// </summary>
-    public class SwitchStaticMenuAction : IAction, ISettingsEvent
+    public class SwitchStaticMenuAction : IAction, ISettingsAction
     {
         private readonly Game Game;
-        private readonly GameImporter GameLoader;
+        private readonly GameEximManager GameLoader;
         internal Menu DisablingMenu { get; set; }
         internal Menu EnablingMenu { get; set; }
         private readonly int disableMenuID;
@@ -19,7 +19,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent
         /// <param name="game">Active game.</param>
         /// <param name="previousMenu">Menu to be rendered.</param>
         /// <param name="show">Show or hide the menu.</param>
-        public SwitchStaticMenuAction(Game game, GameImporter gameLoader, int disableMenuID, int enalbeMenuID)
+        public SwitchStaticMenuAction(Game game, GameEximManager gameLoader, int disableMenuID, int enalbeMenuID)
         {
             Game = game;
             GameLoader = gameLoader;

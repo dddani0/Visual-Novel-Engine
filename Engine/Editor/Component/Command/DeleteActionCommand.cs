@@ -23,10 +23,21 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
             //Delete the event
             //Get index of the current action
             int actionIndex = Editor.ActiveScene.Timeline.Actions.FindIndex(x => x == impendingAction);
-            //Remove the action from the timeline
-            Editor.ActiveScene.Timeline.Actions.RemoveAt(actionIndex);
-            //Remove the button from the timeline
-            Editor.ActiveScene.Timeline.ActionButtons.RemoveAt(actionIndex);
+            if (actionIndex == -1)
+            {
+                actionIndex = Editor.ActiveScene.Timeline.TimelineIndepententActions.FindIndex(x => x == impendingAction);
+                //Remove the timeline independent action from the timeline
+                Editor.ActiveScene.Timeline.TimelineIndepententActions.RemoveAt(actionIndex);
+                //Remove the button from the timeline
+                Editor.ActiveScene.Timeline.TimelineIndepententActionButtons.RemoveAt(actionIndex);
+            }
+            else
+            {
+                //Remove the action from the timeline
+                Editor.ActiveScene.Timeline.Actions.RemoveAt(actionIndex);
+                //Remove the button from the timeline
+                Editor.ActiveScene.Timeline.ActionButtons.RemoveAt(actionIndex);
+            }
         }
     }
 }

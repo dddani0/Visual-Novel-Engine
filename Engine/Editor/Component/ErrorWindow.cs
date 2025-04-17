@@ -21,11 +21,11 @@ namespace EngineEditor.Component
         /// <summary>
         /// The x position of the window.
         /// </summary>
-        private int XPosition { get; set; }
+        internal int XPosition { get; set; }
         /// <summary>
         /// The y position of the window.
         /// </summary>
-        private int YPosition { get; set; }
+        internal int YPosition { get; set; }
         /// <summary>
         /// The width of the window.
         /// </summary>

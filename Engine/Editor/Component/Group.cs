@@ -67,7 +67,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// Represents if the group is selected.
         /// </summary>
-        private bool IsSelected { get; set; } = false;
+        internal bool IsSelected { get; set; } = false;
         /// <summary>
         /// Represents if the group is hovered.
         /// </summary>
@@ -75,7 +75,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// Represents if the group is static.
         /// </summary>
-        private bool IsStatic { get; set; } = false;
+        internal bool IsStatic { get; set; } = false;
         /// <summary>
         /// The padding of the group.
         /// </summary>
@@ -147,7 +147,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Editor = editor;
             XPosition = xPosition;
             YPosition = yPosition;
-            ComponentList = [.. (IEnumerable<IComponent>)components];
+            ComponentList = [];
+            foreach (IComponent component in components.Cast<IComponent>())
+            {
+                ComponentList.Add(component);
+            }
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
@@ -200,6 +204,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         internal void RemoveComponent(IDinamicComponent component)
         {
             ComponentList.Remove((IComponent)component);
+            if (ComponentList.Count < 1) { Editor.ActiveScene.ComponentGroupList.Remove(this); return; }
             UpdateComponentPosition();
         }
         /// <summary>
@@ -219,12 +224,13 @@ namespace VisualNovelEngine.Engine.Editor.Component
         public void Move()
         {
             if (Editor.Busy) return;
+            if (IsStatic) return;
+            if (ComponentList == null) return;
+            if (ComponentList.Any(c => (c as Component).IsHover)) return;
+            if (ComponentList.Any(c => (c as Component).IsSelected)) return;
             IsHover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(XPosition, YPosition, Width, Height));
-            if (Raylib.IsMouseButtonPressed(MouseButton.Left) && IsHover)
-            {
-                IsSelected = true;
-            }
-            else if (IsSelected && IsHover is false && Raylib.IsMouseButtonReleased(MouseButton.Left))
+            if (Raylib.IsMouseButtonDown(MouseButton.Left) && IsHover) IsSelected = true;
+            if (IsSelected && Raylib.IsMouseButtonReleased(MouseButton.Left))
             {
                 IsSelected = false;
                 UpdateComponentPosition();
@@ -232,7 +238,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             if (IsSelected)
             {
                 XPosition = Raylib.GetMouseX();
-                YPosition = Raylib.GetMouseY();
+                YPosition = Raylib.GetMouseY() > (Editor.SceneBar.Height + Editor.Toolbar.Height) && Raylib.GetMouseY() < Editor.ActiveScene.Timeline.YPosition - Height ? Raylib.GetMouseY() : YPosition;
             }
         }
         /// <summary>

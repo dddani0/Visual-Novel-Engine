@@ -2,7 +2,7 @@ using VisualNovelEngine.Engine.Game.Interface;
 
 namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
 {
-    class RemoveSpriteAction : IAction, IButtonEvent
+    class RemoveSpriteAction : IAction, IButtonAction
     {
         readonly Game Game;
         internal Sprite sprite;

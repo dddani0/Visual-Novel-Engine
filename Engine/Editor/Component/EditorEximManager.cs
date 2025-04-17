@@ -14,6 +14,7 @@ using VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent;
 using VisualNovelEngine.Engine.Editor.Interface;
 using Engine.EngineEditor.Component.Command;
 using EngineEditor.Component.Command;
+using System.Collections.Generic;
 
 namespace VisualNovelEngine.Engine.Editor.Component
 {
@@ -27,7 +28,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// Represents the editor's imported preferences.
         /// </summary>
-        internal EditorPreferencesIm EditorPreferencesImport { get; set; }
+        internal EditorPreferencesImport EditorPreferencesImport { get; set; }
         /// <summary>
         /// Represents the editor's imported data.
         /// </summary>
@@ -39,7 +40,12 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// Represents the game's importer.
         /// </summary>
-        internal GameImporter GameImporter { get; set; }
+        internal GameEximManager GameEximManager { get; set; }
+        /// <summary>
+        /// Cache the block for static components.
+        /// Because of the way the editor works, when loading static data, the block always comes first.
+        /// </summary>
+        internal Block BlockCache { get; set; }
         /// <summary>
         /// Represents the editor's imported data.
         /// </summary>
@@ -52,14 +58,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Editor = editor;
             //Editor config
             string rawFile = File.ReadAllText(editorConfigPath) ?? throw new Exception("Editor preference file not found!");
-            EditorPreferencesImport = JsonSerializer.Deserialize<EditorPreferencesIm>(rawFile) ?? throw new Exception("Editor preference file not found!");
+            EditorPreferencesImport = JsonSerializer.Deserialize<EditorPreferencesImport>(rawFile) ?? throw new Exception("Editor preference file not found!");
             //Editor data
             rawFile = File.ReadAllText(editorDataPath) ?? throw new Exception("Editor data file not found!");
             EditorExIm = JsonSerializer.Deserialize<EditorExIm>(rawFile) ?? throw new Exception("Editor data file not found!");
-            //Game data
-            GameExim = Editor.Game.GameSettings;
             //Game importer
-            GameImporter = Editor.Game.GameImport;
+            GameEximManager = Editor.Game.GameImport;
+            //Game data
+            GameExim = GameEximManager.GameExim;
         }
         /// <summary>
         /// Fetches a color from an import object.
@@ -105,10 +111,13 @@ namespace VisualNovelEngine.Engine.Editor.Component
             if (backgroundOption == Game.Component.Scene.BackgroundOption.Image)
             {
                 image = Raylib.LoadTexture(sceneImport.ImageTexture);
-                return new Scene(Editor,
-                sceneImport.Name,
-                [.. sceneImport.Components.Select(FetchComponentFromImport)],
-                [.. sceneImport.GroupList.Select(FetchGroupFromImport)])
+                return new Scene(
+                    Editor,
+                    FetchTimelineFromImport(sceneImport.Timeline),
+                    sceneImport.Name,
+                    [.. sceneImport.Components.Select(FetchEditorComponentFromImport)],
+                    [.. sceneImport.GroupList.Select(FetchGroupFromImport)]
+                    )
                 {
                     BackgroundOption = backgroundOption,
                     BackgroundImage = image
@@ -118,8 +127,9 @@ namespace VisualNovelEngine.Engine.Editor.Component
             {
                 gradientColor = FetchGradientColorFromImport(sceneImport.GradientColor);
                 return new Scene(Editor,
+                    FetchTimelineFromImport(sceneImport.Timeline),
                 sceneImport.Name,
-                [.. sceneImport.Components.Select(FetchComponentFromImport)],
+                [.. sceneImport.Components.Select(FetchEditorComponentFromImport)],
                 [.. sceneImport.GroupList.Select(FetchGroupFromImport)])
                 {
                     BackgroundOption = backgroundOption,
@@ -129,9 +139,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
             else
             {
                 solidColor = FetchColorFromImport(sceneImport.SolidColor);
-                return new Scene(Editor,
+                return new Scene(
+                    Editor,
+                    FetchTimelineFromImport(sceneImport.Timeline),
                 sceneImport.Name,
-                [.. sceneImport.Components.Select(FetchComponentFromImport)],
+                [.. sceneImport.Components.Select(FetchEditorComponentFromImport)],
                 [.. sceneImport.GroupList.Select(FetchGroupFromImport)])
                 {
                     BackgroundOption = backgroundOption,
@@ -139,6 +151,32 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 };
             }
 
+        }
+        /// <summary>
+        /// Fetch a timeline from an import object.
+        /// </summary>
+        /// <param name="timelineImport"></param>
+        /// <returns></returns>
+        public Timeline FetchTimelineFromImport(TimelineExIm timelineImport)
+        {
+            List<IAction> actions = [];
+            List<ISettingsAction> timelineIndependentActions = [];
+            //
+            for (int i = 0; i < timelineImport.Actions.Length; i++)
+            {
+                actions.Add(FetchActionFromImport(timelineImport.Actions[i]));
+            }
+            for (int i = 0; i < timelineImport.TimelineIndependentActions.Length; i++)
+            {
+                timelineIndependentActions.Add(FetchTimelineIndependentActionFromImport(timelineImport.TimelineIndependentActions[i]));
+            }
+            return new Timeline(
+                Editor,
+                timelineImport.XPosition,
+                timelineImport.YPosition,
+                [.. actions],
+                [.. timelineIndependentActions]
+                );
         }
         /// <summary>
         /// Fetch a variable from an import object.
@@ -164,13 +202,18 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="ActionImport"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public IAction FetchEventFromImport(ActionExim ActionImport)
+        public IAction FetchActionFromImport(ActionExim ActionImport)
         {
-            return ActionImport.Type switch
-            {
-                "EmptyAction" => new EmptyAction(Editor.Game),
-                _ => throw new Exception("Event type not found!"),
-            };
+            return GameEximManager.FetchTimelineDependentActionFromImport(ActionImport);
+        }
+        /// <summary>
+        /// Fetch a Timeline independent event from an import object.
+        /// </summary>
+        /// <param name="ActionImport"></param>
+        /// <returns></returns>
+        public ISettingsAction FetchTimelineIndependentActionFromImport(ActionExim ActionImport)
+        {
+            return GameEximManager.FetchTimelineIndependentActionFromImport(ActionImport);
         }
         /// <summary>
         /// Fetch the Editor related toolbar from an import object.
@@ -188,27 +231,50 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <returns></returns>
         public Group FetchGroupFromImport(GroupExIm groupImport)
         {
-            return new Group(
-                Editor,
-                groupImport.XPosition,
-                groupImport.YPosition,
-                groupImport.Width,
-                groupImport.Height,
-                groupImport.BorderWidth,
-                FetchColorFromImport(EditorPreferencesImport.BaseColor),
-                FetchColorFromImport(EditorPreferencesImport.BorderColor),
-                FetchColorFromImport(EditorPreferencesImport.HoverColor),
-                GroupType.SolidColor,
-                groupImport.MaximumHorizontalComponentCount,
-                [.. groupImport.Buttons.Select(FetchEditorButtonFromImport)]
-            );
+            switch (groupImport.Static.ToLower() == "true")
+            {
+                case true:
+                    return new Group(
+                    Editor,
+                    groupImport.XPosition,
+                    groupImport.YPosition,
+                    groupImport.Width,
+                    groupImport.Height,
+                    groupImport.BorderWidth,
+                    FetchColorFromImport(EditorPreferencesImport.BaseColor),
+                    FetchColorFromImport(EditorPreferencesImport.BorderColor),
+                    FetchColorFromImport(EditorPreferencesImport.HoverColor),
+                    GroupType.SolidColor,
+                    groupImport.MaximumHorizontalComponentCount,
+                    [.. groupImport.Buttons.Select(FetchEditorButtonFromImport)]
+                )
+                    {
+                        IsStatic = true
+                    };
+                case false:
+                    return new Group(
+                    Editor,
+                    groupImport.XPosition,
+                    groupImport.YPosition,
+                    groupImport.Width,
+                    groupImport.Height,
+                    groupImport.BorderWidth,
+                    FetchColorFromImport(EditorPreferencesImport.BaseColor),
+                    FetchColorFromImport(EditorPreferencesImport.BorderColor),
+                    FetchColorFromImport(EditorPreferencesImport.HoverColor),
+                    [.. groupImport.Components.Select(FetchEditorComponentFromImport)]
+                )
+                    {
+                        IsStatic = false
+                    };
+            }
         }
         /// <summary>
         /// Fetch an editor related component from an import object.
         /// </summary>
         /// <param name="componentImport"></param>
         /// <returns></returns>
-        public Component FetchComponentFromImport(ComponentExIm componentImport)
+        public Component FetchEditorComponentFromImport(ComponentExIm componentImport)
         {
             return new Component(
                 componentImport.ID,
@@ -328,7 +394,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="renderingComponentImport"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public IComponent FetchEditorComponentFromImport(RenderingComponentExIm renderingComponentImport)
+        public IComponent FetchComponentFromImport(RenderingComponentExIm renderingComponentImport)
         {
             if (renderingComponentImport.Label != null)
             {
@@ -382,15 +448,21 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="renderingObjectImport"></param>
         /// <returns></returns>
-        public IPermanentRenderingObject FetchRenderingObjectFromImport(RenderingObjectExIm renderingObjectImport)
+        public IRenderingObject FetchRenderingObjectFromImport(RenderingObjectExIm renderingObjectImport)
         {
             if (renderingObjectImport.Sprite != null)
             {
                 return new Sprite(renderingObjectImport.Sprite.Path);
             }
-            if (renderingObjectImport.Block != null)
+            else if (renderingObjectImport.Block != null)
             {
-                return GameImporter.FetchBlockFromImport(renderingObjectImport.Block);
+                BlockCache = GameEximManager.FetchBlockFromImport(renderingObjectImport.Block);
+                return GameEximManager.FetchBlockFromImport(renderingObjectImport.Block);
+            }
+            else if (renderingObjectImport.StaticBlock != null)
+            {
+                BlockCache = GameEximManager.FetchStaticBlockFromImport(renderingObjectImport.StaticBlock);
+                return GameEximManager.FetchStaticBlockFromImport(renderingObjectImport.StaticBlock);
             }
             else if (renderingObjectImport.Textbox != null)
             {
@@ -398,39 +470,45 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             else if (renderingObjectImport.Button != null)
             {
-                return GameImporter.FetchButtonFromImport(renderingObjectImport.Button, null);
+                return GameEximManager.FetchButtonFromImport(renderingObjectImport.Button, BlockCache);
+            }
+            else if (renderingObjectImport.StaticButton != null)
+            {
+                //When working with separate components, the autonomous button does not have a reference to a block.
+                //Either create a new method to fetch the connecting block, or feign a block.
+                return GameEximManager.FetchStaticButtonFromImport(renderingObjectImport.StaticButton, BlockCache);
             }
             else if (renderingObjectImport.InputField != null)
             {
-                return GameImporter.FetchInputFieldFromImport(renderingObjectImport.InputField, null);
-            }
-            else if (renderingObjectImport.DropBox != null)
-            {
-                return GameImporter.FetchDropBoxFromImport(renderingObjectImport.DropBox, null);
-            }
-            else if (renderingObjectImport.Menu != null)
-            {
-                return GameImporter.FetchMenuFromImport(renderingObjectImport.Menu);
-            }
-            else if (renderingObjectImport.Slider != null)
-            {
-                return GameImporter.FetchSliderFromImport(renderingObjectImport.Slider, null);
-            }
-            else if (renderingObjectImport.TextField != null)
-            {
-                return GameImporter.FetchTextFieldFromImport(renderingObjectImport.TextField, null);
-            }
-            else if (renderingObjectImport.StaticBlock != null)
-            {
-                return GameImporter.FetchBlockFromImport(renderingObjectImport.StaticBlock);
+                return GameEximManager.FetchInputFieldFromImport(renderingObjectImport.InputField, BlockCache);
             }
             else if (renderingObjectImport.StaticInputField != null)
             {
-                return GameImporter.FetchInputFieldFromImport(renderingObjectImport.StaticInputField, null);
+                return GameEximManager.FetchInputFieldFromImport(renderingObjectImport.StaticInputField, BlockCache);
+            }
+            else if (renderingObjectImport.DropBox != null)
+            {
+                return GameEximManager.FetchDropBoxFromImport(renderingObjectImport.DropBox, BlockCache);
+            }
+            else if (renderingObjectImport.Menu != null)
+            {
+                return GameEximManager.FetchMenuFromImport(renderingObjectImport.Menu);
+            }
+            else if (renderingObjectImport.Slider != null)
+            {
+                return GameEximManager.FetchSliderFromImport(renderingObjectImport.Slider, BlockCache);
+            }
+            else if (renderingObjectImport.TextField != null)
+            {
+                return GameEximManager.FetchTextFieldFromImport(renderingObjectImport.TextField, BlockCache);
+            }
+            else if (renderingObjectImport.StaticInputField != null)
+            {
+                return GameEximManager.FetchInputFieldFromImport(renderingObjectImport.StaticInputField, BlockCache);
             }
             else if (renderingObjectImport.Toggle != null)
             {
-                return GameImporter.FetchToggleFromImport(renderingObjectImport.Toggle, null);
+                return GameEximManager.FetchToggleFromImport(renderingObjectImport.Toggle, BlockCache);
             }
             else
             {
@@ -499,7 +577,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     }
                     else
                     {
-                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.WindowComponents.Select(FetchEditorComponentFromImport)], MiniWindowType.Vertical);
+                        return new ShowMiniWindowComand(Editor, commandImport.HasVariable == "true", commandImport.HasSceneRelatedComponent == "true", [.. commandImport.WindowComponents.Select(FetchComponentFromImport)], MiniWindowType.Vertical);
                     }
                 case "ShowInspectorCommand":
                     return new ShowInspectorCommand(Editor,
@@ -728,6 +806,20 @@ namespace VisualNovelEngine.Engine.Editor.Component
             };
         }
         /// <summary>
+        /// Fetch a static editor sprite from an object.
+        /// </summary>
+        /// <param name="sprite"></param>
+        /// <returns></returns>
+        public SpriteExim ExportStaticSpriteData(Sprite sprite)
+        {
+            return new()
+            {
+                Path = sprite.Path,
+                XPosition = sprite.X,
+                YPosition = sprite.Y,
+            };
+        }
+        /// <summary>
         /// Fetch a block from an object.
         /// </summary>
         /// <param name="block"></param>
@@ -779,29 +871,21 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <returns></returns>
         public BlockExim ExportStaticBlockData(Block block)
         {
-            IPermanentRenderingObject permanentRenderingObject = ((Block)block.Component).Component;
-            return permanentRenderingObject switch
+            return block.Component switch
             {
                 Sprite sprite => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
                     ID = block.ID,
-                    Sprite = ExportSpriteData(sprite)
-                },
-                VisualNovelEngine.Engine.Game.Component.TextField textField => new()
-                {
-                    XPosition = block.XPosition,
-                    YPosition = block.YPosition,
-                    ID = block.ID,
-                    TextField = ExportTextFieldData(textField)
+                    Sprite = ExportStaticSpriteData(sprite)
                 },
                 VisualNovelEngine.Engine.Game.Component.Button button => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
                     ID = block.ID,
-                    Button = ExportStaticButtonData(button)
+                    StaticButton = ExportStaticButtonData(button)
                 },
                 InputField inputField => new()
                 {
@@ -830,6 +914,12 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     YPosition = block.YPosition,
                     ID = block.ID,
                     Slider = ExportSliderData(slider)
+                },
+                _ => new()
+                {
+                    XPosition = block.XPosition,
+                    YPosition = block.YPosition,
+                    ID = block.ID
                 }
             };
         }
@@ -896,7 +986,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 HoverColor = [.. ExportColorData(button.HoverColor)],
                 BorderColor = [.. ExportColorData(button.BorderColor)],
                 Text = button.Text,
-                Action = ExportEventData(button.Action),
+                Action = ExportActionData(button.Action),
             };
         }
         /// <summary>
@@ -941,7 +1031,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 BorderColor = [.. ExportColorData(inputField.BorderColor)],
                 PlaceholderText = inputField.Placeholder,
                 ButtonText = inputField.Button.Text,
-                ButtonAction = ExportEventData(inputField.Button.Action),
+                ButtonAction = ExportActionData(inputField.Button.Action),
             };
         }
         /// <summary>
@@ -1092,7 +1182,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             return new()
             {
                 ID = editor.IDGenerator.ID,
-                ProjectName = Regex.Replace(editor.ProjectName, @"[^a-zA-Z0-9\s]", ""),
+                ProjectName = editor.ProjectName,
                 ProjectPath = editor.SaveFilePath,
                 WindowWidth = 800,
                 WindowHeight = 800,
@@ -1108,25 +1198,47 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <returns></returns>
         public GroupExIm ExportGroupData(Group group)
         {
-            ButtonExIm[] buttons = [.. group.ComponentList.Select(x => x as Button).Select(ExportEditorButtonData)];
+            //Check if the group's components are buttons
+            bool isButton = group.ComponentList.All(x => x is Button);
+            ButtonExIm[] buttons = null;
             ComponentExIm[] components = null;
-            if (buttons.Length < group.ComponentList.Count())
+            switch (isButton)
             {
-                components = [.. group.ComponentList.Select(x => x as Component).Select(ExportComponentData)];
+                case true:
+                    buttons = [.. group.ComponentList.Select(x => x as Button).Select(ExportEditorButtonData)];
+                    components = [];
+                    if (buttons.Length < group.ComponentList.Count())
+                    {
+                        components = [.. group.ComponentList.Select(x => x as Component).Select(ExportComponentData)];
+                    }
+                    return new()
+                    {
+                        XPosition = group.XPosition,
+                        YPosition = group.YPosition,
+                        Static = group.IsStatic.ToString(),
+                        Width = group.Width,
+                        Height = group.Height,
+                        BorderWidth = group.BorderWidth,
+                        Buttons = [.. buttons],
+                        MaximumHorizontalComponentCount = group.MaximumHorizontalComponentCount,
+                        Components = [.. components]
+                    };
+                case false:
+                    buttons = [];
+                    components = [.. group.ComponentList.Select(x => x as Component).Select(ExportComponentData)];
+                    return new()
+                    {
+                        XPosition = group.XPosition,
+                        YPosition = group.YPosition,
+                        Static = group.IsStatic.ToString(),
+                        Width = group.Width,
+                        Height = group.Height,
+                        BorderWidth = group.BorderWidth,
+                        Buttons = [.. buttons],
+                        MaximumHorizontalComponentCount = group.MaximumHorizontalComponentCount,
+                        Components = [.. components]
+                    };
             }
-            buttons ??= [];
-            components ??= [];
-            return new()
-            {
-                XPosition = group.XPosition,
-                YPosition = group.YPosition,
-                Width = group.Width,
-                Height = group.Height,
-                BorderWidth = group.BorderWidth,
-                Buttons = [.. buttons],
-                MaximumHorizontalComponentCount = group.MaximumHorizontalComponentCount,
-                Components = [.. components]
-            };
         }
         /// <summary>
         /// Export a button from an object.
@@ -1151,14 +1263,28 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <returns></returns>
         public ComponentExIm ExportComponentData(Component component)
         {
-            return new()
+            switch (component.IsObjectStatic)
             {
-                ID = component.ID,
-                Name = component.Name,
-                XPosition = component.XPosition,
-                YPosition = component.YPosition,
-                RenderingObject = ExportRenderingObjectData(component.RenderingObject)
-            };
+                case true:
+                    return new()
+                    {
+                        ID = component.ID,
+                        Name = component.Name,
+                        XPosition = component.XPosition,
+                        YPosition = component.YPosition,
+                        RenderingObject = ExportStaticRenderingObjectData(component.RenderingObject)
+                    };
+                case false:
+                    return new()
+                    {
+                        ID = component.ID,
+                        Name = component.Name,
+                        XPosition = component.XPosition,
+                        YPosition = component.YPosition,
+                        RenderingObject = ExportRenderingObjectData(component.RenderingObject)
+                    };
+            }
+
         }
         /// <summary>
         /// Export a scene from an object.
@@ -1217,20 +1343,113 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="permanentRenderingObject"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public RenderingObjectExIm ExportRenderingObjectData(IPermanentRenderingObject permanentRenderingObject)
+        public RenderingObjectExIm ExportRenderingObjectData(IRenderingObject permanentRenderingObject)
         {
             return permanentRenderingObject switch
             {
-                Sprite sprite => new() { Sprite = ExportSpriteData(sprite) },
-                VisualNovelEngine.Engine.Game.Component.TextField textField => new() { TextField = ExportTextFieldData(textField) },
-                TextBox textBox => new() { Textbox = ExportTextBoxData(textBox) },
-                Block block => new() { Block = ExportBlockData(block) },
-                VisualNovelEngine.Engine.Game.Component.Button button => new() { Button = ExportButtonData(button) },
-                InputField inputField => new() { InputField = ExportInputFieldData(inputField) },
-                DropBox dropBox => new() { DropBox = ExportDropBoxData(dropBox) },
-                Menu menu => new() { Menu = ExportMenuData(menu) },
-                Slider slider => new() { Slider = ExportSliderData(slider) },
-                Toggle toggle => new() { Toggle = ExportToggleData(toggle) },
+                Sprite sprite => new()
+                {
+                    Static = false.ToString(),
+                    Sprite = ExportSpriteData(sprite)
+                },
+                VisualNovelEngine.Engine.Game.Component.TextField textField => new()
+                {
+                    Static = false.ToString(),
+                    TextField = ExportTextFieldData(textField)
+                },
+                TextBox textBox => new()
+                {
+                    Static = false.ToString(),
+                    Textbox = ExportTextBoxData(textBox)
+                },
+                Block block => new()
+                {
+                    Static = false.ToString(),
+                    Block = ExportBlockData(block)
+                },
+                VisualNovelEngine.Engine.Game.Component.Button button => new()
+                {
+                    Static = false.ToString(),
+                    Button = ExportButtonData(button)
+                },
+                InputField inputField => new()
+                {
+                    Static = false.ToString(),
+                    InputField = ExportInputFieldData(inputField)
+                },
+                DropBox dropBox => new()
+                {
+                    Static = false.ToString(),
+                    DropBox = ExportDropBoxData(dropBox)
+                },
+                Menu menu => new()
+                {
+                    Static = false.ToString(),
+                    Menu = ExportMenuData(menu)
+                },
+                Slider slider => new()
+                {
+                    Static = false.ToString(),
+                    Slider = ExportSliderData(slider)
+                },
+                Toggle toggle => new()
+                {
+                    Static = false.ToString(),
+                    Toggle = ExportToggleData(toggle)
+                },
+                _ => throw new Exception("Rendering object type not found!"),
+            };
+        }
+        /// <summary>
+        /// Export a static rendering object from an object.
+        /// </summary>
+        /// <param name="permanentRenderingObject"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public RenderingObjectExIm ExportStaticRenderingObjectData(IRenderingObject permanentRenderingObject)
+        {
+            return permanentRenderingObject switch
+            {
+                Sprite sprite => new()
+                {
+                    Static = true.ToString(),
+                    Sprite = ExportStaticSpriteData(sprite)
+                },
+                Block block => new()
+                {
+                    Static = true.ToString(),
+                    StaticBlock = ExportStaticBlockData(block)
+                },
+                VisualNovelEngine.Engine.Game.Component.Button button => new()
+                {
+                    Static = true.ToString(),
+                    StaticButton = ExportStaticButtonData(button)
+                },
+                InputField inputField => new()
+                {
+                    Static = true.ToString(),
+                    InputField = ExportStaticInputFieldData(inputField)
+                },
+                DropBox dropBox => new()
+                {
+                    Static = true.ToString(),
+                    DropBox = ExportDropBoxData(dropBox)
+                },
+                Menu menu => new()
+                {
+                    Static = true.ToString(),
+                    Menu = ExportStaticMenuData(menu)
+                },
+                Slider slider => new()
+                {
+                    Static = true.ToString(),
+                    Slider = ExportSliderData(slider)
+                },
+                Toggle toggle => new()
+                {
+                    Static = true.ToString(),
+                    Toggle = ExportToggleData(toggle)
+                },
                 _ => throw new Exception("Rendering object type not found!"),
             };
         }
@@ -1243,7 +1462,10 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             return new()
             {
-                Actions = [.. timeline.Actions.Select(ExportEventData)]
+                XPosition = timeline.XPosition,
+                YPosition = timeline.YPosition,
+                Actions = [.. timeline.Actions.Select(ExportActionData)],
+                TimelineIndependentActions = [.. timeline.TimelineIndepententActions.Select(x => ExportTimelineIndependentActionData((IAction)x))]
             };
         }
         /// <summary>
@@ -1252,7 +1474,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="actionData"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public ActionExim ExportEventData(IAction actionData)
+        public ActionExim ExportActionData(IAction actionData)
         {
             return actionData switch
             {
@@ -1260,8 +1482,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 CreateMenuAction createMenuAction => new()
                 {
                     Type = "CreateMenuAction",
-                    Menu = createMenuAction.StaticExport is false ? ExportMenuData(createMenuAction.Menu) : null,
-                    StaticMenu = createMenuAction.StaticExport is true ? ExportStaticMenuData(createMenuAction.Menu) : null
+                    Menu = ExportMenuData(createMenuAction.Menu),
+                    StaticMenu = null
                 },
                 LoadSceneAction loadSceneAction => new()
                 {
@@ -1330,17 +1552,63 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 {
                     Type = "ToggleVariableAction",
                     VariableName = toggleVariableAction.VariableName
-                },
-                SetVariableValueAction setVaraiableValueAction => new()
+                }
+            };
+        }
+        /// <summary>
+        /// Export the timeline independent action data.
+        /// </summary>
+        /// <param name="actionData"></param>
+        /// <returns></returns>
+        public ActionExim ExportTimelineIndependentActionData(IAction actionData)
+        {
+            return actionData switch
+            {
+                CreateMenuAction createMenuAction => new()
                 {
-                    Type = "SetVaraiableValueAction",
-                    VariableName = setVaraiableValueAction.VariableName
+                    Type = "CreateMenuAction",
+                    Menu = null,
+                    StaticMenu = ExportStaticMenuData(createMenuAction.Menu)
+                },
+                LoadSceneAction loadSceneAction => new()
+                {
+                    Type = "LoadSceneAction",
+                    SceneID = loadSceneAction.sceneID,
+                    TriggerVariableName = loadSceneAction.TriggerVariableName
+                },
+                NativeLoadSceneAction nativeLoadSceneAction => new()
+                {
+                    Type = "NativeLoadSceneAction",
+                    SceneID = nativeLoadSceneAction.sceneID
+                },
+                SetVariableValueAction setVariableValueAction => new()
+                {
+                    Type = "SetVariableValueAction",
+                    VariableName = setVariableValueAction.VariableName,
+                    BlockComponentID = setVariableValueAction.ComponentID
                 },
                 SwitchStaticMenuAction switchStaticMenuAction => new()
                 {
-                    Type = "SwitchStaticMenuAction"
-                },
-                _ => throw new Exception("Event type is either not Timeline Dependent or is not found!"),
+                    Type = "SwitchStaticMenuAction",
+                    DisablingMenuID = switchStaticMenuAction.DisablingMenu.ID,
+                    EnablingMenuID = switchStaticMenuAction.EnablingMenu.ID
+                }
+            };
+        }
+        /// <summary>
+        /// Build the game data.
+        /// </summary>
+        /// <param name="editor"></param>
+        /// <returns></returns>
+        public GameExim BuildGameData(Editor editor)
+        {
+            return new()
+            {
+                Title = editor.ProjectName,
+                WindowWidth = editor.ScreenWidth,
+                WindowHeight = editor.ScreenHeight,
+                Scenes = BuildScenesData([.. editor.SceneList]),
+                Variables = BuildVariablesData([.. Editor.GameVariables])
             };
         }
         /// <summary>
@@ -1366,7 +1634,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 {
                     ID = scene.ID,
                     Name = scene.Name,
-                    Background = scene.BackgroundOption.ToString(),
+                    BackgroundType = (int)scene.BackgroundOption,
                     SolidColor = ExportColorData(scene.BackgroundColor.Value),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
@@ -1374,7 +1642,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 {
                     ID = scene.ID,
                     Name = scene.Name,
-                    Background = scene.BackgroundOption.ToString(),
+                    BackgroundType = (int)scene.BackgroundOption,
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
@@ -1382,7 +1650,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 {
                     ID = scene.ID,
                     Name = scene.Name,
-                    Background = scene.BackgroundOption.ToString(),
+                    BackgroundType = (int)scene.BackgroundOption,
                     GradientColor = ExportGradientColor(scene.BackgroundGradientColor),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
@@ -1390,7 +1658,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 {
                     ID = scene.ID,
                     Name = scene.Name,
-                    Background = scene.BackgroundOption.ToString(),
+                    BackgroundType = (int)scene.BackgroundOption,
                     ImageTexture = scene.BackgroundImage.ToString(),
                     ActionList = BuildTimelineData(scene.Timeline)
                 },
@@ -1570,10 +1838,10 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     Type = "NativeLoadSceneAction",
                     SceneID = nativeLoadSceneAction.sceneID
                 },
-                SetVariableValueAction setVaraiableValueAction => new()
+                SetVariableValueAction setVariableValueAction => new()
                 {
-                    Type = "SetVaraiableValueAction",
-                    VariableName = setVaraiableValueAction.VariableName
+                    Type = "SetVariableValueAction",
+                    VariableName = setVariableValueAction.VariableName
                 },
                 SwitchStaticMenuAction switchStaticMenuAction => new()
                 {

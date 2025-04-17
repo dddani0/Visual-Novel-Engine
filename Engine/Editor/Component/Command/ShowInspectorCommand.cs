@@ -13,8 +13,8 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
     {
         internal Editor Editor { get; set; }
         private readonly InspectorWindow Window;
-        private IAction? Action { get; set; } = null;
-        private ISettingsEvent? SettingsAction { get; set; } = null;
+        internal IAction? Action { get; set; } = null;
+        private ISettingsAction? SettingsAction { get; set; } = null;
         internal int EnabledRowComponentCount;
         internal int XPosition { get; set; }
         internal int YPosition { get; set; }

@@ -7,7 +7,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
     /// <summary>
     /// Decrements the already declaired integer variable with a value.
     /// </summary>
-    public class DecrementVariableAction : IAction, IButtonEvent
+    public class DecrementVariableAction : IAction, IButtonAction
     {
         private Variable Variable { get; set; }
         private Variable DecrementVariable { get; set; }

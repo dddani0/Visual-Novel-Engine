@@ -1,15 +1,7 @@
-[
-    {
-        "Name": "Scene1",
-        "ID": 1,
-        "Background": "SolidColor",
-        "Color": [
-            0,
-            0,
-            0,
-            255
-        ],
-        "ImageTexture": "",
-        "ActionList": []
-    }
-]
+{
+    "Title": "Placeholder Game",
+    "WindowWidth": 800,
+    "WindowHeight": 800,
+    "Variables": [],
+    "Scenes": []
+}

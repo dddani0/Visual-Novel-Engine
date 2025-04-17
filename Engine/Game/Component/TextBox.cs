@@ -8,7 +8,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// <summary>
     /// Store, Write, Edit and Delete text according to need.
     /// </summary>
-    public class TextBox : IPermanentRenderingObject
+    public class TextBox : IRenderingObject
     {
         /// <summary>
         /// The position type of the textbox.
@@ -158,6 +158,8 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="game">Active Game object</param>
         private TextBox(List<String> data, string title, double cps, Font theFont, Color textBoxBackground, Color textBoxBorder, PositionType textBoxPosition, int horizontalTextMargin, int verticalTextMargin, bool wordWrapEnabled, Game game)
         {
+            Game = game;
+            //
             Content = data;
             CPSTextSpeed = cps;
             Title = title;
@@ -172,7 +174,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             TextIndex = 0;
             TextCollectionCount = Content.Count;
             //
-            Output = String.Empty;
+            Output = string.Empty;
             //
             IsEnabled = true;
             TextBatchDone = false;
@@ -212,8 +214,6 @@ namespace VisualNovelEngine.Engine.Game.Component
             TextCount = CurrentLoadedData.Length;
             //
             Raylib.SetTextLineSpacing(CharacterHeigth);
-            //
-            Game = game;
             //
             ToggleEnability(); //Disabled by default
         }
@@ -371,8 +371,8 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="game">The game instance</param>
         /// <param name="characterPerSecond">Characters per second</param>
         /// <param name="activeFont">The font which the textbox will use</param>
-        /// <param name="TextBoxcolor">Background color of the textbox.</param>
-        /// <param name="TextBoxBorder">Border color of the textbox.</param>
+        /// <param name="color">Background color of the textbox.</param>
+        /// <param name="borderColor">Border color of the textbox.</param>
         /// <param name="textBoxPosition">The position of the textbox</param>
         /// <param name="textMarginHorizontal">The horizontal margin of the text.</param>
         /// <param name="textMarginVertical">The vertical margin of the text.</param>
@@ -384,8 +384,8 @@ namespace VisualNovelEngine.Engine.Game.Component
             Game game,
             double characterPerSecond,
             Font activeFont,
-            Color TextBoxcolor,
-            Color TextBoxBorder,
+            Color color,
+            Color borderColor,
             PositionType textBoxPosition,
             int textMarginHorizontal,
             int textMarginVertical,
@@ -398,7 +398,8 @@ namespace VisualNovelEngine.Engine.Game.Component
             textBoxTitle,
             characterPerSecond,
             activeFont,
-            TextBoxcolor, TextBoxBorder,
+            color, 
+            borderColor,
             textBoxPosition,
             textMarginHorizontal,
             textMarginVertical,

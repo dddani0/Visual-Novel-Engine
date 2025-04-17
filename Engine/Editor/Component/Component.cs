@@ -109,11 +109,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// The group of the component.
         /// </summary>
-        private Group? Group { get; set; }
+        internal Group? Group { get; set; }
         /// <summary>
         /// The rendering object associated with the component.
         /// </summary>
-        internal IPermanentRenderingObject? RenderingObject { get; set; }
+        internal IRenderingObject? RenderingObject { get; set; }
         /// <summary>
         /// Creates a new instance of the component.
         /// </summary>
@@ -131,7 +131,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="selectedColor"></param>
         /// <param name="hoverColor"></param>
         /// <param name="component"></param>
-        public Component(int id, Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor, IPermanentRenderingObject component)
+        public Component(int id, Editor editor, Group group, string name, int xPosition, int yPosition, int width, int height, int borderWidth, Color color, Color borderColor, Color selectedColor, Color hoverColor, IRenderingObject component)
         {
             Editor = editor;
             ID = id;
@@ -218,6 +218,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     Name = Regex.Unescape(Name + ((char)Raylib.GetCharPressed()).ToString()).Replace('\0', ' ');
                 }
             }
+            if (IsInGroup() is false) return;
         }
         /// <summary>
         /// Moves the component.
@@ -240,39 +241,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     YPosition = Raylib.GetMouseY() > (Editor.SceneBar.Height + Editor.Toolbar.Height) && Raylib.GetMouseY() < Editor.ActiveScene.Timeline.YPosition - Editor.ComponentHeight ? Raylib.GetMouseY() : YPosition;
                 }
             }
-            //Detach this component if it's is dragged outside the group.
-            if (Group is null)
-            {
-                if (IsMoving is false) return;
-                foreach (var group in Editor.ActiveScene.ComponentGroupList)
-                {
-                    if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(group.XPosition, group.YPosition, group.Width, group.Height)) && Raylib.IsMouseButtonReleased(MouseButton.Left))
-                    {
-                        Group = group;
-                        Group.AddComponent(this);
-                        Editor.ActiveScene.ComponentList.Remove(this);
-                        IsMoving = false;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                if (Raylib.IsMouseButtonReleased(MouseButton.Left) && IsDraggedOutsideGroup())
-                {
-                    Group.RemoveComponent(this);
-                    Group = null;
-                    Editor.ActiveScene.ComponentList.Add(this);
-                    IsMoving = false;
-                }
-                else if (Raylib.IsMouseButtonReleased(MouseButton.Left) && IsDraggedOutsideGroup() is false)
-                {
-                    Group.UpdateComponentPosition();
-                    IsMoving = false;
-                }
-            }
-            return;
-            bool IsDraggedOutsideGroup() => Group is not null && (XPosition < Group.XPosition || XPosition > Group.XPosition + Group.Width || YPosition < Group.YPosition || YPosition > Group.YPosition + Group.Height);
         }
         /// <summary>
         /// Checks if the component is in a group.

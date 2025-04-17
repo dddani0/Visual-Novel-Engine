@@ -21,6 +21,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
         /// </summary>
         public void Execute()
         {
+            if (Component.IsInGroup()) Component.Group.RemoveComponent(Component);
             Editor.ActiveScene.ComponentList.Remove(Component);
         }
     }
