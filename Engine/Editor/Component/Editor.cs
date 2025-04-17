@@ -246,6 +246,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             // instance of the editor importer
             EditorEXIMManager = new(this, EditorConfigPath, SaveFilePath);
             EditorConfigImport();
+            ProjectName = title;
             //
             MouseMoveTimer = new(0.5f);
             //

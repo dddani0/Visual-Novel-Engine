@@ -1182,7 +1182,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             return new()
             {
                 ID = editor.IDGenerator.ID,
-                ProjectName = Regex.Replace(editor.ProjectName, @"[^a-zA-Z0-9\s]", ""),
+                ProjectName = editor.ProjectName,
                 ProjectPath = editor.SaveFilePath,
                 WindowWidth = 800,
                 WindowHeight = 800,

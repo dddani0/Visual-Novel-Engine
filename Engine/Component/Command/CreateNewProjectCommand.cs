@@ -9,7 +9,6 @@ namespace VisualNovelEngine.Engine.Component.Command
         {
             Engine = engine;
         }
-        public void Execute() => Engine.Editor = Engine.CreateEditor(Engine.Window.NameInputField.Text, Engine.Window.ProjectPathInputField.Text);
-
+        public void Execute() => Engine.Editor = Engine.CreateEditor(Engine.Window.ProjectPathInputField.Text, Engine.Window.NameInputField.Text);
     }
 }

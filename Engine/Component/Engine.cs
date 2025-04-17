@@ -134,7 +134,7 @@ namespace VisualNovelEngine.Engine.Component
         /// <param name="path"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        public VisualNovelEngine.Engine.Editor.Component.Editor CreateEditor(string path, string title)
+        public Editor.Component.Editor CreateEditor(string path, string title)
         {
             Editor = new Editor.Component.Editor(this, title, path);
             ChangeState(EngineState.Editor);
