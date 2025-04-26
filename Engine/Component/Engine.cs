@@ -159,7 +159,7 @@ namespace VisualNovelEngine.Engine.Component
         /// <returns></returns>
         public VisualNovelEngine.Engine.Game.Component.Game CreateGame(string path)
         {
-            Game = new Game.Component.Game(path);
+            Game = new Game.Component.Game(this,path);
             ChangeState(EngineState.Game);
             return Game;
         }

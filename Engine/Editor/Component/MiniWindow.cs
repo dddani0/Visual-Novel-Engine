@@ -116,7 +116,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             ButtonComponentList.AddRange(buttons);
             HasVariableComponent = hasVariableComponent;
             HasSceneComponent = hasScene;
-            if (closeButton) CloseButton = new Button(Editor, XPosition + Width, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseMiniWindowCommand(Editor, this), Button.ButtonType.Trigger);
+            if (closeButton) CloseButton = new Button(Editor, XPosition + Width, YPosition, "X",  Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseMiniWindowCommand(Editor, this), Button.ButtonType.Trigger);
             UpdateComponentPosition();
             switch (Type)
             {
@@ -159,7 +159,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             ComponentList.AddRange(components);
             HasVariableComponent = hasVariable;
             HasSceneComponent = hasScene;
-            if (closeButton) CloseButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseMiniWindowCommand(Editor, this), Button.ButtonType.Trigger);
+            if (closeButton) CloseButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "X", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseMiniWindowCommand(Editor, this), Button.ButtonType.Trigger);
             UpdateComponentPosition();
             switch (Type)
             {

@@ -27,7 +27,7 @@ namespace VisualNovelEngine.Engine.Tests.Engine.Component
             Color borderColor = Color.Black;
             Color hoverColor = Color.Gray;
             ICommand command = new EmptyCommand();
-            Button button = new(editor,x, y, text,false, width, height,borderWidth, color,borderColor, hoverColor, command,Button.ButtonType.Trigger);
+            Button button = new(editor,x, y, text, width, height,borderWidth, color,borderColor, hoverColor, command,Button.ButtonType.Trigger);
 
             Assert.AreEqual(x, button.XPosition);
             Assert.AreEqual(y, button.YPosition);
@@ -58,7 +58,7 @@ namespace VisualNovelEngine.Engine.Tests.Engine.Component
             Color borderColor = Color.Black;
             Color hoverColor = Color.Gray;
             ICommand command = new EmptyCommand();
-            Button button = new(editor,x, y, text,false, width, height,borderWidth, color,borderColor, hoverColor, command,Button.ButtonType.Trigger);
+            Button button = new(editor,x, y, text, width, height,borderWidth, color,borderColor, hoverColor, command,Button.ButtonType.Trigger);
             command = new ExitWindowCommand(editor);
             button.AddCommand(command);
             Assert.AreEqual(command, button.Command);

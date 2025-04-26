@@ -8,7 +8,7 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// Gives selectable option from a list of options.
     /// An option is a button.
     /// </summary>
-    public class DropBox : IRenderingObject
+    public class Dropbox : IRenderingObject
     {
         /// <summary>
         /// The position of the DropBox on the X axis.
@@ -74,7 +74,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="dropBoxColor"></param>
         /// <param name="dropBoxBorderColor"></param>
         /// <param name="dropBoxHoverColor"></param>
-        public DropBox(Block block, int xPosition, int yPosition, int width, int height, Button[] options, Color dropBoxColor, Color dropBoxBorderColor, Color dropBoxHoverColor)
+        public Dropbox(Block block, int xPosition, int yPosition, int width, int height, Button[] options, Color dropBoxColor, Color dropBoxBorderColor, Color dropBoxHoverColor)
         {
             XPosition = block.XPosition + xPosition;
             YPosition = block.YPosition + yPosition;

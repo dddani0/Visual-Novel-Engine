@@ -148,7 +148,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for static button
                     Block staticButtonBlock = new(0, 0, null, id);
                     //Create static Button action
-                    var staticButtonAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0);
+                    var staticButtonAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameEXIMManager, 0);
                     //Add to timeline
                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction(staticButtonAction);
                     //Create static button
@@ -173,7 +173,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for slider
                     Block sliderBlock = new(0, 0, null, id);
                     //Create slider action
-                    ISettingsAction sliderAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameImport, 0);
+                    ISettingsAction sliderAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameEXIMManager, 0);
                     //Add to timeline
                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction(sliderAction);
                     //Create slider
@@ -199,7 +199,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for dropbox
                     Block dropBoxBlock = new(0, 0, null, id);
                     //Create dropbox
-                    DropBox dropBox = new(dropBoxBlock, 0, 0, 1, 250, [], Color.Black, Color.Black, Color.Black);
+                    Dropbox dropBox = new(dropBoxBlock, 0, 0, 1, 250, [], Color.Black, Color.Black, Color.Black);
                     //Assign dropbox to block component
                     dropBoxBlock.Component = dropBox;
                     //Create block component
@@ -241,7 +241,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for static inputfield
                     Block staticInputFieldBlock = new(0, 0, null, id);
                     //Create static inputfield action
-                    ISettingsAction staticInputFieldAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0);
+                    ISettingsAction staticInputFieldAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameEXIMManager, 0);
                     //Add to timeline
                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction(staticInputFieldAction);
                     //Create inputfield
@@ -267,7 +267,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for toggle
                     Block toggleBlock = new(0, 0, null, id);
                     //Create toggle action
-                    ISettingsAction toggleAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameImport, 0);
+                    ISettingsAction toggleAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameEXIMManager, 0);
                     //Add to timeline
                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction(toggleAction);
                     //Create toggle

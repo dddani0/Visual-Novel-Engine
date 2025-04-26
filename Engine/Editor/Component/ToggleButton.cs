@@ -103,7 +103,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 Raylib.DrawRectangle(XPosition, YPosition, Size, Size, Color);
             }
             Raylib.DrawRectangleLinesEx(new Rectangle(XPosition, YPosition, Size, Size), BorderWidth, BorderColor);
-            Raylib.DrawText(Text, XPosition + Size, YPosition, 20, Raylib_cs.Color.White);
+            Raylib.DrawText(Text, XPosition + Size, YPosition, 20, Editor.TextColor);
             if (IsToggled)
             {
                 Raylib.DrawRectangle(XPosition + Size - 20, YPosition, 20, 20, Raylib_cs.Color.Red);

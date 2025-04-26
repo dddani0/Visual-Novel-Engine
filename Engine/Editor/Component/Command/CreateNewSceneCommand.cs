@@ -21,7 +21,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Editor.ActiveScene = newScene;
             Editor.SceneList.Add(newScene);
             //Add new scene to the scene bar
-            Button newSceneButton = new(Editor, Editor.SceneBar.ButtonComponentList.Count * Editor.ComponentWidth, 0, newScene.Name, false, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new ChangeSceneCommand(Editor), Button.ButtonType.Trigger);
+            Button newSceneButton = new(Editor, Editor.SceneBar.ButtonComponentList.Count * Editor.ComponentWidth, 0, newScene.Name, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new ChangeSceneCommand(Editor), Button.ButtonType.Trigger);
             ChangeSceneCommand changeSceneCommand = (ChangeSceneCommand)newSceneButton.Command;
             changeSceneCommand.SceneButton = newSceneButton;
             Editor.SceneBar.ButtonComponentList.Insert(Editor.SceneBar.ButtonComponentList.Count - 1, newSceneButton);

@@ -63,7 +63,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             rawFile = File.ReadAllText(editorDataPath) ?? throw new Exception("Editor data file not found!");
             EditorExIm = JsonSerializer.Deserialize<EditorExIm>(rawFile) ?? throw new Exception("Editor data file not found!");
             //Game importer
-            GameEximManager = Editor.Game.GameImport;
+            GameEximManager = Editor.Game.GameEXIMManager;
             //Game data
             GameExim = GameEximManager.GameExim;
         }
@@ -526,7 +526,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 buttonImport.XPosition,
                 buttonImport.YPosition,
                 buttonImport.Text,
-                true,
                 Editor.ComponentWidth,
                 Editor.ComponentHeight,
                 Editor.ComponentBorderWidth,
@@ -894,7 +893,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ID = block.ID,
                     InputField = ExportStaticInputFieldData(inputField)
                 },
-                DropBox dropBox => new()
+                Dropbox dropBox => new()
                 {
                     XPosition = block.XPosition,
                     YPosition = block.YPosition,
@@ -1062,7 +1061,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// </summary>
         /// <param name="dropBox"></param>
         /// <returns></returns>
-        public DropBoxExim ExportDropBoxData(DropBox dropBox)
+        public DropBoxExim ExportDropBoxData(Dropbox dropBox)
         {
             return new()
             {
@@ -1377,7 +1376,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     Static = false.ToString(),
                     InputField = ExportInputFieldData(inputField)
                 },
-                DropBox dropBox => new()
+                Dropbox dropBox => new()
                 {
                     Static = false.ToString(),
                     DropBox = ExportDropBoxData(dropBox)
@@ -1430,7 +1429,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     Static = true.ToString(),
                     InputField = ExportStaticInputFieldData(inputField)
                 },
-                DropBox dropBox => new()
+                Dropbox dropBox => new()
                 {
                     Static = true.ToString(),
                     DropBox = ExportDropBoxData(dropBox)
@@ -1755,7 +1754,8 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 AddSpriteAction addSpriteAction => new()
                 {
                     Type = "AddSpriteAction",
-                    Sprite = ExportSpriteData(addSpriteAction.sprite)
+                    //To the build version, only the name of the sprite is needed, because of the root folder
+                    Sprite = ExportSpriteData(new Sprite(addSpriteAction.sprite.Path.Split('/').Last()))
                 },
                 ChangeSpriteAction changeSpriteAction => new()
                 {
@@ -1801,7 +1801,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 TintSpriteAction tintSpriteAction => new()
                 {
                     Type = "TintSpriteAction",
-                    Sprite = ExportSpriteData(tintSpriteAction.sprite),
+                    Sprite = ExportSpriteData(new Sprite(tintSpriteAction.sprite.Path.Split('/').Last())),
                     TintColor = ExportColorData(tintSpriteAction.color)
                 },
                 ToggleVariableAction toggleVariableAction => new()
@@ -1845,7 +1845,9 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 },
                 SwitchStaticMenuAction switchStaticMenuAction => new()
                 {
-                    Type = "SwitchStaticMenuAction"
+                    Type = "SwitchStaticMenuAction",
+                    DisablingMenuID = switchStaticMenuAction.DisablingMenu.ID,
+                    EnablingMenuID = switchStaticMenuAction.EnablingMenu.ID
                 },
                 _ => throw new Exception("Event type is either not Timeline independent or is not found!"),
             };

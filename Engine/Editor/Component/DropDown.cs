@@ -102,7 +102,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Width = width;
             Height = height;
             BorderWidth = borderWidth;
-            Button = new Button(Editor, XPosition, YPosition, "Select", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new OpenDropDownCommand(Editor, this), Button.ButtonType.Hold);
+            Button = new Button(Editor, XPosition, YPosition, "Select", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new OpenDropDownCommand(Editor, this), Button.ButtonType.Hold);
             Filter = filter;
             UpdateComponentList();
         }
@@ -144,7 +144,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                             TextBox => FilterType.TextBox,
                             TextField => FilterType.TextField,
                             Block => FilterType.Block,
-                            DropBox => FilterType.DropBox,
+                            Dropbox => FilterType.DropBox,
                             Slider => FilterType.Slider,
                             InputField => FilterType.InputField,
                             Toggle => FilterType.Toggle,
@@ -164,7 +164,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                             VisualNovelEngine.Engine.Game.Component.Button => FilterType.Button,
                             TextBox => FilterType.TextBox,
                             Block => FilterType.Block,
-                            DropBox => FilterType.DropBox,
+                            Dropbox => FilterType.DropBox,
                             Slider => FilterType.Slider,
                             InputField => FilterType.InputField,
                             Toggle => FilterType.Toggle,

@@ -46,10 +46,6 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     variable.Value = valueTextField.Text;
                     variable.Type = typeDropDown.Button.VariableType;
                 }
-                //Save resolution
-                TextField resolutionText = (TextField)MiniWindow.ComponentList[2];
-                Editor.ScreenWidth = int.Parse(resolutionText.Text.Split('x')[0]);
-                Editor.ScreenHeight = int.Parse(resolutionText.Text.Split('x')[1]);
             }
             if (MiniWindow.HasSceneComponent)
             {
@@ -120,6 +116,10 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                 //Save game name
                 TextField gameNameTextField = (TextField)MiniWindow.ComponentList[2];
                 var newName = gameNameTextField.Text;
+                //Save resolution
+                TextField resolutionText = (TextField)MiniWindow.ComponentList[4];
+                Editor.ScreenWidth = int.Parse(resolutionText.Text.Split('x')[0]);
+                Editor.ScreenHeight = int.Parse(resolutionText.Text.Split('x')[1]);
                 //Rename the save file path
                 Editor.SaveFilePath = Editor.SaveFilePath.Replace(Editor.ProjectName, $"{newName}").Replace(" ", string.Empty);
                 //Rename build path

@@ -98,7 +98,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Update();
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color);
             Raylib.DrawRectangleLines(XPosition, YPosition, Width, Height, BorderColor);
-            Raylib.DrawText(Text, XPosition + 5, YPosition + 5, 12, Color.Black);
+            Raylib.DrawText(Text, XPosition + 5, YPosition + 5, 12, Editor.TextColor);
         }
         /// <summary>
         /// Updates the text field.

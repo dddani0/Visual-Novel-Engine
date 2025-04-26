@@ -97,7 +97,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Color = Editor.BaseColor;
             BorderColor = Editor.BorderColor;
             EnabledRowComponentCount = enabledRowComponentCount;
-            CloseButton = new Button(Editor, XPosition + Editor.InspectorWindowWidth - Editor.SmallButtonWidth, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseInspectorCommand(Editor, this), Button.ButtonType.Trigger);
+            CloseButton = new Button(Editor, XPosition + Editor.InspectorWindowWidth - Editor.SmallButtonWidth, YPosition, "X", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseInspectorCommand(Editor, this), Button.ButtonType.Trigger);
             Scrollbar = new Scrollbar(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition + editor.SmallButtonHeight, Height - Editor.SmallButtonWidth, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
         }
         /// <summary>
@@ -204,7 +204,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.Content[i], Raylib.GetFontDefault(), false));
                     }
                     ComponentList.Add(
-                        new Button(Editor, XPosition, YPosition, "Add text", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "New text field", Raylib.GetFontDefault(), false), 14), Button.ButtonType.Trigger));
+                        new Button(Editor, XPosition, YPosition, "Add text", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "New text field", Raylib.GetFontDefault(), false), 14), Button.ButtonType.Trigger));
                     //Horizontal text margin
                     ComponentList.Add(new Label(XPosition, YPosition, "Horizontal margin:"));
                     ComponentList.Add(
@@ -284,7 +284,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     }
                     //Dinamic add block insert button
                     ComponentList.Add(
-                        new Button(Editor, XPosition, YPosition, "Add button", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Block), 2), Button.ButtonType.Trigger));
+                        new Button(Editor, XPosition, YPosition, "Add button", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Block), 2), Button.ButtonType.Trigger));
                     break;
                 case Block block:
                     //X Position
@@ -316,7 +316,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                         ComponentList.Add(blockComponentDropDown);
                     }
                     break;
-                case DropBox dropBox:
+                case Dropbox dropBox:
                     //X Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
                     ComponentList.Add(new Label(XPosition, YPosition, "X axis:"));
@@ -359,7 +359,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     }
                     //Add option button
                     ComponentList.Add(
-                        new Button(Editor, XPosition, YPosition, "Add option", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction), 2), Button.ButtonType.Trigger));
+                        new Button(Editor, XPosition, YPosition, "Add option", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction), 2), Button.ButtonType.Trigger));
                     break;
                 case Slider slider:
                     //X Position
@@ -811,7 +811,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(switchStaticMenuNewDopDown);
                     break;
             }
-            DeleteButton = new Button(Editor, XPosition, YPosition, "Delete", false, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger);
+            DeleteButton = new Button(Editor, XPosition, YPosition, "Delete", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger);
             ActiveAction = actionData;
             Scrollbar.AddComponents([.. ComponentList]);
             UpdateComponentPosition(EnabledRowComponentCount);

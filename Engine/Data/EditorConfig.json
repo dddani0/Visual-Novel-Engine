@@ -20,68 +20,68 @@
     "MiniWindowBorderWidth": 1,
     "BaseColor": [
         239,
-        182,
-        200,
+        150,
+        81,
         255
     ],
     "BorderColor": [
-        68,
-        23,
-        82,
+        63,
+        125,
+        88,
         255
     ],
     "TextColor": [
-        129,
-        116,
-        160,
+        239,
+        239,
+        239,
         255
     ],
     "HoverColor": [
-        168,
-        136,
-        181,
+        236,
+        82,
+        40,
         255
     ],
     "EditorColor": [
-        168,
-        136,
-        181,
+        63,
+        125,
+        88,
         255
     ],
     "InspectorButtonBaseColor": [
-        0,
-        255,
-        0,
+        239,
+        239,
+        239,
         255
     ],
     "InspectorButtonBorderColor": [
-        255,
-        255,
-        255,
+        63,
+        125,
+        88,
         255
     ],
     "InspectorButtonHoverColor": [
-        0,
-        235,
-        0,
+        236,
+        82,
+        40,
         255
     ],
     "CloseButtonBaseColor": [
-        255,
-        0,
-        0,
+        236,
+        82,
+        40,
         255
     ],
     "CloseButtonBorderColor": [
-        0,
-        0,
-        0,
+        63,
+        125,
+        88,
         255
     ],
     "CloseButtonHoverColor": [
-        235,
-        0,
-        0,
+        63,
+        125,
+        88,
         255
     ]
 }
