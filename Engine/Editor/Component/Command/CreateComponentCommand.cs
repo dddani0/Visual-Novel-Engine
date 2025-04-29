@@ -52,7 +52,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
             switch (RenderableObjectType)
             {
                 case RenderingObjectType.Sprite:
-                    Sprite sprite = new("Empty path");
+                    Sprite sprite = new($"{Editor.FolderPath}/newSprite{id}.png");
                     Component = new Component(id, Editor, null, $"New Sprite({id})", Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, Editor.HoverColor, sprite);
                     break;
                 case RenderingObjectType.staticSprite:
@@ -60,7 +60,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     Block staticSpriteBlock = new(0, 0, null, id);
                     //Create sprite with no block attached
                     id = Editor.GenerateID();
-                    Sprite staticSprite = new($"Empty path({id})", staticSpriteBlock, 0, 0);
+                    Sprite staticSprite = new($"{Editor.FolderPath}/newSprite{id}.png", staticSpriteBlock, 0, 0);
                     //Assign block to sprite
                     staticSpriteBlock.Component = staticSprite;
                     //Create block component
@@ -148,7 +148,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for static button
                     Block staticButtonBlock = new(0, 0, null, id);
                     //Create static Button action
-                    var staticButtonAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0);
+                    var staticButtonAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameEXIMManager, 0);
                     //Add to timeline
                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction(staticButtonAction);
                     //Create static button
@@ -173,7 +173,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for slider
                     Block sliderBlock = new(0, 0, null, id);
                     //Create slider action
-                    ISettingsAction sliderAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameImport, 0);
+                    ISettingsAction sliderAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameEXIMManager, 0);
                     //Add to timeline
                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction(sliderAction);
                     //Create slider
@@ -199,7 +199,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for dropbox
                     Block dropBoxBlock = new(0, 0, null, id);
                     //Create dropbox
-                    DropBox dropBox = new(dropBoxBlock, 0, 0, 1, 250, [], Color.Black, Color.Black, Color.Black);
+                    Dropbox dropBox = new(dropBoxBlock, 0, 0, 1, 250, [], Color.Black, Color.Black, Color.Black);
                     //Assign dropbox to block component
                     dropBoxBlock.Component = dropBox;
                     //Create block component
@@ -241,7 +241,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for static inputfield
                     Block staticInputFieldBlock = new(0, 0, null, id);
                     //Create static inputfield action
-                    ISettingsAction staticInputFieldAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameImport, 0);
+                    ISettingsAction staticInputFieldAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "VariableName", Editor.Game.GameEXIMManager, 0);
                     //Add to timeline
                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction(staticInputFieldAction);
                     //Create inputfield
@@ -267,7 +267,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                     //Create block for toggle
                     Block toggleBlock = new(0, 0, null, id);
                     //Create toggle action
-                    ISettingsAction toggleAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameImport, 0);
+                    ISettingsAction toggleAction = new VisualNovelEngine.Engine.Game.Component.Action.TimelineIndependent.SetVariableValueAction(Editor.Game, "Variable name", Editor.Game.GameEXIMManager, 0);
                     //Add to timeline
                     Editor.ActiveScene.Timeline.AddTimelineIndependentAction(toggleAction);
                     //Create toggle

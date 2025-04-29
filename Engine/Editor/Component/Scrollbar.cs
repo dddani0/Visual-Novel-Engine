@@ -113,12 +113,12 @@ namespace VisualNovelEngine.Engine.Editor.Component
             switch (Type)
             {
                 case ScrollbarType.Vertical:
-                    NextButton = new Button(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, "+", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
-                    PreviousButton = new Button(Editor, XPosition, YPosition, "-", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
+                    NextButton = new Button(Editor, XPosition, YPosition + Height - Editor.SmallButtonHeight, "+",  Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
+                    PreviousButton = new Button(Editor, XPosition, YPosition, "-",  Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
                     break;
                 case ScrollbarType.Horizontal:
-                    NextButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "+", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
-                    PreviousButton = new Button(Editor, XPosition, YPosition, "-", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
+                    NextButton = new Button(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition, "+", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollForwardCommand(this), Button.ButtonType.Trigger);
+                    PreviousButton = new Button(Editor, XPosition, YPosition, "-", Editor.SmallButtonWidth, Editor.SmallButtonHeight, BorderWidth, Color, BorderColor, Editor.HoverColor, new ScrollBackwardsCommand(this), Button.ButtonType.Trigger);
                     break;
             }
         }

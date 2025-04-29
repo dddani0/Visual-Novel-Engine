@@ -97,7 +97,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Color = Editor.BaseColor;
             BorderColor = Editor.BorderColor;
             EnabledRowComponentCount = enabledRowComponentCount;
-            CloseButton = new Button(Editor, XPosition + Editor.InspectorWindowWidth - Editor.SmallButtonWidth, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseInspectorCommand(Editor, this), Button.ButtonType.Trigger);
+            CloseButton = new Button(Editor, XPosition + Editor.InspectorWindowWidth - Editor.SmallButtonWidth, YPosition, "X", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, Editor.CloseButtonBaseColor, Editor.CloseButtonBorderColor, Editor.CloseButtonHoverColor, new CloseInspectorCommand(Editor, this), Button.ButtonType.Trigger);
             Scrollbar = new Scrollbar(Editor, XPosition + Width - Editor.SmallButtonWidth, YPosition + editor.SmallButtonHeight, Height - Editor.SmallButtonWidth, Editor.SmallButtonWidth, Scrollbar.ScrollbarType.Vertical, false, [.. ComponentList]);
         }
         /// <summary>
@@ -204,7 +204,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                             new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, textBox.Content[i], Raylib.GetFontDefault(), false));
                     }
                     ComponentList.Add(
-                        new Button(Editor, XPosition, YPosition, "Add text", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "New text field", Raylib.GetFontDefault(), false), 14), Button.ButtonType.Trigger));
+                        new Button(Editor, XPosition, YPosition, "Add text", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, "New text field", Raylib.GetFontDefault(), false), 14), Button.ButtonType.Trigger));
                     //Horizontal text margin
                     ComponentList.Add(new Label(XPosition, YPosition, "Horizontal margin:"));
                     ComponentList.Add(
@@ -238,28 +238,28 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
                     ComponentList.Add(new Label(XPosition, YPosition, "X axis:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.XPosition.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.XPosition.ToString(), Raylib.GetFontDefault(), false));
                     ComponentList.Add(new Label(XPosition, YPosition, "Y axis:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.YPosition.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.YPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Width
                     ComponentList.Add(new Label(XPosition, YPosition, "Width:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.Width.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.Width.ToString(), Raylib.GetFontDefault(), false));
                     //Height
                     ComponentList.Add(new Label(XPosition, YPosition, "Height:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.Height.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, menu.Height.ToString(), Raylib.GetFontDefault(), false));
                     ComponentList.Add(
                         new ToggleButton(Editor, XPosition, YPosition, Editor.SmallButtonWidth, Editor.SmallButtonWidth, "Fullscreen:", menu.IsFullScreen));
                     //Dinamic menu color
                     ComponentList.Add(new Label(XPosition, YPosition, "Color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{menu.Color.R}, {menu.Color.G}, {menu.Color.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{menu.Color.R}, {menu.Color.G}, {menu.Color.B}", Raylib.GetFontDefault(), false));
                     //Dinamic menu border color
                     ComponentList.Add(new Label(XPosition, YPosition, "Border color:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{menu.BorderColor.R}, {menu.BorderColor.G}, {menu.BorderColor.B}", Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, $"{menu.BorderColor.R}, {menu.BorderColor.G}, {menu.BorderColor.B}", Raylib.GetFontDefault(), false));
                     //Add a dropdown for every block
                     ComponentList.Add(new Label(XPosition, YPosition, "List of blocks:"));
                     for (int i = 0; i < menu.BlockList.Count; i++)
@@ -284,18 +284,18 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     }
                     //Dinamic add block insert button
                     ComponentList.Add(
-                        new Button(Editor, XPosition, YPosition, "Add button", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Block), 2), Button.ButtonType.Trigger));
+                        new Button(Editor, XPosition, YPosition, "Add button", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.Block), 2), Button.ButtonType.Trigger));
                     break;
                 case Block block:
                     //X Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
                     ComponentList.Add(new Label(XPosition, YPosition, "X axis:"));
                     ComponentList.Add(
-                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, block.XPosition.ToString(), Raylib.GetFontDefault(), true));
+                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, block.XPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Y Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Y axis:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, block.YPosition.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, block.YPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Component
                     ComponentList.Add(new Label(XPosition, YPosition, "Component:"));
                     var blockComponentDropDown = new Dropdown(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.NoBlock);
@@ -316,7 +316,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                         ComponentList.Add(blockComponentDropDown);
                     }
                     break;
-                case DropBox dropBox:
+                case Dropbox dropBox:
                     //X Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
                     ComponentList.Add(new Label(XPosition, YPosition, "X axis:"));
@@ -359,18 +359,18 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     }
                     //Add option button
                     ComponentList.Add(
-                        new Button(Editor, XPosition, YPosition, "Add option", true, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction), 2), Button.ButtonType.Trigger));
+                        new Button(Editor, XPosition, YPosition, "Add option", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new InsertExtraFieldToInspectorCommand(Editor, this, new Dropdown(Editor, 0, 0, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, Dropdown.FilterType.TimelineIndependentAction), 2), Button.ButtonType.Trigger));
                     break;
                 case Slider slider:
                     //X Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Position"));
                     ComponentList.Add(new Label(XPosition, YPosition, "X axis:"));
                     ComponentList.Add(
-                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.XPosition.ToString(), Raylib.GetFontDefault(), true));
+                       new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.XPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Y Position
                     ComponentList.Add(new Label(XPosition, YPosition, "Y axis:"));
                     ComponentList.Add(
-                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.YPosition.ToString(), Raylib.GetFontDefault(), true));
+                        new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, slider.YPosition.ToString(), Raylib.GetFontDefault(), false));
                     //Width
                     ComponentList.Add(new Label(XPosition, YPosition, "Width:"));
                     ComponentList.Add(
@@ -624,7 +624,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     }
                     ComponentList.Add(changeSpriteDropDown);
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "New Sprite:"));
-                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, changeSpriteAction.replacementSprite.Path, Raylib.GetFontDefault(), false));
+                    ComponentList.Add(new TextField(Editor, XPosition, YPosition, Editor.ComponentWidth, Editor.ComponentHeight, Editor.ComponentBorderWidth, changeSpriteAction.replacementSprite.Name, Raylib.GetFontDefault(), false));
                     break;
                 case RemoveSpriteAction removeSpriteAction:
                     ComponentList.Add(new Label(XPosition, YPosition + BorderWidth, "Name:"));
@@ -811,7 +811,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     ComponentList.Add(switchStaticMenuNewDopDown);
                     break;
             }
-            DeleteButton = new Button(Editor, XPosition, YPosition, "Delete", false, Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger);
+            DeleteButton = new Button(Editor, XPosition, YPosition, "Delete", Editor.ButtonWidth, Editor.ButtonHeight, Editor.ButtonBorderWidth, Color, BorderColor, Editor.HoverColor, new DeleteActionCommand(Editor), Button.ButtonType.Trigger);
             ActiveAction = actionData;
             Scrollbar.AddComponents([.. ComponentList]);
             UpdateComponentPosition(EnabledRowComponentCount);

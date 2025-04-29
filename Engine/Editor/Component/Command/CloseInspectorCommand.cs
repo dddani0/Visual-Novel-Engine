@@ -198,7 +198,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                             {
                                 case Sprite sprite:
                                     //save sprite path
-                                    sprite.Path = (InspectorWindow.ComponentList[5] as TextField).Text;
+                                    sprite.Path = $"{Editor.FolderPath}{(InspectorWindow.ComponentList[5] as TextField).Text}";
                                     //save sprite color
                                     TextField spriteColorTextField = InspectorWindow.ComponentList[7] as TextField;
                                     sprite.Color = new Color()
@@ -276,9 +276,9 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                             //Change old action in the list with the new one.
                                             for (int i = 0; i < actions.Length; i++)
                                             {
-                                                if (Editor.ActiveScene.Timeline.AutonomousActions[i] == oldAction)
+                                                if (Editor.ActiveScene.Timeline.ComponentActions[i] == oldAction)
                                                 {
-                                                    Editor.ActiveScene.Timeline.AutonomousActions[i] = newAction;
+                                                    Editor.ActiveScene.Timeline.ComponentActions[i] = newAction;
                                                     (Editor.ActiveScene.Timeline.ActionButtons.First(x => (x.Command as ShowInspectorCommand).Action == oldAction).Command as ShowInspectorCommand).Action = newAction;
                                                     break;
                                                 }
@@ -422,7 +422,7 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                         block.Component = (Component)selectedComponentDropDown.Button.Component == null ? null : (selectedComponentDropDown.Button.Component as Component).RenderingObject;
                                     }
                                     break;
-                                case DropBox dropBox:
+                                case Dropbox dropBox:
                                     //Save position
                                     dropBox.XPosition = int.Parse((InspectorWindow.ComponentList[6] as TextField).Text);
                                     dropBox.YPosition = int.Parse((InspectorWindow.ComponentList[8] as TextField).Text);
@@ -647,9 +647,9 @@ namespace VisualNovelEngine.Engine.Editor.Component.Command
                                             //Change out old action in the list with the new one.
                                             for (int i = 0; i < actions.Length; i++)
                                             {
-                                                if (Editor.ActiveScene.Timeline.AutonomousActions[i] == oldInputFieldAction)
+                                                if (Editor.ActiveScene.Timeline.ComponentActions[i] == oldInputFieldAction)
                                                 {
-                                                    Editor.ActiveScene.Timeline.AutonomousActions[i] = newInputFieldAction;
+                                                    Editor.ActiveScene.Timeline.ComponentActions[i] = newInputFieldAction;
                                                     (Editor.ActiveScene.Timeline.ActionButtons.First(x => (x.Command as ShowInspectorCommand).Action == oldInputFieldAction).Command as ShowInspectorCommand).Action = newInputFieldAction;
                                                     break;
                                                 }

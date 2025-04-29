@@ -39,7 +39,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// The actions that the timeline will execute.
         /// </summary>
         internal List<IAction> Actions { get; set; } = [];
-        internal List<IAction> AutonomousActions { get; set; } = [];
+        internal List<IAction> ComponentActions { get; set; } = [];
         /// <summary>
         /// The timeline independent actions
         /// </summary>
@@ -87,7 +87,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 5 + XPosition + BorderWidth,
                 YPosition + 5,
                 "Action",
-                    true,
+
                 Editor.ButtonWidth,
                 Editor.ButtonHeight,
                 Editor.ButtonBorderWidth,
@@ -102,7 +102,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "New 'MenuAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -119,7 +118,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'LoadSceneAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -134,7 +132,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'NativeLoadSceneAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -149,7 +146,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'AddSpriteAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -164,7 +160,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'ChangeSpriteAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -179,7 +174,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'DecrementVariableAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -194,7 +188,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'EmptyAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -209,7 +202,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'IncrementVariableAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -224,7 +216,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'RemoveSpriteAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -239,7 +230,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'SetBoolVariableAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -254,7 +244,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'SetVariableFalseAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -269,7 +258,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'SetVariableTrueAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -284,7 +272,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'TextBoxCreateAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -299,7 +286,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'TintSpriteAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -314,7 +300,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                     0,
                     0,
                     "new 'ToggleVariableAction' action",
-                    true,
                     Editor.SideButtonWidth,
                     Editor.SideButtonHeight,
                     Editor.ButtonBorderWidth,
@@ -330,7 +315,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 XPosition + Width - Editor.ButtonWidth - 5,
                 YPosition + 5,
                 "Remove",
-                    true,
                 Editor.ButtonWidth,
                 Editor.ButtonHeight,
                 Editor.ButtonBorderWidth,
@@ -343,7 +327,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                         0,
                         0,
                         "Yes",
-                        true,
                         Editor.ButtonWidth,
                         Editor.ButtonHeight,
                         Editor.ButtonBorderWidth,
@@ -417,7 +400,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 XPosition + Editor.ComponentWidth + BorderWidth + 5 + (Actions.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
                 YPosition + Height / 2 - 2 * Editor.SmallButtonWidth,
                 $"{Actions.Count}. {action.GetType().Name}",
-                    true,
                 Editor.ButtonWidth,
                 Editor.ButtonHeight,
                 Editor.ButtonBorderWidth,
@@ -434,13 +416,12 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <param name="action"></param>
         internal void AddComponentAction(IAction action)
         {
-            AutonomousActions.Add(action);
+            ComponentActions.Add(action);
             ActionButtons.Add(new(
                 Editor,
                 XPosition + Editor.ComponentWidth + BorderWidth + 5 + (Actions.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
                 YPosition + Height / 2 - 2 * Editor.SmallButtonWidth,
                 $"{Actions.Count}. {action.GetType().Name}",
-                    true,
                 Editor.ButtonWidth,
                 Editor.ButtonHeight,
                 Editor.ButtonBorderWidth,
@@ -463,7 +444,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 XPosition + Editor.ComponentWidth + BorderWidth + 5 + (TimelineIndepententActions.Count - 1) * (Editor.ButtonWidth + Editor.ButtonBorderWidth),
                 YPosition + Editor.ComponentHeight + Height / 2 - Editor.SmallButtonWidth,
                 $"{TimelineIndepententActions.Count}. action",
-                    true,
                 Editor.ButtonWidth,
                 Editor.ButtonHeight,
                 Editor.ButtonBorderWidth,

@@ -30,11 +30,11 @@ namespace VisualNovelEngine.Engine.Component
         /// <summary>
         /// The current state of the Engine.
         /// </summary>
-        internal EngineState State { get; private set; }
+        public EngineState State { get; private set; }
         /// <summary>
         /// The title of the Engine.
         /// </summary>
-        internal string Title { get; set; } = "Vizuális Novella Motor";
+        public string Title { get; private set; } = "Vizuális Novella Motor";
         /// <summary>
         /// The width of the Engine.
         /// </summary>
@@ -46,7 +46,7 @@ namespace VisualNovelEngine.Engine.Component
         /// <summary>
         /// The exit flag of the Engine.
         /// </summary>
-        internal bool Exit { get; set; } = false;
+        public bool Exit { get; private set; } = false;
         /// <summary>
         /// The button to import a project.
         /// </summary>
@@ -75,9 +75,9 @@ namespace VisualNovelEngine.Engine.Component
             //Set the state to PreState.
             ChangeState(EngineState.Default);
             //Prestate buttons
-            NewProject = new Button("Új projekt", Width / 2 - 125, 80, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.NewProject));
-            ImportProject = new Button("Projekt importálás", Width / 2 - 125, 140, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.ImportProject));
-            ImportBuild = new Button("Játék megnyitása", Width / 2 - 125, 200, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.PlayProject));
+            NewProject = new Button("New project", Width / 2 - 125, 80, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.NewProject));
+            ImportProject = new Button("Import Project", Width / 2 - 125, 140, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.ImportProject));
+            ImportBuild = new Button("Open Game", Width / 2 - 125, 200, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.PlayProject));
             OpenRepository = new Button("GitHub", 10, Height - 50 - 10, 100, 50, Color.RayWhite, Color.Gray, new OpenLinkCommand("https://github.com/dddani0/Visual-Novel-Engine"));
         }
         /// <summary>
@@ -159,7 +159,7 @@ namespace VisualNovelEngine.Engine.Component
         /// <returns></returns>
         public VisualNovelEngine.Engine.Game.Component.Game CreateGame(string path)
         {
-            Game = new Game.Component.Game(path);
+            Game = new Game.Component.Game(this,path);
             ChangeState(EngineState.Game);
             return Game;
         }

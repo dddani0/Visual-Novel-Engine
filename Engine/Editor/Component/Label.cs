@@ -50,7 +50,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         public void Render()
         {
             if (Active is false) return;
-            Raylib.DrawText(Text, XPosition, YPosition, 20, Color.Black);
+            Raylib.DrawText(Text, XPosition, YPosition, 20, Color.White);
         }
         /// <summary>
         /// Updates the label.

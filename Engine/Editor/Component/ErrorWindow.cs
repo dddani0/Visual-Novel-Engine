@@ -58,7 +58,7 @@ namespace EngineEditor.Component
             Height = height;
             XPosition = Raylib.GetScreenWidth() / 2 - Width / 2;
             YPosition = Raylib.GetScreenHeight() / 2 - Height * (3 / 4);
-            CancelButton = new Button(Editor, XPosition, YPosition + Height - Editor.ButtonHeight, "Cancel", true, Editor.ButtonWidth, Editor.ButtonHeight, 2, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new CloseErrorWindowCommand(Editor), Button.ButtonType.Trigger);
+            CancelButton = new Button(Editor, XPosition, YPosition + Height - Editor.ButtonHeight, "Cancel", Editor.ButtonWidth, Editor.ButtonHeight, 2, Editor.BaseColor, Editor.BorderColor, Editor.HoverColor, new CloseErrorWindowCommand(Editor), Button.ButtonType.Trigger);
             Buttons = buttons;
             UpdateButtonPositions();
         }

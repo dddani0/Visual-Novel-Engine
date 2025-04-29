@@ -150,11 +150,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
             Color closeButtonBaseColor = Editor.CloseButtonBaseColor;
             Color closeButtonBorderColor = Editor.CloseButtonBorderColor;
             Color closeButtonHoverColor = Editor.CloseButtonHoverColor;
-            CloseButton = new Button(editor, CloseButtonXPosition, YPosition, "X", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, closeButtonBaseColor, closeButtonBorderColor, closeButtonHoverColor, new DeleteComponentCommand(Editor, this), Button.ButtonType.Trigger);
+            CloseButton = new Button(editor, CloseButtonXPosition, YPosition, "X", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, closeButtonBaseColor, closeButtonBorderColor, closeButtonHoverColor, new DeleteComponentCommand(Editor, this), Button.ButtonType.Trigger);
             Color inspectorButtonBaseColor = Editor.InspectorButtonBaseColor;
             Color inspectorButtonBorderColor = Editor.InspectorButtonBorderColor;
             Color inspectorButtonHoverColor = Editor.InspectorButtonHoverColor;
-            InspectorButton = new Button(editor, InspectorButtonXPosition, YPosition, "I", true, Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, new ShowInspectorCommand(Editor, 1), Button.ButtonType.Trigger);
+            InspectorButton = new Button(editor, InspectorButtonXPosition, YPosition, "I", Editor.SmallButtonWidth, Editor.SmallButtonHeight, Editor.SmallButtonBorderWidth, inspectorButtonBaseColor, inspectorButtonBorderColor, inspectorButtonHoverColor, new ShowInspectorCommand(Editor, 1), Button.ButtonType.Trigger);
             MoveTimer = new Timer(0.1f);
             Group = group;
             RenderingObject = component;
@@ -166,7 +166,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
         {
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, IsSelected ? SelectedColor : IsHover ? HoverColor : Color);
             Raylib.DrawRectangleLinesEx(new Rectangle(XPosition, YPosition, Width, Height), BorderWidth, BorderColor);
-            Raylib.DrawText(Name, XPosition + 5, YPosition + 5, 12, Color.Black);
+            Raylib.DrawText(Name, XPosition + 5, YPosition + 5, 12, Editor.TextColor);
             Update();
         }
         /// <summary>

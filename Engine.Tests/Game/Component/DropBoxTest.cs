@@ -21,7 +21,7 @@ namespace VisualNovelEngine.Engine.Tests.Game.Component
             int height = 100;
             int id = 0;
             Block block = new(x, y, null, id);
-            DropBox dropBox = new(block, x, y, width, height, [], Color.Black, Color.Gray, Color.Blue);
+            Dropbox dropBox = new(block, x, y, width, height, [], Color.Black, Color.Gray, Color.Blue);
             Assert.IsNotNull(dropBox);
             Assert.AreEqual(x, dropBox.XPosition);
             Assert.AreEqual(y, dropBox.YPosition);

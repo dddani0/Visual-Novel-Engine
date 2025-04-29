@@ -103,11 +103,11 @@ namespace VisualNovelEngine.Engine.Game.Component
             {
                 throw new InvalidOperationException("Failed to load scene settings, because the sprite path is null.");
             }
-            if (File.Exists(Game.ProjectPath + rawAction.Path) is false)
+            if (File.Exists(rawAction.Path) is false)
             {
                 throw new InvalidOperationException("Failed to load scene settings, because the sprite path is invalid.");
             }
-            return new Sprite(Game.ProjectPath + rawAction.Path);
+            return new Sprite(rawAction.Path);
         }
         /// <summary>
         /// Creates a sprite from the importer class
@@ -130,11 +130,11 @@ namespace VisualNovelEngine.Engine.Game.Component
             {
                 throw new InvalidOperationException("Failed to load scene settings, because the sprite y position is null.");
             }
-            if (File.Exists(Game.ProjectPath + spriteImport.Path) is false)
+            if (File.Exists(spriteImport.Path) is false)
             {
-                //Throw a warning
+                throw new InvalidOperationException("Failed to load scene settings, because the sprite path is invalid.");
             }
-            return new Sprite(Game.ProjectPath + spriteImport.Path, block, spriteImport.XPosition.Value, spriteImport.YPosition.Value);
+            return new Sprite(spriteImport.Path, block, spriteImport.XPosition.Value, spriteImport.YPosition.Value);
         }
         /// <summary>
         /// Creates a variable from the importer class
@@ -277,7 +277,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         internal Button FetchDropBoxOptionFromImport(DropBoxExim dropBoxImport, DropBoxOptionExim DropBoxOptionImport, Block block)
         {
             //Each dropbox option's Y position is calculated by the height of the dropbox and the index of the option in the DropBox.cs class.
-            return DropBox.GetDropBoxOption(
+            return Dropbox.GetDropBoxOption(
                 Game,
                 block,
                 new Font() { BaseSize = 10, GlyphPadding = 2 },
@@ -324,9 +324,9 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="dropBoxImport"></param>
         /// <param name="block"></param>
         /// <returns></returns>
-        internal DropBox FetchDropBoxFromImport(DropBoxExim dropBoxImport, Block block)
+        internal Dropbox FetchDropBoxFromImport(DropBoxExim dropBoxImport, Block block)
         {
-            return new DropBox(
+            return new Dropbox(
                                     block,
                                     dropBoxImport.XPosition,
                                     dropBoxImport.YPosition,
@@ -964,17 +964,16 @@ namespace VisualNovelEngine.Engine.Game.Component
                     IAction LoadSceneAction = new LoadSceneAction(Game, sceneId, actionImport.TriggerVariableName);
                     return (ISettingsAction)LoadSceneAction;
                 case "SetVariableValueAction":
-                    // Add the set variable value action to the timeline.
-                    // if (actionImport.VariableName == null)
-                    // {
-                    //     throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
-                    // }
-                    // if (actionImport.BlockComponentID == null)
-                    // {
-                    //     throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
-                    // }
-                    //ISettingsAction SetVariableValueAction = new SetVariableValueAction(Game, actionImport.VariableName, this, actionImport.BlockComponentID.Value);
-                    ISettingsAction SetVariableValueAction = new SetVariableValueAction(Game, actionImport.VariableName, this, 1);
+                    //Add the set variable value action to the timeline.
+                    if (actionImport.VariableName == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable name is null.");
+                    }
+                    if (actionImport.BlockComponentID == null)
+                    {
+                        throw new InvalidOperationException("Failed to load scene settings, because the variable value is null.");
+                    }
+                    ISettingsAction SetVariableValueAction = new SetVariableValueAction(Game, actionImport.VariableName, this, actionImport.BlockComponentID.Value);
                     return SetVariableValueAction;
                 case "CreateMenuAction":
                     // Add the create menu action to the timeline.

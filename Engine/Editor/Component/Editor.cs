@@ -239,10 +239,11 @@ namespace VisualNovelEngine.Engine.Editor.Component
             EditorConfigPath = projectPath + "EditorConfig.json";
             SaveFilePath = @"../../../Engine/Data/PlaceholderEditor.json";
             File.Copy(@"../../../Engine/Data/EditorConfig.json", EditorConfigPath, true);
+            File.Copy(@"../../../Engine/Data/PlaceholderGameBuild.json", $"{projectPath}PlaceholderGameBuild.json", true);
             BuildPath = $"{FolderPath}{title}Build.json";
             Engine.SetWindowTitle($"Editor - {title}");
             // Load null data to Game.
-            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json");
+            Game = new(Engine, @"../../../Engine/Data/PlaceholderGameBuild.json");
             // instance of the editor importer
             EditorEXIMManager = new(this, EditorConfigPath, SaveFilePath);
             EditorConfigImport();
@@ -250,18 +251,18 @@ namespace VisualNovelEngine.Engine.Editor.Component
             //
             MouseMoveTimer = new(0.5f);
             //
-            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(this), Button.ButtonType.Trigger)]);
+            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(this), Button.ButtonType.Trigger)]);
             // Create the scene
             List<Button> SceneButtonList = [];
             foreach (Scene scene in SceneList)
             {
-                var button = new Button(this, 0, 0, scene.Name, false, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ChangeSceneCommand(this), Button.ButtonType.Trigger);
+                var button = new Button(this, 0, 0, scene.Name, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ChangeSceneCommand(this), Button.ButtonType.Trigger);
                 ChangeSceneCommand changeSceneCommand = (ChangeSceneCommand)button.Command;
                 changeSceneCommand.SceneButton = button;
                 if (scene == ActiveScene) SceneButtonList.Insert(0, button);
                 else SceneButtonList.Add(button);
             }
-            SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
+            SceneButtonList.Add(new Button(this, 0, 0, "Add", ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
             SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
             //
             SaveFilePath = $"{FolderPath}{ProjectName}.json".Replace(" ", string.Empty);
@@ -280,7 +281,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             SaveFilePath = projectPath;
             BuildPath = $"{FolderPath}{ProjectName}Build.json";
             // Load null data to Game.
-            Game = new(@"../../../Engine/Data/PlaceholderGameBuild.json");
+            Game = new(Engine, FolderPath + "PlaceholderGameBuild.json");
             // instance of the editor importer
             EditorEXIMManager = new(this, EditorConfigPath, SaveFilePath);
             EditorConfigImport();
@@ -289,18 +290,18 @@ namespace VisualNovelEngine.Engine.Editor.Component
             //
             MouseMoveTimer = new(0.5f);
             //
-            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(this), Button.ButtonType.Trigger)]);
+            ShowExitErrorCommand = new(this, "Exit?", [new Button(this, 0, 0, "Quit", ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ExitWindowCommand(this), Button.ButtonType.Trigger)]);
             // Create the scene
             List<Button> SceneButtonList = [];
             foreach (Scene scene in SceneList)
             {
-                var button = new Button(this, 0, 0, scene.Name, false, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ChangeSceneCommand(this), Button.ButtonType.Trigger);
+                var button = new Button(this, 0, 0, scene.Name, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new ChangeSceneCommand(this), Button.ButtonType.Trigger);
                 ChangeSceneCommand changeSceneCommand = (ChangeSceneCommand)button.Command;
                 changeSceneCommand.SceneButton = button;
                 if (scene == ActiveScene) SceneButtonList.Insert(0, button);
                 else SceneButtonList.Add(button);
             }
-            SceneButtonList.Add(new Button(this, 0, 0, "Add", true, ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
+            SceneButtonList.Add(new Button(this, 0, 0, "Add", ButtonWidth, ButtonHeight, ButtonBorderWidth, BaseColor, BorderColor, HoverColor, new CreateNewSceneCommand(this), Button.ButtonType.Trigger));
             SceneBar = new MiniWindow(this, false, false, false, 0, 0, Raylib.GetScreenWidth(), 100, ComponentBorderWidth, BaseColor, BorderColor, MiniWindowType.Horizontal, [.. SceneButtonList]);
         }
         /// <summary>

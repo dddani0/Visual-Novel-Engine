@@ -1,7 +1,4 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Raylib_cs;
-using VisualNovelEngine.Engine.PortData;
 
 namespace VisualNovelEngine.Engine.Game.Component
 {
@@ -11,14 +8,19 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// </summary>
     public class Game
     {
+        internal Engine.Component.Engine Engine { get; set; }
         /// <summary>
         /// The GameLoader deals with the raw data which is loaded into the game.
         /// </summary>
-        internal GameEximManager GameImport;
+        internal GameEximManager GameEXIMManager;
         /// <summary>
         /// The current folder path.
         /// </summary>
         internal string ProjectPath { get; set; }
+        /// <summary>
+        /// The current folder path.
+        /// </summary>
+        internal string FolderPath { get; set; }
         /// <summary>
         /// The Scene path.
         /// </summary>
@@ -36,11 +38,13 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         public Scene ActiveScene { get; private set; }
 
-        public Game(string projectPath)
+        public Game(VisualNovelEngine.Engine.Component.Engine engine, string projectPath)
         {
+            Engine = engine;
             ProjectPath = projectPath;
+            FolderPath = $"{Path.GetDirectoryName(projectPath)}/" ?? string.Empty;
             BuildPath = ProjectPath;
-            GameImport = new(this, BuildPath);
+            GameEXIMManager = new(this, BuildPath);
             SetupGameSettings();
         }
 
@@ -61,7 +65,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         private void SetupGameWindow()
         {
-            Raylib.SetWindowSize(GameImport.GameExim.WindowWidth, GameImport.GameExim.WindowHeight);
+            Raylib.SetWindowSize(GameEXIMManager.GameExim.WindowWidth, GameEXIMManager.GameExim.WindowHeight);
         }
         /// <summary>
         /// Fetches the saved variables from the json file.
@@ -69,7 +73,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         private void SetupVariables()
         {
             // Initialize the list of variables.
-            Variables = [.. GameImport.GameExim.Variables.Select(GameImport.FetchVariableFromImport)];
+            Variables = [.. GameEXIMManager.GameExim.Variables.Select(GameEXIMManager.FetchVariableFromImport)];
         }
         /// <summary>
         /// Fetches the scene configuration from the json file.
@@ -77,9 +81,9 @@ namespace VisualNovelEngine.Engine.Game.Component
         private void SetupScenes()
         {
             // Initialize the game loader.
-            GameImport = new(this, BuildPath);
+            GameEXIMManager = new(this, BuildPath);
             // Initialize the list of scenes.
-            Scenes = [.. GameImport.GameExim.Scenes.Select(GameImport.FetchSceneFromImport)];
+            Scenes = [.. GameEXIMManager.GameExim.Scenes.Select(GameEXIMManager.FetchSceneFromImport)];
             // Initialize the list of variables.
             if (Scenes.Count <= 0) return;
             ActiveScene = Scenes[0];
@@ -99,6 +103,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         public void Update()
         {
+            if (Raylib.WindowShouldClose()) Engine.ChangeState(VisualNovelEngine.Engine.Component.EngineState.Exit);
             switch (ActiveScene.Background)
             {
                 default:

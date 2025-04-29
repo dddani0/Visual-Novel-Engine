@@ -25,7 +25,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
         }
         public void PerformAction()
         {
-            Game.ActiveScene.Timeline.SpriteRenderList.First(theSprite => theSprite.Equals(sprite)).ChangeTint(color);
+            Game.ActiveScene.Timeline.SpriteRenderList.First(theSprite => theSprite.Path == sprite.Path).ChangeTint(color);
             Game.ActiveScene.Timeline.NextStep();
         }
     }
