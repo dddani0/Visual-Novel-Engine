@@ -103,12 +103,11 @@ namespace VisualNovelEngine.Engine.Game.Component
             {
                 throw new InvalidOperationException("Failed to load scene settings, because the sprite path is null.");
             }
-            var spriteFilePath = $"{Game.FolderPath}{rawAction.Path.Split('/').Last()}";
-            if (File.Exists(spriteFilePath) is false)
+            if (File.Exists(rawAction.Path) is false)
             {
                 throw new InvalidOperationException("Failed to load scene settings, because the sprite path is invalid.");
             }
-            return new Sprite(spriteFilePath);
+            return new Sprite(rawAction.Path);
         }
         /// <summary>
         /// Creates a sprite from the importer class
@@ -131,11 +130,11 @@ namespace VisualNovelEngine.Engine.Game.Component
             {
                 throw new InvalidOperationException("Failed to load scene settings, because the sprite y position is null.");
             }
-            if (File.Exists(Game.FolderPath + spriteImport.Path) is false)
+            if (File.Exists(spriteImport.Path) is false)
             {
-                //Throw a warning
+                throw new InvalidOperationException("Failed to load scene settings, because the sprite path is invalid.");
             }
-            return new Sprite(Game.FolderPath + spriteImport.Path, block, spriteImport.XPosition.Value, spriteImport.YPosition.Value);
+            return new Sprite(spriteImport.Path, block, spriteImport.XPosition.Value, spriteImport.YPosition.Value);
         }
         /// <summary>
         /// Creates a variable from the importer class

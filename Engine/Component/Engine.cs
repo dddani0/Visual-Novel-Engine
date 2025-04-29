@@ -75,9 +75,9 @@ namespace VisualNovelEngine.Engine.Component
             //Set the state to PreState.
             ChangeState(EngineState.Default);
             //Prestate buttons
-            NewProject = new Button("Új projekt", Width / 2 - 125, 80, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.NewProject));
-            ImportProject = new Button("Projekt importálás", Width / 2 - 125, 140, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.ImportProject));
-            ImportBuild = new Button("Játék megnyitása", Width / 2 - 125, 200, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.PlayProject));
+            NewProject = new Button("New project", Width / 2 - 125, 80, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.NewProject));
+            ImportProject = new Button("Import Project", Width / 2 - 125, 140, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.ImportProject));
+            ImportBuild = new Button("Open Game", Width / 2 - 125, 200, 210, 50, Color.RayWhite, Color.Gray, new OpenWindowCommand(this, WindowType.PlayProject));
             OpenRepository = new Button("GitHub", 10, Height - 50 - 10, 100, 50, Color.RayWhite, Color.Gray, new OpenLinkCommand("https://github.com/dddani0/Visual-Novel-Engine"));
         }
         /// <summary>

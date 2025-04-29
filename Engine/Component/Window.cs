@@ -38,15 +38,15 @@ namespace VisualNovelEngine.Engine.Component
                 case WindowType.NewProject:
                     NameInputField = new(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 2 * 50), "Name", 300, 50, Color.White, Color.Black, Color.Gray);
                     CloseButton = new Button("X", XPosition + Width - 20, YPosition, 20, 20, Color.Red, Color.DarkBrown, new CloseWindowCommand(Engine));
-                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "D:/", "Létrehoz", 300, 50, Color.White, Color.Black, Color.Gray, new CreateNewProjectCommand(Engine));
+                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "D:/", "Create", 300, 50, Color.White, Color.Black, Color.Gray, new CreateNewProjectCommand(Engine));
                     break;
                 case WindowType.ImportProject:
                     CloseButton = new Button("X", XPosition + Width - 20, YPosition, 20, 20, Color.Red, Color.DarkBrown, new CloseWindowCommand(Engine));
-                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "D:/", "Betöltés", 300, 50, Color.White, Color.Black, Color.Gray, new ImportNewProjectCommand(Engine));
+                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "D:/", "Load", 300, 50, Color.White, Color.Black, Color.Gray, new ImportNewProjectCommand(Engine));
                     break;
                 case WindowType.PlayProject:
                     CloseButton = new Button("X", XPosition + Width - 20, YPosition, 20, 20, Color.Red, Color.DarkBrown, new CloseWindowCommand(Engine));
-                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "D:/", "Betöltés", 300, 50, Color.White, Color.Black, Color.Gray, new PlayGameCommand(Engine));
+                    ProjectPathInputField = new InputField(XPosition + (Width / 2 - 300 / 2), YPosition + (Height / 2 - 50 / 2), "D:/", "Load", 300, 50, Color.White, Color.Black, Color.Gray, new PlayGameCommand(Engine));
                     break;
             }
         }

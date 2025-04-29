@@ -41,7 +41,7 @@ namespace VisualNovelEngine.Engine.Game.Component.Action.TimelineDependent
         /// </summary>
         public void PerformAction()
         {
-            Game.ActiveScene.Timeline.SpriteRenderList.First(theSprite => theSprite.Equals(sprite)).ChangeTexture(replacementTexture);
+            Game.ActiveScene.Timeline.SpriteRenderList.First(theSprite => theSprite.Path == sprite.Path).ChangeTexture(replacementTexture);
             Game.ActiveScene.Timeline.NextStep();
         }
     }

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Raylib_cs;
 using VisualNovelEngine.Engine.Game.Interface;
 
@@ -9,16 +10,23 @@ namespace VisualNovelEngine.Engine.Game.Component
     public class Sprite : IRenderingObject
     {
         /// <summary>
+        /// The name of the sprite.
+        /// </summary>
+        internal string Name { get; set; }
+        /// <summary>
         /// The path to the sprite.
         /// </summary>
         internal string Path;
+        /// <summary>
+        /// Compatible path for the game.
+        /// </summary>
+        internal string GameCompatiblePath { get; set; }
         /// <summary>
         /// The texture of the sprite.
         /// </summary>
         internal Texture2D ImageTexture { get; set; }
         /// <summary>
         /// The color of the sprite.
-        /// Default: white.
         /// </summary>
         internal Color Color { get; set; }
         /// <summary>
@@ -40,8 +48,10 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// <param name="path">Path to the sprite image.</param>
         public Sprite(string path)
         {
-            Path = path;
-            ImageTexture = Raylib.LoadTexture(path);
+            Path = path.Replace("/", "\\");
+            Name = Path.Split("\\").Last();
+            GameCompatiblePath = @$"{Environment.CurrentDirectory}/../../../../../{Path[3..]}";
+            ImageTexture = Raylib.LoadTexture(GameCompatiblePath);
             //default position
             Y = Raylib.GetScreenHeight() / 2 - ImageTexture.Width / 2;
             X = Raylib.GetScreenWidth() / 2 - ImageTexture.Height / 2;
@@ -51,8 +61,9 @@ namespace VisualNovelEngine.Engine.Game.Component
 
         public Sprite(string path, Block block, int x, int y)
         {
-            Path = path;
-            ImageTexture = Raylib.LoadTexture(Path);
+            Path = path.Replace("/", "\\");
+            Name = Path.Split("\\").Last();
+            ImageTexture = Raylib.LoadTexture(@$"{Environment.CurrentDirectory}/../../../../../{Path[3..]}");
             Block = block;
             X = Block.XPosition + x;
             Y = Block.YPosition + y;

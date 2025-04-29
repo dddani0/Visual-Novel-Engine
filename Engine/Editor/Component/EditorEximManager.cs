@@ -1754,8 +1754,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 AddSpriteAction addSpriteAction => new()
                 {
                     Type = "AddSpriteAction",
-                    //To the build version, only the name of the sprite is needed, because of the root folder
-                    Sprite = ExportSpriteData(new Sprite(addSpriteAction.sprite.Path.Split('/').Last()))
+                    Sprite = ExportSpriteData(addSpriteAction.sprite)
                 },
                 ChangeSpriteAction changeSpriteAction => new()
                 {
@@ -1801,7 +1800,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
                 TintSpriteAction tintSpriteAction => new()
                 {
                     Type = "TintSpriteAction",
-                    Sprite = ExportSpriteData(new Sprite(tintSpriteAction.sprite.Path.Split('/').Last())),
+                    Sprite = ExportSpriteData(tintSpriteAction.sprite),
                     TintColor = ExportColorData(tintSpriteAction.color)
                 },
                 ToggleVariableAction toggleVariableAction => new()
