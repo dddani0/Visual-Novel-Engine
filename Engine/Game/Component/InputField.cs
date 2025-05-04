@@ -156,14 +156,14 @@ namespace VisualNovelEngine.Engine.Game.Component
             if (IsLocked) return;
             if (IsSelected)
             {
-                if (Game.IsKeyPressed(KeyboardKey.Backspace))
+                if (Raylib.IsKeyPressed(KeyboardKey.Backspace))
                 {
                     if (Text.Length > 0)
                     {
                         Text = Text.Remove(Text.Length - 1);
                     }
                 }
-                else if (Game.IsKeyPressed(KeyboardKey.Enter))
+                else if (Raylib.IsKeyPressed(KeyboardKey.Enter))
                 {
                     IsSelected = false;
                 }
@@ -196,7 +196,7 @@ namespace VisualNovelEngine.Engine.Game.Component
             // Render the Button component
             Button.Render();
             // draw the input field.
-            IsHover = Raylib.CheckCollisionPointRec(new Vector2(Game.GetMouseXPosition(), Game.GetMouseYPosition()), new Rectangle(XPosition - Width / 2, YPosition + Height / 2, Width, Height));
+            IsHover = Raylib.CheckCollisionPointRec(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()), new Rectangle(XPosition - Width / 2, YPosition + Height / 2, Width, Height));
             Raylib.DrawRectangle(XPosition - Width / 2, YPosition + Height / 2, Width, Height, IsSelected ? SelectedColor : IsHover ? HoverColor : Color);
             Raylib.DrawRectangleLines(XPosition - Width / 2, YPosition + Height / 2, Width, Height, BorderColor);
             if (String.IsNullOrEmpty(Text))

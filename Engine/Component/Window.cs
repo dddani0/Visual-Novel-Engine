@@ -16,15 +16,51 @@ namespace VisualNovelEngine.Engine.Component
     /// </summary>
     class Window : IWindow
     {
+        /// <summary>
+        /// The editor that the window is associated with.
+        /// </summary>
         Engine Engine { get; set; }
+        /// <summary>
+        /// The x position of the window.
+        /// </summary>
         internal WindowType Type { get; set; }
+        /// <summary>
+        /// The y position of the window.
+        /// </summary>
         internal int XPosition { get; set; }
+        /// <summary>
+        /// The y position of the window.
+        /// </summary>
         internal int YPosition { get; set; }
+        /// <summary>
+        /// The width of the window.
+        /// </summary>
         internal int Width { get; set; }
+        /// <summary>
+        /// The height of the window.
+        /// </summary>
         internal int Height { get; set; }
+        /// <summary>
+        /// The button component of the window.
+        /// </summary>
         internal Button CloseButton { get; set; }
+        /// <summary>
+        /// The text of the window.
+        /// </summary>
         internal InputField ProjectPathInputField { get; set; }
+        /// <summary>
+        /// The text of the window.
+        /// </summary>
         internal InputField? NameInputField { get; set; }
+        /// <summary>
+        /// The placeholder of the window.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="type"></param>
         public Window(Engine engine, int x, int y, int width, int height, WindowType type)
         {
             Engine = engine;
@@ -50,7 +86,9 @@ namespace VisualNovelEngine.Engine.Component
                     break;
             }
         }
-
+        /// <summary>
+        /// Shows the window.
+        /// </summary>
         public void Show()
         {
             Raylib.DrawRectangle(XPosition, YPosition, Width, Height, Color.Black);

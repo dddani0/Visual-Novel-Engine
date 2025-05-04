@@ -77,7 +77,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             IsToggled = toggled;
         }
         /// <summary>
-        /// The update method of the toggle button.
+        /// Updates the toggle button state.
         /// </summary>
         public void Update()
         {
@@ -89,7 +89,7 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
         }
         /// <summary>
-        /// The render method of the toggle button.
+        /// Renders the toggle button on the screen.
         /// </summary>
         public void Render()
         {

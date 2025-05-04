@@ -2,6 +2,9 @@ using VisualNovelEngine.Engine.Editor.Interface;
 
 namespace VisualNovelEngine.Engine.Component.Command
 {
+    /// <summary>
+    /// /// Represents a command to create a new project.
+    /// </summary>
     class CreateNewProjectCommand : ICommand
     {
         Engine Engine { get; set; }

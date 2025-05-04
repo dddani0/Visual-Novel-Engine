@@ -18,11 +18,17 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// The Game object.
         /// </summary>
         Game Game { get; set; }
+        /// <summary>
+        /// The GameExim object.
+        /// </summary>
         internal GameExim GameExim { get; set; }
         /// <summary>
         /// The cache of created blocks.
         /// </summary>
         internal List<Block> BlockListCache { get; set; } = [];
+        /// <summary>
+        /// The cache of created menus.
+        /// </summary>
         internal List<Menu> MenuListCache { get; set; } = [];
         public GameEximManager(Game game, string BuildPath)
         {
@@ -158,7 +164,12 @@ namespace VisualNovelEngine.Engine.Game.Component
             }
             return new Variable(variableImport.VariableName, variableImport.VariableValue, (VariableType)variableImport.VariableType);
         }
-
+        /// <summary>
+        /// Creates a variable from the importer class
+        /// </summary>
+        /// <param name="variableImport"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         internal Variable FetchVariableFromImport(VariableExim variableImport)
         {
             return variableImport.Type switch

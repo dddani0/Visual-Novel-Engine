@@ -202,14 +202,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             if (IsRenaming)
             {
-                if (VisualNovelEngine.Engine.Game.Component.Game.IsKeyPressed(KeyboardKey.Backspace))
+                if (Raylib.IsKeyPressed(KeyboardKey.Backspace))
                 {
                     if (Name.Length > 0)
                     {
                         Name = Name.Remove(Name.Length - 1);
                     }
                 }
-                else if (VisualNovelEngine.Engine.Game.Component.Game.IsKeyPressed(KeyboardKey.Enter))
+                else if (Raylib.IsKeyPressed(KeyboardKey.Enter))
                 {
                     IsSelected = false;
                 }

@@ -42,7 +42,13 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// The border color of the menu.
         /// </summary>
         internal Color BorderColor { get; set; }
+        /// <summary>
+        /// The border width of the menu.
+        /// </summary>
         internal bool IsVisible { get; set; }
+        /// <summary>
+        /// The parent game object.
+        /// </summary>
         internal Game Game { get; set; }
         /// <summary>
         /// 

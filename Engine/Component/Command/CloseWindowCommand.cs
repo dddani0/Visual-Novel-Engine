@@ -3,7 +3,7 @@ using VisualNovelEngine.Engine.Editor.Interface;
 namespace VisualNovelEngine.Engine.Component.Command
 {
     /// <summary>
-    /// Represents a command to open the path window.
+    /// Represents a command to close the window.
     /// </summary>
     class CloseWindowCommand : ICommand
     {
