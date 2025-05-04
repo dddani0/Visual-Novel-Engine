@@ -97,7 +97,15 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// The count of the text collection.
         /// </summary>
         private int TextCollectionCount { get; set; }
+        /// <summary>
+        /// Increment the text collection index.
+        /// </summary>
+        /// <returns></returns>
         private int IncrementTextDataIndex() => TextCollectionIndex++;
+        /// <summary>
+        /// Increment the text index.
+        /// </summary>
+        /// <returns></returns>
         private int IncrementIndex() => TextIndex++;
         /// <summary>
         /// The position of the textbox.
@@ -119,10 +127,26 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// Check if the textbox is blinking.
         /// </summary>
         private bool IsBlinking { get; set; }
+        /// <summary>
+        /// Toggle the blinking of the textbox.
+        /// </summary>
+        /// <returns></returns>
         private bool ToggleBlinking() => IsBlinking = !IsBlinking;
+        /// <summary>
+        /// The x position of the textbox.
+        /// </summary>
         internal int XPosition => Position[0];
+        /// <summary>
+        /// The y position of the textbox.
+        /// </summary>
         internal int YPosition => Position[1];
+        /// <summary>
+        /// The width of the textbox.
+        /// </summary>
         internal int XScale => Scale[0];
+        /// <summary>
+        /// The height of the textbox.
+        /// </summary>
         internal int YScale => Scale[1];
         /// <summary>
         /// The box which abstractly represents the textbox.
@@ -140,7 +164,13 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// The border color of the textbox.
         /// </summary>
         internal Color BorderColor { get; set; }
+        /// <summary>
+        /// The parent game object.
+        /// </summary>
         internal readonly Game Game;
+        /// <summary>
+        /// The text box is done.
+        /// </summary>
         private int[] Scale { get; set; }
         /// <summary>
         /// Create a new textbox.
@@ -406,6 +436,9 @@ namespace VisualNovelEngine.Engine.Game.Component
             wordWrap,
             game);
 
+        /// <summary>
+        /// Renders the textbox on the screen.
+        /// </summary>
         public void Render()
         {
             //Return if disabled or finished. (render nothing)
@@ -468,7 +501,10 @@ namespace VisualNovelEngine.Engine.Game.Component
             bool shouldProceedNextBatch() =>
                 TextCollectionIndex < TextCollectionCount && IsFinished() is true && Game.IsLeftMouseButtonPressed();
         }
-
+        /// <summary>
+        /// Check if the textbox is enabled.
+        /// </summary>
+        /// <returns></returns>
         public bool Enabled() => IsEnabled;
     }
 }

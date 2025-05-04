@@ -63,6 +63,9 @@ namespace VisualNovelEngine.Engine.Component
         /// The button to open the repository.
         /// </summary>
         private Button OpenRepository { get; set; }
+        /// <summary>
+        /// The window that is currently open.
+        /// </summary>
         internal Window? Window { get; set; } = null;
 
         /// <summary>

@@ -47,6 +47,9 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// Value between 0 and 1.
         /// </summary>
         internal float UnitValue { get; set; }
+        /// <summary>
+        /// The value of the Slider.
+        /// </summary>
         internal float Value { get; set; }
         /// <summary>
         /// The color of the Slider's draggable part.
@@ -126,6 +129,10 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         /// <returns></returns>
         public float GetUnitValue() => UnitValue;
+        /// <summary>
+        /// Fetch the value of the Slider.
+        /// </summary>
+        /// <returns></returns>
         public float GetSliderValue() => UnitValue * Value;
     }
 }

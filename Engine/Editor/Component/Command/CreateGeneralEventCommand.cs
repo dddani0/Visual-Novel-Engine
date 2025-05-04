@@ -8,7 +8,7 @@ using VisualNovelEngine.Engine.Editor.Interface;
 namespace VisualNovelEngine.Engine.Editor.Component.Command
 {
     /// <summary>
-    /// Represents an empty command.
+    /// Represents a command to create a general event.
     /// </summary>
     public class CreateGeneralEventCommand : ICommand
     {

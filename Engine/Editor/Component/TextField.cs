@@ -111,14 +111,14 @@ namespace VisualNovelEngine.Engine.Editor.Component
             else if (IsHover is false && Raylib.IsMouseButtonPressed(MouseButton.Left)) Editing = false;
             if (Editing)
             {
-                if (VisualNovelEngine.Engine.Game.Component.Game.IsKeyPressed(KeyboardKey.Backspace))
+                if (Raylib.IsKeyPressed(KeyboardKey.Backspace))
                 {
                     if (Text.Length > 0)
                     {
                         Text = Text.Remove(Text.Length - 1);
                     }
                 }
-                else if (VisualNovelEngine.Engine.Game.Component.Game.IsKeyPressed(KeyboardKey.Enter)) Text += '\n';
+                else if (Raylib.IsKeyPressed(KeyboardKey.Enter)) Text += '\n';
                 else if (Raylib.GetKeyPressed() > 0)
                 {
                     Text = Regex.Unescape(Text + ((char)Raylib.GetCharPressed()).ToString()).Replace('\0', ' ');

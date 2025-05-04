@@ -9,19 +9,61 @@ namespace VisualNovelEngine.Engine.Game.Component
     /// </summary>
     public class Toggle : IRenderingObject
     {
+        /// <summary>
+        /// The x position of the toggle.
+        /// </summary>
         internal int XPosition { get; set; }
+        /// <summary>
+        /// The y position of the toggle.
+        /// </summary>
         internal int YPosition { get; set; }
+        /// <summary>
+        /// The border width of the toggle.
+        /// </summary>
         internal int BorderWidth { get; set; }
+        /// <summary>
+        /// The width of the toggle.
+        /// </summary>
         internal int BoxSize { get; set; }
+        /// <summary>
+        /// The height of the toggle.
+        /// </summary>
         internal int TextXOffset { get; set; }
+        /// <summary>
+        /// The text of the toggle.
+        /// </summary>
         internal string Text { get; set; }
+        /// <summary>
+        /// The parent block of the toggle.
+        /// </summary>
         internal bool IsVisible { get; set; }
+        /// <summary>
+        /// Is the toggle enabled.
+        /// </summary>
         internal bool IsToggled { get; set; }
+        /// <summary>
+        /// Is the toggle locked.
+        /// </summary>
         internal bool IsLocked { get; set; }
+        /// <summary>
+        /// The font of the toggle.
+        /// </summary>
         internal Font Font { get; set; }
+        /// <summary>
+        /// The color of the toggle.
+        /// </summary>
         internal Color Color { get; set; }
+        /// <summary>
+        /// The border color of the toggle.
+        /// </summary>
         internal Color BorderColor { get; set; }
+        /// <summary>
+        /// The color of the toggle when toggled.
+        /// </summary>
         internal Color ToggledColor { get; set; }
+        /// <summary>
+        /// The event which is attached to the toggle.
+        /// </summary>
         internal IAction SettingsAction { get; set; }
         /// <summary>
         /// Creates a toggle component.
@@ -75,7 +117,10 @@ namespace VisualNovelEngine.Engine.Game.Component
             if (!IsToggled) return;
             Raylib.DrawRectangle(XPosition - BoxSize / 2, YPosition - BoxSize / 2, BoxSize, BoxSize, Color.Black);
         }
-
+        /// <summary>
+        /// Checks if the toggle is enabled.
+        /// </summary>
+        /// <returns></returns>
         public bool Enabled() => IsVisible;
     }
 }

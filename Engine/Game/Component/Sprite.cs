@@ -41,6 +41,9 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// Position of the sprite on the Y axis.
         /// </summary>
         internal int Y { get; set; }
+        /// <summary>
+        /// The width of the sprite.
+        /// </summary>
         internal Block Block { get; set; }
         /// <summary>
         /// Creates a sprite.
@@ -58,7 +61,13 @@ namespace VisualNovelEngine.Engine.Game.Component
             // default color
             Color = Color.White;
         }
-
+        /// <summary>
+        /// Creates a sprite with a parent block.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="block"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public Sprite(string path, Block block, int x, int y)
         {
             Path = path.Replace("/", "\\");
@@ -96,7 +105,6 @@ namespace VisualNovelEngine.Engine.Game.Component
             var spriteShowcaseNumber = Raylib.GetScreenWidth() / (numberOfActiveSprite + 2);
             X = spriteShowcaseNumber * (spriteIndex + 1);
         }
-
         /// <summary>
         /// Renders the sprite on the screen.
         /// </summary>
@@ -105,6 +113,10 @@ namespace VisualNovelEngine.Engine.Game.Component
             if (Enabled is false) return;
             Raylib.DrawTexture(ImageTexture, X, Y, Color);
         }
+        /// <summary>
+        /// Checks if the sprite is enabled.
+        /// </summary>
+        /// <returns></returns>
         bool IRenderingObject.Enabled() => Enabled;
     }
 }

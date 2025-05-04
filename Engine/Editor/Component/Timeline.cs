@@ -39,6 +39,9 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// The actions that the timeline will execute.
         /// </summary>
         internal List<IAction> Actions { get; set; } = [];
+        /// <summary>
+        /// The component actions that the timeline will execute.
+        /// </summary>
         internal List<IAction> ComponentActions { get; set; } = [];
         /// <summary>
         /// The timeline independent actions

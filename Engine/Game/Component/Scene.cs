@@ -45,6 +45,9 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// The gradient color of the scene.
         /// </summary>
         internal Color[] gradientColor;
+        /// <summary>
+        /// The list of sprites in the scene.
+        /// </summary>
         internal Game Game { get; }
         public Scene(string name, Game game)
         {

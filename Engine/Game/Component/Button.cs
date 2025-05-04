@@ -38,7 +38,6 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// Is the button pressed.
         /// </summary>
         internal bool isPressed;
-
         /// <summary>
         /// The border width of the button.
         /// </summary>

@@ -3,6 +3,9 @@ using VisualNovelEngine.Engine.Editor.Component;
 
 namespace VisualNovelEngine.Engine.Component.Command
 {
+    /// <summary>
+    /// /// Represents a command to import a new project.
+    /// </summary>
     public class ImportNewProjectCommand : ICommand
     {
         Engine Engine { get; set; }

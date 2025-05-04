@@ -154,10 +154,5 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// Checks if the escape button is pressed.
         /// </summary>
         /// <returns></returns>
-        public static bool IsEscapeButtonPressed() => Raylib.WindowShouldClose();
-        public static int GetMouseXPosition() => Raylib.GetMouseX();
-        public static int GetMouseYPosition() => Raylib.GetMouseY();
-        public static bool IsKeyPressed(KeyboardKey key) => Raylib.IsKeyPressed(key);
-        public static bool IsKeyDown(KeyboardKey key) => Raylib.IsKeyDown(key);
     }
 }

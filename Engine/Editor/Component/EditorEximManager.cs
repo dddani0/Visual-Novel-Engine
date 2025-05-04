@@ -24,6 +24,9 @@ namespace VisualNovelEngine.Engine.Editor.Component
     /// </summary>
     public class EditorEXIMManager
     {
+        /// <summary>
+        /// Represents the editor that the data is associated with.
+        /// </summary>
         Editor Editor { get; set; }
         /// <summary>
         /// Represents the editor's imported preferences.
@@ -474,8 +477,6 @@ namespace VisualNovelEngine.Engine.Editor.Component
             }
             else if (renderingObjectImport.StaticButton != null)
             {
-                //When working with separate components, the autonomous button does not have a reference to a block.
-                //Either create a new method to fetch the connecting block, or feign a block.
                 return GameEximManager.FetchStaticButtonFromImport(renderingObjectImport.StaticButton, BlockCache);
             }
             else if (renderingObjectImport.InputField != null)

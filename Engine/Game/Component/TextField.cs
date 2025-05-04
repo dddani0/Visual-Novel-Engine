@@ -29,7 +29,7 @@ namespace VisualNovelEngine.Engine.Game.Component
         /// </summary>
         internal int Height { get; set; }
         /// <summary>
-        /// 
+        /// The parent block of the text field.
         /// </summary>
         internal int BorderWidth { get; set; }
         /// <summary>

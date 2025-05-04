@@ -36,7 +36,10 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// <summary>
         /// Instance of a Game
         /// </summary>
-        internal VisualNovelEngine.Engine.Game.Component.Game Game { get; set; }
+        internal Game.Component.Game Game { get; set; }
+        /// <summary>
+        /// The path to the game build file.
+        /// </summary>
         internal List<Variable> GameVariables { get; set; } = [];
         /// <summary>
         /// The extent which the screen moves
@@ -46,6 +49,9 @@ namespace VisualNovelEngine.Engine.Editor.Component
         /// The offset, which the mouse requires to move
         /// </summary>
         internal const int MoveMouseOffset = 50;
+        /// <summary>
+        /// The extent which the mouse moves
+        /// </summary>
         internal int MouseXMoveExtent = 0;
         /// <summary>
         /// The width of the general component type.
