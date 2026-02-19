@@ -9,14 +9,14 @@ A simple game engine featuring visual elements for visual novel game development
 - Variable System – Manage game variables easily
 
 ### 🚀 Installation
-Clone the repository:
-
-git clone [repository URL]
-
-Run the project in your IDE (recommended is Visual Studio Code)
+1. Clone the repository:
+```
+git clone https://github.com/dddani0/Visual-Novel-Engine.git
+```
+2. Open project in code editor.
+3. Debug the project to run.
 
 ### 🏗️ Architecture
-
 The project is built on two main layers:
 - Editor Layer – The development interface for building games
 - Game Layer – The runtime layer for playing the game
@@ -28,5 +28,4 @@ For detailed documentation, visit the [Wiki](https://github.com/dddani0/Visual-N
 
 ### 🤝 Contributing
 I recommend forking the project before contribution.
-
-For starting see the "Issue" tab.
+See the issues tab to get started.
